@@ -1,0 +1,172 @@
+@if (selectedItem === 'Circular') {
+<div id="Circular">
+    <div class="container-fluid">
+        <div class="example">
+            <form class="k-form" [formGroup]="form">
+                <h5>REGISTRO DATOS ADICIONALES DE LA CIRCULAR</h5>
+                <div class="col-12">
+                    <div class="row d-flex">
+                        <div class="col-4"></div>
+                        <div class="col-5 d-flex justify-content-start">
+                            <kendo-label text="Numero de Circular">
+                                <kendo-textbox formControlName="numero_circular"></kendo-textbox>
+                            </kendo-label>
+                        </div>
+                    </div>
+                    <!-- <div class="row d-flex">
+                        <div class="col-4"></div>
+                        <div class="col-5 d-flex justify-content-start">
+                            <kendo-label text="Extra">
+                                <kendo-textbox formControlName="email" #email></kendo-textbox>
+                            </kendo-label>
+                        </div>
+                    </div> -->
+                    <div class="row d-flex">
+                        <div class="col-4"></div>
+                        <div class="col-5 d-flex justify-content-start">
+                            <kendo-label style="margin-bottom: -10px" [for]="fecha" text="Fecha">
+                            </kendo-label>
+                        </div>
+                    </div>
+                    <div class="row mt-3 d-flex">
+                        <div class="col-4"></div>
+                        <div class="col-5 d-flex justify-content-start">
+                            <kendo-datepicker #fecha  formControlName="fecha" placeholder="Choose a date ..."></kendo-datepicker>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="k-form-buttons">
+                    <div class="col-12">
+                        <div class="row mt-3 d-flex">
+                            <div class="col-6 d-flex justify-content-end">
+                                <button kendoButton (click)="GenerarCicular()" [disabled]="!form.valid"
+                                    fillMode="outline" size="large" rounded="medium" themeColor="info"
+                                    [svgIcon]="wordIcon" [disabled]="isDisabled">Generar Circular</button>
+                                <span class="ps-2">
+                                    @if (isDisabled) {
+                                    <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                    </kendo-loader>
+                                    }
+
+                                </span>
+                            </div>
+                            <div class="col-2 d-flex justify-content-start ">
+                                <button kendoButton (click)="CopiarCircular()" [disabled]="!form.valid"
+                                    fillMode="outline" size="large" rounded="medium" themeColor="tertiary"
+                                    [svgIcon]="copyIcon" [disabled]="isCoping">Copiar Archivos</button>
+                                <span class="ps-2"> </span>
+                                    @if (isCoping) {
+                                    <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                    </kendo-loader>
+                                    }
+    
+                               
+                            </div>
+                            <div class="col-2 d-flex justify-content-start">
+                                <button kendoButton (click)="clearForm()" fillMode="outline" size="large"
+                                    rounded="medium" themeColor="warning">Limpiar</button>
+                                    
+                            </div>
+                            
+                            <div class="col-2 d-flex "></div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+}
+@if (selectedItem === 'Indicadores') {
+<div id="Indicadores">
+    <ul>
+        <li>Monday meeting</li>
+        <li>Regarding org chart changes</li>
+        <li>Meeting with Cliff</li>
+        <li>Global Marketing Meeting</li>
+        <li>Out tonight with collegues?</li>
+    </ul>
+</div>
+}
+@if (selectedItem === 'Seguimiento Actividades Vencidas') {
+<div id="Seguimiento Actividades Vencidas">
+    <ul>
+        <li>
+            <h6>11/5 Monday</h6>
+            <p>Martha Birthday</p>
+        </li>
+        <li>
+            <h6>15/6 Sunday</h6>
+            <p>Job interview for internal position</p>
+        </li>
+    </ul>
+</div>
+}
+@if (selectedItem === 'Seguimiento Fuentes') {
+<div id="Seguimiento Fuentes">
+    <ul>
+        <li>Build enterprise apps</li>
+        <li>Fw: Regarding Multiline textbox</li>
+        <li>Away next week</li>
+        <li>Fw: Your Costume is ready</li>
+        <li>Update completed</li>
+    </ul>
+</div>
+}
+@if (selectedItem === 'Seguimiento Integrado') {
+<div id="Seguimiento Integrado">
+    <ul>
+        <li>70% Discount!</li>
+        <li>90% Discount!</li>
+        <li>One time offer!</li>
+    </ul>
+</div>
+}
+@if (selectedItem === 'Graficos') {
+    <div id="Graficos">
+        <ul>
+            <li>70% Discount!</li>
+            <li>90% Discount!</li>
+            <li>One time offer!</li>
+        </ul>
+    </div>
+    }
+    @if (selectedItem === 'Puntos de Atencion') {
+        <div id="Puntos de Atencion">
+            <ul>
+                <li>70% Discount!</li>
+                <li>90% Discount!</li>
+                <li>One time offer!</li>
+            </ul>
+        </div>
+       }
+    @if (selectedItem === 'Integracion') {
+        <div id="Integracion">
+            
+                <div class="container-fluid">
+                    <h5>INTEGRACION DE TODOS LOS PRODUCTOS DE LA CIRCULAR</h5>
+                    <div class="col-12">
+                        <div class="row mt-3 d-flex">
+                            <div class="col-6 d-flex justify-content-end">
+                                <button kendoButton (click)="Integracion()" 
+                                    fillMode="outline" size="large" rounded="medium" themeColor="success"
+                                    [svgIcon]="wordIcon" [disabled]="isIntegracion">Ejecutar Integracion</button>
+                                <span class="ps-2">
+                                    @if (isIntegracion) {
+                                    <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                    </kendo-loader>
+                                    }
+
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        } 

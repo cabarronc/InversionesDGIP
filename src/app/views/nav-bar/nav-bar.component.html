@@ -1,0 +1,50 @@
+<!--Load the font icons package:-->
+<link
+rel="stylesheet"
+href="https://unpkg.com/@progress/kendo-font-icons/dist/index.css"
+/>
+<kendo-appbar position="bottom" [themeColor]="themeColor">
+    <kendo-appbar-section>
+            <kendo-icon name="home" size="large" themeColor="info"></kendo-icon>
+    </kendo-appbar-section>
+
+    <kendo-appbar-section>
+        <ul class="appbar-menu">
+            <li><span>
+                <h1 class="title"><a routerLink="/principal" routerLinkActive="router-link-active" ariaCurrentWhenActive="page">Sistema de Informacion DGIP</a></h1>
+            </span></li>
+        </ul>
+        
+
+    </kendo-appbar-section>
+
+    <kendo-appbar-spacer width="32px"></kendo-appbar-spacer>
+
+    <kendo-appbar-section>
+        <ul class="appbar-menu">
+            <li><a routerLink="/circular" routerLinkActive="router-link-active" ariaCurrentWhenActive="page">Circular</a></li>
+            <li><span>Tableros</span></li>
+            <li><span>Catalogos</span></li>
+        </ul>
+    </kendo-appbar-section>
+
+    <kendo-appbar-spacer></kendo-appbar-spacer>
+    <kendo-appbar-section>
+        <img src="/navigation/appbar/SF.jpg" class="appbar-logo">
+    </kendo-appbar-section>
+    <kendo-appbar-section class="actions">
+        <kendo-badge-container>
+                <kendo-svgicon [icon]="bellIcon"></kendo-svgicon>
+            <kendo-badge shape="dot" themeColor="warning" size="small" position="inside"></kendo-badge>
+        </kendo-badge-container>
+        <span class="k-appbar-separator"></span>
+    </kendo-appbar-section>
+
+    <kendo-appbar-section>
+        <kendo-avatar [svgIcon]="userSvg" shape="circle" width="26px" height="26px"></kendo-avatar>
+    </kendo-appbar-section>
+
+
+</kendo-appbar>
+<router-outlet></router-outlet>
+<!-- <kendo-breadcrumb [items]="items"></kendo-breadcrumb> -->

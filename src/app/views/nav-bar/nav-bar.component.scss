@@ -1,0 +1,49 @@
+body {
+    background: #ffffffff;
+  }
+  .title {
+    font-size: 18px;
+    margin: 0;
+  }
+  kendo-badge-container {
+    margin-right: 8px;
+  }
+  ul {
+    font-size: 16px;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+  }
+  li {
+    margin: 0 9px;
+  }
+  li:hover {
+    cursor: pointer;
+    color: #d6002f;
+  }
+  .actions .k-button {
+    padding: 0;
+  }
+  .appbar-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacio entre los elementos */
+    padding: 0;
+    margin: 0;
+  }
+  
+  .appbar-logo {
+    width: 150px; /* Ajusta el tamaño según necesites */
+    height: auto;
+  }
+  .k-appbar-dark .k-button-clear {
+    color: #ffffffff;
+  }
+  .k-appbar-dark .k-button-clear:hover {
+    color: #ffffff99;
+  }
+  
+  .k-appbar .k-appbar-separator {
+    margin: 0 8px;
+  }

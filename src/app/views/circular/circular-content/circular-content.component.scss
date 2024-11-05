@@ -1,0 +1,138 @@
+my-content ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  my-content li {
+    font-size: 1.2em;
+    background: 0 0;
+    border-radius: 0;
+    border-width: 0 0 1px;
+    border-color: rgba(33, 37, 41, 0.125);
+    border-style: solid;
+    line-height: 1.5em;
+    padding: 1.09em 0.84em 1.23em 0.84em;
+  }
+
+  my-content li:last-child {
+    border: 0;
+  }
+  .visit-demo.card-container {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .visit-demo .custom-card {
+    padding: 32px;
+    width: 712px;
+    height: 630px;
+    gap: 32px;
+    border-radius: 4px 4px 0 0;
+    box-shadow: 0 0 12px 4px rgba(0, 0, 0, 0.08);
+  }
+  
+  .visit-demo .card-row {
+    display: flex;
+    gap: 32px;
+  }
+  
+  .visit-demo .card-column {
+    flex: 1;
+  }
+  
+  .visit-demo .component-container {
+    margin-bottom: 20px;
+  }
+  
+  .visit-demo .k-skeleton {
+    border-radius: 4px;
+    opacity: 0.4;
+  }
+  
+  .visit-demo .skeleton-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  
+  .visit-demo .skeleton-box-small {
+    width: 124px;
+    height: 15px;
+  }
+  
+  .visit-demo .skeleton-box-medium {
+    width: 80px;
+    height: 30px;
+  }
+  
+  .visit-demo .skeleton-box-large {
+    width: 100%;
+    height: 30px;
+  }
+  
+  .visit-demo .skeleton-box-half {
+    width: 100%;
+    height: 350px;
+  }
+  
+  .visit-demo .skeleton-container {
+    display: flex;
+  }
+  
+  .visit-demo .top {
+    flex-direction: column;
+    gap: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .visit-demo .bottom {
+    justify-content: flex-end;
+    gap: 16px;
+  }
+  
+  .visit-demo .k-skeleton.skeleton-image .k-icon {
+    font-size: 63px;
+    line-height: 54px;
+  }
+  
+  .visit-demo .k-i-image,
+  .visit-demo .k-h4 {
+    opacity: 0.2;
+  }
+  
+  @media only screen and (max-width: 559px) {
+    .visit-demo .image-container {
+      display: none !important;
+    }
+  
+    .visit-demo .custom-card {
+      width: 360px;
+      gap: 48px;
+    }
+  
+    .visit-demo .skeleton-box-medium {
+      width: 100%;
+    }
+  }
+  
+  @media only screen and (max-width: 359px) {
+    .visit-demo .custom-card {
+      padding: 24px;
+    }
+  
+    .visit-demo .k-h4 {
+      font-size: 20px;
+    }
+  
+    .visit-demo .top {
+      margin-bottom: 68px;
+    }
+  
+    .visit-demo .bottom {
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
