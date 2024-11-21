@@ -102,6 +102,14 @@ my-content ul {
   .visit-demo .k-h4 {
     opacity: 0.2;
   }
+  .k-hstack {
+    justify-content: space-between;
+  }
+
+  .k-card-footer .k-hstack,
+  .k-card-header .k-hstack {
+    justify-content: space-evenly;
+  }
   
   @media only screen and (max-width: 559px) {
     .visit-demo .image-container {

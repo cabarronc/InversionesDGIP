@@ -4,7 +4,8 @@
         <div class="example">
             <form class="k-form" [formGroup]="form">
                 <h5>REGISTRO DATOS ADICIONALES DE LA CIRCULAR</h5>
-                <div class="col-12">
+                <kendo-progressbar [value]="progress" [disabled]="!isDisabled" [indeterminate]="!form.valid"></kendo-progressbar>
+                <div class="col-12 mt-2">
                     <div class="row d-flex">
                         <div class="col-4"></div>
                         <div class="col-5 d-flex justify-content-start">
@@ -31,7 +32,8 @@
                     <div class="row mt-3 d-flex">
                         <div class="col-4"></div>
                         <div class="col-5 d-flex justify-content-start">
-                            <kendo-datepicker #fecha  formControlName="fecha" placeholder="Choose a date ..."></kendo-datepicker>
+                            <kendo-datepicker #fecha formControlName="fecha"
+                                placeholder="Choose a date ..."></kendo-datepicker>
                         </div>
                     </div>
 
@@ -56,19 +58,18 @@
                                     fillMode="outline" size="large" rounded="medium" themeColor="tertiary"
                                     [svgIcon]="copyIcon" [disabled]="isCoping">Copiar Archivos</button>
                                 <span class="ps-2"> </span>
-                                    @if (isCoping) {
-                                    <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                                    </kendo-loader>
-                                    }
-    
-                               
+                                @if (isCoping) {
+                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                </kendo-loader>
+                                }
+
                             </div>
                             <div class="col-2 d-flex justify-content-start">
                                 <button kendoButton (click)="clearForm()" fillMode="outline" size="large"
                                     rounded="medium" themeColor="warning">Limpiar</button>
-                                    
+
                             </div>
-                            
+
                             <div class="col-2 d-flex "></div>
 
                         </div>
@@ -95,16 +96,59 @@
 }
 @if (selectedItem === 'Seguimiento Actividades Vencidas') {
 <div id="Seguimiento Actividades Vencidas">
-    <ul>
-        <li>
-            <h6>11/5 Monday</h6>
-            <p>Martha Birthday</p>
-        </li>
-        <li>
-            <h6>15/6 Sunday</h6>
-            <p>Job interview for internal position</p>
-        </li>
-    </ul>
+    <div class="container-fluid">
+        <h5>EJECUTE EL SCRIPT QUE DESE GENERAR</h5>
+    </div>
+    <div class="col-6 d-flex justify-content-end mt-4">
+        <kendo-card>
+            <kendo-card-header>
+                <h5 kendoCardTitle style="text-align: center;">Generar Exceles</h5>
+            </kendo-card-header>
+            <kendo-card-body>
+                <h6 style="margin-top: 0.3rem;">Cumplimiento Metas Avance Ejecución</h6>
+                <div class="col-12">
+                    <div class="row mb-2">
+                        <div class="col-12 d-flex justify-content-center mb-2">
+                            <kendo-badge-container>
+                                <button kendoButton (click)="CumplimientoMetas()" fillMode="outline" size="large"
+                                    rounded="medium" themeColor="success" [svgIcon]="fileExcelIcon"
+                                    [disabled]="isGenerarCumplimiento">Generar</button>
+                                <span class="ps-2"> </span>
+                                @if (isGenerarCumplimiento) {
+                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                </kendo-loader>
+                                }
+                                <kendo-badge themeColor="error">1</kendo-badge>
+                            </kendo-badge-container>
+
+                        </div>
+                    </div>
+                    <hr kendoCardSeparator color="black" style="margin-top: 0.5rem;" />
+                    <h6 style="margin-top: 1rem;">Actividades Vencidas</h6>
+                    <div class="row">
+                        <div class="col-12 d-flex justify-content-center">
+                            <kendo-badge-container>
+                                <button kendoButton (click)="ActividadesVencidas()" fillMode="outline" size="large"
+                                    rounded="medium" themeColor="success" [svgIcon]="fileExcelIcon"
+                                    [disabled]="isGenerarVencidas">Generar</button>
+                                <span class="ps-2"> </span>
+                                @if (isGenerarVencidas) {
+                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                </kendo-loader>
+                                }
+                                <kendo-badge themeColor="error">2</kendo-badge>
+                            </kendo-badge-container>
+
+                        </div>
+                    </div>
+                </div>
+
+            </kendo-card-body>
+            <kendo-card-footer>
+                <p kendoCardSubtitle>Tenga en cuenta que debe tener una secuencia de Ejecucion</p>
+            </kendo-card-footer>
+        </kendo-card>
+    </div>
 </div>
 }
 @if (selectedItem === 'Seguimiento Fuentes') {
@@ -128,45 +172,61 @@
 </div>
 }
 @if (selectedItem === 'Graficos') {
-    <div id="Graficos">
-        <ul>
-            <li>70% Discount!</li>
-            <li>90% Discount!</li>
-            <li>One time offer!</li>
-        </ul>
-    </div>
-    }
-    @if (selectedItem === 'Puntos de Atencion') {
-        <div id="Puntos de Atencion">
-            <ul>
-                <li>70% Discount!</li>
-                <li>90% Discount!</li>
-                <li>One time offer!</li>
-            </ul>
-        </div>
-       }
-    @if (selectedItem === 'Integracion') {
-        <div id="Integracion">
-            
-                <div class="container-fluid">
-                    <h5>INTEGRACION DE TODOS LOS PRODUCTOS DE LA CIRCULAR</h5>
-                    <div class="col-12">
-                        <div class="row mt-3 d-flex">
-                            <div class="col-6 d-flex justify-content-end">
-                                <button kendoButton (click)="Integracion()" 
-                                    fillMode="outline" size="large" rounded="medium" themeColor="success"
-                                    [svgIcon]="wordIcon" [disabled]="isIntegracion">Ejecutar Integracion</button>
-                                <span class="ps-2">
-                                    @if (isIntegracion) {
-                                    <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                                    </kendo-loader>
-                                    }
+<div id="Graficos">
+    <ul>
+        <li>70% Discount!</li>
+        <li>90% Discount!</li>
+        <li>One time offer!</li>
+    </ul>
+</div>
+}
+@if (selectedItem === 'Puntos de Atencion') {
+<div id="Puntos de Atencion">
+    <div class="container-fluid">
+    <h5>GENERAR PUNTOS DE ATENCION </h5>
+                <kendo-progressbar [value]="progress_puntosAtencion"></kendo-progressbar>
+                <div class="col-12 mt-2">
+                    <div class="row d-flex">
+                        <div class="col-4"></div>
+                        <div class="col-4">
+                            <button kendoButton (click)="PuntosAtencion()" [disabled]="isPuntos"
+                            fillMode="outline" size="large" rounded="medium" themeColor="info"
+                            [svgIcon]="wordIcon">Generar Puntos Atencion</button>
+                        <span class="ps-2">
+                            @if(isPuntos) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
 
-                                </span>
-                            </div>
+                        </span>
                         </div>
                     </div>
                 </div>
+    </div>
+</div>
+}
+@if (selectedItem === 'Integracion') {
+<div id="Integracion">
 
+    <div class="container-fluid">
+        <h5>INTEGRACION DE TODOS LOS PRODUCTOS DE LA CIRCULAR</h5>
+        <div class="col-12">
+            <div class="row mt-3 d-flex">
+                <div class="col-6 d-flex justify-content-end">
+                    <button kendoButton (click)="Integracion()" fillMode="outline" size="large" rounded="medium"
+                        themeColor="success" [svgIcon]="wordIcon" [disabled]="isIntegracion">Ejecutar
+                        Integracion</button>
+                    <span class="ps-2">
+                        @if (isIntegracion) {
+                        <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                        </kendo-loader>
+                        }
+
+                    </span>
+                </div>
+            </div>
         </div>
-        } 
+    </div>
+
+</div>
+}
