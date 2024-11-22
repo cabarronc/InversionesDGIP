@@ -4,77 +4,64 @@
         <div class="example">
             <form class="k-form" [formGroup]="form">
                 <h5>REGISTRO DATOS ADICIONALES DE LA CIRCULAR</h5>
-                <kendo-progressbar [value]="progress" [disabled]="!isDisabled" [indeterminate]="!form.valid"></kendo-progressbar>
-                <div class="col-12 mt-2">
-                    <div class="row d-flex">
-                        <div class="col-4"></div>
-                        <div class="col-5 d-flex justify-content-start">
-                            <kendo-label text="Numero de Circular">
-                                <kendo-textbox formControlName="numero_circular"></kendo-textbox>
-                            </kendo-label>
-                        </div>
-                    </div>
-                    <!-- <div class="row d-flex">
-                        <div class="col-4"></div>
-                        <div class="col-5 d-flex justify-content-start">
-                            <kendo-label text="Extra">
-                                <kendo-textbox formControlName="email" #email></kendo-textbox>
-                            </kendo-label>
-                        </div>
-                    </div> -->
-                    <div class="row d-flex">
-                        <div class="col-4"></div>
-                        <div class="col-5 d-flex justify-content-start">
-                            <kendo-label style="margin-bottom: -10px" [for]="fecha" text="Fecha">
-                            </kendo-label>
-                        </div>
-                    </div>
-                    <div class="row mt-3 d-flex">
-                        <div class="col-4"></div>
-                        <div class="col-5 d-flex justify-content-start">
-                            <kendo-datepicker #fecha formControlName="fecha"
-                                placeholder="Choose a date ..."></kendo-datepicker>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="k-form-buttons">
-                    <div class="col-12">
-                        <div class="row mt-3 d-flex">
-                            <div class="col-6 d-flex justify-content-end">
-                                <button kendoButton (click)="GenerarCicular()" [disabled]="!form.valid"
-                                    fillMode="outline" size="large" rounded="medium" themeColor="info"
-                                    [svgIcon]="wordIcon" [disabled]="isDisabled">Generar Circular</button>
-                                <span class="ps-2">
-                                    @if (isDisabled) {
-                                    <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                                    </kendo-loader>
-                                    }
-
-                                </span>
+                <kendo-progressbar [value]="progress" [disabled]="!isDisabled"
+                    [indeterminate]="!form.valid"></kendo-progressbar>
+                <div class="container">           
+                        <div class="row mt-3">
+                            <div class="col-3"></div>
+                            <div class="col-5 d-flex justify-content-start">
+                                <kendo-label text="Numero de Circular">
+                                    <kendo-textbox formControlName="numero_circular"></kendo-textbox>
+                                </kendo-label>
                             </div>
-                            <div class="col-2 d-flex justify-content-start ">
-                                <button kendoButton (click)="CopiarCircular()" [disabled]="!form.valid"
-                                    fillMode="outline" size="large" rounded="medium" themeColor="tertiary"
-                                    [svgIcon]="copyIcon" [disabled]="isCoping">Copiar Archivos</button>
-                                <span class="ps-2"> </span>
-                                @if (isCoping) {
+                        </div>
+                        <div class="row">
+                            <div class="col-3 mt-3"></div>
+                            <div class="col-5 d-flex justify-content-start">
+                                <kendo-label style="margin-bottom: -10px" [for]="fecha" text="Fecha">
+                                </kendo-label>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-3"></div>
+                            <div class="col-5 d-flex justify-content-start">
+                                <kendo-datepicker #fecha formControlName="fecha"
+                                    placeholder="Choose a date ..."></kendo-datepicker>
+                            </div>
+                        </div>
+                </div>
+                <div class="container">
+                    <div class="row mt-3 justify-content-center">
+                        <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center" >
+                            <button kendoButton (click)="GenerarCicular()" [disabled]="!form.valid" fillMode="outline"
+                                size="large" rounded="medium" themeColor="info" [svgIcon]="wordIcon"
+                                [disabled]="isDisabled">Generar Circular</button>
+                            <span class="ps-2">
+                                @if (isDisabled) {
                                 <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
                                 </kendo-loader>
                                 }
 
-                            </div>
-                            <div class="col-2 d-flex justify-content-start">
-                                <button kendoButton (click)="clearForm()" fillMode="outline" size="large"
-                                    rounded="medium" themeColor="warning">Limpiar</button>
-
-                            </div>
-
-                            <div class="col-2 d-flex "></div>
+                            </span>
+                        </div>
+                        <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center">
+                            <button kendoButton (click)="CopiarCircular()" [disabled]="!form.valid" fillMode="outline"
+                                size="large" rounded="medium" themeColor="tertiary" [svgIcon]="copyIcon"
+                                [disabled]="isCoping">Copiar Archivos</button>
+                            <span class="ps-2"> </span>
+                            @if (isCoping) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
 
                         </div>
-                    </div>
+                        <div class="col-12 ml-2 col-md-4  col-lg-2 mb-3 d-flex justify-content-center">
+                            <button kendoButton (click)="clearForm()" fillMode="outline" size="large" rounded="medium"
+                                themeColor="warning">Limpiar</button>
 
+                        </div>
+
+                    </div>
                 </div>
             </form>
         </div>
@@ -173,35 +160,49 @@
 }
 @if (selectedItem === 'Graficos') {
 <div id="Graficos">
-    <ul>
-        <li>70% Discount!</li>
-        <li>90% Discount!</li>
-        <li>One time offer!</li>
-    </ul>
+    <div class="container-fluid">
+        <h5>GENERAR GRAFICOS </h5>
+        <kendo-progressbar [value]="progress_graficos"></kendo-progressbar>
+        <div class="col-12 mt-2">
+            <div class="row d-flex">
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <button kendoButton (click)="Graficos()" [disabled]="isGraficos" fillMode="outline" size="large"
+                        rounded="medium" themeColor="info" [svgIcon]="chartDoughnutIcon">Generar Graficos</button>
+                    <span class="ps-2">
+                        @if(isGraficos) {
+                        <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                        </kendo-loader>
+                        }
+
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 }
 @if (selectedItem === 'Puntos de Atencion') {
 <div id="Puntos de Atencion">
     <div class="container-fluid">
-    <h5>GENERAR PUNTOS DE ATENCION </h5>
-                <kendo-progressbar [value]="progress_puntosAtencion"></kendo-progressbar>
-                <div class="col-12 mt-2">
-                    <div class="row d-flex">
-                        <div class="col-4"></div>
-                        <div class="col-4">
-                            <button kendoButton (click)="PuntosAtencion()" [disabled]="isPuntos"
-                            fillMode="outline" size="large" rounded="medium" themeColor="info"
-                            [svgIcon]="wordIcon">Generar Puntos Atencion</button>
-                        <span class="ps-2">
-                            @if(isPuntos) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
+        <h5>GENERAR PUNTOS DE ATENCION </h5>
+        <kendo-progressbar [value]="progress_puntosAtencion"></kendo-progressbar>
+        <div class="col-12 mt-2">
+            <div class="row d-flex">
+                <div class="col-4"></div>
+                <div class="col-4">
+                    <button kendoButton (click)="PuntosAtencion()" [disabled]="isPuntos" fillMode="outline" size="large"
+                        rounded="medium" themeColor="info" [svgIcon]="wordIcon">Generar Puntos Atencion</button>
+                    <span class="ps-2">
+                        @if(isPuntos) {
+                        <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                        </kendo-loader>
+                        }
 
-                        </span>
-                        </div>
-                    </div>
+                    </span>
                 </div>
+            </div>
+        </div>
     </div>
 </div>
 }

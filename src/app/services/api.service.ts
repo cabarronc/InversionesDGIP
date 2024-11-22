@@ -21,6 +21,10 @@ export class ApiService {
   PuntosAtencion(): Observable<any> {
     return this.http.get(`${this.apiUrl}/GetPuntosAtencion`);
   }
+   // GRAFICOS
+   Graficos(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/GetGraficos`);
+  }
   //CUMPLIMENTO
   Cumplimiento(): Observable<any> {
     return this.http.get(`${this.apiUrl}/GetActividadesVencidas`);

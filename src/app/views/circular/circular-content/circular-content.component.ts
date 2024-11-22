@@ -2,7 +2,7 @@ import { Component, Input,ViewEncapsulation } from '@angular/core';
 import { finalize } from 'rxjs/operators';
 import { NavBarComponent } from "../../nav-bar/nav-bar.component";
 import { ApiService } from '../../../services/api.service';
-import { fileWordIcon, imageIcon ,menuIcon, SVGIcon, copyIcon,fileExcelIcon} from '@progress/kendo-svg-icons';
+import { fileWordIcon, imageIcon ,menuIcon, SVGIcon, copyIcon,fileExcelIcon,chartDoughnutIcon} from '@progress/kendo-svg-icons';
 import { KENDO_BUTTONS } from '@progress/kendo-angular-buttons';
 import { KENDO_INDICATORS } from '@progress/kendo-angular-indicators';
 import { KENDO_FLOATINGLABEL } from "@progress/kendo-angular-label";
@@ -34,12 +34,14 @@ import { KENDO_PROGRESSBARS } from '@progress/kendo-angular-progressbar';
 export class CircularContentComponent {
   progress = 0;
   progress_puntosAtencion = 0;
+  progress_graficos = 0;
   data2:any;
   copiado_respuesta:any
   integracion_respuesta:any
   cumplimiento_respuesta:any
   vencidas_respuesta:any
   puntosAtencion:any
+  graficosrespuesta:any
   fecha: Date = new Date()
   public data = {
     numero_circular: "",
@@ -53,12 +55,14 @@ export class CircularContentComponent {
   public menuSvg: SVGIcon = menuIcon;
   public copyIcon: SVGIcon = copyIcon
   public fileExcelIcon: SVGIcon=fileExcelIcon
+  public chartDoughnutIcon:SVGIcon=chartDoughnutIcon
   public form: FormGroup;
   interval: any;
   @Input() selectedItem: string | undefined;
   isIntegracion: boolean = false;
   public isGenerarVencidas: boolean = false;
   public isPuntos: boolean = false;
+  public isGraficos:boolean = false;
   
   constructor(private apiService: ApiService,private notificationService: NotificationService) {
     this.form = new FormGroup({
@@ -166,7 +170,7 @@ export class CircularContentComponent {
           type: { style: "success", icon: true },
           position: { horizontal: "center", vertical: "top" },
         });
-        console.log('Datos obtenidos:', this.data2);
+        console.log('Datos obtenidos:', this.copiado_respuesta);
         
       },
       (error) => {
@@ -220,7 +224,7 @@ export class CircularContentComponent {
           type: { style: "success", icon: true },
           position: { horizontal: "center", vertical: "top" },
         });
-        console.log('Datos obtenidos:', this.data2);
+        console.log('Datos obtenidos:', this.puntosAtencion);
         clearInterval(this.interval);
         this.progress_puntosAtencion = 0 // Detén el intervalo una vez que la llamada ha finalizado
       },
@@ -239,6 +243,64 @@ export class CircularContentComponent {
       }
     );
   }
+//------------------------------------------GRAFCIOS-----------------------------
+  public Graficos():void
+  {
+    this.isGraficos = true
+    this.notificationService.show({
+      content: "Espere, Generando...",
+      hideAfter: 1500,
+      animation: { type: "slide", duration: 900 },
+      type: { style: "info", icon: true },
+      position: { horizontal: "center", vertical: "top" },
+    });
+    this.progress_graficos = 1;
+    // Inicia un intervalo para actualizar el progreso gradualmente
+    this.interval = setInterval(() => {
+     if (this.progress_graficos < 99) {
+       this.progress_graficos += 1; // Aumenta gradualmente el valor de la barra
+     }
+   }, 300); // Se actualiza cada 100 ms (puedes ajustar el tiempo según sea necesario)
+    this.apiService.Graficos().pipe(
+      finalize(() => {
+        // Al finalizar la llamada, fija el progreso en 100
+        this.progress_graficos = 100;
+        this.isDisabled = false;
+        setTimeout(() => {
+          this.progress_graficos = 0;
+        }, 6000); // Cambia 2000 a 4000 si quieres 4 segundos
+      })
+    ).subscribe(
+      (response) => {
+        this.graficosrespuesta = response;
+        this.isGraficos = false;
+        this.notificationService.show({
+          content: "Generacion Correcta!!",
+          hideAfter: 1500,
+          animation: { type: "slide", duration: 900 },
+          type: { style: "success", icon: true },
+          position: { horizontal: "center", vertical: "top" },
+        });
+        console.log('Datos obtenidos:', this.graficosrespuesta);
+        clearInterval(this.interval);
+        this.progress_graficos = 0 // Detén el intervalo una vez que la llamada ha finalizado
+      },
+      (error) => {
+        this.isGraficos = false;
+        this.progress_graficos = 0 // Detén el intervalo una vez que la llamada ha finalizado
+        clearInterval(this.interval); // Detén el intervalo si hay error
+        this.notificationService.show({
+          content: "Existe un error",
+          hideAfter: 1500,
+          animation: { type: "slide", duration: 900 },
+          type: { style: "error", icon: true },
+          position: { horizontal: "center", vertical: "top" },
+        });
+        console.error('Error al obtener datos:', error);
+      }
+    );
+  }
+
   public CumplimientoMetas():void{
     this.isGenerarCumplimiento = true
     this.notificationService.show({
