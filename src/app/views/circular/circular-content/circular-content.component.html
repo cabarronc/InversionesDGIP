@@ -6,33 +6,33 @@
                 <h5>REGISTRO DATOS ADICIONALES DE LA CIRCULAR</h5>
                 <kendo-progressbar [value]="progress" [disabled]="!isDisabled"
                     [indeterminate]="!form.valid"></kendo-progressbar>
-                <div class="container">           
-                        <div class="row mt-3">
-                            <div class="col-3"></div>
-                            <div class="col-5 d-flex justify-content-start">
-                                <kendo-label text="Numero de Circular">
-                                    <kendo-textbox formControlName="numero_circular"></kendo-textbox>
-                                </kendo-label>
-                            </div>
+                <div class="container">
+                    <div class="row mt-3">
+                        <div class="col-3"></div>
+                        <div class="col-5 d-flex justify-content-start">
+                            <kendo-label text="Numero de Circular">
+                                <kendo-textbox formControlName="numero_circular"></kendo-textbox>
+                            </kendo-label>
                         </div>
-                        <div class="row">
-                            <div class="col-3 mt-3"></div>
-                            <div class="col-5 d-flex justify-content-start">
-                                <kendo-label style="margin-bottom: -10px" [for]="fecha" text="Fecha">
-                                </kendo-label>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-3 mt-3"></div>
+                        <div class="col-5 d-flex justify-content-start">
+                            <kendo-label style="margin-bottom: -10px" [for]="fecha" text="Fecha">
+                            </kendo-label>
                         </div>
-                        <div class="row mt-3">
-                            <div class="col-3"></div>
-                            <div class="col-5 d-flex justify-content-start">
-                                <kendo-datepicker #fecha formControlName="fecha"
-                                    placeholder="Choose a date ..."></kendo-datepicker>
-                            </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3"></div>
+                        <div class="col-5 d-flex justify-content-start">
+                            <kendo-datepicker #fecha formControlName="fecha"
+                                placeholder="Choose a date ..."></kendo-datepicker>
                         </div>
+                    </div>
                 </div>
                 <div class="container">
                     <div class="row mt-3 justify-content-center">
-                        <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center" >
+                        <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center">
                             <button kendoButton (click)="GenerarCicular()" [disabled]="!form.valid" fillMode="outline"
                                 size="large" rounded="medium" themeColor="info" [svgIcon]="wordIcon"
                                 [disabled]="isDisabled">Generar Circular</button>
@@ -151,11 +151,7 @@
 }
 @if (selectedItem === 'Seguimiento Integrado') {
 <div id="Seguimiento Integrado">
-    <ul>
-        <li>70% Discount!</li>
-        <li>90% Discount!</li>
-        <li>One time offer!</li>
-    </ul>
+        <iframe src="http://172.31.33.191:5000/dash/" width="100%" height="600px" frameborder="0"></iframe>
 </div>
 }
 @if (selectedItem === 'Graficos') {
@@ -225,6 +221,87 @@
 
                     </span>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <h5>REPORTES SED y SAP EXCEL</h5>
+        <div class="col-12">
+            <div class="row mt-3 d-flex">
+                <div class="col-6 d-flex justify-content-end">
+                    <kendo-panelbar>
+                        <kendo-panelbar-item title="SED PROGRAMACION" [expanded]="true">
+                            <ng-template kendoPanelBarContent>
+                                <div class="container-fluid">
+                                    <div class="row">
+                                        <button kendoButton (click)="Programacion()" fillMode="outline" size="large"
+                                            rounded="medium" themeColor="success" [svgIcon]="fileExcelIcon"
+                                            [disabled]="isProgramacion ">Generar
+                                            Reporte</button>
+                                        <span class="ps-2">
+                                            @if (isProgramacion) {
+                                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                            </kendo-loader>
+                                            }
+
+                                        </span>
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </kendo-panelbar-item>
+                    </kendo-panelbar>
+                </div>
+            </div>
+                <div class="row mt-3 d-flex">
+                    <div class="col-6 d-flex justify-content-end">
+                        <!-- <kendo-panelbar>
+                            <kendo-panelbar-item title="SED SEGUIMIENTO" [expanded]="true">
+                                <ng-template kendoPanelBarContent>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <button kendoButton (click)="Programacion()" fillMode="outline" size="large"
+                                                rounded="medium" themeColor="success" [svgIcon]="fileExcelIcon"
+                                                [disabled]="isProgramacion ">Generar
+                                                Reporte</button>
+                                            <span class="ps-2">
+                                                @if (isProgramacion) {
+                                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                                </kendo-loader>
+                                                }
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </kendo-panelbar-item>
+                        </kendo-panelbar> -->
+                    </div>
+                </div>
+                <div class="row mt-3 d-flex">
+                    <div class="col-6 d-flex justify-content-end">
+                        <!-- <kendo-panelbar>
+                            <kendo-panelbar-item title="SED PROGRAMACION" [expanded]="true">
+                                <ng-template kendoPanelBarContent>
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <button kendoButton (click)="Programacion()" fillMode="outline" size="large"
+                                                rounded="medium" themeColor="success" [svgIcon]="fileExcelIcon"
+                                                [disabled]="isProgramacion ">Generar
+                                                Reporte</button>
+                                            <span class="ps-2">
+                                                @if (isProgramacion) {
+                                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                                </kendo-loader>
+                                                }
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </kendo-panelbar-item>
+                        </kendo-panelbar> -->
+                    </div>
             </div>
         </div>
     </div>

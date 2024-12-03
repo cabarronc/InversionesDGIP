@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private apiUrl = 'http://172.31.33.175:5000'; // URL base de la API de Flask
+  private apiUrl = 'http://172.31.33.191:5000'; // URL base de la API de Flask
 
   constructor(private http: HttpClient) {}
 
@@ -32,8 +32,21 @@ export class ApiService {
   Vencidas(): Observable<any> {
     return this.http.get(`${this.apiUrl}/GetActividadesVencidas2`);
   }
+  //INTEGRACION
   Integracion(): Observable<any> {
     return this.http.get(`${this.apiUrl}/Integracion`);
+  }
+  //SED Programacion
+  ExcelSEDProgramacion(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/GetExcelProgramacion`);
+  }
+  //SED Seguimiento
+  ExcelSEDSeguimiento(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/GetExcelSeguimiento`);
+  }
+  //SAP 
+  ExcelSAP(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/GetExcelSAP`);
   }
 
   // Método para enviar datos (POST)

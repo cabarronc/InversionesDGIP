@@ -17,6 +17,7 @@ import { FormFieldModule } from "@progress/kendo-angular-inputs";
 import { ButtonsModule } from "@progress/kendo-angular-buttons";
 import { IconsModule } from "@progress/kendo-angular-icons";
 import { LayoutModule } from "@progress/kendo-angular-layout";
+
 import {
   KENDO_NOTIFICATION,
   NotificationService,
@@ -25,7 +26,7 @@ import { KENDO_PROGRESSBARS } from '@progress/kendo-angular-progressbar';
 @Component({
   selector: 'app-circular-content',
   standalone: true,
-  imports: [NavBarComponent,KENDO_BUTTONS, KENDO_INDICATORS,ButtonsModule,DateInputsModule,IntlModule,LabelModule,FormFieldModule,IconsModule,
+  imports: [KENDO_BUTTONS, KENDO_INDICATORS,ButtonsModule,DateInputsModule,IntlModule,LabelModule,FormFieldModule,IconsModule, 
     KENDO_FLOATINGLABEL,KENDO_LABEL,KENDO_INPUTS,ReactiveFormsModule,KENDO_DATEINPUTS,KENDO_NOTIFICATION,LayoutModule,KENDO_PROGRESSBARS],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './circular-content.component.html',
@@ -41,7 +42,8 @@ export class CircularContentComponent {
   cumplimiento_respuesta:any
   vencidas_respuesta:any
   puntosAtencion:any
-  graficosrespuesta:any
+  graficosrespuesta:any;
+  programacionrespuesta:any;
   fecha: Date = new Date()
   public data = {
     numero_circular: "",
@@ -51,6 +53,7 @@ export class CircularContentComponent {
   public isDisabled = false;
   public isCoping = false;
   public isGenerarCumplimiento = false;
+  public isProgramacion = false;
   public wordIcon: SVGIcon = fileWordIcon;
   public menuSvg: SVGIcon = menuIcon;
   public copyIcon: SVGIcon = copyIcon
@@ -103,7 +106,7 @@ export class CircularContentComponent {
       if (this.progress < 99) {
         this.progress += 1; // Aumenta gradualmente el valor de la barra
       }
-    }, 3200); // Se actualiza cada 100 ms (puedes ajustar el tiempo según sea necesario)
+    }, 1500); // Se actualiza cada 100 ms (puedes ajustar el tiempo según sea necesario)
     this.apiService.getData(data).pipe(
       finalize(() => {
         // Al finalizar la llamada, fija el progreso en 100
@@ -118,14 +121,24 @@ export class CircularContentComponent {
         (response) => {
           this.data2 = response;
           this.isDisabled = false;
+          if (response != true){
           this.notificationService.show({
-            content: "Genereación Correcta",
+            content: this.data2.success,
+            hideAfter: 1500,
+            animation: { type: "slide", duration: 900 },
+            type: { style: "warning", icon: true },
+            position: { horizontal: "center", vertical: "top" },
+          });}
+          else{
+          this.notificationService.show({
+            content: "La Circular se Generro con Exito",
             hideAfter: 1500,
             animation: { type: "slide", duration: 900 },
             type: { style: "success", icon: true },
             position: { horizontal: "center", vertical: "top" },
           });
-          console.log('Datos obtenidos:', this.data2);
+        }
+          console.log('Datos obtenidos:', this.data2.success);
           clearInterval(this.interval);
             this.progress = 0 // Detén el intervalo una vez que la llamada ha finalizado
 
@@ -217,13 +230,24 @@ export class CircularContentComponent {
       (response) => {
         this.puntosAtencion = response;
         this.isPuntos = false;
+        if (response != true){
         this.notificationService.show({
-          content: "Generacion Correcta!!",
+          content:this.puntosAtencion.respuesta,
           hideAfter: 1500,
           animation: { type: "slide", duration: 900 },
-          type: { style: "success", icon: true },
+          type: { style: "warning", icon: true },
           position: { horizontal: "center", vertical: "top" },
-        });
+        });}
+        else{
+          this.notificationService.show({
+            content: "Generacion Correcta!!",
+            hideAfter: 1500,
+            animation: { type: "slide", duration: 900 },
+            type: { style: "success", icon: true },
+            position: { horizontal: "center", vertical: "top" },
+          });
+
+        }
         console.log('Datos obtenidos:', this.puntosAtencion);
         clearInterval(this.interval);
         this.progress_puntosAtencion = 0 // Detén el intervalo una vez que la llamada ha finalizado
@@ -364,6 +388,45 @@ export class CircularContentComponent {
     )
 
   }
+  //-----------------Exceles
+  public Programacion():void
+  {
+    this.isProgramacion = true
+    this.notificationService.show({
+      content: "Espere. copiando",
+      hideAfter: 1500,
+      animation: { type: "slide", duration: 900 },
+      type: { style: "info", icon: true },
+      position: { horizontal: "center", vertical: "top" },
+    });
+  
+    this.apiService.ExcelSEDProgramacion().subscribe(
+      (response) => {
+        this.isProgramacion= false;
+        this.notificationService.show({
+          content: "Copiado Correcto",
+          hideAfter: 1500,
+          animation: { type: "slide", duration: 900 },
+          type: { style: "success", icon: true },
+          position: { horizontal: "center", vertical: "top" },
+        });
+        console.log('Datos obtenidos:', response);
+        
+      },
+      (error) => {
+        this.isProgramacion = false;
+         clearInterval(this.interval); // Detén el intervalo si hay error
+        this.notificationService.show({
+          content: "Existe un error",
+          hideAfter: 1500,
+          animation: { type: "slide", duration: 900 },
+          type: { style: "error", icon: true },
+          position: { horizontal: "center", vertical: "top" },
+        });
+        console.error('Error al obtener datos:', error);
+      }
+    );
+  }
 
   public Integracion():void{
     this.isIntegracion = true;
@@ -378,7 +441,7 @@ export class CircularContentComponent {
           type: { style: "success", icon: true },
           position: { horizontal: "center", vertical: "top" },
         });
-        console.log('Datos obtenidos:', this.data2);
+        console.log('Datos obtenidos:', this.integracion_respuesta);
       },
       (error) => {
         this.isIntegracion = false;
