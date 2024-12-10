@@ -54,6 +54,8 @@ export class CircularContentComponent {
   public isCoping = false;
   public isGenerarCumplimiento = false;
   public isProgramacion = false;
+  public isSeguimiento = false;
+  public isSAP = false;
   public wordIcon: SVGIcon = fileWordIcon;
   public menuSvg: SVGIcon = menuIcon;
   public copyIcon: SVGIcon = copyIcon
@@ -389,6 +391,7 @@ export class CircularContentComponent {
 
   }
   //-----------------Exceles
+  //Programacion
   public Programacion():void
   {
     this.isProgramacion = true
@@ -427,6 +430,84 @@ export class CircularContentComponent {
       }
     );
   }
+   //Seguimiento
+   public Seguimiento():void
+   {
+     this.isSeguimiento = true
+     this.notificationService.show({
+       content: "Espere, Generando....",
+       hideAfter: 1500,
+       animation: { type: "slide", duration: 900 },
+       type: { style: "info", icon: true },
+       position: { horizontal: "center", vertical: "top" },
+     });
+   
+     this.apiService.ExcelSEDSeguimiento().subscribe(
+       (response) => {
+         this.isSeguimiento= false;
+         this.notificationService.show({
+           content: "Generacion Correcta",
+           hideAfter: 1500,
+           animation: { type: "slide", duration: 900 },
+           type: { style: "success", icon: true },
+           position: { horizontal: "center", vertical: "top" },
+         });
+         console.log('Datos obtenidos:', response);
+         
+       },
+       (error) => {
+         this.isSeguimiento = false;
+          clearInterval(this.interval); // Detén el intervalo si hay error
+         this.notificationService.show({
+           content: "Existe un error",
+           hideAfter: 1500,
+           animation: { type: "slide", duration: 900 },
+           type: { style: "error", icon: true },
+           position: { horizontal: "center", vertical: "top" },
+         });
+         console.error('Error al obtener datos:', error);
+       }
+     );
+   }
+   public SAP():void
+   {
+     this.isSAP = true
+     this.notificationService.show({
+       content: "Espere, Generando....",
+       hideAfter: 1500,
+       animation: { type: "slide", duration: 900 },
+       type: { style: "info", icon: true },
+       position: { horizontal: "center", vertical: "top" },
+     });
+   
+     this.apiService.ExcelSAP().subscribe(
+       (response) => {
+         this.isSAP= false;
+         this.notificationService.show({
+           content: "Generacion Correcta",
+           hideAfter: 1500,
+           animation: { type: "slide", duration: 900 },
+           type: { style: "success", icon: true },
+           position: { horizontal: "center", vertical: "top" },
+         });
+         console.log('Datos obtenidos:', response);
+         
+       },
+       (error) => {
+         this.isSAP = false;
+          clearInterval(this.interval); // Detén el intervalo si hay error
+         this.notificationService.show({
+           content: "Existe un error",
+           hideAfter: 1500,
+           animation: { type: "slide", duration: 900 },
+           type: { style: "error", icon: true },
+           position: { horizontal: "center", vertical: "top" },
+         });
+         console.error('Error al obtener datos:', error);
+       }
+     );
+   }
+
 
   public Integracion():void{
     this.isIntegracion = true;

@@ -229,7 +229,7 @@
         <h5>REPORTES SED y SAP EXCEL</h5>
         <div class="col-12">
             <div class="row mt-3 d-flex">
-                <div class="col-6 d-flex justify-content-end">
+                <div class="col-10 d-flex justify-content-center">
                     <kendo-panelbar>
                         <kendo-panelbar-item title="SED PROGRAMACION" [expanded]="true">
                             <ng-template kendoPanelBarContent>
@@ -238,7 +238,7 @@
                                         <button kendoButton (click)="Programacion()" fillMode="outline" size="large"
                                             rounded="medium" themeColor="success" [svgIcon]="fileExcelIcon"
                                             [disabled]="isProgramacion ">Generar
-                                            Reporte</button>
+                                            Programacion</button>
                                         <span class="ps-2">
                                             @if (isProgramacion) {
                                             <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
@@ -254,18 +254,18 @@
                 </div>
             </div>
                 <div class="row mt-3 d-flex">
-                    <div class="col-6 d-flex justify-content-end">
-                        <!-- <kendo-panelbar>
-                            <kendo-panelbar-item title="SED SEGUIMIENTO" [expanded]="true">
+                    <div class="col-10 d-flex justify-content-center">
+                        <kendo-panelbar>
+                            <kendo-panelbar-item title="SED SEGUIMIENTO" [expanded]="false">
                                 <ng-template kendoPanelBarContent>
                                     <div class="container-fluid">
                                         <div class="row">
-                                            <button kendoButton (click)="Programacion()" fillMode="outline" size="large"
+                                            <button kendoButton (click)="Seguimiento()" fillMode="outline" size="large"
                                                 rounded="medium" themeColor="success" [svgIcon]="fileExcelIcon"
-                                                [disabled]="isProgramacion ">Generar
-                                                Reporte</button>
+                                                [disabled]="isSeguimiento ">Generar
+                                                Seguimiento</button>
                                             <span class="ps-2">
-                                                @if (isProgramacion) {
+                                                @if (isSeguimiento) {
                                                 <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
                                                 </kendo-loader>
                                                 }
@@ -275,22 +275,22 @@
                                     </div>
                                 </ng-template>
                             </kendo-panelbar-item>
-                        </kendo-panelbar> -->
+                        </kendo-panelbar>
                     </div>
                 </div>
                 <div class="row mt-3 d-flex">
-                    <div class="col-6 d-flex justify-content-end">
-                        <!-- <kendo-panelbar>
-                            <kendo-panelbar-item title="SED PROGRAMACION" [expanded]="true">
+                    <div class="col-10 d-flex justify-content-center">
+                        <kendo-panelbar>
+                            <kendo-panelbar-item title="REPORTE SAP" [expanded]="false">
                                 <ng-template kendoPanelBarContent>
                                     <div class="container-fluid">
                                         <div class="row">
-                                            <button kendoButton (click)="Programacion()" fillMode="outline" size="large"
+                                            <button kendoButton (click)="SAP()" fillMode="outline" size="large"
                                                 rounded="medium" themeColor="success" [svgIcon]="fileExcelIcon"
-                                                [disabled]="isProgramacion ">Generar
+                                                [disabled]="isSAP ">Generar
                                                 Reporte</button>
                                             <span class="ps-2">
-                                                @if (isProgramacion) {
+                                                @if (isSAP) {
                                                 <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
                                                 </kendo-loader>
                                                 }
@@ -300,7 +300,7 @@
                                     </div>
                                 </ng-template>
                             </kendo-panelbar-item>
-                        </kendo-panelbar> -->
+                        </kendo-panelbar>
                     </div>
             </div>
         </div>
