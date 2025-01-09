@@ -17,6 +17,7 @@ import { FormFieldModule } from "@progress/kendo-angular-inputs";
 import { ButtonsModule } from "@progress/kendo-angular-buttons";
 import { IconsModule } from "@progress/kendo-angular-icons";
 import { LayoutModule } from "@progress/kendo-angular-layout";
+import { WindowModule } from "@progress/kendo-angular-dialog";
 
 import {
   KENDO_NOTIFICATION,
@@ -27,7 +28,8 @@ import { KENDO_PROGRESSBARS } from '@progress/kendo-angular-progressbar';
   selector: 'app-circular-content',
   standalone: true,
   imports: [KENDO_BUTTONS, KENDO_INDICATORS,ButtonsModule,DateInputsModule,IntlModule,LabelModule,FormFieldModule,IconsModule, 
-    KENDO_FLOATINGLABEL,KENDO_LABEL,KENDO_INPUTS,ReactiveFormsModule,KENDO_DATEINPUTS,KENDO_NOTIFICATION,LayoutModule,KENDO_PROGRESSBARS],
+    KENDO_FLOATINGLABEL,KENDO_LABEL,KENDO_INPUTS,ReactiveFormsModule,KENDO_DATEINPUTS,KENDO_NOTIFICATION,LayoutModule,KENDO_PROGRESSBARS,
+    WindowModule],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './circular-content.component.html',
   styleUrl: './circular-content.component.scss'
@@ -286,7 +288,7 @@ export class CircularContentComponent {
      if (this.progress_graficos < 99) {
        this.progress_graficos += 1; // Aumenta gradualmente el valor de la barra
      }
-   }, 300); // Se actualiza cada 100 ms (puedes ajustar el tiempo según sea necesario)
+   }, 3900); // Se actualiza cada 100 ms (puedes ajustar el tiempo según sea necesario)
     this.apiService.Graficos().pipe(
       finalize(() => {
         // Al finalizar la llamada, fija el progreso en 100
