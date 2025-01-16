@@ -22,6 +22,7 @@
     "@progress/kendo-angular-buttons": "16.11.0",
     "@progress/kendo-angular-common": "16.11.0",
     "@progress/kendo-angular-dateinputs": "^16.11.0",
+    "@progress/kendo-angular-dropdowns": "^16.11.0",
     "@progress/kendo-angular-icons": "16.11.0",
     "@progress/kendo-angular-indicators": "^16.11.0",
     "@progress/kendo-angular-inputs": "^16.11.0",

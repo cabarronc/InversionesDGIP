@@ -1,0 +1,72 @@
+<app-nav-bar></app-nav-bar>
+<div class="profile-demo card-container">
+    <div class="k-card custom-card">
+        <div class="card-row">
+            <div class="card-column no-flex">
+                <div class="card-column">
+                    <div class="container-fluid">
+                        <div class="col-6 justify-content-center">
+                            <div class="row mt-3">
+                                <kendo-label text="Asunto:">
+                                    <kendo-textbox placeholder="Cual es el asunto del correo?"
+                                        [(ngModel)]="subject"></kendo-textbox>
+                                </kendo-label>
+                            </div>
+                            <div class="row mt-3">
+                                @for (contact of selectedContacts; track $index; let idx = $index) {
+                                <kendo-label text="Correo:">&nbsp;{{ contact }}
+                                    <kendo-textarea style="margin-top: 0.3rem;" placeholder="Escribe un mensaje" [rows]="3" resizable="vertical"
+                                        (input)="updateMessage(idx, $event)"></kendo-textarea>
+                                </kendo-label>
+                                }
+                            </div>
+                            <div class="row mt-3 mb-2">
+                                <kendo-label text="Correo electronico:" >&nbsp;
+                                    @for (contact of selectedContacts; track $index;){
+                                    
+                                        <kendo-chip
+                                        style="margin-top: 0.3rem;"
+                                        [label]="contact"
+                                        [removable]="true"
+                                        (remove)="onRemove($event)"
+                                        
+                                        >
+                                        </kendo-chip>
+                                
+                                    }
+                                </kendo-label>
+                            </div>
+                            
+                                <kendo-autocomplete
+                                
+                                #contactslist
+                                [data]="contacts"
+                                valueField="label"
+                                [kendoDropDownFilter]="{ operator: 'contains' }"
+                                [filterable]="true"
+                                placeholder="Para:"
+                                (valueChange)="valueChange($event)"
+                                >
+                                </kendo-autocomplete>
+                            
+                           
+                            <!-- <div class="row mt-3">
+                                <div class="col-6">
+                                    <button (click)="addRecipient(contactslist.value); contactslist.value='a' ">Añadir
+                                        Correo</button>
+                                </div>
+                            </div> -->
+                            <div class="row mt-3 mb-2">
+                                <div class="col-6">
+                                    <button kendoButton (click)="sendEmails()">Enviar Correos</button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

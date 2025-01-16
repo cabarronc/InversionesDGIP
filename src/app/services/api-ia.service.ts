@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiIaService {
-  private apiUrl = 'http://172.31.33.223:5000';
+  private apiUrl = 'http://172.31.33.28:5000';
   constructor(private http: HttpClient) { }
   preguntar(pregunta: string, contexto: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/preguntar`, { pregunta, contexto });
