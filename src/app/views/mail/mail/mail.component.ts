@@ -9,12 +9,14 @@ import { DropDownsModule } from "@progress/kendo-angular-dropdowns";
 import { AutoCompleteComponent } from "@progress/kendo-angular-dropdowns";
 import { ChipRemoveEvent } from "@progress/kendo-angular-buttons";
 import { NotificationService } from '@progress/kendo-angular-notification';
+import { KENDO_UPLOADS } from "@progress/kendo-angular-upload";
+import { HttpClientModule } from "@angular/common/http";
 
 
 @Component({
   selector: 'app-mail',
   standalone: true,
-  imports: [NavBarComponent,FormsModule,LabelModule,InputsModule, ButtonsModule,DropDownsModule],
+  imports: [NavBarComponent,FormsModule,LabelModule,InputsModule, ButtonsModule,DropDownsModule,KENDO_UPLOADS,HttpClientModule],
   templateUrl: './mail.component.html',
   styleUrl: './mail.component.scss'
 })
@@ -22,11 +24,13 @@ export class MailComponent {
   @ViewChild("contactslist") public list?: AutoCompleteComponent;
   subject: string = '';
   messages: string[] = [];
+  attachments: File[][] = [];
   
   public contacts: string[] = [
     "cabarronc@guanajuato.gob.mx" ,
     "alberto91barron@gmail.com",
     // "sezendejas@guanajuato.gob.mx"
+    "smunozr@guanajuato.gob.mx"
     
   ];
 
@@ -68,12 +72,36 @@ export class MailComponent {
     console.log(`Mensaje actualizado en el índice ${index}: ${value}`);
   }
 
+
+  onFileSelected(idx: number,event: Event): void {
+    const input = event.target as HTMLInputElement;
+  
+    if (input.files) {
+      // Convierte la lista de archivos en un arreglo y los agrega a attachments
+      const files = Array.from(input.files);
+
+      if (!this.attachments[idx]) {
+        this.attachments[idx] = []; // Inicializa si no existe
+      }
+  
+      // Agrega los archivos seleccionados al índice correspondiente
+      this.attachments[idx] = [...this.attachments[idx], ...files];
+      console.log(`Archivos seleccionados para el índice ${idx}:`, this.attachments[idx]);
+    }
+  }
+  public removeFile(contactIndex: number, fileIndex: number): void {
+    this.attachments[contactIndex].splice(fileIndex, 1);
+    console.log(`Archivo eliminado para el índice ${contactIndex}`);
+  }
+ 
+  
   sendEmails() {
     console.log("destinatarios:",this.selectedContacts)
     console.log("Asunto:",this.subject)
     console.log("Mensaje:",this.messages)
+    console.log("Archivos:",this.attachments)
     this.emailService
-      .sendEmails(this.selectedContacts, this.subject, this.messages)
+      .sendEmails(this.selectedContacts, this.subject, this.messages,this.attachments)
       .subscribe(
         (response) => {
           this.notificationService.show({

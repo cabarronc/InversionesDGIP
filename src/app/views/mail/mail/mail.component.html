@@ -7,57 +7,74 @@
                     <div class="container-fluid">
                         <div class="col-6 justify-content-center">
                             <div class="row mt-3">
-                                <kendo-label text="Asunto:">
+                                <kendo-label ><span style="font-weight: bold;">Asunto: </span>
                                     <kendo-textbox placeholder="Cual es el asunto del correo?"
                                         [(ngModel)]="subject"></kendo-textbox>
                                 </kendo-label>
                             </div>
-                            <div class="row mt-3">
+                            <div class="row mt-2">
                                 @for (contact of selectedContacts; track $index; let idx = $index) {
-                                <kendo-label text="Correo:">&nbsp;{{ contact }}
-                                    <kendo-textarea style="margin-top: 0.3rem;" placeholder="Escribe un mensaje" [rows]="3" resizable="vertical"
+                                <kendo-label ><span style="font-weight: bold;">Para:</span>&nbsp;<span style="font-family:'Segoe UI'; font-size:18px; font-style:oblique; color:cornflowerblue;">{{ contact }}</span><br>
+                                    <kendo-label ><span style="font-weight: bold;">Mensaje:</span>
+                                    <kendo-textarea style="margin-top: 0.3rem;" placeholder="Escribe un mensaje"
+                                        [rows]="3" resizable="vertical"
                                         (input)="updateMessage(idx, $event)"></kendo-textarea>
+                                    </kendo-label>
                                 </kendo-label>
+                                <!-- <kendo-label text="Necesitas Adjuntar un Archivo?:">
+                                    <input type="file" multiple (change)="onFileSelected(idx,$event)"
+                                        placeholder="Seleciona un archivo">
+                                </kendo-label> -->
+                                <div class="mt-2 d-flex flex-wrap">
+                                    <label [for]="'fileInput-' + idx"  class="btn btn-success">
+                                        <i class="bi bi-upload"></i> Subir Archivos
+                                        <input type="file" class="d-none" [id]="'fileInput-' + idx"
+                                            (change)="onFileSelected(idx,$event)" multiple />
+                                    </label>
+                                </div>
+
+                                <div class="mt-2 d-flex flex-wrap">
+                                    @for (file of attachments[idx]; track $index; let j = $index) {
+                                    <div class="btn btn-secondary m-1 btn-sm">
+                                        {{ file.name }}
+                                        <button type="button" class="btn-close btn-close-sm"
+                                            (click)="removeFile(idx, j)" aria-label="Close"></button>
+                                    </div>
+
+
+
+                                    }
+                                </div>
+                                <hr  class="linea-punteada">
                                 }
+                           
                             </div>
-                            <div class="row mt-3 mb-2">
-                                <kendo-label text="Correo electronico:" >&nbsp;
+                            <div class="row mt-1 mb-1">
+                                <kendo-label><span style="font-weight: bold;">Destinatarios</span>&nbsp;
                                     @for (contact of selectedContacts; track $index;){
-                                    
-                                        <kendo-chip
-                                        style="margin-top: 0.3rem;"
-                                        [label]="contact"
-                                        [removable]="true"
-                                        (remove)="onRemove($event)"
-                                        
-                                        >
-                                        </kendo-chip>
-                                
+
+                                    <kendo-chip style="margin-top: 0.3rem;" [label]="contact" [removable]="true"
+                                        (remove)="onRemove($event)">
+                                    </kendo-chip>
+
                                     }
                                 </kendo-label>
                             </div>
-                            
-                                <kendo-autocomplete
-                                
-                                #contactslist
-                                [data]="contacts"
-                                valueField="label"
-                                [kendoDropDownFilter]="{ operator: 'contains' }"
-                                [filterable]="true"
-                                placeholder="Para:"
-                                (valueChange)="valueChange($event)"
-                                >
-                                </kendo-autocomplete>
-                            
-                           
+
+                            <kendo-autocomplete #contactslist [data]="contacts" valueField="label"
+                                [kendoDropDownFilter]="{ operator: 'contains' }" [filterable]="true" placeholder="Seleccione los Correos"
+                                (valueChange)="valueChange($event)">
+                            </kendo-autocomplete>
+
+
                             <!-- <div class="row mt-3">
                                 <div class="col-6">
                                     <button (click)="addRecipient(contactslist.value); contactslist.value='a' ">Añadir
                                         Correo</button>
                                 </div>
                             </div> -->
-                            <div class="row mt-3 mb-2">
-                                <div class="col-6">
+                            <div class="row mt-3 mb-2 d-flex">
+                                <div class="col-12 d-flex justify-content-center">
                                     <button kendoButton (click)="sendEmails()">Enviar Correos</button>
                                 </div>
                             </div>
