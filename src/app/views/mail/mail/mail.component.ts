@@ -39,6 +39,7 @@ export class MailComponent implements OnInit {
   pivote: DataContact[] = []
   public selectedContacts: string[] = []; // Manejo del array de seleccion de contacto
   public selectedContacts2: DataContact[] = []; //Mamnejo de Informacion adicional
+  public enviar_disable:boolean = true;
 
   constructor(private emailService: MailApiService,private notificationService: NotificationService, private pocketBaseService: PocketbaseService ) {}
 
@@ -119,10 +120,12 @@ export class MailComponent implements OnInit {
     console.log("Asunto:",this.subject)
     console.log("Mensaje:",this.messages)
     console.log("Archivos:",this.attachments)
+    this.enviar_disable = false;
     this.emailService
       .sendEmails(this.selectedContacts, this.subject, this.messages,this.attachments)
       .subscribe(
         (response) => {
+          this.enviar_disable = true;
           if (response.results[0].status == "success"){
             console.log("respuesta",response.results[0].status)
             this.notificationService.show({
@@ -134,6 +137,7 @@ export class MailComponent implements OnInit {
             });
           }
           else{
+            this.enviar_disable = true;
             console.log("respuesta",response.results[0].status)
             this.notificationService.show({
               content: "Alguno de los correos no se enviaron",
@@ -147,6 +151,7 @@ export class MailComponent implements OnInit {
            console.log("respuesta",response)
         },
         (error) => {
+          this.enviar_disable = true;
             this.notificationService.show({
               content: error,
               hideAfter: 3500,
