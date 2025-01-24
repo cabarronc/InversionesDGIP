@@ -32,6 +32,8 @@ interface DataContact {
 export class MailComponent implements OnInit {
   @ViewChild("contactslist") public list?: AutoCompleteComponent;
   subject: string = '';
+  subjects: string[] = [];
+  public checked = true;
   messages: string[] = []; 
   attachments: File[][] = []; //Arrego donde guardo los archivos
   tasks: any[] = [];  //Array donde traigo toda la info de PocketBase
@@ -93,6 +95,12 @@ export class MailComponent implements OnInit {
     this.messages[index] = value;
     console.log(`Mensaje actualizado en el índice ${index}: ${value}`);
   }
+  updateSubject(index: number, event: Event):void {
+    const target = event.target as HTMLTextAreaElement;
+    const value = target.value;
+    this.subjects[index] = value;
+    console.log(`Mensaje actualizado en el índice ${index}: ${value}`);
+  }
 
 
   onFileSelected(idx: number,event: Event): void {
@@ -118,9 +126,11 @@ export class MailComponent implements OnInit {
   sendEmails() {
     console.log("destinatarios:",this.selectedContacts)
     console.log("Asunto:",this.subject)
+    console.log("Asunto2:",this.subjects)
     console.log("Mensaje:",this.messages)
     console.log("Archivos:",this.attachments)
     this.enviar_disable = false;
+    if(this.checked == true){
     this.emailService
       .sendEmails(this.selectedContacts, this.subject, this.messages,this.attachments)
       .subscribe(
@@ -161,6 +171,52 @@ export class MailComponent implements OnInit {
             });
         }
       );
+    }
+    else{
+      this.emailService
+      .sendEmails2(this.selectedContacts, this.subjects, this.messages,this.attachments)
+      .subscribe(
+        (response) => {
+          this.enviar_disable = true;
+          console.log("respuesta",response)
+          if (response.results[0].status == "success"){
+            console.log("respuesta",response.results[0].status)
+            this.notificationService.show({
+              content: "Correos Enviados con exito",
+              hideAfter: 3500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "center", vertical: "top" },
+            });
+          }
+          else{
+            this.enviar_disable = true;
+            console.log("respuesta",response)
+            console.log("respuesta",response.results[0].status)
+            this.notificationService.show({
+              content: "Alguno de los correos no se enviaron",
+              hideAfter: 3500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "warning", icon: true },
+              position: { horizontal: "center", vertical: "top" },
+            });
+
+          }
+           console.log("respuesta",response)
+        },
+        (error) => {
+          this.enviar_disable = true;
+            this.notificationService.show({
+              content: error,
+              hideAfter: 3500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "center", vertical: "top" },
+            });
+        }
+      );
+
+    }
   }
 
   loadTasks() {

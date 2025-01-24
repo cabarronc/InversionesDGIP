@@ -16,4 +16,7 @@ export class PocketbaseService {
   getCollectionData() {
     return this.pb.collection('directorio').getFullList();
   }
+  getDependencias() {
+    return this.pb.collection('dependencias').getFullList();
+  }
 }

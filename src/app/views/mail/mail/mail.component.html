@@ -2,13 +2,32 @@
 <div class="profile-demo card-container">
     <div class="container">
         <div class="col-9 justify-content-center">
-            <div class="row mt-3">
+            @if (checked) {
+                <div class="row mt-2 mb-2">
+            <kendo-label class="k-display-block" [for]="switch" text="Un Asunto para todos los destinatarios"></kendo-label>
+                    </div>
+            }
+            @else{
+                <div class="row mt-2 mb-2">
+                <kendo-label class="k-display-block" [for]="switch" text="Un Asunto para cada uno de los destinarios(Independientes) "></kendo-label>
+            </div>
+            }
+                <kendo-switch #switch [(ngModel)]="checked" style="width: 70px;"></kendo-switch>
+            <div class="row mt-2">
+                
+                @if (checked) {
                 <kendo-label><span style="font-weight: bold;">Asunto: </span>
                     <kendo-textbox placeholder="Cual es el asunto del correo?" [(ngModel)]="subject"></kendo-textbox>
                 </kendo-label>
+                }
             </div>
             <div class="row mt-2">
                 @for (contact of selectedContacts; track $index; let idx = $index) {
+                    @if (!checked) {
+                        <kendo-label><span style="font-weight: bold;">Asunto: </span>
+                            <kendo-textbox placeholder="Cual es el asunto del correo?1" (input)="updateSubject(idx, $event)"></kendo-textbox>
+                        </kendo-label>
+                        }
                 <kendo-label><span style="font-weight: bold;">Para:</span>&nbsp;<span
                         style="font-family:'Segoe UI'; font-size:18px; font-style:oblique; color:cornflowerblue;">{{
                         contact }}</span><br>
@@ -40,9 +59,9 @@
 
                 </div>
                 <div class="mt-1 d-flex flex-wrap">
-                        Nombre: &nbsp; <span style="font-weight: bold;">{{selectedContacts2[idx].nombre}}</span>
+                    Nombre: &nbsp; <span style="font-weight: bold;">{{selectedContacts2[idx].nombre}}</span>
 
-                  
+
                 </div>
                 <div class="mt-1 d-flex flex-wrap">
                     Dependencia: &nbsp; <span style="font-weight: bold;">{{selectedContacts2[idx].dependencia}}</span>

@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private apiUrl = 'http://172.31.33.28:5000'; // URL base de la API de Flask
+  private apiUrl = 'http://172.31.33.51:5000'; // URL base de la API de Flask
 
 
   constructor(private http: HttpClient) {}
@@ -48,6 +48,10 @@ export class ApiService {
   //SAP 
   ExcelSAP(): Observable<any> {
     return this.http.get(`${this.apiUrl}/GetExcelSAP`);
+  }
+
+  CatalaogoQ(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/CatalogoQ`);
   }
 
   // Método para enviar datos (POST)
