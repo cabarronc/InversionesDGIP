@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment'
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiIaService {
-  private apiUrl = 'http://172.31.33.28:5000';
-  constructor(private http: HttpClient) { }
+  private apiUrl = environment.apiUrl;
+
+  constructor(private http: HttpClient, ) { }
   preguntar(pregunta: string, contexto: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/preguntar`, { pregunta, contexto });
   }

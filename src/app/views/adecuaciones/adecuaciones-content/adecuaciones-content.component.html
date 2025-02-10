@@ -1,88 +1,244 @@
 @if (selectedItem === 'Ampliaciones') {
+
 <div id="Ampliaciones">
     <div class="container">
         <h4>AMPLIACIONES</h4>
-            <kendo-progressbar [value]="progress_ampl" [disabled]="!isDisabled"
-                [indeterminate]="!form.valid"></kendo-progressbar>
         <div class="col-12 d-flex justify-content-center">
             <div class="row mt-2">
                 @if(cheked){
-                    <div class="row mt-2 mb-2">
-                <kendo-label class="k-display-block"  text="Aprobado"></kendo-label>
+                <div class="row mt-2 mb-2">
+                    <div kendoTooltip>
+                        <kendo-label class="k-display-block" text="Autorizaciones">
+                            <span style="margin-left: 0.2rem;">
+                                <kendo-svgicon [icon]="questionCircleIcon"
+                                    title="El Ajuste es correcto y sera remitido a la DGP"></kendo-svgicon>
+                            </span>
+                        </kendo-label>
                     </div>
+                </div>
                 }
                 @else{
-                    <div class="row mt-2 mb-2">
-                <kendo-label class="k-display-block"   text="Rechazado"></kendo-label>  
-                    </div>  
+                <div class="row mt-2 mb-2">
+                    <div kendoTooltip>
+                        <kendo-label class="k-display-block" text="Improcedencias">
+                            <span style="margin-left: 0.2rem;">
+                                <kendo-svgicon [icon]="questionCircleIcon"
+                                    title="El Ajuste es incorrecto y sera remitido a la Dependencia Solicitante"></kendo-svgicon>
+                            </span>
+                        </kendo-label>
+                    </div>
+                </div>
                 }
                 <div class="col-6 d-flex justify-content-center">
 
-                    <kendo-switch  name="switch" [(ngModel)]="cheked" style="width: 70px;"></kendo-switch>
+                    <kendo-switch name="switch" [(ngModel)]="cheked" style="width: 60px;"></kendo-switch>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                @if(cheked2){
+                <div class="row mt-2 mb-2">
+                    <div kendoTooltip>
+                        <kendo-label class="k-display-block" text="Q Existente">
+                            <span style="margin-left: 0.2rem;">
+                                <kendo-svgicon [icon]="questionCircleIcon"
+                                    title="El Proyecto existe en catalogo y solo debe hacer una busqueda"></kendo-svgicon>
+                            </span>
+                        </kendo-label>
+                    </div>
+                </div>
+                }
+                @else{
+                <div class="row mt-2 mb-2">
+                    <div kendoTooltip>
+                        <kendo-label class="k-display-block" text="Q Nuevo">
+                            <span style="margin-left: 0.2rem;">
+                                <kendo-svgicon [icon]="questionCircleIcon"
+                                    title="El Proyecto No existe en el catalogo, debe ser ingresado manualmente"></kendo-svgicon>
+                            </span>
+                        </kendo-label>
+                    </div>
+                </div>
+                }
+                <div class="col-6 d-flex justify-content-center">
+
+                    <kendo-switch name="switch" [(ngModel)]="cheked2" style="width: 60px;"></kendo-switch>
                 </div>
             </div>
 
         </div>
-        <!-- @if(cheked){ -->
         <form [formGroup]="form">
             <div class="row mt-3">
-                <div class="col-3"></div>
-                <div class="col-5 d-flex justify-content-start">
+                <div class="col-2"></div>
+                <div class="col-3 d-flex justify-content-start">
                     <kendo-label text="Numero de Circular">
                         <kendo-textbox formControlName="numero_circular"></kendo-textbox>
                     </kendo-label>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-3 mt-3"></div>
-                <div class="col-5 d-flex justify-content-start">
-                    <kendo-label style="margin-bottom: -10px" text="Fecha">
-                    </kendo-label>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-3"></div>
-                <div class="col-5 d-flex justify-content-start">
-                    <kendo-datepicker  formControlName="fecha"></kendo-datepicker>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-3"></div>
-                <div class="col-6">
-                    <kendo-label text="Asunto:">
-                        <kendo-textbox formControlName="asunto"></kendo-textbox>
-                    </kendo-label>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-3"></div>
-                <div class="col-5">
+                <div class="col-3">
                     <kendo-label text="Oficio Atencion:">
                         <kendo-textbox formControlName="oficio_atencion"></kendo-textbox>
                     </kendo-label>
                 </div>
             </div>
+            <div class="row mt-3">
+                <div class="col-2"></div>
+                <div class="col-2">
+                    <kendo-label text="Fecha"></kendo-label>
+                    <kendo-datepicker formControlName="fecha"></kendo-datepicker>
+                </div>
+                <div class="col-2">
+                    <div kendoTooltip>
+                        <kendo-label text="Monto:"></kendo-label>
+                        <span style="margin-left: 0.2rem;">
+                            <kendo-svgicon [icon]="questionCircleIcon"
+                                title="Tenga en cuanta el patron de la cantidad a introducir... ___,___,___.__ -> Millones,Miles,Centenas.Decimales"></kendo-svgicon>
+                        </span>
+                        <kendo-maskedtextbox name="masked" [maskOnFocus]="true" [mask]="mask" (input)="onInput($event)"
+                            [size]="'large'">
+                            <ng-template kendoPrefixTemplate>
+                                <kendo-svgicon [icon]="dollarIcon"></kendo-svgicon>
+                            </ng-template>
+                        </kendo-maskedtextbox>
+                    </div>
+                </div>
+            </div>
+            @if (resultadoFinal) {
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-9">
+                    <p>
+                        <strong>Resultado:</strong> {{ resultadoFinal }}
+                    </p>
+                </div>
+            </div>
+            }
             <div class="row mt-2">
-                <div class="col-3"></div>
-                <div class="col-5">
+                <div class="col-2"></div>
+                <div class="col-7">
+                    <kendo-label text="Asunto:">
+                        <kendo-textbox formControlName="asunto"></kendo-textbox>
+                    </kendo-label>
+                </div>
+            </div>
+            @if(!cheked2){
+            <div class="row mt-2">
+                <div class="col-2"></div>
+                <div class="col-7">
                     <kendo-formfield>
-                        {{dep}}
-                        <kendo-label
-                          text="Dependencia:"
-                        ></kendo-label>
-                        <kendo-autocomplete
-                        (valueChange)="valueChange($event)"
-                          [data]="dependencias"
-                          formControlName="dependencia"
-                          textField="siglas"
-                          valueField="siglas"
-                          [kendoDropDownFilter]="{ operator: 'contains' }"
-                        >
-                        </kendo-autocomplete>
-                      </kendo-formfield>
+                        <kendo-label text="Proyecto:"></kendo-label>
+                        <kendo-textbox formControlName="proyecto"></kendo-textbox>
+                    </kendo-formfield>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-2"></div>
+                <div class="col-7">
+                    <kendo-label text="Dependencia:"></kendo-label>
+                    <kendo-textbox [(ngModel)]="dep" [ngModelOptions]="{standalone: true}"></kendo-textbox>
                 </div>
             </div>
 
+            }
+            @else{
+            <div class="row mt-2">
+                <div class="col-2"></div>
+                <div class="col-7">
+                    <kendo-formfield>
+                        <kendo-label text="Proyecto:"></kendo-label>
+                        <kendo-autocomplete [data]="Proyecto" formControlName="proyecto" textField="Proyecto"
+                            valueField="Proyecto" [kendoDropDownFilter]="{ operator: 'contains' }"
+                            (valueChange)="valueChange2($event)">
+                        </kendo-autocomplete>
+
+                    </kendo-formfield>
+                </div>
+            </div>
+            @if (dep) {
+            <div class="row">
+                <div class="col-2"></div>
+                <div class="col-9">
+                    <p><strong>DoE:</strong> {{dep}}</p>
+                </div>
+            </div>
+            }
+
+            }
+
+
+            <div class="row mt-2">
+                <div class="col-2"></div>
+                <div class="col-7">
+                    <kendo-label text="Justificación:" [for]="comments"></kendo-label>
+                    <kendo-textarea #comments [style.width.px]="700" resizable="auto" [maxlength]="maxlength"
+                        formControlName="justificacion" (valueChange)="onValueChange($event)">
+                        <kendo-textarea-suffix class="custom-styling">
+                            <span class="counter">{{ counter }}</span>
+                        </kendo-textarea-suffix>
+                    </kendo-textarea>
+
+
+
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-2"></div>
+                <div class="col-3">
+                    <kendo-label text="Solicitud de afectación presupuestal"></kendo-label>
+                    <kendo-textbox formControlName="solicitud_afectacion_presupuestal"></kendo-textbox>
+                </div>
+                <div class="col-2">
+                    <div kendoTooltip>
+                        <kendo-label text="FAM"></kendo-label>
+                        <span style="margin-left: 0.2rem;">
+                            <kendo-svgicon [icon]="questionCircleIcon"
+                                title="Formato de adecuación de metas"></kendo-svgicon>
+                        </span>
+                        <kendo-textbox formControlName="formato_adecuacion_metas"></kendo-textbox>
+                    </div>
+                </div>
+                <div class="col-3">
+                    <kendo-formfield>
+                        <kendo-label text="Firmantes:"></kendo-label>
+                        <kendo-autocomplete [data]="copias" formControlName="copias" textField="siglas"
+                            valueField="siglas" [kendoDropDownFilter]="{ operator: 'contains' }"
+                            (valueChange)="valueChangeCopias($event)">
+                        </kendo-autocomplete>
+
+                    </kendo-formfield>
+
+                </div>
+            </div>
+
+
+            <div class="row mt-2">
+                <div class="col-2"></div>
+                <div class="col-5">
+
+                    @if(copia){
+                    <strong>Firmates Seleccionados:</strong>&nbsp;
+                    @for (elemento of copia.split('/'); track $index) {
+                    <span>
+                        <kendo-chip style="margin-top: 0.3rem;" [label]="elemento" [removable]="true"
+                            (remove)="removeElementFromCopia(elemento)">
+                        </kendo-chip>&nbsp;
+                        <!-- <button type="button" class="btn btn-sm btn-danger ml-2"
+                            (click)="removeElementFromCopia(elemento)">x</button> -->
+                    </span>
+                    }
+                    }
+
+
+                </div>
+            </div>
+            @if(copia){
+            <div class="row mt-2">
+                <div class="col-2"></div>
+                <div class="col-2">
+                    <button class="btn btn-warning" (click)="clearCopia()">Limpiar Todo</button>
+                </div>
+            </div>
+            }
 
             @if(cheked){
             <div class="container">
@@ -98,11 +254,14 @@
                             }
 
                         </span>
+                        @if(idRegistroSeleccionado){
+                        <button kendoButton (click)="guardarCambios()">Guardar</button>
+                        }
                     </div>
                 </div>
             </div>
-        }
-        @else{
+            }
+            @else{
             <div class="container">
                 <div class="row mt-3 justify-content-center">
                     <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center">
@@ -116,74 +275,121 @@
                             }
 
                         </span>
+                        @if(idRegistroSeleccionado){
+                        <button kendoButton (click)="guardarCambios()">Guardar</button>
+                        }
+
                     </div>
                 </div>
             </div>
 
-        }
+            }
         </form>
- <!--    }
-    @else{
-        <form [formGroup]="form">
-            <div class="row mt-3">
-                <div class="col-3"></div>
-                <div class="col-5 d-flex justify-content-start">
-                    <kendo-label text="Numero de Circular">
-                        <kendo-textbox formControlName="numero_circular"></kendo-textbox>
-                    </kendo-label>
-                </div>
+        <div class="col-12">
+            <div class="row mt-2 mb-3">
             </div>
-            <div class="row">
-                <div class="col-3 mt-3"></div>
-                <div class="col-5 d-flex justify-content-start">
-                    <kendo-label style="margin-bottom: -10px" text="Fecha">
-                    </kendo-label>
-                </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-3"></div>
-                <div class="col-5 d-flex justify-content-start">
-                    <kendo-datepicker  formControlName="fecha"></kendo-datepicker>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-3"></div>
-                <div class="col-5 d-flex justify-content-start">
-                    <kendo-label text="Asunto:">
-                        <kendo-textbox formControlName="asunto"></kendo-textbox>
-                    </kendo-label>
-                </div>
-            </div>
-            <div class="row mt-2">
-                <div class="col-3"></div>
-                <div class="col-5">
-                    <kendo-label text="Oficio Atencion:">
-                        <kendo-textbox formControlName="oficio_atencion"></kendo-textbox>
-                    </kendo-label>
-                </div>
-            </div>
-            
-            
+            <kendo-expansionpanel title="Tablero Control" subtitle="Editar registros" [expanded]="true">
+                <!-- <kendo-tilelayout [columns]="1" [rowHeight]="255" [resizable]="true" [reorderable]="true">
+                    <kendo-tilelayout-item title="Tablero de Control:" [col]="1" [rowSpan]="3">
+                        <kendo-tilelayout-item-body> -->
+                            <div class="row mt-2 mb-3">
+                                <kendo-grid [data]="getAmpliaciones" [kendoGridBinding]="getAmpliaciones"
+                                    [filterable]="true" [sortable]="true" [pageable]="true" [pageSize]="5">
+                                    <ng-template kendoGridToolbarTemplate>
+                                        <button type="button" kendoGridExcelCommand [svgIcon]="fileExcelIcon">
+                                            Export to Excel
+                                        </button>
+                                    </ng-template>
+                                    <kendo-grid-column field="aprobado" title="Estado" [width]="120"
+                                        [class]="{ 'text-center': true }" [resizable]="false" filter="boolean">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            @if(dataItem.aprobado === true){
+                                            <span class="badge bg-success">Autorizado</span>
+                                            }
+                                            @else{
+                                            <span class="badge bg-danger">Improcedencia</span>
+                                            }
+
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="num_circular" title="Circular"
+                                        [class]="{ 'text-center': true }" [width]="100"></kendo-grid-column>
+                                    <kendo-grid-column field="created" title="Creacion" [width]="100">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            {{formatDate(dataItem.created)}}
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="updated" title="Modificacion" [width]="100">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            {{formatDate(dataItem.updated)}}
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="asunto" title="Asunto" [width]="100"></kendo-grid-column>
+                                    <kendo-grid-column field="aten_circular" title="Circular Atencion"
+                                        [class]="{ 'text-center': true }" [width]="100"></kendo-grid-column>
+                                    <kendo-grid-column field="proyecto" title="Proyecto"
+                                        [width]="100"></kendo-grid-column>
+                                    <kendo-grid-column field="dep" title="Dependencia"
+                                        [width]="100"></kendo-grid-column>
+                                    <kendo-grid-column field="justificacion" title="Justificacion"
+                                        [width]="100"></kendo-grid-column>
+                                    <kendo-grid-command-column title="Acciones" [width]="100">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <button kendoButton (click)="editarRegistro(dataItem)" class="k-primary">
+                                                Editar
+                                            </button>
+                                        </ng-template>
+                                    </kendo-grid-command-column>
+                                    <kendo-grid-excel fileName="Ampliaciones.xlsx"></kendo-grid-excel>
+                                </kendo-grid>
+                            </div>
+                        <!-- </kendo-tilelayout-item-body>
+                    </kendo-tilelayout-item>
+                </kendo-tilelayout> -->
+            </kendo-expansionpanel>
+            <p></p>
+            <kendo-expansionpanel title="Oficios" subtitle="Ver y descargar oficios" [expanded]="true">
+            <kendo-tilelayout [columns]="1" [rowHeight]="255" [resizable]="true" [reorderable]="true">
+                <kendo-tilelayout-item title="Consultar Oficios:" [col]="1" [rowSpan]="2">
+                    <kendo-tilelayout-item-body>
+                        <div class="row mt-2 mb-3">
+                            <kendo-grid [data]="files" [kendoGridBinding]="files" [filterable]="true" [pageable]="true"
+                                [pageSize]="5" [sortable]="true">
+                                <kendo-grid-column field="name" title="Nombre de Archivo"></kendo-grid-column>
+                                <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
+                                    [width]="130"></kendo-grid-column>
+                                <kendo-grid-column field="creation_time" title="Creación" [width]="160">
+                                </kendo-grid-column>
+                                <kendo-grid-column field="modification_time" title="Modificación"
+                                    [width]="160"></kendo-grid-column>
+                                <kendo-grid-command-column title="Acciones" [width]="210">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <button kendoButton (click)="downloadFile(dataItem.name)"
+                                            class="k-primary">Descargar</button>
+                                        @if(dataItem.extension === '.pdf' ){
+                                        <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
+                                            PDF</button>
+                                        }
+                                    </ng-template>
+
+                                </kendo-grid-command-column>
+                            </kendo-grid>
+                        </div>
+                    </kendo-tilelayout-item-body>
+                </kendo-tilelayout-item>
+            </kendo-tilelayout>
+            </kendo-expansionpanel>
+            <p></p>
+            @if(selectedPdf){
+            <kendo-window [title]="'Oficio: ' + nombre_archivo" (close)="closePdfModal()" [minWidth]="350" [width]="750"
+                [height]="500">
+                <kendo-pdfviewer [data]="selectedPdf" style="height: 900px;"></kendo-pdfviewer>
+            </kendo-window>
+            }
 
 
-            <div class="container">
-                <div class="row mt-3 justify-content-center">
-                    <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center">
-                        <button kendoButton (click)="GenerarAmpliacion()" [disabled]="!form.valid" fillMode="outline"
-                            size="large" rounded="medium" themeColor="info" [svgIcon]="minusCircleIcon"
-                            [disabled]="isDisabled">Generar Oficio</button>
-                        <span class="ps-2">
-                            @if (isDisabled) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
-
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </form>
-    } -->
+        </div>
     </div>
 </div>
+
 }
