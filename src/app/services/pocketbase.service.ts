@@ -1,5 +1,8 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { GridDataResult } from '@progress/kendo-angular-grid';
 import PocketBase from 'pocketbase';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +11,7 @@ export class PocketbaseService {
 
   private pb: PocketBase;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.pb = new PocketBase('http://172.31.33.102:9000'); // Cambiar URL según el entorno
   }
 
@@ -34,7 +37,7 @@ export class PocketbaseService {
     }
   }
 
-  // Método para obtener registros de una colección
+  //Método para obtener registros de una colección
   async getRecords(ampliaciones: string) {
     try {
       const records = await this.pb.collection(ampliaciones).getFullList();
@@ -44,6 +47,7 @@ export class PocketbaseService {
       throw error;
     }
   }
+
 
   // Método para actualizar un registro en una colección
   async updateRecord(ampliaciones: string, id: string, data: any) {

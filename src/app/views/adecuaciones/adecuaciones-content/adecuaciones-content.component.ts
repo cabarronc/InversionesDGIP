@@ -29,13 +29,18 @@ import { NumberFormatService } from '../../../helpers/number-format.service';
 import { AdecuacionesService } from '../../../services/adecuaciones.service';
 import { FileService } from '../../../services/file.service';
 import { KENDO_PDFVIEWER } from "@progress/kendo-angular-pdfviewer";
-import { KENDO_GRID,ExcelModule } from "@progress/kendo-angular-grid";
+import { KENDO_GRID,ExcelModule, GridDataResult, DataStateChangeEvent } from "@progress/kendo-angular-grid";
 import * as moment from 'moment-timezone';
-
+import { ColumnMenuSettings } from "@progress/kendo-angular-grid";
+import { LocalizationService } from '@progress/kendo-angular-l10n';
 interface DataDep {
   nombre: string;
   siglas: string;
 }
+import { process } from "@progress/kendo-data-query";
+import { ExcelExportData } from "@progress/kendo-angular-excel-export";
+import { Observable } from 'rxjs';
+
 
 export interface OficioResponse {
   aprobado: boolean
@@ -54,7 +59,7 @@ export interface OficioResponse {
 @Component({
   selector: 'app-adecuaciones-content',
   standalone: true,
-  imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
+  imports: [KENDO_BUTTONS, KENDO_INDICATORS,ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
     KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
     WindowModule, FormsModule, DropDownsModule, KENDO_TOOLTIPS,KENDO_PDFVIEWER,WindowModule,KENDO_GRID,ExcelModule],
   templateUrl: './adecuaciones-content.component.html',
@@ -66,6 +71,7 @@ export class AdecuacionesContentComponent implements OnInit{
   public form: FormGroup;
   public cheked = true
   public cheked2 = true
+  public cheked3 = true
   public wordIcon: SVGIcon = fileWordIcon;
   public menuSvg: SVGIcon = menuIcon;
   public copyIcon: SVGIcon = copyIcon
@@ -104,7 +110,20 @@ export class AdecuacionesContentComponent implements OnInit{
   public isDisabled = false;
   idRegistroSeleccionado: string = '';
   public getAmpliaciones:any[] = [];
-
+  public menuSettings: ColumnMenuSettings = {
+    lock: true,
+    stick: true,
+    setColumnPosition: { expanded: true },
+    autoSizeColumn: true,
+    autoSizeAllColumns: true,
+  };
+  public gridData?: unknown[];
+  public group: { field: string }[] = [
+    {
+      field: "Estado",
+    },
+  ];
+  public proyecto1:string=""//Variable de Proyectos
   ngOnInit(): void {
     this.loadDependencias();
     this.GetProyectos();
@@ -127,6 +146,7 @@ export class AdecuacionesContentComponent implements OnInit{
     }
   );
   }
+
   //DESCARGAR ARCHIVOS
   downloadFile(filename: string): void {
     this.fileService.downloadFile(filename).subscribe(
@@ -158,7 +178,7 @@ export class AdecuacionesContentComponent implements OnInit{
 
   constructor( private pocketBaseService: PocketbaseService,
      private apiService: ApiService,private numberFormatService: NumberFormatService, private adecuacionesService: AdecuacionesService,
-     private notificationService: NotificationService,private fileService: FileService) {
+     private notificationService: NotificationService,private fileService: FileService,private localizationService: LocalizationService) {
     this.form = new FormGroup({
       numero_circular: new FormControl(this.numero_circular, [Validators.required]),
       fecha: new FormControl(this.fecha, [Validators.required,]),
@@ -171,12 +191,27 @@ export class AdecuacionesContentComponent implements OnInit{
       formato_adecuacion_metas : new FormControl("",[Validators.required]),
       copias : new FormControl("")
     }); 
+    this.localizationService.notifyChanges(); 
     this.charachtersCount = this.form.value.justificacion ? this.form.value.justificacionlength : 0;
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
-
+    this.allData = this.allData.bind(this);
   }
 
   onInput(event: any) {
+    let valor = event.target.value.replace(/[^0-9.]/g, ''); // 🔵 Permitir números y punto decimal
+    if (!valor || isNaN(parseFloat(valor))) {
+      this.resultadoFinal = '';
+      return;
+    }
+
+    let numero = parseFloat(valor);
+    let cantidadFormateada = this.numberFormatService.formatAsCurrency(numero); // 🔵 Formatea número
+    let cantidadEnTexto = this.numberFormatService.numberToWords(numero); // 🔵 Convierte a texto
+
+    this.resultadoFinal = `${cantidadFormateada} (${cantidadEnTexto})`; // 🔵 Genera la salida final
+  }
+
+  onInput2(event: any) {
     let valor = event.target.value.replace(/[^0-9.]/g, ''); // 🔵 Permitir números y punto decimal
     if (!valor || isNaN(parseFloat(valor))) {
       this.resultadoFinal = '';
@@ -208,6 +243,7 @@ export class AdecuacionesContentComponent implements OnInit{
     );
 
   }
+ 
   //AGREGAR AMPLIACION
   async agregarAmpliacion() {
     let body_json = {
@@ -234,15 +270,40 @@ export class AdecuacionesContentComponent implements OnInit{
     }
   }
 //OBTENER AMPLAICIONES
-  async obtenerAmpliaciones() {
-    try {
-      
-      this.getAmpliaciones = await this.pocketBaseService.getRecords('ampliaciones');
-      console.log('Ampliaciones:', this.getAmpliaciones);
-    } catch (error) {
-      console.error('Error al obtener registros:', error);
-    }
+async obtenerAmpliaciones() {
+  try {
+    const response = await this.pocketBaseService.getRecords("ampliaciones");
+
+    // 🔹 Transformamos los datos antes de asignarlos a `this.getAmpliaciones`
+    this.getAmpliaciones = response.map(item => ({
+      ...item, 
+      Estado: item['aprobado'] ? "Procedente" : "Improcedente"
+    }));
+
+    console.log("Ampliaciones transformadas:", this.getAmpliaciones);
+  } catch (error) {
+    console.error("Error al obtener registros:", error);
   }
+}
+
+  public allData(): ExcelExportData {
+    if (!this.getAmpliaciones) {
+      console.error("getAmpliaciones es undefined");
+      return { data: [], group: [] };
+    }
+  
+    const result: ExcelExportData = {
+      data: process(this.getAmpliaciones, {
+        group: this.group,
+        sort: [{ field: "id", dir: "asc" }],
+      }).data,
+      group: this.group,
+    };
+  
+    return result;
+  }
+  
+ 
   editarRegistro(dataItem: any): void {
     this.idRegistroSeleccionado = dataItem.id;
     console.log("Editar registros",this.idRegistroSeleccionado)
@@ -424,6 +485,23 @@ export class AdecuacionesContentComponent implements OnInit{
   // }
 
   public valueChange2(proy: string): void {
+    if (proy === "") {
+      this.dep = ""
+      return;
+    }
+    const contactData = this.Proyecto.find((c) =>
+      c.Proyecto.toLowerCase().includes(proy.toLocaleLowerCase())
+  );
+    if (contactData) {
+      this.dep = contactData.dependencia;
+      // this.form.value.dependencia = 
+      console.log("data", contactData.dependencia);
+  } else {
+      console.warn("No se encontró un contacto con las siglas proporcionadas.");
+      this.dep = ""; // O asigna un valor predeterminado.
+  }   
+  }
+  public valueChangeProyectos(proy: string): void {
     if (proy === "") {
       this.dep = ""
       return;
