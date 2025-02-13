@@ -1,11 +1,11 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { fileWordIcon, imageIcon ,menuIcon, SVGIcon, copyIcon,fileExcelIcon,chartDoughnutIcon, plusCircleIcon, minusIcon, minusCircleIcon, dollarIcon, questionCircleIcon} from '@progress/kendo-svg-icons';
+import { fileWordIcon, imageIcon ,menuIcon, SVGIcon, copyIcon,trashIcon,fileExcelIcon,chartDoughnutIcon, plusCircleIcon, plusIcon,minusIcon, minusCircleIcon, dollarIcon, questionCircleIcon} from '@progress/kendo-svg-icons';
 import { KENDO_BUTTONS } from '@progress/kendo-angular-buttons';
 import { KENDO_INDICATORS } from '@progress/kendo-angular-indicators';
 import { KENDO_FLOATINGLABEL } from "@progress/kendo-angular-label";
 import { KENDO_LABEL } from '@progress/kendo-angular-label';
 import { KENDO_INPUTS } from "@progress/kendo-angular-inputs";
-import { FormControl, FormGroup, Validators,ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, Validators,ReactiveFormsModule, FormArray } from '@angular/forms';
 import { KENDO_DATEINPUTS } from "@progress/kendo-angular-dateinputs";
 import { DateInputsModule } from "@progress/kendo-angular-dateinputs"
 import { IntlModule } from "@progress/kendo-angular-intl";
@@ -71,7 +71,7 @@ export class AdecuacionesContentComponent implements OnInit{
   public form: FormGroup;
   public cheked = true
   public cheked2 = true
-  public cheked3 = true
+  public cheked3 = false
   public wordIcon: SVGIcon = fileWordIcon;
   public menuSvg: SVGIcon = menuIcon;
   public copyIcon: SVGIcon = copyIcon
@@ -80,8 +80,10 @@ export class AdecuacionesContentComponent implements OnInit{
   public chartDoughnutIcon:SVGIcon=chartDoughnutIcon;
   public minusIcon: SVGIcon = minusIcon;
   public minusCircleIcon: SVGIcon = minusCircleIcon;
+  public trashIcon: SVGIcon = trashIcon;
   public dollarIcon: SVGIcon = dollarIcon
   public questionCircleIcon: SVGIcon = questionCircleIcon
+  public plusIcon: SVGIcon = plusIcon
   public asunto:string = ""
   public oficio_atencion:string = ""
   public dep:string=""
@@ -93,6 +95,7 @@ export class AdecuacionesContentComponent implements OnInit{
   numero_circular:string=''
   cantidad: string = ''; // Almacena la cantidad ingresada
   resultadoFinal: string = ''; // Resultado combinado
+  resultadoFinal2: string = '';
   public mask = "999,000,000.00";
   isGenered:boolean = true
  
@@ -130,6 +133,9 @@ export class AdecuacionesContentComponent implements OnInit{
     this.loadCopias();
     this.GetFiles();
     this.obtenerAmpliaciones();
+    this.agregarProyecto()
+    console.log("Información de los Proyectos", this.proyectos.controls);
+    console.log("Información de la Ampliaciones:", this.form.controls);
   }
   formatDate(dateString: string): string {
     return moment.utc(dateString).tz("America/Mexico_City").format("DD/MM/YYYY HH:mm");
@@ -189,14 +195,44 @@ export class AdecuacionesContentComponent implements OnInit{
       justificacion: new FormControl("", [Validators.required,]),
       solicitud_afectacion_presupuestal : new FormControl("",[Validators.required]),
       formato_adecuacion_metas : new FormControl("",[Validators.required]),
-      copias : new FormControl("")
+      copias : new FormControl(""),
+      proyectos: new FormArray([])
+      
     }); 
+    
     this.localizationService.notifyChanges(); 
     this.charachtersCount = this.form.value.justificacion ? this.form.value.justificacionlength : 0;
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
     this.allData = this.allData.bind(this);
   }
+  //LOGICA MAS PROYECTOS 
+  get proyectos(): FormArray {
+    return this.form.get('proyectos') as FormArray;
+  }
+  get proyectoFormGroup(): FormGroup[] {
+    return this.proyectos.controls as FormGroup[];
+  }
+   // Agregar un nuevo proyecto al formulario
+  agregarProyecto() {
+    const proyectoForm = new FormGroup({
+      nombre_proyecto: new FormControl('', [Validators.required]),
+      dependencia: new FormControl( '', [Validators.required]),
+      monto: new FormControl("", [Validators.required]),
+    });
+   console.log("informacion del proyecto agregado:",proyectoForm)
+    this.proyectos.push(proyectoForm);
+    this.resultadoFinal2=''
+    console.log("informacion de la Ampliacion:",this.proyectos)
+  }
+  // Eliminar un proyecto del formulario
+  eliminarProyecto(index: number) {
+    this.proyectos.removeAt(index);
+  }
 
+ 
+  // Guardar la solicitud con los proyectos seleccionados
+  
+  //METODO DE LOS MONTOS
   onInput(event: any) {
     let valor = event.target.value.replace(/[^0-9.]/g, ''); // 🔵 Permitir números y punto decimal
     if (!valor || isNaN(parseFloat(valor))) {
@@ -214,7 +250,7 @@ export class AdecuacionesContentComponent implements OnInit{
   onInput2(event: any) {
     let valor = event.target.value.replace(/[^0-9.]/g, ''); // 🔵 Permitir números y punto decimal
     if (!valor || isNaN(parseFloat(valor))) {
-      this.resultadoFinal = '';
+      this.resultadoFinal2 = '';
       return;
     }
 
@@ -222,7 +258,7 @@ export class AdecuacionesContentComponent implements OnInit{
     let cantidadFormateada = this.numberFormatService.formatAsCurrency(numero); // 🔵 Formatea número
     let cantidadEnTexto = this.numberFormatService.numberToWords(numero); // 🔵 Convierte a texto
 
-    this.resultadoFinal = `${cantidadFormateada} (${cantidadEnTexto})`; // 🔵 Genera la salida final
+    this.resultadoFinal2 = `${cantidadFormateada} (${cantidadEnTexto})`; // 🔵 Genera la salida final
   }
 
   public onValueChange(ev: string): void {
@@ -248,6 +284,8 @@ export class AdecuacionesContentComponent implements OnInit{
   async agregarAmpliacion() {
     let body_json = {
       aprobado: this.cheked,
+      q_existente : this.cheked2,
+      mas_proyectos: this.cheked3,
       num_circular: this.form.value.numero_circular,
       fecha : this.form.value.fecha,
       asunto: this.form.value.asunto,
@@ -258,17 +296,28 @@ export class AdecuacionesContentComponent implements OnInit{
       justificacion: this.form.value.justificacion,
       sap:this.form.value.solicitud_afectacion_presupuestal,
       fam:this.form.value.formato_adecuacion_metas,
-      copias:this.copia
+      copias:this.copia,
+
 
     }
 
     try {
       const respuesta = await this.pocketBaseService.addRecord('ampliaciones', body_json);
+      for (const proyecto of this.form.value.proyectos) {
+        await this.pocketBaseService.agregarProyectoAmpliacion(
+          respuesta.id,
+          proyecto.nombre_proyecto,
+          proyecto.dependencia,
+          proyecto.monto
+        );
+      }
       console.log('Registro insertado:', respuesta);
     } catch (error) {
       console.error('Error al agregar el registro:', error);
     }
   }
+
+
 //OBTENER AMPLAICIONES
 async obtenerAmpliaciones() {
   try {
@@ -285,6 +334,7 @@ async obtenerAmpliaciones() {
     console.error("Error al obtener registros:", error);
   }
 }
+
 
   public allData(): ExcelExportData {
     if (!this.getAmpliaciones) {
@@ -314,7 +364,8 @@ async obtenerAmpliaciones() {
       proyecto: dataItem.proyecto,
       justificacion: dataItem.justificacion,
       solicitud_afectacion_presupuestal: dataItem.sap,
-      formato_adecuacion_metas: dataItem.fam
+      formato_adecuacion_metas: dataItem.fam,
+      proyectos: dataItem.proyectos // No sirvio esta parte de traer los demas Q's
     });
     console.log("form",this.form)
     // Variables adicionales que no están en el formulario
@@ -322,11 +373,16 @@ async obtenerAmpliaciones() {
     this.resultadoFinal = dataItem.monto;
     this.copia = dataItem.copias;
     this.cheked = dataItem.aprobado;
+    this.cheked2 = dataItem.q_existente;
+    this.cheked3 = dataItem.mas_proyectos;
+
   }
 
   async actualizarAmpliaciones(id: string) {
     let datosActualizados = {
       aprobado: this.cheked,
+      q_existente : this.cheked2,
+      mas_proyectos: this.cheked3,
       num_circular: this.form.value.numero_circular,
       fecha : this.form.value.fecha,
       asunto: this.form.value.asunto,
@@ -337,7 +393,8 @@ async obtenerAmpliaciones() {
       justificacion: this.form.value.justificacion,
       sap:this.form.value.solicitud_afectacion_presupuestal,
       fam:this.form.value.formato_adecuacion_metas,
-      copias:this.copia
+      copias:this.copia,
+      proyectos:this.form.value.proyectos
 
     }
   
@@ -412,8 +469,11 @@ async obtenerAmpliaciones() {
     console.log("Formato de adecuación de metas:",this.form.value.formato_adecuacion_metas )
     console.log("Copia Pivote:",this.form.value.copias )
     console.log("Copia Buena:",this.copia )
+    console.log("Proyectos:",this.proyectos )
     let body_json = {
       aprobado: this.cheked,
+      q_existente : this.cheked2,
+      mas_proyectos: this.cheked3,
       num_circular: this.form.value.numero_circular,
       fecha : this.form.value.fecha,
       asunto: this.form.value.asunto,
@@ -424,7 +484,8 @@ async obtenerAmpliaciones() {
       justificacion: this.form.value.justificacion,
       sap:this.form.value.solicitud_afectacion_presupuestal,
       fam:this.form.value.formato_adecuacion_metas,
-      copias:this.copia
+      copias:this.copia,
+      proyectos:this.form.value.proyectos
 
     }
     let data = JSON.stringify(body_json);
@@ -501,18 +562,24 @@ async obtenerAmpliaciones() {
       this.dep = ""; // O asigna un valor predeterminado.
   }   
   }
-  public valueChangeProyectos(proy: string): void {
+ 
+  public valueChangeProyectos(index: number,proy: any ): void {
     if (proy === "") {
       this.dep = ""
       return;
     }
+    
     const contactData = this.Proyecto.find((c) =>
       c.Proyecto.toLowerCase().includes(proy.toLocaleLowerCase())
   );
     if (contactData) {
-      this.dep = contactData.dependencia;
+      // this.dep = contactData.dependencia;
+      this.proyectos.at(index).patchValue({
+        dependencia: contactData.dependencia
+      });
       // this.form.value.dependencia = 
       console.log("data", contactData.dependencia);
+      console.log("data2", this.proyectos.value.dependencia);
   } else {
       console.warn("No se encontró un contacto con las siglas proporcionadas.");
       this.dep = ""; // O asigna un valor predeterminado.

@@ -36,7 +36,14 @@ export class PocketbaseService {
       throw error;
     }
   }
-
+  async agregarProyectoAmpliacion(ampliaciones_id: string, nombre_proyecto: string, dependencia: string, monto: number) {
+    return await this.pb.collection('ampliaciones_proy').create({
+      ampliaciones_id,
+      nombre_proyecto,
+      dependencia,
+      monto
+    });
+  }
   //Método para obtener registros de una colección
   async getRecords(ampliaciones: string) {
     try {
