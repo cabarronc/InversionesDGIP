@@ -17,4 +17,9 @@ export class AdecuacionesService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post<any>(`${this.apiUrl}/GetOficioAp`, data, { headers });
   }
+
+  GenerarOficioReduccion(data: any): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post<any>(`${this.apiUrl}/GetOficioRed`, data, { headers });
+  }
 }

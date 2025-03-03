@@ -1,1 +1,73 @@
+.titulo-con-boton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .info-titulo {
+    display: flex;
+    flex-direction: column; /* Asegura que el título y subtítulo se vean en dos líneas */
+  }
+  
+  .subtitulo {
+    font-size: 12px;
+    color: gray;
+  }
+  
+  .boton-titulo {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+  }
+  ::ng-deep .k-grid {
+    font-size: 12px !important; /* Ajusta el tamaño del texto */
+  }
+  
+  ::ng-deep .k-grid td, 
+  ::ng-deep .k-grid th {
+    padding: 4px 8px !important; /* Reduce el espacio entre celdas */
+  }
+  p{
+    font-size: 13px;
+    font-style: italic;
+    margin-top: 0.30rem;
+  }
+  .p-1{
+    font-size: 13px;
+    font-style: italic;
+    margin-top: 0.30rem;
+  }
+  .p-2{
+    font-size: 14px;
+    font-style: italic;
+    margin-top: 0.10rem !important;
+  }
+  .k-icon {
+    font-size: 14px;
+    color: #007bff;
+  }
+
+/* Switch ENCENDIDO (ON) */
+::ng-deep .switch-on .k-switch-track {
+  background-color: #28a745 !important; /* Verde */
+  border-color: rgb(255, 255, 255) !important;
+}
+
+/* Switch APAGADO (OFF) */
+::ng-deep .switch-off .k-switch-track {
+  background-color: #fdfcfc !important; /* Rojo */
+  border-color: rgb(36, 71, 138) !important;
+}
+
+/* Color del círculo del switch (siempre blanco) */
+::ng-deep .custom-switch .switch-on .k-switch-thumb {
+  background-color: white !important;
+}
+
+/* Color del círculo del switch (siempre blanco) */
+::ng-deep .custom-switch .switch-off .k-switch-thumb {
+  background-color: rgb(240, 74, 8) !important;
+}
 

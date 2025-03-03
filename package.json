@@ -38,7 +38,7 @@
     "@progress/kendo-angular-popup": "16.11.0",
     "@progress/kendo-angular-tooltip": "^16.11.0",
     "@progress/kendo-angular-upload": "^16.11.0",
-    "@progress/kendo-licensing": "^1.0.2",
+    "@progress/kendo-licensing": "^1.4.0",
     "@progress/kendo-svg-icons": "^3.0.0",
     "@progress/kendo-theme-bootstrap": "^9.1.0",
     "@progress/kendo-theme-default": "^8.2.1",

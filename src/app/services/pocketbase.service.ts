@@ -37,17 +37,35 @@ export class PocketbaseService {
     }
   }
   async agregarProyectoAmpliacion(ampliaciones_id: string, nombre_proyecto: string, dependencia: string, monto: number) {
+    try {
     return await this.pb.collection('ampliaciones_proy').create({
       ampliaciones_id,
       nombre_proyecto,
       dependencia,
       monto
     });
+  } catch (error) {
+    console.error('Error al obtener los registros:', error);
+    throw error;
+  }
+  }
+  async agregarProyectoReduccion(reducciones_id: string, nombre_proyecto: string, dependencia: string, monto: number) {
+    try {
+    return await this.pb.collection('reducciones_proy').create({
+      reducciones_id,
+      nombre_proyecto,
+      dependencia,
+      monto
+    });
+  } catch (error) {
+    console.error('Error al obtener los registros:', error);
+    throw error;
+  }
   }
   //Método para obtener registros de una colección
-  async getRecords(ampliaciones: string) {
+  async getRecords(nombre_coleccion: string) {
     try {
-      const records = await this.pb.collection(ampliaciones).getFullList();
+      const records = await this.pb.collection(nombre_coleccion).getFullList();
       return records;
     } catch (error) {
       console.error('Error al obtener los registros:', error);
@@ -55,12 +73,55 @@ export class PocketbaseService {
     }
   }
 
+  async getRecords_ampliacion_proy(nombre_coleccion: string,dataItem:any) {
+    try {
+      const records = await this.pb.collection(nombre_coleccion).getList(1, 50, { filter: `ampliaciones_id='${dataItem}'` })
+      return records;
+    } catch (error) {
+      console.error('Error al obtener los registros:', error);
+      throw error;
+    }
+  }
+
+  async getRecords_reduccion_proy(nombre_coleccion: string,dataItem:any) {
+    try {
+      const records = await this.pb.collection(nombre_coleccion).getList(1, 50, { filter: `reducciones_id='${dataItem}'` })
+      return records;
+    } catch (error) {
+      console.error('Error al obtener los registros:', error);
+      throw error;
+    }
+  }
 
   // Método para actualizar un registro en una colección
-  async updateRecord(ampliaciones: string, id: string, data: any) {
+  async updateRecord(ampliaciones: string, ampliacionesProy: string, ar_id:string, id: string, data: any, data2:any) {
+
     try {
       const updatedRecord = await this.pb.collection(ampliaciones).update(id, data);
+      // 2. Obtener los registros relacionados en la tabla secundaria (ampliaciones_proy)
+      const relatedRecords = await this.pb.collection(ampliacionesProy).getFullList(200, {
+        filter: `${ar_id} = "${id}"`  // Ajusta esto dependiendo de cómo esté relacionada tu base de datos
+        });
+      /// 3. Filtrar los datos que quieres actualizar en ampliaciones_proy
+       // 4. Actualizar cada registro relacionado en ampliaciones_proy
+       for (let i = 0; i < relatedRecords.length; i++) {
+        if (data2[i]) { // Evita errores si data2 tiene menos elementos que relatedRecords
+          const fieldsToUpdate = {
+            nombre_proyecto: data2[i].nombre_proyecto,
+            dependencia: data2[i].dependencia,
+            monto: data2[i].monto
+          };
+      
+          console.log(`Actualizando registro ID: ${relatedRecords[i].id} con`, fieldsToUpdate);
+      
+          await this.pb.collection(ampliacionesProy).update(relatedRecords[i].id, fieldsToUpdate);
+        } else {
+          console.warn(`No hay suficientes proyectos en data2 para actualizar el registro ${relatedRecords[i].id}`);
+        }
+      }
+     
       return updatedRecord;
+
     } catch (error) {
       console.error('Error al actualizar el registro:', error);
       throw error;

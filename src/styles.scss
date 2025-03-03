@@ -1,4 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
+$kendo-grid-size: 35px; /* Tamaño de las filas */
+$kendo-font-size: 13px; /* Tamaño de la fuente */
 @import "@progress/kendo-theme-bootstrap/dist/bootstrap-urban.scss";
 a {
     text-decoration: none !important;

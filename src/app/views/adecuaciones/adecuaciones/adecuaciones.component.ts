@@ -17,7 +17,7 @@ import { AdecuacionesContentComponent } from "../adecuaciones-content/adecuacion
 export class AdecuacionesComponent {
   data:any;
   public isDisabled = false;
-  public selected = "Cicular";
+  public selected = "Ampliaciones";
   public wordIcon: SVGIcon = fileWordIcon;
   public menuSvg: SVGIcon = menuIcon;
   public plusCircleIcon: SVGIcon = plusCircleIcon;
