@@ -215,7 +215,14 @@
         <h5>INTEGRACION DE TODOS LOS PRODUCTOS DE LA CIRCULAR</h5>
         <div class="col-12">
             <div class="row mt-3 d-flex">
-                <div class="col-6 d-flex justify-content-end">
+                <div class="col-3">
+                    <kendo-label text="Nombre Circular"></kendo-label>
+                    <kendo-textbox [(ngModel)]="nombre_archivo_circular" ></kendo-textbox>
+                </div>
+               
+            </div>
+            <div class="row mt-3 mb-3 d-flex">
+                <div class="col-3">
                     <button kendoButton (click)="Integracion()" fillMode="outline" size="large" rounded="medium"
                         themeColor="success" [svgIcon]="wordIcon" [disabled]="isIntegracion">Ejecutar
                         Integracion</button>

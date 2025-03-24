@@ -36,8 +36,8 @@ private apiUrl = environment.apiUrl;
     return this.http.get(`${this.apiUrl}/GetActividadesVencidas2`);
   }
   //INTEGRACION
-  Integracion(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/Integracion`);
+  Integracion(body: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Integracion`, body, {headers: new HttpHeaders({ 'Content-Type': 'application/json' }),});
   }
   //SED Programacion
   ExcelSEDProgramacion(): Observable<any> {

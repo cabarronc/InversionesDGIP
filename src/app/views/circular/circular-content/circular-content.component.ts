@@ -1,4 +1,5 @@
 import { Component, Input,ViewEncapsulation } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { NavBarComponent } from "../../nav-bar/nav-bar.component";
 import { ApiService } from '../../../services/api.service';
@@ -29,7 +30,7 @@ import { KENDO_PROGRESSBARS } from '@progress/kendo-angular-progressbar';
   standalone: true,
   imports: [KENDO_BUTTONS, KENDO_INDICATORS,ButtonsModule,DateInputsModule,IntlModule,LabelModule,FormFieldModule,IconsModule, 
     KENDO_FLOATINGLABEL,KENDO_LABEL,KENDO_INPUTS,ReactiveFormsModule,KENDO_DATEINPUTS,KENDO_NOTIFICATION,LayoutModule,KENDO_PROGRESSBARS,
-    WindowModule],
+    WindowModule,FormsModule],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './circular-content.component.html',
   styleUrl: './circular-content.component.scss'
@@ -70,6 +71,7 @@ export class CircularContentComponent {
   public isGenerarVencidas: boolean = false;
   public isPuntos: boolean = false;
   public isGraficos:boolean = false;
+  public nombre_archivo_circular:string =''
   
   constructor(private apiService: ApiService,private notificationService: NotificationService) {
     this.form = new FormGroup({
@@ -513,7 +515,9 @@ export class CircularContentComponent {
 
   public Integracion():void{
     this.isIntegracion = true;
-    this.apiService.Integracion().subscribe(
+    console.log(this.nombre_archivo_circular)
+    let data = JSON.stringify(this.nombre_archivo_circular);
+    this.apiService.Integracion(data).subscribe(
       (response) => {
         this.integracion_respuesta = response;
         this.isIntegracion = false;
