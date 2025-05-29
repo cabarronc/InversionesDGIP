@@ -31,7 +31,7 @@
                 }
                 <div class="col-6 d-flex justify-content-center">
 
-                    <kendo-switch [ngClass]="{ 'switch-on': cheked, 'switch-off': !cheked }" class="custom-switch" (valueChange)="onChangeProcedencias($event)" name="switch" [(ngModel)]="cheked" style="width: 60px;"></kendo-switch>
+                    <kendo-switch [ngClass]="{ 'switch-on': cheked, 'switch-off': !cheked }" class="custom-switch" (valueChange)="onChangeProcedencias($event)" name="switch" [size]="'small'" [(ngModel)]="cheked" style="width: 60px;"></kendo-switch>
                 </div>
             </div>
 
@@ -62,7 +62,7 @@
                 }
                 <div class="col-6 d-flex justify-content-center">
 
-                    <kendo-switch name="switch" [ngClass]="{ 'switch-on': cheked2, 'switch-off': !cheked2 }" class="custom-switch" (valueChange)="onChangeProyectosNuevos($event)"  [(ngModel)]="cheked2" style="width: 60px;"></kendo-switch>
+                    <kendo-switch name="switch" [ngClass]="{ 'switch-on': cheked2, 'switch-off': !cheked2 }" class="custom-switch" (valueChange)="onChangeProyectosNuevos($event)"[size]="'small'" [(ngModel)]="cheked2" style="width: 60px;"></kendo-switch>
                 </div>
             </div>
 
@@ -92,7 +92,7 @@
                 </div>
                 }
                 <div class="col-6 d-flex justify-content-center">
-                    <kendo-switch [ngClass]="{ 'switch-on': cheked3, 'switch-off': !cheked3 }" class="custom-switch"   name="switch" (valueChange)="onChangeProyectosMas($event)" [(ngModel)]="cheked3" style="width: 60px;"></kendo-switch>
+                    <kendo-switch [ngClass]="{ 'switch-on': cheked3, 'switch-off': !cheked3 }" class="custom-switch"   name="switch" (valueChange)="onChangeProyectosMas($event)" [size]="'small'" [(ngModel)]="cheked3" style="width: 60px;"></kendo-switch>
                 </div>
             </div>
 
@@ -104,7 +104,7 @@
                     <kendo-formfield showHints="initial">
                         <kendo-label text="Numero de Circular">
                             <kendo-textbox formControlName="numero_circular" showSuccessIcon="initial"
-                            showErrorIcon="initial"></kendo-textbox>
+                            showErrorIcon="initial" [size]="'small'"></kendo-textbox>
                         </kendo-label> 
                             <kendo-formhint>Porfavor, introduce un numero de oficio valido.</kendo-formhint>
                             <kendo-formerror  >Formato inválido. Use "0000".</kendo-formerror>
@@ -116,7 +116,7 @@
                     <kendo-formfield>
                     <kendo-label text="Oficio Atencion:">
                         <kendo-textbox formControlName="oficio_atencion" showSuccessIcon="initial"
-                        showErrorIcon="initial"></kendo-textbox>
+                        showErrorIcon="initial" [size]="'small'"></kendo-textbox>
                     </kendo-label>
                     <kendo-formhint>Porfavor, introduce un numero de oficio valido.</kendo-formhint>
                         <kendo-formerror>Formato inválido. Use "XXX/0000/0000" separado por "," o "y"</kendo-formerror>
@@ -129,7 +129,7 @@
                     <div class="col-4">
                         <kendo-formfield>
                             <kendo-label text="Destinatario:"></kendo-label>
-                            <kendo-autocomplete [clearButton]="true" [data]="Destinatario" formControlName="destinatario" textField="destinatario"
+                            <kendo-autocomplete [clearButton]="true" [data]="Destinatario" formControlName="destinatario"[size]="'small'" textField="destinatario"
                                 valueField="destinatario" [kendoDropDownFilter]="{ operator: 'contains' }"
                                 (valueChange)="valueChangeDestinatarios($event)">
                             </kendo-autocomplete>
@@ -162,7 +162,7 @@
                                 title="Tenga en cuanta el patron de la cantidad a introducir... ___,___,___.__ -> Millones,Miles,Centenas.Decimales"></kendo-svgicon>
                         </span>
                         <kendo-maskedtextbox #maskedInput name="masked" [maskOnFocus]="true" [mask]="mask"   [maskValidation]="false" [(ngModel)]="resultadoFinal_input"  [ngModelOptions]="{standalone: true}" (input)="onInput($event)"
-                            [size]="'large'">
+                            [size]="'small'">
                             <ng-template kendoPrefixTemplate>
                                 <kendo-svgicon [icon]="dollarIcon"></kendo-svgicon>
                                 
@@ -186,21 +186,14 @@
                     </div>
                 </div>
             }
-            <div class="row mt-2">
-                <div class="col-2"></div>
-                <div class="col-7">
-                    <kendo-label text="Asunto:">
-                        <kendo-textbox [clearButton]="true" formControlName="asunto"></kendo-textbox>
-                    </kendo-label>
-                </div>
-            </div>
+
             @if(!cheked2){
                 <div class="row mt-2">
                     <div class="col-2"></div>
                     <div class="col-7">
                         <kendo-formfield>
                             <kendo-label text="Proyecto:"></kendo-label>
-                            <kendo-textbox [clearButton]="true" formControlName="proyecto"></kendo-textbox>
+                            <kendo-textbox [clearButton]="true" formControlName="proyecto" [size]="'small'"></kendo-textbox>
                         </kendo-formfield>
                     </div>
                 </div>
@@ -209,7 +202,7 @@
                     <div class="col-7">
                         <kendo-label text="Dependencia:"></kendo-label>
                         <kendo-autocomplete [data]="dependencias"  [(ngModel)]="dep" [ngModelOptions]="{standalone: true}" textField="nombre"
-                        valueField="nombre" [kendoDropDownFilter]="{ operator: 'contains' }" (valueChange)="valueChangeDoE($event)">
+                        valueField="nombre" [kendoDropDownFilter]="{ operator: 'contains' }" [size]="'small'" (valueChange)="valueChangeDoE($event)">
                     </kendo-autocomplete>
                     <!-- <p><strong>DoE:</strong> {{Doe_aux}}</p> -->
                     </div>
@@ -223,7 +216,7 @@
 
                             <kendo-formfield>
                                 <kendo-label text="Proyecto:"></kendo-label>
-                                <kendo-autocomplete [data]="Proyecto" formControlName="proyecto" textField="Proyecto"
+                                <kendo-autocomplete [data]="Proyecto" formControlName="proyecto" [size]="'small'" textField="Proyecto"
                                     valueField="Proyecto" [kendoDropDownFilter]="{ operator: 'contains' }"
                                     (valueChange)="valueChangeProyecto($event)">
                                 </kendo-autocomplete>
@@ -289,7 +282,7 @@
                                 <div class="col-7">
                                     <kendo-formfield>
                                         <label kendoLabel>Dependencia:</label>
-                                        <input kendoTextBox formControlName="dependencia" readonly />
+                                        <input kendoTextBox formControlName="dependencia" [size]="'small'" readonly />
                                     </kendo-formfield>
                                     <p>{{Doe_aux}}</p>
                                 </div>
@@ -336,7 +329,14 @@
                  }
              <!-- Fin de la sentencia else Q existente -->
             }
-
+            <div class="row mt-2">
+                <div class="col-2"></div>
+                <div class="col-7">
+                    <kendo-label text="Asunto:">
+                        <kendo-textbox [clearButton]="true" formControlName="asunto" [size]="'small'"></kendo-textbox>
+                    </kendo-label>
+                </div>
+            </div>
             <div class="row mt-2">
                 <div class="col-2"></div>
                 <div class="col-7">
@@ -358,7 +358,7 @@
                 <div class="col-2"></div>
                 <div class="col-4">
                     <kendo-label text="Solicitud de afectación presupuestal"></kendo-label>
-                    <kendo-textbox formControlName="solicitud_afectacion_presupuestal"></kendo-textbox>
+                    <kendo-textbox formControlName="solicitud_afectacion_presupuestal" [size]="'small'"></kendo-textbox>
                 </div>
                 <div class="col-2">
                     <div kendoTooltip>
@@ -367,13 +367,13 @@
                             <kendo-svgicon [icon]="questionCircleIcon"
                                 title="Formato de adecuación de metas"></kendo-svgicon>
                         </span>
-                        <kendo-textbox formControlName="formato_adecuacion_metas"></kendo-textbox>
+                        <kendo-textbox formControlName="formato_adecuacion_metas" [size]="'small'"></kendo-textbox>
                     </div>
                 </div>
                 <div class="col-2">
                     <kendo-formfield>
                         <kendo-label text="Firmantes:"></kendo-label>
-                        <kendo-autocomplete [data]="copias" formControlName="copias" textField="siglas"
+                        <kendo-autocomplete [data]="copias" formControlName="copias" [size]="'small'" textField="siglas"
                             valueField="siglas" [kendoDropDownFilter]="{ operator: 'contains' }"
                             (valueChange)="valueChangeCopias($event)">
                         </kendo-autocomplete>
@@ -567,7 +567,7 @@
     </div>
     <!-- <iframe src="http://localhost:4848/single/?appid=C%3A%5CUsers%5Cdgpcbarronca%5CDocuments%5CQlik%5CSense%5CApps%5Cpanel%20%20Seguimiento%202025.qvf&sheet=EJFNsPm&lang=es-ES&theme=sense&opt=ctxmenu,currsel" style="border:none;width:100%;height:900px;"></iframe> -->
     <!-- <iframe title="Tablero Seguimiento 2025" src="https://app.powerbi.com/view?r=eyJrIjoiNmE1N2JhMmQtMTZlMC00MDg3LThhZWMtZjY1ZTk2NjI3YjJmIiwidCI6IjYyOGMwZTc3LTViNTUtNDRkZi04YmUxLWVjYTNiMzdiOWNkMCIsImMiOjR9&pageName=e256e33b4dfe7bc667da" frameborder="0" allowFullScreen="true"></iframe> -->
-    <iframe title="Tablero Seguimiento 2025"  src="https://app.powerbi.com/reportEmbed?reportId=6218da08-6e46-4a9a-b0d8-38220ca5fec9&autoAuth=true&ctid=628c0e77-5b55-44df-8be1-eca3b37b9cd0" frameborder="0" allowFullScreen="true"></iframe>
+    <!-- <iframe title="Tablero Seguimiento 2025"  src="https://app.powerbi.com/reportEmbed?reportId=6218da08-6e46-4a9a-b0d8-38220ca5fec9&autoAuth=true&ctid=628c0e77-5b55-44df-8be1-eca3b37b9cd0" frameborder="0" allowFullScreen="true"></iframe> -->
 </div>
 
    

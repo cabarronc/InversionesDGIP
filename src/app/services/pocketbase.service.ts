@@ -12,7 +12,7 @@ export class PocketbaseService {
   private pb: PocketBase;
 
   constructor(private http: HttpClient) {
-    this.pb = new PocketBase('http://172.31.33.102:9000'); // Cambiar URL según el entorno
+    this.pb = new PocketBase('http://172.31.33.230:9000'); // Cambiar URL según el entorno
   }
 
 

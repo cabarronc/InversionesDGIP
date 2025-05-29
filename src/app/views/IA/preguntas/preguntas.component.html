@@ -139,3 +139,16 @@
             </div>
         </div>
     </div>
+<div class="container">
+  <h2>Text to SQL Chatbot</h2>
+  <textarea [(ngModel)]="prompt" rows="4" placeholder="Escribe tu pregunta..."></textarea>
+  <br>
+  <button (click)="sendPrompt()">Enviar</button>
+  @if (response) {
+    <div>
+    <h3>Consulta generada:</h3>
+    <pre>{{ response }}</pre>
+  </div>
+  }
+
+</div>

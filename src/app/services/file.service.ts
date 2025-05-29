@@ -16,6 +16,16 @@ export class FileService {
   getFilesAmpliaciones(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/get-filesAmpliaciones`);
   }
+  getFilesReportesSAP(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-filesReporteSAP`);
+  }
+  getFilesReportesSEDProgramacion(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-filesReporteSEDProgramacion`);
+  }
+
+  getFilesReportesSEDSeguimiento(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-filesReporteSEDSeguimiento`);
+  }
 
   getFilesReducciones(): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/get-filesReducciones`);
@@ -27,5 +37,17 @@ export class FileService {
 
   downloadFileRed(filename: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/download_R/${filename}`, { responseType: 'blob' });
+  }
+
+  downloadFileSap(filename: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/download_sap/${filename}`, { responseType: 'blob' });
+  }
+
+  downloadFileSEDProgramacion(filename: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/download_sedprog/${filename}`, { responseType: 'blob' });
+  }
+
+  downloadFileSEDSeguimiento(filename: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/download_sedsegui/${filename}`, { responseType: 'blob' });
   }
 }

@@ -40,20 +40,20 @@ private apiUrl = environment.apiUrl;
     return this.http.post(`${this.apiUrl}/Integracion`, body, {headers: new HttpHeaders({ 'Content-Type': 'application/json' }),});
   }
   //SED Programacion
-  ExcelSEDProgramacion(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/GetExcelProgramacion`);
+  ExcelSEDProgramacion(body: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/GetExcelProgramacionEjer`,body, {headers: new HttpHeaders({ 'Content-Type': 'application/json' }),});
   }
   //SED Seguimiento
-  ExcelSEDSeguimiento(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/GetExcelSeguimiento`);
+  ExcelSEDSeguimiento(body: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/GetExcelSeguimientoEjer`,body, {headers: new HttpHeaders({ 'Content-Type': 'application/json' }),});
   }
   //SAP 
-  ExcelSAP(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/GetExcelSAP`);
+  ExcelSAP(body: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/GetExcelSAPEjer`,body, {headers: new HttpHeaders({ 'Content-Type': 'application/json' }),});
   }
 
   CatalaogoQ(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/CatalogoQ`);
+    return this.http.get(`${this.apiUrl}/CatalogoQ_Adecuaciones`);
   }
 
   // Método para enviar datos (POST)

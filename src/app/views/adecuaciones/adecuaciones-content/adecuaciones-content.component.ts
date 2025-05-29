@@ -553,6 +553,7 @@ export class AdecuacionesContentComponent implements OnInit{
     this.apiService.CatalaogoQ().subscribe(
       (data)=>{
         this.Proyecto = data.respuesta
+        console.log("Proyectos",data.respuesta)
       },
       (error)=>{
         console.log(error)

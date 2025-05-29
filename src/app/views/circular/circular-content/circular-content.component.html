@@ -151,7 +151,7 @@
 }
 @if (selectedItem === 'Seguimiento Integrado') {
 <div id="Seguimiento Integrado">
-       
+
 </div>
 }
 @if (selectedItem === 'Graficos') {
@@ -218,9 +218,9 @@
                 <div class="col-3">
                     <kendo-label text="Numero de Circular">
                     </kendo-label>
-                    <kendo-textbox placeholder="tres digitos" [(ngModel)]="nombre_archivo_circular" ></kendo-textbox>
+                    <kendo-textbox placeholder="tres digitos" [(ngModel)]="nombre_archivo_circular"></kendo-textbox>
                 </div>
-               
+
             </div>
             <div class="row mt-3 mb-3 d-flex">
                 <div class="col-3">
@@ -241,82 +241,145 @@
 
     <div class="container-fluid">
         <h5>REPORTES SED y SAP EXCEL</h5>
-        <div class="col-12">
-            <div class="row mt-3 d-flex">
-                <div class="col-10 d-flex justify-content-center">
-                    <kendo-panelbar>
-                        <kendo-panelbar-item title="SED PROGRAMACION" [expanded]="true">
-                            <ng-template kendoPanelBarContent>
-                                <div class="container-fluid">
-                                    <div class="row">
-                                        <button kendoButton (click)="Programacion()" fillMode="outline" size="large"
-                                            rounded="medium" themeColor="success" [svgIcon]="fileExcelIcon"
-                                            [disabled]="isProgramacion ">Generar
-                                            Programacion</button>
-                                        <span class="ps-2">
-                                            @if (isProgramacion) {
-                                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                                            </kendo-loader>
-                                            }
+        <div class="col-12 mt-3">
+            <!-- SED PROGRMACION -->
+            <kendo-expansionpanel title="Reportes SED PROGRAMACION" subtitle="Descargar Reporte"
+                [expanded]="true">
 
-                                        </span>
-                                    </div>
-                                </div>
+                <div class="row mb-2">
+                    <div class="col-3">
+                        <kendo-combobox [data]="listItems" [allowCustom]="allowCustom" [(ngModel)]="selectedValues1">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-2 d-flex align-items-center" >
+                        <button kendoButton (click)="Programacion()" fillMode="solid" size="medium" rounded="medium"
+                            themeColor="success" [svgIcon]="fileExcelIcon" [disabled]="isProgramacion ">Generar
+                            Programacion</button>
+                        <span class="ms-2">
+                            @if (isProgramacion) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
+
+                        </span>
+                    </div>
+                </div>
+
+
+
+                <div class="row mt-2 mb-3">
+                    <kendo-grid [data]="filesSEDProgramacion" [kendoGridBinding]="filesSEDProgramacion"
+                        [filterable]="true" [pageable]="true" [pageSize]="5" [sortable]="true"
+                        [columnMenu]="menuSettings" size="small" [resizable]="true">
+                        <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
+                        <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
+                            [width]="130"></kendo-grid-column>
+                        <kendo-grid-column field="modification_time" title="Creacion"
+                            [width]="160"></kendo-grid-column>
+                        <kendo-grid-command-column title="Acciones" [width]="210">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <button kendoButton (click)="downloadFilesSEDPROGRAMACION(dataItem.name)"
+                                    class="k-primary" [svgIcon]="downloadIcon">Descargar</button>
+                                <!-- @if(dataItem.extension === '.pdf' ){
+                                <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
+                                    PDF</button>
+                                } -->
                             </ng-template>
-                        </kendo-panelbar-item>
-                    </kendo-panelbar>
-                </div>
-            </div>
-                <div class="row mt-3 d-flex">
-                    <div class="col-10 d-flex justify-content-center">
-                        <kendo-panelbar>
-                            <kendo-panelbar-item title="SED SEGUIMIENTO" [expanded]="false">
-                                <ng-template kendoPanelBarContent>
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <button kendoButton (click)="Seguimiento()" fillMode="outline" size="large"
-                                                rounded="medium" themeColor="success" [svgIcon]="fileExcelIcon"
-                                                [disabled]="isSeguimiento ">Generar
-                                                Seguimiento</button>
-                                            <span class="ps-2">
-                                                @if (isSeguimiento) {
-                                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                                                </kendo-loader>
-                                                }
 
-                                            </span>
-                                        </div>
-                                    </div>
-                                </ng-template>
-                            </kendo-panelbar-item>
-                        </kendo-panelbar>
+                        </kendo-grid-command-column>
+                    </kendo-grid>
+                </div>
+            </kendo-expansionpanel>
+            <!-- SED SEGUIMIENTO -->
+            <kendo-expansionpanel title="Reportes SED Seguimiento" subtitle="Descargar Reporte" [expanded]="true">
+                <div class="row">
+                    <div class="col-3">
+                        <kendo-combobox [data]="listItems2" [allowCustom]="allowCustom" [(ngModel)]="selectedValues2">
+                        </kendo-combobox>
+                    </div>
+                    <div class="col-2 d-flex align-items-center">
+                        <button kendoButton (click)="Seguimiento()" fillMode="solid" size="medium" rounded="medium"
+                            themeColor="success" [svgIcon]="fileExcelIcon" [disabled]="isSeguimiento ">Generar 
+                         Seguimiento</button>
+                        <span class="ms-2">
+                            @if (isSeguimiento) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
+                        </span>
                     </div>
                 </div>
-                <div class="row mt-3 d-flex">
-                    <div class="col-10 d-flex justify-content-center">
-                        <kendo-panelbar>
-                            <kendo-panelbar-item title="REPORTE SAP" [expanded]="false">
-                                <ng-template kendoPanelBarContent>
-                                    <div class="container-fluid">
-                                        <div class="row">
-                                            <button kendoButton (click)="SAP()" fillMode="outline" size="large"
-                                                rounded="medium" themeColor="success" [svgIcon]="fileExcelIcon"
-                                                [disabled]="isSAP ">Generar
-                                                Reporte</button>
-                                            <span class="ps-2">
-                                                @if (isSAP) {
-                                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                                                </kendo-loader>
-                                                }
+                <div class="row mt-2 mb-3">
+                    <kendo-grid [data]="filesSEDSeguimiento" [kendoGridBinding]="filesSEDSeguimiento"
+                        [filterable]="true" [pageable]="true" [pageSize]="5" [sortable]="true"
+                        [columnMenu]="menuSettings" size="small" [resizable]="true">
+                        <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
+                        <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
+                            [width]="130"></kendo-grid-column>
+                        <kendo-grid-column field="creation_time" title="Creación" [width]="160">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="modification_time" title="Modificación"
+                            [width]="160"></kendo-grid-column>
+                        <kendo-grid-command-column title="Acciones" [width]="210">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <button kendoButton (click)="downloadFilesSEDSEGUIMIENTO(dataItem.name)"
+                                    class="k-primary" [svgIcon]="downloadIcon">Descargar</button>
+                                <!-- @if(dataItem.extension === '.pdf' ){
+                                <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
+                                    PDF</button>
+                                } -->
+                            </ng-template>
 
-                                            </span>
-                                        </div>
-                                    </div>
-                                </ng-template>
-                            </kendo-panelbar-item>
-                        </kendo-panelbar>
+                        </kendo-grid-command-column>
+                    </kendo-grid>
+                </div>
+            </kendo-expansionpanel>
+            <!-- SAP -->
+
+            <kendo-expansionpanel title="Reportes SAP " subtitle="Descargar Reporte" [expanded]="true">
+                <div class="row">
+                    <div class="col-3">
+                        <kendo-combobox [data]="listItems3" [allowCustom]="allowCustom"  [(ngModel)]="selectedValues3">
+                        </kendo-combobox>
                     </div>
-            </div>
+                    <div class="col-2 d-flex align-items-center">
+                        <button kendoButton (click)="SAP()" fillMode="solid" size="medium" rounded="medium"
+                            themeColor="success" [svgIcon]="fileExcelIcon" [disabled]="isSAP ">Generar SAP </button>
+                        <span class="ms-2">
+                            @if (isSAP) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
+
+                        </span>
+                    </div>
+                </div>
+                <div class="row mt-2 mb-3">
+                    <kendo-grid [data]="filesSAP" [kendoGridBinding]="filesSAP" [filterable]="true" [pageable]="true"
+                        [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small" [resizable]="true">
+                        <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
+                        <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
+                            [width]="130"></kendo-grid-column>
+                        <kendo-grid-column field="creation_time" title="Creación" [width]="160">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="modification_time" title="Modificación"
+                            [width]="160"></kendo-grid-column>
+                        <kendo-grid-command-column title="Acciones" [width]="210">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <button kendoButton (click)="downloadFilesSAP(dataItem.name)"
+                                    class="k-primary" [svgIcon]="downloadIcon">Descargar</button>
+                                <!-- @if(dataItem.extension === '.pdf' ){
+                                <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
+                                    PDF</button>
+                                } -->
+                            </ng-template>
+
+                        </kendo-grid-command-column>
+                    </kendo-grid>
+                </div>
+            </kendo-expansionpanel>
+
+
         </div>
     </div>
 
