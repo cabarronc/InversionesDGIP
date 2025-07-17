@@ -31,6 +31,21 @@ export class FileService {
     return this.http.get<any>(`${this.apiUrl}/get-filesReducciones`);
   }
 
+  getFilesConsainceg1T(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-filesConsainceg1T`);
+  }
+
+  getFilesConsainceg2T(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-filesConsainceg2T`);
+  }
+
+  getFilesConsainceg3T(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-filesConsainceg3T`);
+  }
+  getFilesConsainceg4T(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-filesConsainceg4T`);
+  }
+
   downloadFile(filename: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/download/${filename}`, { responseType: 'blob' });
   }
@@ -49,5 +64,9 @@ export class FileService {
 
   downloadFileSEDSeguimiento(filename: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/download_sedsegui/${filename}`, { responseType: 'blob' });
+  }
+
+   downloadFileCosainceg1t(filename: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/download_cosainceg1T/${filename}`, { responseType: 'blob' });
   }
 }
