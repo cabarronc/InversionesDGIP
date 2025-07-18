@@ -66,7 +66,8 @@ export class FileService {
     return this.http.get(`${this.apiUrl}/download_sedsegui/${filename}`, { responseType: 'blob' });
   }
 
-   downloadFileCosainceg1t(filename: string): Observable<Blob> {
-    return this.http.get(`${this.apiUrl}/download_cosainceg1T/${filename}`, { responseType: 'blob' });
+   downloadFileCosainceg(filename: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/download_cosainceg/${filename}`, { responseType: 'blob' });
   }
+  
 }

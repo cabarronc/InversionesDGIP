@@ -21,6 +21,7 @@
                             [svgIcon]="clipboardSVG" rounded="medium" themeColor="secondary" [disabled]="isDisabled">
                             Generar Reporte COSAINCEG 2
                         </kendo-splitbutton>
+  
                         <span class="ps-2">
                             @if (isDisabled) {
                             <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
@@ -29,11 +30,14 @@
                         </span>
                     </kendo-gridlayout-item>
                     <kendo-gridlayout-item [col]="3" [row]="1" [colSpan]="1" [rowSpan]="1" class="reportes">
-                        <span>reportes</span>
+                            <kendo-splitbutton (buttonClick)="GenerarPorFechaActual()" size="medium" [data]="data"
+                            [svgIcon]="clipboardSVG" rounded="medium" themeColor="secondary" [disabled]="isDisabled">
+                            Generar Reporte COSAINCEG
+                        </kendo-splitbutton>
                     </kendo-gridlayout-item>
 
                     <kendo-gridlayout-item [col]="1" [row]="2" [colSpan]="1" [rowSpan]="1" class="excel" >                
-                            <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="data" [svgIcon]="fileExcelIcon"
+                            <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="data2" [svgIcon]="fileExcelIcon"
                                 title="Datos Abiertos"  themeColor="success">Datos Abiertos</kendo-splitbutton>
                     </kendo-gridlayout-item>
 
@@ -73,4 +77,5 @@
         <kendo-pdfviewer [data]="selectedPdf" style="height: 900px;"></kendo-pdfviewer>
     </kendo-window>
     }
+                       
 </div>
