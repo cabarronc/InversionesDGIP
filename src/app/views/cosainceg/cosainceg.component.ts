@@ -9,6 +9,7 @@ import { KENDO_PDFVIEWER } from '@progress/kendo-angular-pdfviewer';
 import { FileService } from '../../services/file.service';
 import { KENDO_INDICATORS } from '@progress/kendo-angular-indicators';
 import { KENDO_DIALOGS } from '@progress/kendo-angular-dialog';
+import { UploadsComponent } from "../uploads/uploads.component";
 
 import {
   clipboardIcon,
@@ -18,6 +19,8 @@ import {
   SVGIcon,
   fileWordIcon,
   fileExcelIcon,
+  fileReportIcon,
+  downloadIcon
 } from '@progress/kendo-svg-icons';
 import { KENDO_ICONS } from '@progress/kendo-angular-icons';
 import { CosaincegService } from '../../services/cosainceg.service';
@@ -27,7 +30,7 @@ import { catchError, concat, forkJoin, of } from 'rxjs';
 @Component({
   selector: 'app-cosainceg',
   standalone: true,
-  imports: [NavBarComponent,KENDO_LAYOUT,CommonModule,KENDO_BUTTONS,KENDO_GRID,WindowModule,KENDO_PDFVIEWER,KENDO_ICONS,KENDO_INDICATORS,KENDO_DIALOGS],
+  imports: [NavBarComponent,KENDO_LAYOUT,CommonModule,KENDO_BUTTONS,KENDO_GRID,WindowModule,KENDO_PDFVIEWER,KENDO_ICONS,KENDO_INDICATORS,KENDO_DIALOGS,UploadsComponent],
   templateUrl: './cosainceg.component.html',
   styleUrl: './cosainceg.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -35,9 +38,21 @@ import { catchError, concat, forkJoin, of } from 'rxjs';
 
 export class CosaincegComponent implements OnInit {
   public isDisabled = false;
+  public isDisabledG =false;
+  public isDisabledExcelG = false;
+  public isDisabledD =false;
+  public isDisabledExcelD = false;
+  public isDisabledR =false;
+  public isDisabledExcelR = false;
+  public isDisabledExcelRecurso = false;
+  public isDisabledCatalogoR = false;
+  public isDisabledActualizacionRubros =false;
+  
   public clipboardSVG: SVGIcon = clipboardIcon;
   public fileWordIcon: SVGIcon = fileWordIcon;
   public fileExcelIcon: SVGIcon = fileExcelIcon;
+   public fileReportIcon: SVGIcon = fileReportIcon;
+   public downloadIcon:SVGIcon = downloadIcon;
 
 
 public FilesCosainceg: any[] = [];
@@ -67,9 +82,11 @@ public cosainceg: any;
         const primerTrimestre =`${anio}-04-10`;
         console.log("Primer Trimestre: ",primerTrimestre)
          this.isDisabled = true;
+         this.isDisabledG =true;
         this.cosaincegService.GenerarCosainceg(primerTrimestre).subscribe(
     (data) => {
       this.cosainceg = data;
+      console.log("primer trimestre",this.cosainceg)
        this.notificationService.show({
         content: "Reporte Generado Correctamente!",
         hideAfter: 1500,
@@ -77,7 +94,8 @@ public cosainceg: any;
         type: { style: "success", icon: true },
         position: { horizontal: "left", vertical: "top" },
       });
-      this.isDisabled = false;
+        this.isDisabled = false;
+        this.isDisabledG = false;
     },
     (error) => {
       this.notificationService.show({
@@ -102,6 +120,8 @@ public cosainceg: any;
         const anio = lastYearDate.getFullYear().toString(); 
         const segundoTrimestre =`${anio}-07-10`;
         console.log("Segundo Trimestre: ",segundoTrimestre)
+        this.isDisabled = true;
+         this.isDisabledG =true;
         this.cosaincegService.GenerarCosainceg(segundoTrimestre).subscribe(
     (data) => {
       this.cosainceg = data;
@@ -113,6 +133,8 @@ public cosainceg: any;
         type: { style: "success", icon: true },
         position: { horizontal: "left", vertical: "top" },
       });
+        this.isDisabled = false;
+        this.isDisabledG = false;
     },
     (error) => {
       console.error('Error fetching files', error);
@@ -137,10 +159,11 @@ public cosainceg: any;
         const anio = lastYearDate.getFullYear().toString(); 
         const tercerTrimestre =`${anio}-10-10`;
         console.log("Tercer Trimestre: ",tercerTrimestre)
+        this.isDisabled = true;
+         this.isDisabledG =true;
         this.cosaincegService.GenerarCosainceg(tercerTrimestre).subscribe(
     (data) => {
       this.cosainceg = data;
-       this.cosainceg = data;
        this.notificationService.show({
         content: "Reporte Generado Correctamente!",
         hideAfter: 1500,
@@ -148,6 +171,8 @@ public cosainceg: any;
         type: { style: "success", icon: true },
         position: { horizontal: "left", vertical: "top" },
       });
+        this.isDisabled = false;
+        this.isDisabledG = false;
     },
     (error) => {
       this.notificationService.show({
@@ -172,6 +197,8 @@ public cosainceg: any;
         const anio_menosuno = lastYearDate.getFullYear().toString(); 
         const cuarttoTrimestre =`${anio_menosuno}-01-10`;
         console.log("cuartoTrimestre: ",cuarttoTrimestre)
+          this.isDisabled = true;
+         this.isDisabledG =true;
         this.cosaincegService.GenerarCosainceg(cuarttoTrimestre).subscribe(
     (data) => {
       this.cosainceg = data;
@@ -183,6 +210,8 @@ public cosainceg: any;
         position: { horizontal: "left", vertical: "top" },
       });
       console.log(this.cosainceg)
+        this.isDisabled = false;
+        this.isDisabledG = false;
     },
     (error) => {
       console.error('Error fetching files', error);
@@ -200,7 +229,7 @@ public cosainceg: any;
   ];
 
   /////excel///////////////////////////////////////////////////////////////////////////////////////////////////
-  public data2 = [
+  public dataExcelG = [
     {
       text: 'Primer Trimestre',
       svgIcon: fileExcelIcon,
@@ -210,19 +239,27 @@ public cosainceg: any;
         lastYearDate.setFullYear(today.getFullYear());
         const anio = lastYearDate.getFullYear().toString(); 
         const primerTrimestre =`${anio}-04-10`;
+        const filename  = `Cosainceg01Global_${anio}.xlsx`
         console.log("Primer Trimestre: ",primerTrimestre)
          this.isDisabled = true;
-        this.cosaincegService.GenerarCosainceg(primerTrimestre).subscribe(
-    (data2) => {
-      this.cosainceg = data2;
+         this.isDisabledExcelG = true
+        this.cosaincegService.GenerarDescargasCosainceg(primerTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
        this.notificationService.show({
-        content: "Reporte Generado Correctamente!",
+        content: "Excel Generado Correctamente, espero que se descargue!",
         hideAfter: 1500,
         animation: { type: "slide", duration: 900 },
         type: { style: "success", icon: true },
         position: { horizontal: "left", vertical: "top" },
       });
       this.isDisabled = false;
+      this.isDisabledExcelG = false
+     
     },
     (error) => {
       this.notificationService.show({
@@ -246,18 +283,19 @@ public cosainceg: any;
         lastYearDate.setFullYear(today.getFullYear());
         const anio = lastYearDate.getFullYear().toString(); 
         const segundoTrimestre =`${anio}-07-10`;
+        const filename  = `Cosainceg02Global_${anio}.xlsx`
         console.log("Segundo Trimestre: ",segundoTrimestre)
-        this.cosaincegService.GenerarCosainceg(segundoTrimestre).subscribe(
-    (data2) => {
-      this.cosainceg = data2;
-       this.cosainceg = data2;
-       this.notificationService.show({
-        content: "Reporte Generado Correctamente!",
-        hideAfter: 1500,
-        animation: { type: "slide", duration: 900 },
-        type: { style: "success", icon: true },
-        position: { horizontal: "left", vertical: "top" },
-      });
+         this.isDisabled = true;
+         this.isDisabledExcelG = true
+        this.cosaincegService.GenerarDescargasCosainceg(segundoTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelG = false
     },
     (error) => {
       console.error('Error fetching files', error);
@@ -282,17 +320,18 @@ public cosainceg: any;
         const anio = lastYearDate.getFullYear().toString(); 
         const tercerTrimestre =`${anio}-10-10`;
         console.log("Tercer Trimestre: ",tercerTrimestre)
-        this.cosaincegService.GenerarCosainceg(tercerTrimestre).subscribe(
-    (data2) => {
-      this.cosainceg = data2;
-       this.cosainceg = data2;
-       this.notificationService.show({
-        content: "Reporte Generado Correctamente!",
-        hideAfter: 1500,
-        animation: { type: "slide", duration: 900 },
-        type: { style: "success", icon: true },
-        position: { horizontal: "left", vertical: "top" },
-      });
+        const filename  = `Cosainceg03Global_${anio}.xlsx`
+         this.isDisabled = true;
+         this.isDisabledExcelG = true
+        this.cosaincegService.GenerarDescargasCosainceg(tercerTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelG = false
     },
     (error) => {
       this.notificationService.show({
@@ -313,21 +352,25 @@ public cosainceg: any;
       click: (): void => {
         const today = new Date();
         const lastYearDate = new Date(today);
+        const Year = new Date(today);
+        Year.setFullYear(today.getFullYear());
         lastYearDate.setFullYear(today.getFullYear() - 1);
+        const anio = Year.getFullYear().toString();
         const anio_menosuno = lastYearDate.getFullYear().toString(); 
-        const cuarttoTrimestre =`${anio_menosuno}-01-10`;
+        const cuarttoTrimestre =`${anio}-01-10`;
+        const filename  = `Cosainceg04Global_${anio}.xlsx`
         console.log("cuartoTrimestre: ",cuarttoTrimestre)
-        this.cosaincegService.GenerarCosainceg(cuarttoTrimestre).subscribe(
-    (data2) => {
-      this.cosainceg = data2;
-       this.notificationService.show({
-        content: "Reporte Generado Correctamente!",
-        hideAfter: 1500,
-        animation: { type: "slide", duration: 900 },
-        type: { style: "success", icon: true },
-        position: { horizontal: "left", vertical: "top" },
-      });
-      console.log(this.cosainceg)
+         this.isDisabled = true;
+         this.isDisabledExcelG = true
+        this.cosaincegService.GenerarDescargasCosainceg(cuarttoTrimestre,filename).subscribe(
+  (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelG = false
     },
     (error) => {
       console.error('Error fetching files', error);
@@ -344,6 +387,642 @@ public cosainceg: any;
     },
   ];
 
+public dataExcelDep = [
+    {
+      text: 'Primer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+         const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const primerTrimestre =`${anio}-04-10`;
+        const filename  = `Cosainceg01Dependencias_${anio}.xlsx`
+        console.log("Primer Trimestre: ",primerTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelD = true
+        this.cosaincegService.GenerarDescargasCosaincegDep(primerTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+       this.notificationService.show({
+        content: "Excel Generado Correctamente, espero que se descargue!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      this.isDisabled = false;
+      this.isDisabledExcelD = false
+     
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Segundo Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const segundoTrimestre =`${anio}-07-10`;
+        const filename  = `Cosainceg02Dependencias_${anio}.xlsx`
+        console.log("Segundo Trimestre: ",segundoTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelD = true
+        this.cosaincegService.GenerarDescargasCosaincegDep(segundoTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelD = false
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+    {
+      text: 'Tercer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const tercerTrimestre =`${anio}-10-10`;
+        console.log("Tercer Trimestre: ",tercerTrimestre)
+        const filename  = `Cosainceg03Dependencias_${anio}.xlsx`
+         this.isDisabled = true;
+         this.isDisabledExcelD = true
+        this.cosaincegService.GenerarDescargasCosaincegDep(tercerTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelD = false
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Cuarto Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        const Year = new Date(today);
+        Year.setFullYear(today.getFullYear());
+        lastYearDate.setFullYear(today.getFullYear() - 1);
+        const anio = Year.getFullYear().toString();
+        const anio_menosuno = lastYearDate.getFullYear().toString(); 
+        const cuarttoTrimestre =`${anio}-01-10`;
+        const filename  = `Cosainceg04Dependencias_${anio}.xlsx`
+        console.log("cuartoTrimestre: ",cuarttoTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelD = true
+        this.cosaincegService.GenerarDescargasCosaincegDep(cuarttoTrimestre,filename).subscribe(
+  (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelD = false
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+  ];
+  /////////////////////////////////////// 
+  public dataExcelRub = [
+    {
+      text: 'Primer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+         const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const primerTrimestre =`${anio}-04-10`;
+        const filename  = `Cosainceg01Rubros_${anio}.xlsx`
+        console.log("Primer Trimestre: ",primerTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelR = true
+        this.cosaincegService.GenerarDescargasCosaincegRub(primerTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+       this.notificationService.show({
+        content: "Excel Generado Correctamente, espero que se descargue!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      this.isDisabled = false;
+      this.isDisabledExcelR = false
+     
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Segundo Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const segundoTrimestre =`${anio}-07-10`;
+        const filename  = `Cosainceg02Rubros_${anio}.xlsx`
+        console.log("Segundo Trimestre: ",segundoTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelR = true
+        this.cosaincegService.GenerarDescargasCosaincegRub(segundoTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelR = false
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+    {
+      text: 'Tercer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const tercerTrimestre =`${anio}-10-10`;
+        console.log("Tercer Trimestre: ",tercerTrimestre)
+        const filename  = `Cosainceg03Rubros_${anio}.xlsx`
+         this.isDisabled = true;
+         this.isDisabledExcelR = true
+        this.cosaincegService.GenerarDescargasCosaincegRub(tercerTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelR = false
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Cuarto Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        const Year = new Date(today);
+        Year.setFullYear(today.getFullYear());
+        lastYearDate.setFullYear(today.getFullYear() - 1);
+        const anio = Year.getFullYear().toString();
+        const anio_menosuno = lastYearDate.getFullYear().toString(); 
+        const cuarttoTrimestre =`${anio}-01-10`;
+        const filename  = `Cosainceg04Rubros_${anio}.xlsx`
+        console.log("cuartoTrimestre: ",cuarttoTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelR = true
+        this.cosaincegService.GenerarDescargasCosaincegRub(cuarttoTrimestre,filename).subscribe(
+  (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelR = false
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+  ];
+////////////////////////////////////////////////////////////////
+
+public dataExcelRecurso = [
+    {
+      text: 'Primer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+         const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const primerTrimestre =`${anio}-04-10`;
+        const filename  = `Rel recurso COSAINCEG01`
+        console.log("Primer Trimestre: ",primerTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelRecurso = true
+        this.cosaincegService.GenerarDescargasCosaincegRecurso(primerTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        const downloadFilename = filename.endsWith('.zip') ? filename : `${filename}.zip`;
+        link.href = url;
+        link.download = downloadFilename;
+        document.body.appendChild(link);
+        link.click();
+
+        // Limpieza
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+       this.notificationService.show({
+        content: "Excel Generado Correctamente, espero que se descargue!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      this.isDisabled = false;
+      this.isDisabledExcelRecurso = false
+     
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Segundo Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const segundoTrimestre =`${anio}-07-10`;
+        const filename  = `Rel recurso COSAINCEG02`
+        console.log("Segundo Trimestre: ",segundoTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelRecurso = true
+        this.cosaincegService.GenerarDescargasCosaincegRecurso(segundoTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelRecurso = false
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+    {
+      text: 'Tercer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const tercerTrimestre =`${anio}-10-10`;
+        console.log("Tercer Trimestre: ",tercerTrimestre)
+        const filename  = `Rel recurso COSAINCEG03`
+         this.isDisabled = true;
+         this.isDisabledExcelRecurso = true
+        this.cosaincegService.GenerarDescargasCosaincegRecurso(tercerTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelRecurso = false
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Cuarto Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        const Year = new Date(today);
+        Year.setFullYear(today.getFullYear());
+        lastYearDate.setFullYear(today.getFullYear() - 1);
+        const anio = Year.getFullYear().toString();
+        const anio_menosuno = lastYearDate.getFullYear().toString(); 
+        const cuarttoTrimestre =`${anio}-01-10`;
+        const filename  = `Rel recurso COSAINCEG04`
+        console.log("cuartoTrimestre: ",cuarttoTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelRecurso = true
+        this.cosaincegService.GenerarDescargasCosaincegRecurso(cuarttoTrimestre,filename).subscribe(
+  (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelRecurso = false
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+  ];
+/////////////////////////////////////////////////////
+public ActualizacionRubro = [
+    {
+      text: 'Primer Trimestre',
+      svgIcon: fileWordIcon,
+      click: (): void => {
+         const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const primerTrimestre =`${anio}-04-10`;
+        console.log("Primer Trimestre: ",primerTrimestre)
+         this.isDisabled = true;
+         this.isDisabledActualizacionRubros =true;
+        this.cosaincegService.ActualizarRubros(primerTrimestre).subscribe(
+    (data) => {
+      console.log(data)
+       this.notificationService.show({
+        content: data.success.mensaje,
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+        this.isDisabled = false;
+        this.isDisabledActualizacionRubros =false;
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Segundo Trimestre',
+      svgIcon: fileWordIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const segundoTrimestre =`${anio}-07-10`;
+        console.log("Segundo Trimestre: ",segundoTrimestre)
+        this.isDisabled = true;
+        this.isDisabledActualizacionRubros =true;
+        this.cosaincegService.ActualizarRubros(segundoTrimestre).subscribe(
+    (data) => {
+       this.notificationService.show({
+        content: data.success.mensaje,
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+        this.isDisabled = false;
+        this.isDisabledActualizacionRubros =false;
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+    {
+      text: 'Tercer Trimestre',
+      svgIcon: fileWordIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const tercerTrimestre =`${anio}-10-10`;
+        console.log("Tercer Trimestre: ",tercerTrimestre)
+        this.isDisabled = true;
+        this.isDisabledActualizacionRubros =true;
+        this.cosaincegService.ActualizarRubros(tercerTrimestre).subscribe(
+    (data) => {
+       this.notificationService.show({
+        content: data.success.mensaje,
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+        this.isDisabled = false;
+        this.isDisabledActualizacionRubros =false;
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Cuarto Trimestre',
+      svgIcon: fileWordIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear() - 1);
+        const anio_menosuno = lastYearDate.getFullYear().toString(); 
+        const cuarttoTrimestre =`${anio_menosuno}-01-10`;
+        console.log("cuartoTrimestre: ",cuarttoTrimestre)
+          this.isDisabled = true;
+        this.isDisabledActualizacionRubros =true;
+        this.cosaincegService.ActualizarRubros(cuarttoTrimestre).subscribe(
+    (data) => {
+       this.notificationService.show({
+        content:data.success.mensaje,
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.log(this.cosainceg)
+        this.isDisabled = false;
+        this.isDisabledActualizacionRubros =false;
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+  ];
+
+
  constructor(private fileService: FileService, private cosaincegService : CosaincegService, private notificationService: NotificationService) {
  
   
@@ -356,6 +1035,13 @@ public cosainceg: any;
     this.selectedPdf = null;
   }
 DescargarExcel() {
+   this.notificationService.show({
+        content: "Debe Seleccionar un Trimestre",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "info", icon: true },
+        position: { horizontal: "center", vertical: "top" },
+      });
 
 }
   GetFiles(){
@@ -420,9 +1106,32 @@ DescargarExcel() {
     }
   );
   }
-  GenerarRepo2PorFechaActual():void{
-    
-  }
+public DescargaCatalogoRubros(){
+  console.log("aqui se descargara")
+  const filename = "CatalogoRubros"
+  this.isDisabledCatalogoR = true
+        this.cosaincegService.GetCatalogoRubros(filename).subscribe(
+  (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledCatalogoR = false
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+}
 
 
 }

@@ -69,5 +69,9 @@ export class FileService {
    downloadFileCosainceg(filename: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/download_cosainceg/${filename}`, { responseType: 'blob' });
   }
+
+    downloadExcelGCosainceg(filename: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/download_excelG_cosainceg/${filename}`, { responseType: 'blob' });
+  }
   
 }
