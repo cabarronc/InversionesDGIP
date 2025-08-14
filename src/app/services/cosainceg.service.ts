@@ -49,7 +49,7 @@ export class CosaincegService {
       GenerarDescargasCosaincegRecurso(fecha: any,filename: string): Observable<Blob> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { fecha }; // crea objeto JSON con clave "fecha"
-    return this.http.post(`${this.apiUrl}/GetDescargasCosaincegRecurso/${filename}.zip`, body, {
+    return this.http.post(`${this.apiUrl}/GetDescargasCosaincegRecurso/${filename}`, body, {
       headers,
       responseType: 'blob'
     }) as Observable<Blob>;

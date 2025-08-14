@@ -3,16 +3,17 @@ import { Injectable } from '@angular/core';
 import { GridDataResult } from '@progress/kendo-angular-grid';
 import PocketBase from 'pocketbase';
 import { map, Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PocketbaseService {
-
+  private apiUrl = environment.ApiPocketBase;
   private pb: PocketBase;
 
   constructor(private http: HttpClient) {
-    this.pb = new PocketBase('http://172.31.33.230:9000'); // Cambiar URL según el entorno
+    this.pb = new PocketBase(this.apiUrl); // Cambiar URL según el entorno
   }
 
 

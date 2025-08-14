@@ -27,6 +27,8 @@ import {
 import { KENDO_PROGRESSBARS } from '@progress/kendo-angular-progressbar';
 import { FileService } from '../../../services/file.service';
 import { KENDO_DROPDOWNS } from '@progress/kendo-angular-dropdowns';
+import { environment } from '../../../../environments/environment';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Component({
   selector: 'app-circular-content',
   standalone: true,
@@ -38,6 +40,7 @@ import { KENDO_DROPDOWNS } from '@progress/kendo-angular-dropdowns';
   styleUrl: './circular-content.component.scss'
 })
 export class CircularContentComponent implements OnInit {
+  dashUrl: SafeResourceUrl;
   progress = 0;
   progress_puntosAtencion = 0;
   progress_graficos = 0;
@@ -86,11 +89,12 @@ export class CircularContentComponent implements OnInit {
     autoSizeColumn: true,
     autoSizeAllColumns: true,
   };
-  constructor(private apiService: ApiService, private notificationService: NotificationService, private fileService: FileService) {
+  constructor(private apiService: ApiService, private notificationService: NotificationService, private fileService: FileService, private sanitizer: DomSanitizer) {
     this.form = new FormGroup({
       numero_circular: new FormControl(this.data.numero_circular, [Validators.required]),
       fecha: new FormControl(this.data.fecha, [Validators.required,]),
     });
+     this.dashUrl = this.sanitizer.bypassSecurityTrustResourceUrl(environment.apiUrlDash);
   }
   public allowCustom = true;
   public selectedValues1: string = "2025";

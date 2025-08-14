@@ -62,7 +62,7 @@
                 }
                 <div class="col-6 d-flex justify-content-center">
 
-                    <kendo-switch name="switch" [ngClass]="{ 'switch-on': cheked2, 'switch-off': !cheked2 }" class="custom-switch" (valueChange)="onChangeProyectosNuevos($event)"[size]="'small'" [(ngModel)]="cheked2" style="width: 60px;"></kendo-switch>
+                    <kendo-switch name="switch" [ngClass]="{ 'switch-on': cheked2, 'switch-off': !cheked2 }" class="custom-switch" (valueChange)="onChangeProyectosNuevos($event)" [size]="'small'" [(ngModel)]="cheked2" style="width: 60px;"></kendo-switch>
                 </div>
             </div>
 
@@ -85,7 +85,7 @@
                         <kendo-label class="k-display-block" text="+ 1 Proyectos">
                             <span style="margin-left: 0.2rem;">
                                 <kendo-svgicon [icon]="questionCircleIcon"
-                                    title="El Ajuste cuenta con mas Un proyecto afectado"></kendo-svgicon>
+                                    title="El Ajuste cuenta con mas de un proyecto afectado"></kendo-svgicon>
                             </span>
                         </kendo-label>
                     </div>
@@ -240,7 +240,7 @@
                     <div class="row mt-2">
                         <div class="col-2"></div>
                         <div class="col-2">
-                            <button kendoButton [svgIcon]="plusIcon" (click)="agregarProyecto()">Agregar Proyecto</button>
+                            <button kendoButton [svgIcon]="plusIcon" themeColor="success" (click)="agregarProyecto()">Agregar Proyecto</button>
                         </div>
                         <div class="col-2">
                             <button kendoButton [svgIcon]="checkIcon" (click)="Comprobacion()">Comprobar</button>
@@ -282,7 +282,7 @@
                                 <div class="col-7">
                                     <kendo-formfield>
                                         <label kendoLabel>Dependencia:</label>
-                                        <input kendoTextBox formControlName="dependencia" [size]="'small'" readonly />
+                                        <input kendoTextBox formControlName="dependencia"  readonly />
                                     </kendo-formfield>
                                     <p>{{Doe_aux}}</p>
                                 </div>
@@ -316,7 +316,7 @@
                         <div class="row mt-2">
                             <div class="col-2"></div>
                             <div class="col-1">
-                                <button kendoButton [svgIcon]="trashIcon" (click)="eliminarProyecto(i,$event)">Borrar</button>
+                                <button kendoButton [svgIcon]="trashIcon"  themeColor="error" (click)="eliminarProyecto(i,$event)">Borrar</button>
                             </div>
                             
                         </div>
@@ -817,7 +817,7 @@
                         <div class="row mt-2">
                             <div class="col-2"></div>
                             <div class="col-2 mb-2">
-                                <button [size]="'small'" kendoButton [svgIcon]="plusIcon" (click)="agregarProyecto_R()">Agregar Proyecto</button>
+                                <button [size]="'small'" kendoButton [svgIcon]="plusIcon" themeColor="success" (click)="agregarProyecto_R()">Agregar Proyecto</button>
                             </div>
                             <div class="col-2">
                             <button  [size]="'small'"  kendoButton [svgIcon]="checkIcon" (click)="Comprobacion_R()">Comprobar</button>
@@ -896,7 +896,7 @@
                             <div class="row mt-2">
                                 <div class="col-2"></div>
                                 <div class="col-1">
-                                    <button kendoButton [size]="'small'" [svgIcon]="trashIcon" (click)="eliminarProyecto_R(i,$event)">Borrar</button>
+                                    <button kendoButton [size]="'small'" [svgIcon]="trashIcon" themeColor="error" (click)="eliminarProyecto_R(i,$event)">Borrar</button>
                                 </div>
                                 
                             </div>

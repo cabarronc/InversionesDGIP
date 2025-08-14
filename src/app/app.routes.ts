@@ -5,6 +5,7 @@ import { PreguntasComponent } from './views/IA/preguntas/preguntas.component';
 import { MailComponent } from './views/mail/mail/mail.component';
 import { AdecuacionesComponent } from './views/adecuaciones/adecuaciones/adecuaciones.component';
 import { CosaincegComponent } from './views/cosainceg/cosainceg.component';
+import { ClaudeComponent } from './views/claude/claude.component';
 
 export const routes: Routes = [
     { path: 'principal', component: HomeComponent},
@@ -13,6 +14,7 @@ export const routes: Routes = [
     { path: 'correos', component:  MailComponent},
     { path: 'adecuaciones', component:  AdecuacionesComponent},
     { path: 'cosainceg', component:  CosaincegComponent},
+    { path: 'claude', component:  ClaudeComponent},
     { path: '', redirectTo: 'principal', pathMatch: 'full'},
     { path: '**', redirectTo: 'principal', pathMatch: 'full'},
 ];
