@@ -37,6 +37,22 @@ export class ClaudeService {
         catchError(this.handleError)
       );
   }
+
+  modeloLocal(request: QueryRequest): Observable<QueryResponse> {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post<QueryResponse>(`${this.apiUrl}/modelo_local`, request, { headers })
+      .pipe(
+        map(response => {
+          // Procesar la respuesta si es necesario
+          return response;
+        }),
+        catchError(this.handleError)
+      );
+  }
+
   private handleError(error: any) {
     let errorMessage = 'Error desconocido';
     

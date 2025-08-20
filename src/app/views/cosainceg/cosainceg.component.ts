@@ -70,6 +70,7 @@ public cosainceg: any;
   ngOnInit(): void {
     this.GetFiles();
   }
+  // Reportes Cosainceg
  public data = [
     {
       text: 'Primer Trimestre',
@@ -86,6 +87,7 @@ public cosainceg: any;
         this.cosaincegService.GenerarCosainceg(primerTrimestre).subscribe(
     (data) => {
       this.cosainceg = data;
+      this.GetFiles()
       console.log("primer trimestre",this.cosainceg)
        this.notificationService.show({
         content: "Reporte Generado Correctamente!",
@@ -126,6 +128,7 @@ public cosainceg: any;
     (data) => {
       this.cosainceg = data;
        this.cosainceg = data;
+       this.GetFiles()
        this.notificationService.show({
         content: "Reporte Generado Correctamente!",
         hideAfter: 1500,
@@ -164,6 +167,7 @@ public cosainceg: any;
         this.cosaincegService.GenerarCosainceg(tercerTrimestre).subscribe(
     (data) => {
       this.cosainceg = data;
+      this.GetFiles()
        this.notificationService.show({
         content: "Reporte Generado Correctamente!",
         hideAfter: 1500,
@@ -202,6 +206,7 @@ public cosainceg: any;
         this.cosaincegService.GenerarCosainceg(cuarttoTrimestre).subscribe(
     (data) => {
       this.cosainceg = data;
+      this.GetFiles()
        this.notificationService.show({
         content: "Reporte Generado Correctamente!",
         hideAfter: 1500,

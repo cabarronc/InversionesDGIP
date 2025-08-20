@@ -11,11 +11,11 @@
                             <div class="k-skeleton skeleton-small-text-short"></div>
                         </div>
                     </div>
-                    <div class="description-container">
+                    <!-- <div class="description-container">
                         <div class="k-skeleton skeleton-small-text"></div>
                         <div class="k-skeleton skeleton-small-text"></div>
                         <div class="k-skeleton skeleton-small-text"></div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="card-column">
@@ -57,7 +57,7 @@
 
 
                     <div class="form-actions">
-                        <button type="submit" class="btn btn-primary mt-3" [disabled]="loading || !isFormValid">
+                        <button type="submit" class="btn btn-primary mt-3 btn-sm" [disabled]="loading || !isFormValid">
                             @if (loading) {
                             <i class="fas fa-spinner fa-spin"></i>
                             }
@@ -69,7 +69,7 @@
                             {{ loading ? 'Procesando...' : 'Consultar' }}
                         </button>
                         &nbsp;
-                        <button type="button" class="btn btn-secondary mt-3 ml-3" (click)="clearForm()">
+                        <button type="button" class="btn btn-secondary mt-3 ml-3 btn-sm" (click)="clearForm()">
                             <i class="fas fa-eraser"></i>
                             Limpiar
                         </button>
@@ -138,6 +138,159 @@
                     <div class="mt-2">
                         <small class="text-muted">
                             Total de registros: {{ result?.recordCount }}
+                        </small>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+
+            </div>
+        </div>
+       
+    </div>
+</div>
+<!-- Modelo -->
+<div class="profile-demo card-container mt-6">
+    <div class="k-card custom-card">
+        <div class="card-row">
+            <div class="card-column no-flex">
+                <div class="sidebar-container k-skeleton">
+                    <div class="avatar-name-container">
+                        <div class="k-skeleton skeleton-avatar"></div>
+                        <div class="name-container">
+                            <div class="k-skeleton skeleton-text"></div>
+                            <div class="k-skeleton skeleton-small-text-short"></div>
+                        </div>
+                    </div>
+                    <!-- <div class="description-container">
+                        <div class="k-skeleton skeleton-small-text"></div>
+                        <div class="k-skeleton skeleton-small-text"></div>
+                        <div class="k-skeleton skeleton-small-text"></div>
+                    </div> -->
+                </div>
+            </div>
+            <div class="card-column">
+                <div class="avatar-title-container">
+                    <div class="k-skeleton skeleton-avatar"></div>
+                    <h4 class="k-h5">Hola mi nombre es Presupuestalito</h4>
+                </div>
+                <form [formGroup]="queryForm_ml" (ngSubmit)="onSubmit_ml()">
+                    <div class="form-group">
+                        <label for="naturalLanguage_ml">Tu consulta *</label>
+                        <textarea id="naturalLanguage_ml" formControlName="naturalLanguage_ml" class="form-control"
+                            [class.is-invalid]="naturalLanguageControl_ml?.invalid && naturalLanguageControl_ml?.touched"
+                            placeholder="Ej: Cuantos Programas tiene Senco..." rows="4">
+          </textarea>
+                        @if (naturalLanguageControl_ml?.invalid && naturalLanguageControl_ml?.touched) {
+                        <div class="invalid-feedback">
+
+                            @if (naturalLanguageControl_ml?.errors?.['required']) {
+                            <div>
+                                La consulta es obligatoria
+                            </div>
+                            }
+                            @if (naturalLanguageControl_ml?.errors?.['minlength']) {
+                            <div>
+                                La consulta debe tener al menos 10 caracteres
+                            </div>
+                            }
+                            @if (naturalLanguageControl_ml?.errors?.['maxlength']) {
+                            <div>
+                                La consulta no puede exceder 500 caracteres
+                            </div>
+                            }
+
+                        </div>
+                        }
+                    </div>
+
+
+
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary mt-3 btn-sm" [disabled]="loading_ml || !isFormValid_ml">
+                            @if (loading_ml) {
+                            <i class="fas fa-spinner fa-spin"></i>
+                            }
+
+                            @else () {
+                            <i class="fas fa-search"></i>
+                            }
+
+                            {{ loading_ml ? 'Procesando...' : 'Consultar' }}
+                        </button>
+                        &nbsp;
+                        <button type="button" class="btn btn-secondary mt-3 ml-3 btn-sm" (click)="clearForm_ml()">
+                            <i class="fas fa-eraser"></i>
+                            Limpiar
+                        </button>
+                    </div>
+                </form>
+ <!-- Resultados -->
+        @if(hasResults_ml || hasError_ml){
+        <div class="results-card mt-4">
+            <div class="card">
+                <div class="card-header" [ngClass]="{
+        'bg-success text-white': hasResults_ml,
+        'bg-danger text-white': hasError_ml}">
+                    <h5>
+                        <i class="fas" [ngClass]="{
+            'fa-check-circle': hasResults_ml,
+            'fa-exclamation-triangle': hasError_ml}"></i>
+                        {{ hasResults_ml ? 'Resultados' : 'Error' }}
+                    </h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="result-message">
+                        {{resultMessage_ml}}
+                    </div>
+
+                    <!-- Datos tabulares -->
+                    @if (result_ml?.data && result_ml?.data.length > 0) {
+                    <div class="mt-3">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-sm">
+                                <thead>
+                                    <tr>
+                                        @for (key of result_ml?.data[0] | keyvalue; track key) {
+                                        <th>
+                                            {{ key.key }}
+                                        </th>
+                                        }
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for (row of result_ml?.data; track $index) {
+                                    <tr>
+                                        @for (cell of row | keyvalue; track $index) {
+                                        <td>
+                                            {{ cell.value }}
+                                        </td>
+                                        }
+                                    </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    }
+
+                    <!-- Botón de descarga Excel -->
+                    @if (result_ml?.excelFile) {
+                    <div class="mt-3">
+                        <button class="btn btn-success" (click)="downloadExcel_ml()">
+                            <i class="fas fa-file-excel"></i>
+                            Descargar Excel ({{ result_ml?.recordCount }} registros)
+                        </button>
+                    </div>
+                    }
+                    @if (result_ml?.recordCount !== undefined) {
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            Total de registros: {{ result_ml?.recordCount }}
                         </small>
                     </div>
                     }
