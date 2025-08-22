@@ -6,7 +6,7 @@
   
   .profile-demo .custom-card {
     padding: 32px;
-    width: 712px;
+    width: 1000px;
     height:auto;
     gap: 32px;
     border-radius: 4px 4px 0 0;
@@ -292,65 +292,86 @@
 
 .results-card {
   animation: slideIn 0.3s ease-out;
-  
+  display: block;
+  width: 100%;
+  border: 1px solid #dee2e6;
+
+  /* 👇 Scroll automático cuando el contenido excede */
+  max-height: 500px;            /* ajusta según lo que necesites */
+  overflow-y: auto;
+  overflow-x: hidden;           /* evita scroll horizontal aquí */
+
+  -webkit-overflow-scrolling: touch;
+
   .card-header {
     border-radius: 8px 8px 0 0;
-    
+
     h5 {
       margin: 0;
-      
+
       i {
         margin-right: 8px;
       }
     }
-    
+
     &.bg-success {
       background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
     }
-    
+
     &.bg-danger {
       background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%) !important;
     }
   }
-  .result-message {
-  font-size: 1.1rem;
-  line-height: 1.6;
-  color: #495057;
-  background: #f8f9fa;
-  padding: 15px;
-  border-radius: 6px;
-  border-left: 4px solid #667eea;
-}
 
-.table-responsive {
-  border-radius: 6px;
-  overflow: hidden;
-  border: 1px solid #dee2e6;
-  
-  .table {
-    margin-bottom: 0;
-    
-    thead th {
-      background-color: #f8f9fa;
-      font-weight: 600;
-      color: #495057;
-      border-bottom: 2px solid #dee2e6;
-      font-size: 0.9rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    
-    tbody td {
-      padding: 12px 8px;
-      vertical-align: middle;
-      font-size: 0.9rem;
-    }
-    
-    .table-striped tbody tr:nth-of-type(odd) {
-      background-color: rgba(102, 126, 234, 0.05);
+  .result-message {
+    font-size: 0.8rem;
+    line-height: 1.6;
+    color: #495057;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #667eea;
+  }
+
+  .table-responsive {
+    border-radius: 6px;
+    display: block;
+    width: 100%;
+    border: 1px solid #dee2e6;
+
+    /* 👇 Scroll horizontal y vertical automático */
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 200px;
+    max-width: 700px;           /* límite vertical de la tabla */
+    -webkit-overflow-scrolling: touch;
+
+    .table {
+      margin-bottom: 0;
+
+      thead th {
+        background-color: #f8f9fa;
+        font-weight: 600;
+        color: #495057;
+        border-bottom: 2px solid #dee2e6;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      tbody td {
+        padding: 12px 8px;
+        vertical-align: middle;
+        font-size: 0.9rem;
+      }
+
+      &.table-striped tbody tr:nth-of-type(odd) {
+        background-color: rgba(102, 126, 234, 0.05);
+      }
     }
   }
-}
+
+
 
 .btn-success {
   background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
