@@ -1,0 +1,189 @@
+<div class="comparison-container" *ngIf="result">
+      <div class="comparison-header">
+        <h2>📋 Resultados de la Comparación</h2>
+        <div class="file-info-cards">
+          <div class="file-card">
+            <div class="file-card-header">
+              <span class="file-icon">📄</span>
+              <strong>Archivo 1</strong>
+            </div>
+            <div class="file-details">
+              <p><strong>Nombre:</strong> {{ result.metadata.file1.name }}</p>
+              <p><strong>Tamaño:</strong> {{ formatFileSize(result.metadata.file1.size) }}</p>
+              <p><strong>Modificado:</strong> {{ formatDate(result.metadata.file1.modified) }}</p>
+              <p><strong>Hash:</strong> <code>{{ result.metadata.file1.hash.substring(0, 8) }}...</code></p>
+            </div>
+          </div>
+          
+          <div class="comparison-icon">⚖️</div>
+          
+          <div class="file-card">
+            <div class="file-card-header">
+              <span class="file-icon">📄</span>
+              <strong>Archivo 2</strong>
+            </div>
+            <div class="file-details">
+              <p><strong>Nombre:</strong> {{ result.metadata.file2.name }}</p>
+              <p><strong>Tamaño:</strong> {{ formatFileSize(result.metadata.file2.size) }}</p>
+              <p><strong>Modificado:</strong> {{ formatDate(result.metadata.file2.modified) }}</p>
+              <p><strong>Hash:</strong> <code>{{ result.metadata.file2.hash.substring(0, 8) }}...</code></p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resultados específicos por tipo de comparación -->
+      <div class="comparison-results">
+        
+        <!-- Comparación de archivos de texto -->
+         @if (result.type === 'text_diff') {
+        <div  class="result-section">
+          <h3>📝 Diferencias en Texto</h3>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-number">{{ result.stats?.lines_file1 }}</div>
+              <div class="stat-label">Líneas Archivo 1</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">{{ result.stats?.lines_file2 }}</div>
+              <div class="stat-label">Líneas Archivo 2</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-number">{{ result.stats?.changes }}</div>
+              <div class="stat-label">Cambios Detectados</div>
+            </div>
+          </div>
+          @if (result.diff && result.diff.length > 0) {
+          <div class="diff-viewer">
+            <h4>Diferencias Detalladas:</h4>
+            <div class="diff-content">
+              <div *ngFor="let line of result.diff.slice(0, 50)" 
+                   class="diff-line"
+                   [ngClass]="{
+                     'added': line.startsWith('+') && !line.startsWith('+++'),
+                     'removed': line.startsWith('-') && !line.startsWith('---'),
+                     'context': line.startsWith('@@'),
+                     'header': line.startsWith('---') || line.startsWith('+++')
+                   }">
+                <code>{{ line }}</code>
+              </div>
+              <div *ngIf="result.diff.length > 50" class="diff-truncated">
+                ... y {{ result.diff.length - 50 }} líneas más
+              </div>
+            </div>
+          </div>
+        }
+        </div>
+    }
+
+        <!-- Comparación de archivos CSV -->
+        <div *ngIf="result.type === 'csv_diff'" class="result-section">
+          <h3>📊 Diferencias en CSV</h3>
+          
+          <div class="structure-changes" *ngIf="hasStructureChanges()">
+            <h4>🏗️ Cambios Estructurales:</h4>
+            <div class="changes-grid">
+              <div class="change-card" *ngIf="hasColumnsAdded()">
+                <div class="change-header added">
+                  <span >➕</span>
+                  <strong>Columnas Añadidas</strong>
+                </div>
+                <ul>
+                  <li *ngFor="let col of getColumnsAdded()"></li>
+                </ul>
+              </div>
+              
+              <div class="change-card" *ngIf="hasColumnsRemoved()">
+                <div class="change-header removed">
+                  <span>➖</span>
+                  <strong>Columnas Eliminadas</strong>
+                </div>
+                <ul>
+                  <li *ngFor="let col of getColumnsRemoved()">{{ col }}</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="shape-change">
+              <strong>Cambio de Dimensiones:</strong>
+              {{getShapeChangeText()}}
+            </div>
+          </div>
+
+          <div class="data-changes" *ngIf="hasDataChanges()">
+            <h4>🔃 Cambios en Datos:</h4>
+            <div class="stats-grid">
+              <div class="stat-card added">
+                <div class="stat-number">{{ result.data_changes.rows_added || 0 }}</div>
+                <div class="stat-label">Filas Añadidas</div>
+              </div>
+              <div class="stat-card removed">
+                <div class="stat-number">{{ result.data_changes.rows_removed || 0 }}</div>
+                <div class="stat-label">Filas Eliminadas</div>
+              </div>
+              <div class="stat-card unchanged">
+                <div class="stat-number">{{ result.data_changes.rows_unchanged || 0 }}</div>
+                <div class="stat-label">Filas Sin Cambios</div>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="result.data_changes?.error" class="error-message">
+            ⚠️ {{ result.data_changes.error }}
+          </div>
+        </div>
+
+        <!-- Comparación genérica -->
+        <div *ngIf="result.type === 'generic'" class="result-section">
+          <h3>📋 Comparación Genérica</h3>
+          <div class="generic-info">
+            <p>{{ result.message }}</p>
+            <div class="file-info-comparison">
+              <div class="info-block">
+                <h4>Información Archivo 1:</h4>
+                <pre>{{ formatObjectInfo(result.file1_info) }}</pre>
+              </div>
+              <div class="info-block">
+                <h4>Información Archivo 2:</h4>
+                <pre>{{ formatObjectInfo(result.file2_info) }}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+            <!-- Análisis detallado campo por campo -->
+        <app-results-detalle
+          *ngIf="result?.detailed_analysis_enabled && result?.field_level_changes"
+          [fieldLevelChanges]="result.field_level_changes">
+        </app-results-detalle>
+
+        <!-- Indicador de análisis automático vs manual -->
+        <div *ngIf="result?.detailed_analysis_enabled" class="analysis-info">
+          <div class="info-card">
+            <div class="info-icon">🔬</div>
+            <div class="info-content">
+              <strong>Análisis Detallado Activado</strong>
+              <p>{{ result.analysis_reason || 'Análisis campo por campo habilitado' }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Indicador de archivos idénticos -->
+        <div *ngIf="areFilesIdentical()" class="identical-files">
+          <div class="identical-message">
+            <span class="icon">✅</span>
+            <strong>Los archivos son idénticos</strong>
+            <p>No se encontraron diferencias entre los archivos comparados.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Acciones adicionales -->
+      <div class="comparison-actions">
+        <button class="btn btn-secondary" (click)="exportResults()">
+          📥 Exportar Resultados
+        </button>
+        <button class="btn btn-primary" (click)="newComparison()">
+          🔄 Nueva Comparación
+        </button>
+      </div>
+    </div>

@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { NavBarComponent } from "../nav-bar/nav-bar.component";
 import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
-import {fileWordIcon,menuIcon, chartBarClusteredIcon, SVGIcon,fileExcelIcon,graphIcon,alignJustifyIcon, aggregateFieldsIcon} from '@progress/kendo-svg-icons';
+import {fileWordIcon,menuIcon, chartBarClusteredIcon, SVGIcon,fileExcelIcon,graphIcon,alignJustifyIcon, aggregateFieldsIcon,fileWrenchIcon} from '@progress/kendo-svg-icons';
 import { KENDO_INDICATORS } from "@progress/kendo-angular-indicators";
 import { KENDO_LAYOUT } from "@progress/kendo-angular-layout";
 import { DrawerItem, DrawerSelectEvent } from "@progress/kendo-angular-layout";
@@ -37,6 +37,8 @@ export class CircularComponent {
     { text: "Puntos de Atencion", svgIcon: alignJustifyIcon },
     { separator: true },
     { text: "Integracion", svgIcon: aggregateFieldsIcon },
+    { separator: true },
+    { text: "Comparacion", svgIcon: fileWrenchIcon },
   ];
   constructor() {    
   }

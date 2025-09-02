@@ -1,0 +1,113 @@
+<div class="upload-container">
+  <div class="upload-header">
+    <h2>Seleccionar Archivos para Comparar</h2>
+    <p>Sube dos archivos para comparar sus diferencias temporales</p>
+  </div>
+
+  <div class="upload-methods">
+    <!-- Método 1: Drag & Drop -->
+    <div class="upload-section">
+      <h3>📁 Subir Nuevos Archivos</h3>
+      <div class="file-drops">
+        <div class="file-drop-area" [class.dragover]="isDragOver1" (dragover)="onDragOver($event, 1)"
+          (dragleave)="onDragLeave($event, 1)" (drop)="onDrop($event, 1)" (click)="openFileSelector(1)">
+          <div class="drop-content">
+            <div class="file-icon">{{ file1 ? getFileIcon(file1.name) : '📄' }}</div>
+            <div class="drop-text">
+              <strong>{{ file1 ? file1.name : 'Archivo 1 (Anterior)' }}</strong>
+              <span>{{ file1 ? formatFileSize(file1.size) : 'Arrastra el archivo aquí o haz clic' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="vs-indicator">VS</div>
+
+        <div class="file-drop-area" [class.dragover]="isDragOver2" (dragover)="onDragOver($event, 2)"
+          (dragleave)="onDragLeave($event, 2)" (drop)="onDrop($event, 2)" (click)="openFileSelector(2)">
+          <div class="drop-content">
+            <div class="file-icon">{{ file2 ? getFileIcon(file2.name) : '📄' }}</div>
+            <div class="drop-text">
+              <strong>{{ file2 ? file2.name : 'Archivo 2 (Posterior)' }}</strong>
+              <span>{{ file2 ? formatFileSize(file2.size) : 'Arrastra el archivo aquí o haz clic' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="supported-formats">
+        <small>Formatos soportados: TXT, CSV, JSON, XLSX</small>
+      </div>
+      @if(file1 && file2){
+      <div class="upload-actions">
+        <button class="btn btn-primary" [disabled]="isUploading" (click)="uploadFiles()">
+          {{ isUploading ? 'Subiendo...' : '📤 Subir y Comparar' }}
+        </button>
+        <button class="btn btn-secondary" (click)="clearFiles()">
+          🗑️ Limpiar
+        </button>
+      </div>
+      }
+    </div>
+
+    <!-- Método 2: Seleccionar de archivos existentes -->
+    @if(existingFiles.length > 0){
+    <div class="upload-section">
+      <h3>📂 Usar Archivos Existentes</h3>
+      <div class="existing-files">
+        <div class="file-selector">
+          <label>Archivo 1 (Anterior):</label>
+          <select [(ngModel)]="selectedFile1" (change)="onExistingFileSelected()">
+            <option value="">Seleccionar archivo...</option>
+            @for (file of existingFiles; track $index) {
+            <option [value]="file.id">
+              {{ getFileIcon(file.extension) }} {{ file.name }}
+              ({{ formatFileSize(file.size) }})
+            </option>
+            }
+          </select>
+        </div>
+
+        <div class="file-selector">
+          <label>Archivo 2 (Posterior):</label>
+          <select [(ngModel)]="selectedFile2" (change)="onExistingFileSelected()">
+            <option value="">Seleccionar archivo...</option>
+            <option *ngFor="let file of existingFiles" [value]="file.id">
+              {{ getFileIcon(file.extension) }} {{ file.name }}
+              ({{ formatFileSize(file.size) }})
+            </option>
+          </select>
+        </div>
+        <div class="row">
+          <div class="col-12 d-flex flex-column align-items-center mb-3">
+            <button class="btn btn-primary mb-3"
+              [disabled]="!selectedFile1 || !selectedFile2 || selectedFile1 === selectedFile2"
+              (click)="compareExistingFiles()">
+              🔍 Comparar Archivos Seleccionados
+            </button>
+
+            <button class="btn btn-detailed"
+              [disabled]="!selectedFile1 || !selectedFile2 || selectedFile1 === selectedFile2"
+              (click)="compareExistingFiles(true)">
+              🔬 Análisis Detallado
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- Mensajes de estado -->
+  <div class="status-messages" *ngIf="statusMessage">
+    <div class="alert" [ngClass]="statusType">
+      {{ statusMessage }}
+    </div>
+  </div>
+</div>
+
+<!-- Input files ocultos -->
+<input #fileInput1 type="file" style="display: none" accept=".txt,.csv,.json,.xlsx,.xls"
+  (change)="onFileSelected($event, 1)">
+<input #fileInput2 type="file" style="display: none" accept=".txt,.csv,.json,.xlsx,.xls"
+  (change)="onFileSelected($event, 2)">

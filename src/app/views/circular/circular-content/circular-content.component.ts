@@ -29,12 +29,15 @@ import { FileService } from '../../../services/file.service';
 import { KENDO_DROPDOWNS } from '@progress/kendo-angular-dropdowns';
 import { environment } from '../../../../environments/environment';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ComparacionArchivosService } from '../../../services/comparacion-archivos.service';
+import { ComparacionArchivosComponent } from '../../uploads/comparacion-archivos/comparacion-archivos.component';
+import { ResultsComponent } from "../../results/results.component";
 @Component({
   selector: 'app-circular-content',
   standalone: true,
   imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
     KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
-    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS ],
+    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './circular-content.component.html',
   styleUrl: './circular-content.component.scss'
@@ -51,6 +54,7 @@ export class CircularContentComponent implements OnInit {
   vencidas_respuesta: any
   puntosAtencion: any
   graficosrespuesta: any;
+  
   programacionrespuesta: any;
   fecha: Date = new Date()
   public data = {
@@ -89,7 +93,13 @@ export class CircularContentComponent implements OnInit {
     autoSizeColumn: true,
     autoSizeAllColumns: true,
   };
-  constructor(private apiService: ApiService, private notificationService: NotificationService, private fileService: FileService, private sanitizer: DomSanitizer) {
+  comparisonResult: any = null;
+  isComparing = false;
+  currentYear = new Date().getFullYear();
+
+  constructor(private apiService: ApiService, private notificationService: NotificationService, private fileService: FileService, private sanitizer: DomSanitizer
+    , private comparacionArchivos:ComparacionArchivosService
+  ) {
     this.form = new FormGroup({
       numero_circular: new FormControl(this.data.numero_circular, [Validators.required]),
       fecha: new FormControl(this.data.fecha, [Validators.required,]),
@@ -659,4 +669,54 @@ console.log("ejercicio",this.selectedValues3)
     );
 
   }
+// Servicio de comparacion de archivos
+onFilesUploaded(uploadResult: any) {
+    console.log('Archivos subidos:', uploadResult);
+  }
+
+// onComparisonRequested(comparisonData: any) {
+//     this.isComparing = true;
+//     this.comparacionArchivos.compareFiles(
+//       comparisonData.file1Id, 
+//       comparisonData.file2Id
+//     ).subscribe({
+//       next: (result) => {
+//         this.comparisonResult = result;
+//         this.isComparing = false;
+//       },
+//       error: (error) => {
+//         console.error('Error en la comparación:', error);
+//         this.isComparing = false;
+//         // Aquí podrías mostrar un mensaje de error al usuario
+//       }
+//     });
+//   }
+onStructureChanged(hasChanges:boolean){
+ console.log('Hubo cambios estructurales:', hasChanges);
+}
+onStructureChangedAdd(hasChanges:boolean){
+   console.log('Hubo cambios en filas agregadas:', hasChanges);
+}
+onComparisonRequested(comparisonData: any) {
+    this.isComparing = true;
+    
+    const compareMethod = comparisonData.detailedAnalysis 
+      ? this.comparacionArchivos.compareFilesDetailed(comparisonData.file1Id, comparisonData.file2Id)
+      : this.comparacionArchivos.compareFiles(comparisonData.file1Id, comparisonData.file2Id);
+    
+    compareMethod.subscribe({
+      next: (result) => {
+        this.comparisonResult = result;
+        console.log(this.comparisonResult)
+        this.isComparing = false;
+        
+      },
+      error: (error) => {
+        console.error('Error en la comparación:', error);
+        this.isComparing = false;
+        // Aquí podrías mostrar un mensaje de error al usuario
+      }
+    });
+  }
+
 }

@@ -243,15 +243,14 @@
         <h5>REPORTES SED y SAP EXCEL</h5>
         <div class="col-12 mt-3">
             <!-- SED PROGRMACION -->
-            <kendo-expansionpanel title="Reportes SED PROGRAMACION" subtitle="Descargar Reporte"
-                [expanded]="true">
+            <kendo-expansionpanel title="Reportes SED PROGRAMACION" subtitle="Descargar Reporte" [expanded]="true">
 
                 <div class="row mb-2">
                     <div class="col-3">
                         <kendo-combobox [data]="listItems" [allowCustom]="allowCustom" [(ngModel)]="selectedValues1">
                         </kendo-combobox>
                     </div>
-                    <div class="col-2 d-flex align-items-center" >
+                    <div class="col-2 d-flex align-items-center">
                         <button kendoButton (click)="Programacion()" fillMode="solid" size="medium" rounded="medium"
                             themeColor="success" [svgIcon]="fileExcelIcon" [disabled]="isProgramacion ">Generar
                             Programacion</button>
@@ -274,8 +273,7 @@
                         <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
                         <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
                             [width]="130"></kendo-grid-column>
-                        <kendo-grid-column field="modification_time" title="Creacion"
-                            [width]="160"></kendo-grid-column>
+                        <kendo-grid-column field="modification_time" title="Creacion" [width]="160"></kendo-grid-column>
                         <kendo-grid-command-column title="Acciones" [width]="210">
                             <ng-template kendoGridCellTemplate let-dataItem>
                                 <button kendoButton (click)="downloadFilesSEDPROGRAMACION(dataItem.name)"
@@ -299,8 +297,8 @@
                     </div>
                     <div class="col-2 d-flex align-items-center">
                         <button kendoButton (click)="Seguimiento()" fillMode="solid" size="medium" rounded="medium"
-                            themeColor="success" [svgIcon]="fileExcelIcon" [disabled]="isSeguimiento ">Generar 
-                         Seguimiento</button>
+                            themeColor="success" [svgIcon]="fileExcelIcon" [disabled]="isSeguimiento ">Generar
+                            Seguimiento</button>
                         <span class="ms-2">
                             @if (isSeguimiento) {
                             <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
@@ -339,7 +337,7 @@
             <kendo-expansionpanel title="Reportes SAP " subtitle="Descargar Reporte" [expanded]="true">
                 <div class="row">
                     <div class="col-3">
-                        <kendo-combobox [data]="listItems3" [allowCustom]="allowCustom"  [(ngModel)]="selectedValues3">
+                        <kendo-combobox [data]="listItems3" [allowCustom]="allowCustom" [(ngModel)]="selectedValues3">
                         </kendo-combobox>
                     </div>
                     <div class="col-2 d-flex align-items-center">
@@ -366,8 +364,8 @@
                             [width]="160"></kendo-grid-column>
                         <kendo-grid-command-column title="Acciones" [width]="210">
                             <ng-template kendoGridCellTemplate let-dataItem>
-                                <button kendoButton (click)="downloadFilesSAP(dataItem.name)"
-                                    class="k-primary" [svgIcon]="downloadIcon">Descargar</button>
+                                <button kendoButton (click)="downloadFilesSAP(dataItem.name)" class="k-primary"
+                                    [svgIcon]="downloadIcon">Descargar</button>
                                 <!-- @if(dataItem.extension === '.pdf' ){
                                 <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
                                     PDF</button>
@@ -383,5 +381,55 @@
         </div>
     </div>
 
+</div>
+}
+@if (selectedItem === 'Comparacion') {
+<div id="Comparacion">
+    <div class="container-fluid">
+        <div class="app-container">
+            <header class="app-header">
+                <div class="container">
+                    <h1>
+                        <i class="icon">📊</i>
+                        Comparador de Archivos
+                    </h1>
+                    <p class="subtitle">Compara archivos de diferentes períodos de tiempo</p>
+                </div>
+            </header>
+
+            <main class="main-content">
+                <div class="container">
+                    <div class="upload-section">
+                        <app-comparacion-archivos (filesUploaded)="onFilesUploaded($event)"
+                            (comparisonRequested)="onComparisonRequested($event)">
+                        </app-comparacion-archivos>
+                    </div>
+                    @if (comparisonResult) {
+                    <div class="comparison-section">
+                        <app-results (structureChanged)="onStructureChanged($event)" (structureChangedAdd)="onStructureChangedAdd($event)" [result]="comparisonResult" [isLoading]="isComparing">
+                        </app-results>
+                    </div>
+                    }
+
+                    @if (isComparing) {
+                    <div class="loading-overlay">
+                        <div class="loading-spinner">
+                            <div class="spinner"></div>
+                            <p>Comparando archivos...</p>
+                        </div>
+                    </div>
+                    }
+
+                </div>
+            </main>
+
+            <footer class="app-footer">
+                <div class="container">
+                    <p>Herramienta de comparación temporal de archivos - {{ currentYear }}</p>
+                </div>
+            </footer>
+        </div>
+
+    </div>
 </div>
 }
