@@ -227,7 +227,8 @@ private handleError(error: HttpErrorResponse) {
       '.csv': '📊',
       '.json': '📋',
       '.xlsx': '📈',
-      '.xls': '📈'
+      '.xls': '📈',
+      '.docx': '📄'
     };
     return icons[extension.toLowerCase()] || '📄';
   }

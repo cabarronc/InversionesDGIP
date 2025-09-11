@@ -35,7 +35,7 @@
       </div>
 
       <div class="supported-formats">
-        <small>Formatos soportados: TXT, CSV, JSON, XLSX</small>
+        <small>Formatos soportados: TXT, CSV, JSON, XLSX, DOCX</small>
       </div>
       @if(file1 && file2){
       <div class="upload-actions">
@@ -107,7 +107,7 @@
 </div>
 
 <!-- Input files ocultos -->
-<input #fileInput1 type="file" style="display: none" accept=".txt,.csv,.json,.xlsx,.xls"
+<input #fileInput1 type="file" style="display: none" accept=".txt,.csv,.json,.xlsx,.xls,.docx"
   (change)="onFileSelected($event, 1)">
-<input #fileInput2 type="file" style="display: none" accept=".txt,.csv,.json,.xlsx,.xls"
+<input #fileInput2 type="file" style="display: none" accept=".txt,.csv,.json,.xlsx,.xls,.docx"
   (change)="onFileSelected($event, 2)">

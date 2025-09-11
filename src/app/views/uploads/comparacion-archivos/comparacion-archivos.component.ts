@@ -100,13 +100,14 @@ loadExistingFiles() {
     // Validar tipo de archivo
     const allowedTypes = ['text/plain', 'text/csv', 'application/json', 
                          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                         'application/vnd.ms-excel'];
-    const allowedExtensions = ['.txt', '.csv', '.json', '.xlsx', '.xls'];
+                         'application/vnd.ms-excel',
+                        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
+    const allowedExtensions = ['.txt', '.csv', '.json', '.xlsx', '.xls','.docx'];
     
     const fileExtension = '.' + file.name.split('.').pop()?.toLowerCase();
     
     if (!allowedTypes.includes(file.type) && !allowedExtensions.includes(fileExtension)) {
-      this.showStatus('Tipo de archivo no soportado. Use: TXT, CSV, JSON, XLSX', 'error');
+      this.showStatus('Tipo de archivo no soportado. Use: TXT, CSV, JSON, XLSX, DOCX', 'error');
       return;
     }
 
