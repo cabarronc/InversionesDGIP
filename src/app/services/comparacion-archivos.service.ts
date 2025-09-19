@@ -60,8 +60,46 @@ export interface ComparisonResult {
   message?: string;
   file1_info?: any;
   file2_info?: any;
+   // NUEVO: Análisis de sustituciones línea por línea
+  field_substitutions?: {
+    [fieldName: string]: FieldSubstitutions;
+  };
+}
+export interface FieldSubstitutions {
+  column_name: string;
+  total_rows_compared: number;
+  rows_changed: number;
+  rows_unchanged: number;
+  has_changes: boolean;
+  line_by_line_changes: LineChange[];
+  value_mappings: { [oldValue: string]: ValueMapping[] };
+  unique_changes_summary: UniqueChangesSummary;
 }
 
+export interface LineChange {
+  line_number: number;
+  old_value: any;
+  new_value: any;
+  change_description: string;
+}
+
+export interface ValueMapping {
+  new_value: any;
+  line_number: number;
+}
+
+export interface UniqueChangesSummary {
+  substitutions: ValueSubstitution[];
+  additions_only: any[];
+  removals_only: any[];
+}
+
+export interface ValueSubstitution {
+  old_value: any;
+  new_value: any;
+  occurrences: number;
+  description: string;
+}
 export interface FieldAnalysis {
   column_name: string;
   data_type_old: string;
@@ -153,13 +191,21 @@ private apiUrl = environment.apiUrl_compacion;
         catchError(this.handleError)
       );
   }
-
+//Metedo para los detalles columna por columna
   compareFilesDetailed(file1Id: string, file2Id: string): Observable<ComparisonResult> {
     return this.http.get<ComparisonResult>(`${this.apiUrl}/compare/${file1Id}/${file2Id}/detailed`)
       .pipe(
         retry(2),
         catchError(this.handleError)
       );
+  }
+  // Método en el servicio para el nuevo endpoint
+compareFilesSubstitutions(file1Id: string, file2Id: string): Observable<ComparisonResult> {
+  return this.http.get<ComparisonResult>(`${this.apiUrl}/compare/${file1Id}/${file2Id}/substitutions`)
+    .pipe(
+      retry(2),
+      catchError(this.handleError)
+    );
   }
   listFiles(): Observable<FileInfo[]> {
     return this.http.get<FileInfo[]>(`${this.apiUrl}/files`)

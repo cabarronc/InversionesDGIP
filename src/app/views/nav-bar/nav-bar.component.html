@@ -1,20 +1,18 @@
 <!--Load the font icons package:-->
-<link
-rel="stylesheet"
-href="https://unpkg.com/@progress/kendo-font-icons/dist/index.css"
-/>
+<link rel="stylesheet" href="https://unpkg.com/@progress/kendo-font-icons/dist/index.css" />
 <kendo-appbar position="bottom" [themeColor]="themeColor">
     <kendo-appbar-section>
-            <kendo-icon name="home" size="large" themeColor="info"></kendo-icon>
+        <kendo-icon name="home" size="large" themeColor="info"></kendo-icon>
     </kendo-appbar-section>
 
     <kendo-appbar-section>
         <ul class="appbar-menu">
             <li><span>
-                <h1 class="title"><a routerLink="/principal" routerLinkActive="router-link-active" ariaCurrentWhenActive="page">Sistema de Informacion DGIP</a></h1>
-            </span></li>
+                    <h1 class="title"><a routerLink="/principal" routerLinkActive="router-link-active"
+                            ariaCurrentWhenActive="page">Sistema de Informacion DGIP</a></h1>
+                </span></li>
         </ul>
-        
+
 
     </kendo-appbar-section>
 
@@ -22,13 +20,18 @@ href="https://unpkg.com/@progress/kendo-font-icons/dist/index.css"
 
     <kendo-appbar-section>
         <ul class="appbar-menu">
-            <li><a routerLink="/circular" routerLinkActive="router-link-active" ariaCurrentWhenActive="page">Circular</a></li>
-             <li><a routerLink="/claude" routerLinkActive="router-link-active" ariaCurrentWhenActive="page"><span>Centro de Datos</span></a></li>
-            <li><a routerLink="/correos" routerLinkActive="router-link-active" ariaCurrentWhenActive="page"><span>Correos</span></a></li>
-            <li><a routerLink="/adecuaciones" routerLinkActive="router-link-active" ariaCurrentWhenActive="page"><span>Adecuaciones</span></a></li>
-            <li><a routerLink="/cosainceg" routerLinkActive="router-link-active" ariaCurrentWhenActive="page"><span>COSAINCEG</span></a></li>
-            <li><span>Tableros</span></li>
-            <li><span>Catalogos</span></li>
+            <li><a routerLink="/circular" routerLinkActive="router-link-active"
+                    ariaCurrentWhenActive="page">Circular</a></li>
+            <li><a routerLink="/claude" routerLinkActive="router-link-active" ariaCurrentWhenActive="page"><span>Centro
+                        de Datos</span></a></li>
+            <li><a routerLink="/correos" routerLinkActive="router-link-active"
+                    ariaCurrentWhenActive="page"><span>Correos</span></a></li>
+            <li><a routerLink="/adecuaciones" routerLinkActive="router-link-active"
+                    ariaCurrentWhenActive="page"><span>Adecuaciones</span></a></li>
+            <li><a routerLink="/cosainceg" routerLinkActive="router-link-active"
+                    ariaCurrentWhenActive="page"><span>COSAINCEG</span></a></li>
+            <!-- <li><span>Tableros</span></li>
+            <li><span>Catalogos</span></li> -->
 
         </ul>
     </kendo-appbar-section>
@@ -38,18 +41,129 @@ href="https://unpkg.com/@progress/kendo-font-icons/dist/index.css"
         <img src="/navigation/appbar/SF.jpg" class="appbar-logo">
     </kendo-appbar-section>
     <kendo-appbar-section class="actions">
-        <kendo-badge-container>
-                <kendo-svgicon [icon]="bellIcon"></kendo-svgicon>
-            <kendo-badge shape="dot" themeColor="warning" size="small" position="inside"></kendo-badge>
-        </kendo-badge-container>
+
+        <kendo-icon name="file-config" size="large"></kendo-icon>
+
+        <a *ngIf="canAccessModule('users')" routerLink="/admin" routerLinkActive="router-link-active"
+            ariaCurrentWhenActive="page"><span>Administracion</span></a>
+
+
         <span class="k-appbar-separator"></span>
     </kendo-appbar-section>
 
     <kendo-appbar-section>
-        <kendo-avatar [svgIcon]="userSvg" shape="circle" width="26px" height="26px"></kendo-avatar>
+        <div class="relative inline-block text-left">
+            <div *ngIf="currentUser">
+                <button (click)="showUserMenu = !showUserMenu" class="button-perfil" #avatarButton width="36px">
+                    <div *ngIf="currentUser.avatar">
+                        <img class="img-perfil-con" [src]="getAvatarUrl(currentUser.avatar)" alt="currentUser.name">
+                        <span class="text-perfil">
+                            {{ currentUser.name.split(' ')[0].charAt(0).toUpperCase() +
+                            currentUser.name.split(' ')[0].slice(1).toLowerCase()}}
+                        </span>
+                    </div>
+                    <div *ngIf="!currentUser.avatar">
+                        <img src="https://github.com/cabarronc/RecursosMultimedia/blob/main/usuario_default.jpg?raw=true"
+                            [alt]="currentUser.name" class="img-perfil-con">
+                        <span class="text-perfil">
+                            {{ currentUser.name.split(' ')[0].charAt(0).toUpperCase() +
+                            currentUser.name.split(' ')[0].slice(1).toLowerCase()}}
+                        </span>
+                    </div>
+                </button> &nbsp;
+                <button kendoButton #infoButton class="button-perfil" (click)="showSessionModal = !showSessionModal"
+                    [svgIcon]="infoSolidIcon" width="36px" height="36px">
+                    <span class="text-perfil">
+                        Info
+                    </span>
+                    <!-- <kendo-avatar [svgIcon]="userSvg" shape="circle" width="36px" height="36px">
+
+                    </kendo-avatar> -->
+                </button>
+
+
+                <kendo-popup [anchor]="avatarButton" [popupAlign]="{ horizontal: 'right', vertical: 'bottom' }"
+                    [anchorAlign]="{ horizontal: 'right', vertical: 'top' }" [animate]="true" *ngIf="showUserMenu"
+                    (close)="showUserMenu = false">
+                    <div class="px-4 py-2 text-sm text-gray-700 border-b">
+                        <div class="font-medium">{{ currentUser.name }}</div>
+                        <div class="text-gray-500">{{ currentUser.email }}</div>
+                    </div>
+
+                    <a href="#" (click)="logout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        Cerrar Sesión
+                    </a>
+                </kendo-popup>
+                <kendo-popup [anchor]="infoButton" [popupAlign]="{ horizontal: 'right', vertical: 'bottom' }"
+                    [anchorAlign]="{ horizontal: 'right', vertical: 'top' }" [animate]="true" *ngIf="showSessionModal"
+                    (close)="showSessionModal  = false">
+                    <div *ngIf="sessionInfo">
+                        <div class="px-4 py-2 text-sm text-gray-700 border-b">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Tiempo restante:</span>
+                                <span class="font-medium">{{ formatTimeLeft(sessionInfo.timeLeft) }}</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Tipo de sesión:</span>
+                                <span class="font-medium">
+                                    {{ sessionInfo.rememberMe ? 'Recordarme (30 días)' : 'Normal (1 horas)' }}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Estado:</span>
+                            <div class="flex items-center">
+                                <div class="h-2 w-2 rounded-full mr-2" [class]="getSessionStatusClass()"></div>
+                                <span class="font-medium">{{ getSessionStatusText() }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </kendo-popup>
+
+            </div>
+        </div>&nbsp;
+
+        <div id="sessionWarning" class="session-warning" *ngIf="showSessionWarning">
+            <div class="session-flex">
+                <div class="alert-icon">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="session-text">
+                    <p>
+                        <strong>¡Atención!</strong> Tu sesión expirará en {{ formatTimeLeft(sessionInfo?.timeLeft || 0)
+                        }}.
+                        <button (click)="extendSession(); showSessionWarning = false">
+                            Extender sesión
+                        </button>
+                    </p>
+                </div>
+                <div class="close-btn-container">
+                    <button (click)="showSessionWarning = false">
+                        <svg fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- <a href="#" (click)="logout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+            Cerrar Sesión
+        </a> -->
+
     </kendo-appbar-section>
 
-
 </kendo-appbar>
+
 <router-outlet></router-outlet>
+<!-- <div 
+      *ngIf="showUserMenu || showSessionModal" 
+      (click)="closeModals()"
+      class="fixed inset-0 z-40"></div> -->
 <!-- <kendo-breadcrumb [items]="items"></kendo-breadcrumb> -->

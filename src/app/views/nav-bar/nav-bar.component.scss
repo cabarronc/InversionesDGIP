@@ -47,3 +47,153 @@ body {
   .k-appbar .k-appbar-separator {
     margin: 0 8px;
   }
+
+  ::ng-deep kendo-avatar {
+  cursor: pointer;
+}
+
+.alert-icon {
+    margin-top: 10px;
+  width: 20px;     /* ancho */
+  height: 20px;    /* alto */
+  color: #080808;  /* rojo (equivalente a text-red-600 de Tailwind) */
+  display: inline-block;
+  vertical-align: middle; /* opcional para centrar con texto */
+}
+
+
+.img-perfil {
+  border-radius: 50%; /* convierte la imagen en un círculo */
+  width: 15px;       /* define ancho */
+  height: 15px;      /* define alto */
+  object-fit: cover;  /* evita que se deforme la imagen */
+}
+.imagenes {
+  height: 2rem;              /* h-8  →  8 * 0.25rem = 2rem */
+  width: 2rem;               /* w-8  →  8 * 0.25rem = 2rem */
+  border-radius: 9999px;     /* rounded-full → círculo completo */
+ background-color: #33588d; /* bg-gray-600 (en Tailwind equivale a este gris) */
+  display: flex;             /* flex */
+  align-items: center;       /* items-center → alinear verticalmente */
+  justify-content: center;   /* justify-center → centrar horizontalmente */
+}
+
+.img-perfil-con {
+  height: 2rem;            /* h-8 → 8 * 0.25rem = 2rem = 32px */
+  width: 2rem;             /* w-8 → 8 * 0.25rem = 2rem = 32px */
+  border-radius: 9999px;   /* rounded-full → círculo completo */
+  object-fit: cover;       /* object-cover → recorta y ajusta la imagen sin deformarla */
+}
+
+.text-perfil {
+  font-size: 0.875rem;   /* text-sm → 14px (por defecto en Tailwind) */
+  font-weight: 500;      /* font-medium */
+  color: #ffffff;        /* text-white */
+}
+
+.button-perfil{
+   background-color: #344e72;; /* bg-gray-800 */           /* flex */
+  font-size: 0.875rem;  
+   color: white;     /* text-sm → 14px */
+  border-radius: 9999px;
+   border: none;
+  cursor: pointer;     /* rounded-full → círculo/píldora */
+  outline: none;
+  transition: opacity 0.3s ease;              /* focus:outline-none */
+
+}
+.button-perfil:focus{
+   outline: none;                 /* focus:outline-none */
+  box-shadow: 
+    0 0 0 2px #ffffff,           /* focus:ring-2 + focus:ring-white */
+    0 0 0 4px #2d4c77;           /* focus:ring-offset-2 + focus:ring-offset-gray-800 */
+
+}
+.button-perfil:hover{
+       opacity: 0.9;
+
+}
+.session-warning {
+  background-color: #f5eed1; /* bg-yellow-50 */
+  padding: 1rem; /* p-4 */
+  position: relative;
+  font-family: sans-serif;
+  border-left: 3px solid #FACC15;
+   /* animación */
+  transform: translateY(-20px);
+  opacity: 0;
+  animation: slideDown 1.7s ease-out forwards;
+}
+@keyframes slideDown {
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.session-flex {
+  display: flex;
+  align-items: center;
+}
+
+
+.alert-line {
+  width: 4px;               /* grosor de la línea */
+  height: 50%;              /* altura de la línea (50% del contenedor) */
+  background-color: #FACC15; /* color amarillo */
+  margin-right: 0.75rem;    /* separación del contenido */
+  align-self: center;       /* centrar verticalmente */
+}
+
+.alert-icon svg {
+  margin-top: -15px;
+  width: 30px;     /* ancho */
+  height: 30px;  
+  color: #FACC15;  /* text-yellow-400 */
+  vertical-align: middle; /* opcional para centrar con texto */
+}
+
+.session-text {
+  margin-left: 0.75rem; /* ml-3 */
+}
+
+.session-text p {
+  font-size: 0.775rem; /* text-sm */
+  color: #92400E; /* text-yellow-700 */
+  margin: 0;
+}
+
+.session-text button {
+  margin-left: 0.5rem; /* ml-2 */
+  font-weight: 500;    /* font-medium */
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #92400E;
+}
+
+.session-text button:hover {
+  color: #B45309; /* hover:text-yellow-800 */
+}
+
+.close-btn-container {
+  margin-left: auto;   /* ml-auto */
+  padding-left: 0.75rem; /* pl-3 */
+}
+
+.close-btn-container button {
+  color: #FACC15; /* text-yellow-400 */
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.close-btn-container button:hover {
+  color: #D97706; /* hover:text-yellow-600 */
+}
+
+.close-btn-container svg {
+  height: 1.25rem;
+  width: 1.25rem;
+}

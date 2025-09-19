@@ -1,0 +1,413 @@
+@if (selectedItem === "Gestion de Usuarios") {
+
+<div class="container">
+    <div class="header-filter">
+        <h1 class="header-title">Gestión de Usuarios</h1>
+        <div class="col 9"></div>
+        <div class="col-2 d-flex justify-end">
+            <button kendoButton themeColor="success" (click)="openCreateModal()">
+                <kendo-icon name="plus"></kendo-icon>
+                <span>Nuevo Usuario</span>
+            </button>
+        </div>
+    </div>
+    <div class="header-filter">
+        <div class="row">
+            <div class="flex items-center space-x-4">
+                <kendo-autocomplete [(ngModel)]="searchTerm" size="medium" (valueChange)="onSearch()"
+                    [data]="correoList" placeholder="Buscar por nombre o email...">
+                </kendo-autocomplete>
+            </div>
+        </div>
+        <div class="flex items-center space-x-4">&nbsp;&nbsp;&nbsp;
+            <kendo-label [for]="combobox" text="   Estatus:"></kendo-label>&nbsp;
+            <kendo-combobox [data]="statusOptions" textField="text" size="medium" rounded="medium" fillMode="solid"
+                valueField="value" [(ngModel)]="statusFilter" (valueChange)="loadUsers()" #combobox>
+            </kendo-combobox>
+        </div>
+    </div>
+
+    <kendo-grid [data]="users" [selectable]="{ mode: 'multiple', drag: true }" [pageSize]="itemsPerPage"
+        [skip]="(currentPage - 1) * itemsPerPage"
+        [pageable]="{ buttonCount: 5, info: true, type: 'numeric', pageSizes: [10, 20, 50] }" [sortable]="true"
+        [loading]="loading" [filterable]="true" (pageChange)="onPageChange($event)" [height]="600">
+        <kendo-grid-column field="name" title="Usuario" [width]="200">
+            <ng-template kendoGridCellTemplate let-user>
+                <div class="flex items-center space-x-2">
+                    <img *ngIf="user.avatar"
+                        [src]="'http://172.31.33.105:9000/api/files/users/' + user.id + '/' + user.avatar" width="60"
+                        [alt]="user.name" />
+                    <img *ngIf="!user.avatar"
+                        src="https://github.com/cabarronc/RecursosMultimedia/blob/main/usuario_default.jpg?raw=true"
+                        width="60" />
+                    <span>{{ user.name }}</span>
+                </div>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="email" title="Email" [width]="250"></kendo-grid-column>
+
+        <kendo-grid-column field="roles" title="Roles" [width]="150">
+            <ng-template kendoGridCellTemplate let-user>
+                <span *ngFor="let role of user.roles; let last = last">
+                    {{ role.name }}<span *ngIf="!last">, </span>
+                </span>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column field="active" title="Estado" [width]="120">
+            <ng-template kendoGridCellTemplate let-user>
+                <span class="px-2 py-1 text-xs font-semibold rounded-full"
+                    [ngClass]="user.active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                    {{ user.active ? 'Activo' : 'Inactivo' }}
+                </span>
+            </ng-template>
+        </kendo-grid-column>
+
+        <kendo-grid-column title="Acciones" [width]="150">
+            <ng-template kendoGridCellTemplate let-user>
+                <div class="flex space-x-2">
+                    <button kendoButton (click)="openEditModal(user)" themeColor="info">
+
+                        <kendo-icon name="edit-annotations"></kendo-icon>
+                    </button>&nbsp;
+                    <button kendoButton (click)="confirmDelete(user)" themeColor="error">
+
+                        <kendo-icon name="trash"></kendo-icon>
+                    </button>
+                </div>
+            </ng-template>
+        </kendo-grid-column>
+    </kendo-grid>
+
+    <kendo-dialog *ngIf="showModal" (close)="showModal = false" [minWidth]="250" [width]="450">
+        <kendo-dialog-titlebar>
+            <h3 class="text-lg font-medium text-gray-900 mb-4">
+                {{ editingUser ? 'Editar Usuario' : 'Crear Usuario' }}
+            </h3>
+        </kendo-dialog-titlebar>
+        <div class="container-fluid">
+            <div class="mt-3">
+                <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+                    <div class="row">
+                        <kendo-formfield>
+                            <kendo-label for="nombre">Nombre</kendo-label>
+                            <input kendoTextBox id="nombre" formControlName="name" placeholder="tu@email.com" />
+
+                            <kendo-formerror *ngIf="userForm.get('name')?.invalid && userForm.get('name')?.touched">
+                                El nombre es requerido
+                            </kendo-formerror>
+                        </kendo-formfield>
+                    </div>
+                    <div class="row mt-2">
+                        <kendo-formfield>
+                            <kendo-label for="email">Email</kendo-label>
+                            <kendo-textbox id="email" formControlName="email" #email placeholder="tu@email.com" />
+                            <kendo-formerror *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched">
+                                El email es requerido y debe ser válido
+                            </kendo-formerror>
+                        </kendo-formfield>
+                    </div>
+                    <div *ngIf="!editingUser">
+                        <div class="row mt-2">
+
+                            <kendo-formfield>
+                                <kendo-label for="pass">Contraseña</kendo-label>
+                                <kendo-textbox id="password" [type]=passInputType formControlName="password">
+                                    <ng-template kendoTextBoxSuffixTemplate>
+                                        <button kendoButton look="flat" type="button" [svgIcon]="eyeIcon"
+                                            (click)="togglePassVisibility()">
+
+                                        </button>
+                                    </ng-template>
+                                </kendo-textbox>
+                                <kendo-formerror
+                                    *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched">
+                                    El email es requerido y debe ser válido
+                                </kendo-formerror>
+                            </kendo-formfield>
+                        </div>
+                        <div class="row mt-2">
+
+
+                            <kendo-formfield>
+                                <kendo-label for="passcon"> Confirmar Contraseña</kendo-label>
+                                <kendo-textbox id="passcon" [type]=passInputType2 formControlName="passwordConfirm">
+                                    <ng-template kendoTextBoxSuffixTemplate>
+                                        <button kendoButton look="flat" type="button" [svgIcon]="eyeIcon2"
+                                            (click)="togglePassConfirmVisibility()">
+
+                                        </button>
+                                    </ng-template>
+                                </kendo-textbox>
+                                <kendo-formerror
+                                    *ngIf="userForm.get('passwordConfirm')?.invalid && userForm.get('passwordConfirm')?.touched">
+                                    El email es requerido y debe ser válido
+                                </kendo-formerror>
+                            </kendo-formfield>
+                        </div>
+                    </div>
+                    <div class="row mb-2 mt-2">
+                        <label class="selector">Roles</label>
+                        <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                            <div *ngFor="let role of availableRoles" class="flex items-center">
+                                <input type="checkbox" [value]="role.id" (change)="onRoleChange($event, role.id)"
+                                    [checked]="selectedRoles.includes(role.id)"
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                                <label class="ml-2 text-sm text-gray-700">{{ role.name }}</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-2 mt-2">
+                        <label class="selector">Activo</label>
+                        <div class="flex items-center">
+
+                            <input type="checkbox" formControlName="active">
+                            <label class="ml-2 text-sm text-gray-700">Usuario activo</label>
+                        </div>
+                    </div>
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-3">
+                            <button kendoButton themeColor="info" type="submit"
+                                [disabled]="userForm.invalid || submitting">
+                                {{ submitting ? 'Guardando...' : (editingUser ? 'Actualizar' : 'Crear') }}
+                            </button>
+                        </div>
+                        <div class="col-3">
+                            <button kendoButton type="button" themeColor="primary" (click)="closeModal()">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </kendo-dialog>
+</div>
+}
+@if (selectedItem === "Gestion de Roles") {
+<div class="container">
+    <div class="header-filter">
+        <h1 class="header-title">Gestión de Roles</h1>
+        <div class="col"></div>
+        <div class="col-2 d-flex justify-end">
+            <button kendoButton themeColor="success" (click)="openRoleModal()" class="ms-2">
+                <kendo-icon name="plus"></kendo-icon>
+                <span>Nuevo Rol</span>
+            </button>
+        </div>
+    </div>
+    <div *ngIf="!loadingRoles">
+        <kendo-grid [data]="roles" [selectable]="{ mode: 'multiple', drag: true }" [pageSize]="itemsPerPage"
+            [skip]="(currentPage - 1) * itemsPerPage"
+            [pageable]="{ buttonCount: 5, info: true, type: 'numeric', pageSizes: [10, 20, 50] }" [sortable]="true"
+            [loading]="loading" [filterable]="true" (pageChange)="onPageChange($event)" [height]="600">
+            <kendo-grid-column field="name" title="Nombre" [width]="200">
+            </kendo-grid-column>
+            <kendo-grid-column field="description" title="Descripcion" [width]="200">
+            </kendo-grid-column>
+
+            <kendo-grid-column field="permissions" title="Permisos" [width]="250">
+                <ng-template kendoGridCellTemplate let-role>
+                    <ng-container *ngIf="role.permissions?.length; else noPerms">
+                        <span *ngFor="let permission of role.permissions; let last = last">
+                            {{ permission.name }}<span *ngIf="!last">, </span>
+                        </span>
+                    </ng-container>
+                    <ng-template #noPerms>
+                        <span>Sin permisos asignados</span>
+                    </ng-template>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column field="active" title="Estado" [width]="120">
+                <ng-template kendoGridCellTemplate let-role>
+                    <span>
+                        {{ role.active ? 'Activo' : 'Inactivo' }}
+                    </span>
+                </ng-template>
+            </kendo-grid-column>
+
+            <kendo-grid-column title="Acciones" [width]="150">
+                <ng-template kendoGridCellTemplate let-role>
+                    <div class="flex space-x-2">
+                        <button kendoButton (click)="editRole(role)" themeColor="info">
+
+                            <kendo-icon name="edit-annotations"></kendo-icon>
+                        </button>&nbsp;
+                        <button kendoButton (click)="confirmDeleteRole(role)" themeColor="error">
+
+                            <kendo-icon name="trash"></kendo-icon>
+                        </button>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+        </kendo-grid>
+    </div>
+
+    <kendo-dialog *ngIf="showRoleModal" (close)="showRoleModal = false" [minWidth]="250" [width]="450">
+        <kendo-dialog-titlebar>
+            <h3 class="text-lg font-medium text-gray-900 mb-4">
+                {{ editingRole ? 'Editar Rol' : 'Crear Rol' }}
+            </h3>
+        </kendo-dialog-titlebar>
+        <div class="container-fluid">
+            <div class="mt-3">
+                <form [formGroup]="roleForm" (ngSubmit)="onSubmitRole()">
+                    <div class="row">
+                        <kendo-formfield>
+                            <kendo-label for="nombre">Nombre</kendo-label>
+                            <input kendoTextBox id="nombre" formControlName="name" />
+
+                            <kendo-formerror *ngIf="roleForm.get('name')?.invalid && roleForm.get('name')?.touched">
+                                El nombre es requerido
+                            </kendo-formerror>
+                        </kendo-formfield>
+                    </div>
+                    <div class="row mt-2 mb-2">
+                        <kendo-formfield>
+                            <kendo-label for="descripcion">Descripcion</kendo-label>
+                            <kendo-textbox id="descripcion" formControlName="description" #email />
+                            <kendo-formerror
+                                *ngIf="roleForm.get('description')?.invalid && roleForm.get('description')?.touched">
+                                El email es requerido y debe ser válido
+                            </kendo-formerror>
+                        </kendo-formfield>
+                    </div>
+
+
+                    <div class="mb-2">
+                        <div class="flex items-center">
+                            <input type="checkbox" formControlName="active">
+                            <label class="ml-2 text-sm text-gray-700">Usuario activo</label>
+                        </div>
+                    </div>
+
+                    <div class="row d-flex justify-content-center mt-2">
+                        <div class="col-3">
+                            <button kendoButton themeColor="info" type="submit"
+                                [disabled]="roleForm.invalid || submitting">
+                                {{ submitting ? 'Guardando...' : (editingRole ? 'Actualizar' : 'Crear') }}
+                            </button>
+                        </div>
+                        <div class="col-3">
+                            <button kendoButton type="button" themeColor="primary" (click)="closeRoleModal()">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </kendo-dialog>
+</div>
+}
+@if (selectedItem === "Gestion de Permisos") {
+
+<div class="container">
+    <div class="header-filter">
+        <h1 class="header-title">Gestión de Permisos</h1>
+        <div class="col 9"></div>
+        <div class="col-2 d-flex justify-end">
+            <button kendoButton themeColor="success" (click)="openPermissionModal()">
+                <kendo-icon name="plus"></kendo-icon>
+                <span>Nuevo Permiso</span>
+            </button>
+        </div>
+    </div>
+    <div *ngIf="!loadingPermissions">
+        <!-- <div *ngFor="let module of getPermissionsByModule()" class="border border-gray-200 rounded-lg p-4">
+                <h3 class="text-lg font-medium text-gray-900 mb-3">{{ module.name }}</h3>
+        </div> -->
+        <kendo-grid [data]="permissions" [selectable]="{ mode: 'multiple', drag: true }" [pageSize]="itemsPerPage"
+            [skip]="(currentPage - 1) * itemsPerPage"
+            [pageable]="{ buttonCount: 5, info: true, type: 'numeric', pageSizes: [10, 20, 50] }" [sortable]="true"
+            [loading]="loading" [filterable]="true" (pageChange)="onPageChange($event)" [height]="600">
+            <kendo-grid-column field="module" title="Nombre" [width]="200">
+            </kendo-grid-column>
+            <kendo-grid-column field="action" title="Accion" [width]="200">
+            </kendo-grid-column>
+            <kendo-grid-column field="description" title="Descripcion" [width]="200">
+            </kendo-grid-column>
+
+            <kendo-grid-column title="Acciones" [width]="150">
+                <ng-template kendoGridCellTemplate let-permission>
+                    <div class="flex space-x-2">
+                        <button kendoButton (click)="editPermission(permission)" themeColor="info">
+
+                            <kendo-icon name="edit-annotations"></kendo-icon>
+                        </button>&nbsp;
+                        <button kendoButton (click)="confirmDeletePermission(permission)" themeColor="error">
+
+                            <kendo-icon name="trash"></kendo-icon>
+                        </button>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+        </kendo-grid>
+    </div>
+
+    <kendo-dialog *ngIf="showPermissionModal" (close)="showPermissionModal = false" [minWidth]="250" [width]="450">
+        <kendo-dialog-titlebar>
+            <h3>
+                {{ editingPermission ? 'Editar Permiso' : 'Crear Permiso' }}
+            </h3>
+        </kendo-dialog-titlebar>
+        <div class="container-fluid">
+            <div class="mt-3">
+                <form [formGroup]="permissionForm" (ngSubmit)="onSubmitPermission()">
+                    <div class="row">
+                        <kendo-formfield>
+                            <kendo-label for="modulo">Modulo</kendo-label>
+                            <input kendoTextBox id="modulo" formControlName="module" />
+
+                            <kendo-formerror
+                                *ngIf="permissionForm.get('module')?.invalid && permissionForm.get('module')?.touched">
+                                El nombre del modulo es requerido
+                            </kendo-formerror>
+                        </kendo-formfield>
+                    </div>
+                    <div class="row mt-2">
+                        <kendo-formfield>
+                            <kendo-label for="accion">Accion</kendo-label>
+                            <kendo-textbox id="accion" formControlName="action" #accion />
+                            <kendo-formerror
+                                *ngIf="permissionForm.get('action')?.invalid && permissionForm.get('action')?.touched">
+                                La accion es requerido
+                            </kendo-formerror>
+                        </kendo-formfield>
+                    </div>
+
+
+                    <div class="row mt-2">
+                        <kendo-formfield>
+                            <kendo-label for="descripcion">Descripcion</kendo-label>
+                            <kendo-textbox id="descripcion" formControlName="description" #descripcion />
+                            <kendo-formerror
+                                *ngIf="permissionForm.get('description')?.invalid && permissionForm.get('description')?.touched">
+                                La descripcion no es obligatoria
+                            </kendo-formerror>
+                        </kendo-formfield>
+                    </div>
+
+                    <div class="row d-flex justify-content-center mt-3">
+                        <div class="col-3">
+                            <button kendoButton themeColor="info" type="submit"
+                                [disabled]="permissionForm.invalid || submitting">
+                                {{ submitting ? 'Guardando...' : (editingPermission ? 'Actualizar' : 'Crear') }}
+                            </button>
+                        </div>
+                        <div class="col-3">
+                            <button kendoButton type="button" themeColor="primary" (click)="closePermissionModal()">
+                                Cancelar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </kendo-dialog>
+</div>
+}

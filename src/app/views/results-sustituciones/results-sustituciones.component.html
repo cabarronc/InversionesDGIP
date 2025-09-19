@@ -1,0 +1,128 @@
+<div class="substitutions-container" *ngIf="fieldSubstitutions">
+      <div class="substitutions-header">
+        <h3>🔄 Cambios Línea por Línea</h3>
+        <p>Sustituciones exactas mostrando qué valor cambió por cuál en cada campo</p>
+      </div>
+
+      <!-- Por cada campo que tiene cambios -->
+      <div *ngFor="let fieldName of getFieldsWithChanges()" 
+           class="field-substitutions-section">
+        
+        <div class="field-header">
+          <h4>{{ getFieldIcon(fieldName) }} {{ fieldName }}</h4>
+          <div class="field-stats">
+            <span class="stat-badge changed">
+              {{ getFieldData(fieldName)?.rows_changed }} líneas modificadas
+            </span>
+            <span class="stat-badge unchanged">
+              {{ getFieldData(fieldName)?.rows_unchanged }} sin cambios
+            </span>
+          </div>
+        </div>
+
+        <!-- Resumen de sustituciones únicas -->
+        <div class="substitutions-summary">
+          <h5>📋 Resumen de Cambios</h5>
+          
+          <!-- Sustituciones directas -->
+          <div *ngIf="getSubstitutions(fieldName).length > 0" 
+               class="substitutions-list">
+            <h6>🔄 Sustituciones:</h6>
+            <div class="substitution-items">
+              <div *ngFor="let sub of getSubstitutions(fieldName)" 
+                   class="substitution-item">
+                <div class="substitution-flow">
+                  <span class="old-value">{{ formatValue(sub.old_value) }}</span>
+                  <span class="arrow">→</span>
+                  <span class="new-value">{{ formatValue(sub.new_value) }}</span>
+                </div>
+                <div class="substitution-count">
+                  {{ sub.occurrences }} vez{{ sub.occurrences > 1 ? 'es' : '' }}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Solo añadidos -->
+          <div *ngIf="getAdditionsOnly(fieldName).length > 0" 
+               class="additions-only">
+            <h6>➕ Solo Añadidos:</h6>
+            <div class="value-tags">
+              <span *ngFor="let value of getAdditionsOnly(fieldName)" 
+                    class="value-tag added">
+                {{ formatValue(value) }}
+              </span>
+            </div>
+          </div>
+
+          <!-- Solo eliminados -->
+          <div *ngIf="getRemovalsOnly(fieldName).length > 0" 
+               class="removals-only">
+            <h6>➖ Solo Eliminados:</h6>
+            <div class="value-tags">
+              <span *ngFor="let value of getRemovalsOnly(fieldName)" 
+                    class="value-tag removed">
+                {{ formatValue(value) }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detalles línea por línea -->
+        <div class="line-by-line-details">
+          <h5>🔍 Detalles por Línea</h5>
+          <div class="show-controls">
+            <button class="btn btn-sm" 
+                    (click)="toggleLineDetails(fieldName)">
+              {{ isLineDetailsVisible(fieldName) ? 'Ocultar' : 'Mostrar' }} detalles ({{ getLineChanges(fieldName).length }} cambios)
+            </button>
+          </div>
+
+          <div *ngIf="isLineDetailsVisible(fieldName)" 
+               class="line-changes-table">
+            <table>
+              <thead>
+                <tr>
+                  <th>Línea</th>
+                  <th>Valor Anterior</th>
+                  <th>Valor Nuevo</th>
+                  <th>Descripción</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let change of getDisplayedLineChanges(fieldName)">
+                  <td class="line-number"># {{ change.line_number }}</td>
+                  <td class="old-value-cell">
+                    <span class="value-display old">{{ formatValue(change.old_value) }}</span>
+                  </td>
+                  <td class="new-value-cell">
+                    <span class="value-display new">{{ formatValue(change.new_value) }}</span>
+                  </td>
+                  <td class="change-description">{{ change.change_description }}</td>
+                </tr>
+              </tbody>
+            </table>
+            
+            <!-- Paginación para muchos cambios -->
+            <div *ngIf="getLineChanges(fieldName).length > 10" class="pagination-mini">
+              <button class="btn btn-xs" 
+                      [disabled]="getLinePage(fieldName) <= 1"
+                      (click)="previousLinePage(fieldName)">←</button>
+              <span class="page-mini-info">
+                {{ getLinePage(fieldName) }} / {{ getLineTotalPages(fieldName) }}
+              </span>
+              <button class="btn btn-xs" 
+                      [disabled]="getLinePage(fieldName) >= getLineTotalPages(fieldName)"
+                      (click)="nextLinePage(fieldName)">→</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje si no hay cambios -->
+      <div *ngIf="getFieldsWithChanges().length === 0" class="no-changes-message">
+        <div class="no-changes-icon">✅</div>
+        <h4>Sin Cambios Detectados</h4>
+        <p>Los archivos comparados son idénticos línea por línea en todos los campos comunes.</p>
+      </div>
+    </div>

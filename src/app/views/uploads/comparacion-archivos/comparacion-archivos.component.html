@@ -42,10 +42,14 @@
         <button class="btn btn-primary" [disabled]="isUploading" (click)="uploadFiles()">
           {{ isUploading ? 'Subiendo...' : '📤 Subir y Comparar' }}
         </button>
+                <button class="btn btn-substitutions" [disabled]="isUploading" (click)="uploadFiles('substitutions')">
+          {{ isUploading ? 'Subiendo...' : '🔄 Análisis de Sustituciones' }}
+        </button>
         <button class="btn btn-secondary" (click)="clearFiles()">
           🗑️ Limpiar
         </button>
       </div>
+
       }
     </div>
 
@@ -87,8 +91,13 @@
 
             <button class="btn btn-detailed"
               [disabled]="!selectedFile1 || !selectedFile2 || selectedFile1 === selectedFile2"
-              (click)="compareExistingFiles(true)">
+              (click)="compareExistingFiles('detailed')">
               🔬 Análisis Detallado
+            </button>
+            <button class="btn btn-substitutions"
+              [disabled]="!selectedFile1 || !selectedFile2 || selectedFile1 === selectedFile2"
+              (click)="compareExistingFiles('substitutions')">
+              🔄 Ver Sustituciones
             </button>
           </div>
         </div>

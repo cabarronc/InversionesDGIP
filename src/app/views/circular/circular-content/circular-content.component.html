@@ -406,9 +406,17 @@
                     </div>
                     @if (comparisonResult) {
                     <div class="comparison-section">
-                        <app-results (structureChanged)="onStructureChanged($event)" (structureChangedAdd)="onStructureChangedAdd($event)" [result]="comparisonResult" [isLoading]="isComparing">
+                        <app-results (structureChanged)="onStructureChanged($event)"
+                            (structureChangedAdd)="onStructureChangedAdd($event)" [result]="comparisonResult"
+                            [isLoading]="isComparing">
                         </app-results>
                     </div>
+                    @if(comparisonResult?.type === 'csv_diff_with_substitutions' && comparisonResult?.field_substitutions){
+                     <app-results-sustituciones
+                        [fieldSubstitutions]="comparisonResult.field_substitutions">
+                    </app-results-sustituciones>
+                    }
+                   
                     }
 
                     @if (isComparing) {

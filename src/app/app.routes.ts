@@ -5,6 +5,15 @@ import { MailComponent } from './views/mail/mail/mail.component';
 import { AdecuacionesComponent } from './views/adecuaciones/adecuaciones/adecuaciones.component';
 import { CosaincegComponent } from './views/cosainceg/cosainceg.component';
 import { ClaudeComponent } from './views/claude/claude.component';
+import { LoginComponent } from './views/login/login/login.component';
+import { UserManagementComponent } from './views/administracion/user-management/user-management.component';
+import { AdministracionComponent } from './views/administracion/administracion.component';
+import { UnauthorizedComponent } from './views/administracion/unauthorized/unauthorized.component';
+import { AuthGuard} from './guards/auth.guard';
+import { PermissionGuard} from './guards/permission.guard';
+import {  RoleGuard } from './guards/role.guard'
+import {NavBarComponent} from '../app/views/nav-bar/nav-bar.component'
+import {DashboardComponent} from '../app/views/administracion/dashboard/dashboard.component'
 
 export const routes: Routes = [
     { path: 'principal', component: HomeComponent},
@@ -13,6 +22,45 @@ export const routes: Routes = [
     { path: 'adecuaciones', component:  AdecuacionesComponent},
     { path: 'cosainceg', component:  CosaincegComponent},
     { path: 'claude', component:  ClaudeComponent},
-    { path: '', redirectTo: 'principal', pathMatch: 'full'},
-    { path: '**', redirectTo: 'principal', pathMatch: 'full'},
+     { path: 'login', component:  LoginComponent},
+      { path: 'admin', component:  AdministracionComponent},
+       {path: 'unauthorized',component: UnauthorizedComponent},
+    // { path: '', redirectTo: 'login', pathMatch: 'full'},
+    {
+    path: '',
+    component: NavBarComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: '/login',
+        pathMatch: 'full'
+      },
+      {
+        path: 'principal',
+        component: HomeComponent
+      },
+       
+      {
+        path: 'admin',
+        component: UserManagementComponent,
+        canActivate: [PermissionGuard],
+        data: { module: 'users', action: 'manage' }
+      },
+      {
+        path: 'circular',
+        component: CircularComponent,
+        canActivate: [PermissionGuard],
+        data: { module: 'circular', action: 'manage' }
+      },
+      // {
+      //   path: 'roles',
+      //   component: UserManagementComponent,
+      //   canActivate: [PermissionGuard],
+      //   data: { module: 'roles', action: 'read' }
+      // }
+    ]
+  },
+  { path: '**', redirectTo: 'login', pathMatch: 'full'}
+    // { path: '**', redirectTo: 'login', pathMatch: 'full'},
 ];

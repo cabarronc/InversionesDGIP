@@ -1,0 +1,134 @@
+/* Contenedor del header */
+.header-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  margin-top: 25px;
+  margin-bottom: 30px;
+  border-radius: 20px;
+  
+  /* Gradiente base */
+  background: linear-gradient(270deg, #d6d3dd, #858bdf, #4585fa, #d6d3dd);
+  background-size: 800% 800%; /* Hace que el gradiente sea más grande para animarlo */
+  
+  /* Sombra */
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  
+  /* Animación */
+  animation: gradientSlide 10s ease infinite;
+}
+
+.header-filter {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  background:#f0f9ff;
+//   background: repeating-linear-gradient(
+//     -45deg,
+//     #42a5f5,
+//     #42a5f5 10px,
+//     #478ed1 10px,
+//     #478ed1 20px
+//   );
+//   background-size: 200% 200%;
+//   animation: waveGradient 25s linear infinite;
+//   /* Sombra */
+//   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  
+ 
+}
+@keyframes waveGradient {
+  0%   { background-position: 0 0; }
+  100% { background-position: 200% 200%; }
+}
+
+@keyframes spinGradient {
+  0%   { background: conic-gradient(from 0deg, #ff6a00, #ee0979, #ff6a00); }
+  100% { background: conic-gradient(from 360deg, #ff6a00, #ee0979, #ff6a00); }
+}
+
+/* Keyframes para mover el gradiente */
+@keyframes gradientSlide {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes pulseGradient {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@media (min-width: 768px) {
+  .header-container {
+    flex-direction: row;
+  }
+}
+
+/* Título con degradado */
+.header-title {
+  font-size: 1.3rem;
+  font-weight: 400;
+  background:  #000000;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+  margin-bottom: 15px;
+}
+kendo-combobox {
+        width: 320px;
+      }
+
+@media (min-width: 768px) {
+  .header-title {
+    margin-bottom: 0;
+    font-size: 1.3rem;
+  }
+}
+
+/* Botón crear usuario */
+.create-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 25px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  border: none;
+  border-radius: 15px;
+  background: linear-gradient(90deg, #38b2ac, #48bb78);
+  cursor: pointer;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.create-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* Icono del botón */
+.btn-icon {
+  width: 24px;
+  height: 24px;
+}
+.selector {
+  display: block;            /* block */
+  font-size: 0.875rem;       /* text-sm */
+  font-weight: 500;          /* font-medium */
+  color: #374151;            /* text-gray-700 */
+  margin-bottom: 0.5rem;     /* mb-2 */
+}

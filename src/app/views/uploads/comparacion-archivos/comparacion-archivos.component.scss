@@ -250,3 +250,12 @@
         gap: 0.75rem;
       }
     }
+    .btn-substitutions {
+  background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);
+  color: white;
+}
+
+.btn-substitutions:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(111, 66, 193, 0.4);
+}

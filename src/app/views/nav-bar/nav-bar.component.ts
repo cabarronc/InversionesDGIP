@@ -1,7 +1,7 @@
-import { Component,OnInit,ViewEncapsulation } from '@angular/core';
+import { Component,HostListener,OnInit,ViewEncapsulation } from '@angular/core';
 import { KENDO_ICONS, SVGIcon } from "@progress/kendo-angular-icons";
 import { IconsModule } from "@progress/kendo-angular-icons";
-import { homeIcon, bellIcon,menuIcon, userIcon} from "@progress/kendo-svg-icons";
+import { homeIcon, bellIcon,menuIcon, userIcon,infoSolidIcon} from "@progress/kendo-svg-icons";
 import {
   KENDO_NAVIGATION,
   BreadCrumbItem,
@@ -9,21 +9,44 @@ import {
 } from "@progress/kendo-angular-navigation";
 import { KENDO_INDICATORS } from "@progress/kendo-angular-indicators";
 import { KENDO_LAYOUT } from "@progress/kendo-angular-layout";
-import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterLink, RouterLinkActive, RouterOutlet,RouterModule,Router,  } from '@angular/router';//agregue RouterModule y Router 
 import { CommonModule } from '@angular/common';
+import { AuthService, User } from '../../services/auth.service';
+import { KENDO_BUTTONS } from '@progress/kendo-angular-buttons';
+import { PopupModule } from '@progress/kendo-angular-popup';
+import { interval,Subscription } from 'rxjs';
+import { DialogComponent, DialogTitleBarComponent } from "@progress/kendo-angular-dialog";
+
 
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [KENDO_ICONS,KENDO_NAVIGATION,KENDO_INDICATORS,KENDO_LAYOUT,CommonModule, RouterOutlet, RouterLink, RouterLinkActive,IconsModule],
+  imports: [KENDO_ICONS, KENDO_NAVIGATION, KENDO_INDICATORS, KENDO_LAYOUT, CommonModule, RouterOutlet, RouterLink, RouterLinkActive, IconsModule,
+     RouterModule, KENDO_BUTTONS,PopupModule],
   templateUrl: './nav-bar.component.html',
   encapsulation: ViewEncapsulation.None,
   styleUrl: './nav-bar.component.scss'
 })
 export class NavBarComponent implements OnInit{
-
-constructor(private route:ActivatedRoute) {
+  currentUser: User | null = null;
+  sessionInfo: { timeLeft: number; rememberMe: boolean } | null = null;
+  showUserMenu = false;
+  showSessionModal = false;
+  showSessionWarning = false;
+  private subscription?: Subscription;
+  private warningShown = false;
+  
+  @HostListener('document:click', ['$event'])
+onClickOutside(event: Event) {
+  const target = event.target as HTMLElement;
+  const clickedInside = target.closest('.relative.inline-block.text-left');
+  if (!clickedInside) {
+    this.showUserMenu = false;
+    this.showSessionModal = false;
+  }
+}
+constructor(private route:ActivatedRoute, private authService: AuthService,private router: Router) {
 
   
 }
@@ -32,9 +55,127 @@ ngOnInit(): void {
     console.log(paramMap);
   }
   )
+  this.authService.currentUser$.subscribe(user => {
+      this.currentUser = user;
+      console.log("Usuario:",this.currentUser)
+    });
+    // Actualizar información de sesión cada 30 segundos
+    this.subscription = interval(30000).subscribe(() => {
+      this.updateSessionInfo();
+      this.checkSessionWarning();
+    });
+    
+    // Actualización inicial
+    this.updateSessionInfo();
 
 }
+ private updateSessionInfo(): void {
+    this.sessionInfo = this.authService.getSessionInfo();
+    console.log("info",this.sessionInfo)
+  }
 
+  private checkSessionWarning(): void {
+    if (this.sessionInfo) {
+      const fiveMinutes = 5 * 60 * 1000;
+      if (this.sessionInfo.timeLeft <= fiveMinutes && this.sessionInfo.timeLeft > 0 && !this.warningShown) {
+        this.showSessionWarning = true;
+        this.warningShown = true;
+      }
+      
+      // Reset warning if session is extended
+      if (this.sessionInfo.timeLeft > fiveMinutes) {
+        this.warningShown = false;
+      }
+    }
+  }
+ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+
+ canAccessModule(module: string): boolean {
+    return this.authService.canAccessModule(module);
+  }
+
+  async logout(): Promise<void> {
+    await this.authService.logout();
+  }
+
+  getSessionStatusClass(): string {
+    if (!this.sessionInfo) return 'bg-gray-500';
+    
+    const fiveMinutes = 5 * 60 * 1000;
+    const oneHour = 60 * 60 * 1000;
+    
+    if (this.sessionInfo.timeLeft <= fiveMinutes) {
+      return 'bg-red-500';
+    } else if (this.sessionInfo.timeLeft <= oneHour) {
+      return 'bg-yellow-500';
+    } else {
+      return 'bg-green-500';
+    }
+  }
+
+  getSessionStatusText(): string {
+    if (!this.sessionInfo) return 'Desconocido';
+    
+    const fiveMinutes = 5 * 60 * 1000;
+    const oneHour = 60 * 60 * 1000;
+    
+    if (this.sessionInfo.timeLeft <= fiveMinutes) {
+      return 'Expirando pronto';
+    } else if (this.sessionInfo.timeLeft <= oneHour) {
+      return 'Activa (atención)';
+    } else {
+      return 'Activa';
+    }
+  }
+
+  shouldShowExtendButton(): boolean {
+    if (!this.sessionInfo) return false;
+    const tenMinutes = 10 * 60 * 1000;
+    return this.sessionInfo.timeLeft <= tenMinutes;
+  }
+
+formatTimeLeft(timeLeft: number): string {
+    if (timeLeft <= 0) return 'Expirada';
+    
+    const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+    
+    if (days > 0) {
+      return `${days}d ${hours}h`;
+    } else if (hours > 0) {
+      return `${hours}h ${minutes}m`;
+    } else {
+      return `${minutes}m`;
+    }
+  }
+
+  extendSession(): void {
+    this.authService.extendSession();
+    this.updateSessionInfo();
+    this.showSessionWarning = false;
+    this.warningShown = false;
+  }
+
+  showSessionDetails(): void {
+    this.updateSessionInfo();
+    this.showSessionModal = true;
+    this.showUserMenu = false;
+  }
+
+  closeModals(): void {
+    this.showUserMenu = false;
+    this.showSessionModal = false;
+  }
+ getAvatarUrl(avatar: string): string {
+   const url_completa =  `http://172.31.33.105:9000/api/files/users/${this.currentUser?.id}/${avatar}`
+    return url_completa;
+  }
   public hIcon: SVGIcon = homeIcon;
   public items: BreadCrumbItem[] = [
     {
@@ -54,6 +195,7 @@ ngOnInit(): void {
   public menuIcon: SVGIcon = menuIcon;
   public bellIcon: SVGIcon = bellIcon;
   public userSvg: SVGIcon = userIcon;
+  public infoSolidIcon: SVGIcon = infoSolidIcon;
 
   public themeColor: AppBarThemeColor= 
     "light";

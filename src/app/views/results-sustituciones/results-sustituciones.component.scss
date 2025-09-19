@@ -1,0 +1,343 @@
+.substitutions-container {
+      margin-top: 1.5rem;
+    }
+
+    .substitutions-header {
+      background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 12px;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .substitutions-header h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.4rem;
+    }
+
+    .substitutions-header p {
+      margin: 0;
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+
+    .field-substitutions-section {
+      background: white;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e9ecef;
+      overflow: hidden;
+    }
+
+    .field-header {
+      background: #f8f9fa;
+      padding: 1.25rem;
+      border-bottom: 1px solid #e9ecef;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .field-header h4 {
+      margin: 0;
+      color: #495057;
+      font-size: 1.1rem;
+    }
+
+    .field-stats {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .stat-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .stat-badge.changed {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+
+    .stat-badge.unchanged {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .substitutions-summary {
+      padding: 1.25rem;
+      border-bottom: 1px solid #f1f3f4;
+    }
+
+    .substitutions-summary h5,
+    .substitutions-summary h6 {
+      color: #495057;
+      margin-bottom: 0.75rem;
+    }
+
+    .substitutions-summary h5 {
+      font-size: 1rem;
+      border-bottom: 1px solid #e9ecef;
+      padding-bottom: 0.5rem;
+    }
+
+    .substitutions-summary h6 {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+
+    .substitution-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .substitution-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem;
+      background: #f8f9fa;
+      border-radius: 8px;
+      border: 1px solid #e9ecef;
+    }
+
+    .substitution-flow {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex: 1;
+    }
+
+    .old-value,
+    .new-value {
+      font-family: monospace;
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .old-value {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+
+    .new-value {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .arrow {
+      font-size: 1.2rem;
+      color: #6c757d;
+      font-weight: bold;
+    }
+
+    .substitution-count {
+      font-size: 0.8rem;
+      color: #6c757d;
+      background: #e9ecef;
+      padding: 0.25rem 0.5rem;
+      border-radius: 12px;
+      white-space: nowrap;
+    }
+
+    .value-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .value-tag {
+      padding: 0.3rem 0.6rem;
+      border-radius: 15px;
+      font-size: 0.8rem;
+      font-family: monospace;
+      // max-width: 150px;
+      // overflow: hidden;
+      // text-overflow: ellipsis;
+      // white-space: nowrap;
+    }
+
+    .value-tag.added {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+
+    .value-tag.removed {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .line-by-line-details {
+      padding: 1.25rem;
+    }
+
+    .show-controls {
+      margin-bottom: 1rem;
+    }
+
+    .btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn:hover {
+      background: #545b62;
+    }
+
+    .btn-sm {
+      padding: 0.375rem 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .btn-xs {
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+    }
+
+    .line-changes-table {
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .line-changes-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .line-changes-table th,
+    .line-changes-table td {
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #f1f3f4;
+    }
+
+    .line-changes-table th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #495057;
+      font-size: 0.85rem;
+    }
+
+    .line-number {
+      font-family: monospace;
+      color: #6c757d;
+      font-weight: 500;
+      width: 80px;
+    }
+
+    .value-display {
+      font-family: monospace;
+      padding: 0.3rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      display: inline-block;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .value-display.old {
+      background: #fff3cd;
+      color: #856404;
+      border: 1px solid #ffeaa7;
+    }
+
+    .value-display.new {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .change-description {
+      font-size: 0.85rem;
+      color: #495057;
+    }
+
+    .pagination-mini {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid #f1f3f4;
+    }
+
+    .page-mini-info {
+      font-size: 0.8rem;
+      color: #6c757d;
+    }
+
+    .no-changes-message {
+      text-align: center;
+      padding: 3rem;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .no-changes-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .no-changes-message h4 {
+      color: #28a745;
+      margin-bottom: 0.5rem;
+    }
+
+    .no-changes-message p {
+      color: #6c757d;
+      margin: 0;
+    }
+
+    @media (max-width: 768px) {
+      .field-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+      }
+
+      .substitution-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+      }
+
+      .substitution-flow {
+        justify-content: center;
+      }
+
+      .line-changes-table {
+        overflow-x: auto;
+      }
+
+      .old-value,
+      .new-value,
+      .value-display {
+        max-width: 150px;
+      }
+    }

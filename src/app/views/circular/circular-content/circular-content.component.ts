@@ -32,12 +32,14 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ComparacionArchivosService } from '../../../services/comparacion-archivos.service';
 import { ComparacionArchivosComponent } from '../../uploads/comparacion-archivos/comparacion-archivos.component';
 import { ResultsComponent } from "../../results/results.component";
+import { ResultsSustitucionesComponent } from "../../results-sustituciones/results-sustituciones.component";
+
 @Component({
   selector: 'app-circular-content',
   standalone: true,
   imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
     KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
-    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent],
+    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './circular-content.component.html',
   styleUrl: './circular-content.component.scss'
@@ -697,26 +699,59 @@ onStructureChanged(hasChanges:boolean){
 onStructureChangedAdd(hasChanges:boolean){
    console.log('Hubo cambios en filas agregadas:', hasChanges);
 }
-onComparisonRequested(comparisonData: any) {
-    this.isComparing = true;
+// onComparisonRequested(comparisonData: any) {
+//     this.isComparing = true;
     
-    const compareMethod = comparisonData.detailedAnalysis 
-      ? this.comparacionArchivos.compareFilesDetailed(comparisonData.file1Id, comparisonData.file2Id)
-      : this.comparacionArchivos.compareFiles(comparisonData.file1Id, comparisonData.file2Id);
+//     const compareMethod = comparisonData.detailedAnalysis 
+//       ? this.comparacionArchivos.compareFilesDetailed(comparisonData.file1Id, comparisonData.file2Id)
+//       : this.comparacionArchivos.compareFiles(comparisonData.file1Id, comparisonData.file2Id);
     
-    compareMethod.subscribe({
-      next: (result) => {
-        this.comparisonResult = result;
-        console.log(this.comparisonResult)
-        this.isComparing = false;
+//     compareMethod.subscribe({
+//       next: (result) => {
+//         this.comparisonResult = result;
+//         console.log(this.comparisonResult)
+//         this.isComparing = false;
         
-      },
-      error: (error) => {
-        console.error('Error en la comparación:', error);
-        this.isComparing = false;
-        // Aquí podrías mostrar un mensaje de error al usuario
-      }
-    });
+//       },
+//       error: (error) => {
+//         console.error('Error en la comparación:', error);
+//         this.isComparing = false;
+//         // Aquí podrías mostrar un mensaje de error al usuario
+//       }
+//     });
+//   }
+onComparisonRequested(comparisonData: any) {
+  this.isComparing = true;
+  
+  let compareMethod;
+  
+  switch (comparisonData.analysisType) {
+    case 'detailed':
+      compareMethod = this.comparacionArchivos.compareFilesDetailed(
+        comparisonData.file1Id, comparisonData.file2Id
+      );
+      break;
+    case 'substitutions':
+      compareMethod = this.comparacionArchivos.compareFilesSubstitutions(
+        comparisonData.file1Id, comparisonData.file2Id
+      );
+      break;
+    default:
+      compareMethod = this.comparacionArchivos.compareFiles(
+        comparisonData.file1Id, comparisonData.file2Id
+      );
   }
-
+  
+  compareMethod.subscribe({
+    next: (result) => {
+      this.comparisonResult = result;
+      console.log(this.comparisonResult)
+      this.isComparing = false;
+    },
+    error: (error) => {
+      console.error('Error en la comparación:', error);
+      this.isComparing = false;
+    }
+  });
+}
 }

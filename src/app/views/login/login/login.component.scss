@@ -1,0 +1,20 @@
+html, body {
+    height: 100%;        /* Ocupa todo el alto de la ventana */
+    margin: 0;           /* Elimina márgenes por defecto */
+    padding: 0;
+}
+
+.fondo {
+    min-height: 100vh;   /* Ocupa al menos toda la altura de la ventana */
+    background: -webkit-linear-gradient(to right,#205791, #abd1eb );
+    background: linear-gradient(to right,#235e9c, #abd1eb );
+    font-family: var(--bs-font-sans-serif);
+}
+.alert-icon {
+    margin-top: 10px;
+  width: 20px;     /* ancho */
+  height: 20px;    /* alto */
+  color: #080808;  /* rojo (equivalente a text-red-600 de Tailwind) */
+  display: inline-block;
+  vertical-align: middle; /* opcional para centrar con texto */
+}

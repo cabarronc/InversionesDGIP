@@ -16,8 +16,12 @@ export class ComparacionArchivosComponent {
 
   @Output() filesUploaded = new EventEmitter<UploadResponse>();
     // @Output() comparisonRequested = new EventEmitter<{file1Id: string, file2Id: string}>();
-  @Output() comparisonRequested = new EventEmitter<{file1Id: string, file2Id: string, detailedAnalysis?: boolean}>();
-
+  // @Output() comparisonRequested = new EventEmitter<{file1Id: string, file2Id: string, detailedAnalysis?: boolean}>();
+  @Output() comparisonRequested = new EventEmitter<{
+  file1Id: string, 
+  file2Id: string, 
+  analysisType?: 'normal' | 'detailed' | 'substitutions'
+}>();
   file1: File | null = null;
   file2: File | null = null;
   isDragOver1 = false;
@@ -126,53 +130,109 @@ loadExistingFiles() {
     this.clearStatus();
   }
 
-  uploadFiles(detailedAnalysis: boolean = false) {
-    if (!this.file1 || !this.file2) {
-      this.showStatus('Selecciona ambos archivos antes de continuar.', 'error');
-      return;
-    }
+  // uploadFiles(detailedAnalysis: boolean = false) {
+  //   if (!this.file1 || !this.file2) {
+  //     this.showStatus('Selecciona ambos archivos antes de continuar.', 'error');
+  //     return;
+  //   }
 
-    this.isUploading = true;
-    this.showStatus(detailedAnalysis ? 'Subiendo archivos para análisis detallado...' : 'Subiendo archivos...', 'info');
-    // this.showStatus('Subiendo archivos...', 'info');
+  //   this.isUploading = true;
+  //   this.showStatus(detailedAnalysis ? 'Subiendo archivos para análisis detallado...' : 'Subiendo archivos...', 'info');
+  //   // this.showStatus('Subiendo archivos...', 'info');
 
-    this.comparacionArchivos.uploadFiles(this.file1, this.file2).subscribe({
-      next: (response) => {
-        this.isUploading = false;
-        this.showStatus('Archivos subidos exitosamente. Iniciando comparación...', 'success');
-        this.filesUploaded.emit(response);
-        this.comparisonRequested.emit({
-          file1Id: response.file1_id,
-          file2Id: response.file2_id,
-          detailedAnalysis: detailedAnalysis
-        });
-        this.loadExistingFiles(); // Recargar lista de archivos
-      },
-      error: (error) => {
-        this.isUploading = false;
-        this.showStatus(error.message, 'error');
-      }
-    });
+  //   this.comparacionArchivos.uploadFiles(this.file1, this.file2).subscribe({
+  //     next: (response) => {
+  //       this.isUploading = false;
+  //       this.showStatus('Archivos subidos exitosamente. Iniciando comparación...', 'success');
+  //       this.filesUploaded.emit(response);
+  //       this.comparisonRequested.emit({
+  //         file1Id: response.file1_id,
+  //         file2Id: response.file2_id,
+  //         detailedAnalysis: detailedAnalysis
+  //       });
+  //       this.loadExistingFiles(); // Recargar lista de archivos
+  //     },
+  //     error: (error) => {
+  //       this.isUploading = false;
+  //       this.showStatus(error.message, 'error');
+  //     }
+  //   });
+  // }
+
+  // compareExistingFiles(detailedAnalysis: boolean = false) {
+  //   if (!this.selectedFile1 || !this.selectedFile2) {
+  //     this.showStatus('Selecciona ambos archivos para comparar.', 'error');
+  //     return;
+  //   }
+
+  //   if (this.selectedFile1 === this.selectedFile2) {
+  //     this.showStatus('Selecciona archivos diferentes para comparar.', 'error');
+  //     return;
+  //   }
+
+  //   this.showStatus('Iniciando comparación...', 'info');
+  //   this.comparisonRequested.emit({
+  //     file1Id: this.selectedFile1,
+  //     file2Id: this.selectedFile2,
+  //     detailedAnalysis: detailedAnalysis
+  //   });
+  // }
+
+uploadFiles(analysisType: 'normal' | 'detailed' | 'substitutions' = 'normal') {
+  if (!this.file1 || !this.file2) {
+    this.showStatus('Selecciona ambos archivos antes de continuar.', 'error');
+    return;
   }
 
-  compareExistingFiles(detailedAnalysis: boolean = false) {
-    if (!this.selectedFile1 || !this.selectedFile2) {
-      this.showStatus('Selecciona ambos archivos para comparar.', 'error');
-      return;
-    }
+  this.isUploading = true;
+  let statusMessage = 'Subiendo archivos...';
+  if (analysisType === 'detailed') statusMessage = 'Subiendo archivos para análisis detallado...';
+  if (analysisType === 'substitutions') statusMessage = 'Subiendo archivos para análisis de sustituciones...';
+  
+  this.showStatus(statusMessage, 'info');
 
-    if (this.selectedFile1 === this.selectedFile2) {
-      this.showStatus('Selecciona archivos diferentes para comparar.', 'error');
-      return;
+  this.comparacionArchivos.uploadFiles(this.file1, this.file2).subscribe({
+    next: (response) => {
+      this.isUploading = false;
+      this.showStatus('Archivos subidos exitosamente. Iniciando comparación...', 'success');
+      this.filesUploaded.emit(response);
+      this.comparisonRequested.emit({
+        file1Id: response.file1_id,
+        file2Id: response.file2_id,
+        analysisType: analysisType
+      });
+      this.loadExistingFiles();
+    },
+    error: (error) => {
+      this.isUploading = false;
+      this.showStatus(error.message, 'error');
     }
+  });
+}
 
-    this.showStatus('Iniciando comparación...', 'info');
-    this.comparisonRequested.emit({
-      file1Id: this.selectedFile1,
-      file2Id: this.selectedFile2,
-      detailedAnalysis: detailedAnalysis
-    });
+compareExistingFiles(analysisType: 'normal' | 'detailed' | 'substitutions' = 'normal') {
+  if (!this.selectedFile1 || !this.selectedFile2) {
+    this.showStatus('Selecciona ambos archivos para comparar.', 'error');
+    return;
   }
+
+  if (this.selectedFile1 === this.selectedFile2) {
+    this.showStatus('Selecciona archivos diferentes para comparar.', 'error');
+    return;
+  }
+
+  let statusMessage = 'Iniciando comparación...';
+  if (analysisType === 'detailed') statusMessage = 'Iniciando análisis detallado...';
+  if (analysisType === 'substitutions') statusMessage = 'Iniciando análisis de sustituciones...';
+  
+  this.showStatus(statusMessage, 'info');
+  this.comparisonRequested.emit({
+    file1Id: this.selectedFile1,
+    file2Id: this.selectedFile2,
+    analysisType: analysisType
+  });
+}
+
 
   onExistingFileSelected() {
     this.clearStatus();
