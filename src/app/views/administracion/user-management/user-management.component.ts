@@ -3,17 +3,18 @@ import { User, Role, Permission } from '../../../services/auth.service'
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UserService, CreateUserData, UpdateUserData } from '../../../services/user.service'
 import { CommonModule } from '@angular/common';
-import { InputsModule, KENDO_INPUTS,InputType} from '@progress/kendo-angular-inputs';
+import { InputsModule, KENDO_INPUTS, InputType } from '@progress/kendo-angular-inputs';
 import { KENDO_LABELS } from '@progress/kendo-angular-label';
 import { KENDO_BUTTONS } from '@progress/kendo-angular-buttons';
 import { KENDO_LAYOUT } from '@progress/kendo-angular-layout';
 import { DialogComponent, DialogTitleBarComponent } from "@progress/kendo-angular-dialog";
 import { IconsModule } from '@progress/kendo-angular-icons';
-import {eyeIcon, eyeSlashIcon  } from '@progress/kendo-svg-icons';
+import { eyeIcon, eyeSlashIcon } from '@progress/kendo-svg-icons';
 import { NavBarComponent } from "../../nav-bar/nav-bar.component";
 import { AutoCompleteComponent, DropDownsModule, KENDO_COMBOBOX } from "@progress/kendo-angular-dropdowns"
 import { GridDataResult, KENDO_GRID, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { NotificationService } from '@progress/kendo-angular-notification';
+import { AvatarUploadComponent } from "../../uploads/avatar-upload/avatar-upload.component";
 
 
 
@@ -26,80 +27,85 @@ import { NotificationService } from '@progress/kendo-angular-notification';
   imports: [CommonModule, FormsModule, ReactiveFormsModule, KENDO_INPUTS,
     KENDO_LABELS,
     KENDO_BUTTONS, KENDO_COMBOBOX,
-    KENDO_LAYOUT, DialogComponent, DialogTitleBarComponent, IconsModule, AutoCompleteComponent,KENDO_GRID],
+    KENDO_LAYOUT, DialogComponent, DialogTitleBarComponent, IconsModule, KENDO_GRID, AvatarUploadComponent],
   templateUrl: './user-management.component.html',
   styleUrl: './user-management.component.scss'
 })
-export class UserManagementComponent implements OnInit{
-@Input() selectedItem: string | undefined;
-public statusOptions: Array<{ text: string; value: string }> = [
-  { text: 'Todos', value: '' },
-  { text: 'Activos', value: 'active' },
-  { text: 'Inactivos', value: 'inactive' }
-];
+export class UserManagementComponent implements OnInit {
+  @Input() selectedItem: string | undefined;
+  public statusOptions: Array<{ text: string; value: string }> = [
+    { text: 'Todos', value: '' },
+    { text: 'Activos', value: 'active' },
+    { text: 'Inactivos', value: 'inactive' }
+  ];
   public eyeIcon = eyeSlashIcon;
   public eyeIcon2 = eyeSlashIcon;
   public confirmEyeIcon = eyeSlashIcon;
   public confirmEyeIcon2 = eyeSlashIcon;
   public correoList: Array<string> = [
 
-  
+
   ];
-  
- public passInputType: InputType = 'password';
- public passInputType2: InputType = 'password';
+
+  public passInputType: InputType = 'password';
+  public passInputType2: InputType = 'password';
   public confirmInputType: InputType = "password";
- public confirmInputType2: InputType ="password"
+  public confirmInputType2: InputType = "password"
   Math = Math;
-// users: User[] = [];
-users: GridDataResult = { data: [], total: 0 };
+  // users: User[] = [];
+  users: GridDataResult = { data: [], total: 0 };
   availableRoles: Role[] = [];
   loading = false;
   submitting = false;
   showModal = false;
   editingUser: User | null = null;
   searchTerm = '';
-  statusFilter:any;
+  statusFilter: any;
   currentPage = 1;
   itemsPerPage = 10;
   totalItems = 0;
   totalPages = 0;
-  
+
   userForm: FormGroup;
   selectedRoles: string[] = [];
 
-roles: Role[] = [];
+  roles: Role[] = [];
   permissions: Permission[] = [];
-  
+
   loadingRoles = false;
   loadingPermissions = false;
   submittingRole = false;
   submittingPermission = false;
-  
+
   showRoleModal = false;
   showPermissionModal = false;
   editingRole: Role | null = null;
   editingPermission: Permission | null = null;
-  
+
   roleForm: FormGroup;
   permissionForm: FormGroup;
   selectedPermissions: string[] = [];
+
+  public currentAvatarUrl: string = '';
 
 
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder, private notificationService: NotificationService
   ) {
+    
 
     this.userForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: [''],
-      passwordConfirm: [''],
+      password: ['',[Validators.required, Validators.minLength(8)]],
+      passwordConfirm: ['',[Validators.required, Validators.minLength(8)]],
       active: [true]
-    });
+    }, { validator: this.passwordsMatchValidator });
+      // ----------------------
 
-this.roleForm = this.formBuilder.group({
+
+    this.roleForm = this.formBuilder.group({
       name: ['', [Validators.required]],
       description: [''],
       active: [true]
@@ -114,20 +120,44 @@ this.roleForm = this.formBuilder.group({
 
 
   }
+    // Validador personalizado
+  // ----------------------
+ passwordsMatchValidator(formGroup: FormGroup) {
+  const passwordControl = formGroup.get('password');
+  const confirmControl = formGroup.get('passwordConfirm');
+
+  if (!passwordControl || !confirmControl) return null;
+
+  const password = passwordControl.value || '';
+  const confirm = confirmControl.value || '';
+
+  // Si ambos campos tienen valor
+  if (password && confirm) {
+    if (password !== confirm) {
+      confirmControl.setErrors({ passwordsMismatch: true });
+    } else {
+      // Limpia el error si ahora coinciden
+      confirmControl.setErrors(null);
+    }
+  }
+
+  return null; // siempre retorna null porque estamos marcando el control individualmente
+}
 
   ngOnInit(): void {
     this.loadUsers();
     this.loadRoles();
     this.loadPermissions()
+    this.currentAvatarUrl = this.editingUser?.avatar ? this.getAvatarUrl(this.editingUser.id, this.editingUser.avatar) : '';
   }
-  loademail(){
+  loademail() {
 
   }
-public onPageChange(event: PageChangeEvent): void {
-  this.currentPage = event.skip / event.take + 1;
-  this.itemsPerPage = event.take;
-  this.loadUsers();
-}
+  public onPageChange(event: PageChangeEvent): void {
+    this.currentPage = event.skip / event.take + 1;
+    this.itemsPerPage = event.take;
+    this.loadUsers();
+  }
 
   loadUsers(): void {
     this.loading = true;
@@ -147,9 +177,9 @@ public onPageChange(event: PageChangeEvent): void {
         next: (response) => {
           // this.users = response.items;
           this.users = {
-          data: response.items,
-          total: response.totalItems
-        };
+            data: response.items,
+            total: response.totalItems
+          };
           this.totalItems = response.totalItems;
           this.totalPages = response.totalPages;
           this.loading = false;
@@ -165,13 +195,13 @@ public onPageChange(event: PageChangeEvent): void {
 
 
   loadRoles(): void {
-     this.loadingRoles = true;
+    this.loadingRoles = true;
     this.userService.getRoles().subscribe({
       next: (response) => {
         this.availableRoles = response.items.filter(role => role.active);
         this.roles = response.items;
         console.log(this.availableRoles)
-        console.log("roles",this.roles)
+        console.log("roles", this.roles)
         this.loadingRoles = false;
       },
       error: (error) => {
@@ -207,21 +237,28 @@ public onPageChange(event: PageChangeEvent): void {
     this.selectedRoles = [];
     this.userForm.reset({ active: true });
     this.userForm.get('password')?.setValidators([Validators.required, Validators.minLength(8)]);
-    this.userForm.get('passwordConfirm')?.setValidators([Validators.required]);
+    this.userForm.get('passwordConfirm')?.setValidators([Validators.required, Validators.minLength(8)]);
     this.showModal = true;
   }
 
   openEditModal(user: User): void {
     this.editingUser = user;
-    console.log("que valor trae esta baina",this.editingUser)
+    console.log("que valor trae esta baina", this.editingUser.avatar)
     this.selectedRoles = user.roles?.map(role => role.id) || [];
     this.userForm.patchValue({
       name: user.name,
       email: user.email,
-      active: user.active
+      active: user.active,
+      avatar: this.currentAvatarUrl,
     });
     this.userForm.get('password')?.clearValidators();
     this.userForm.get('passwordConfirm')?.clearValidators();
+    if (this.editingUser.avatar) {
+      this.currentAvatarUrl = this.getAvatarUrl(this.editingUser.id, this.editingUser.avatar);
+      console.log("url actualizada",this.currentAvatarUrl)
+    } else {
+      this.currentAvatarUrl = '';
+    }
     this.showModal = true;
   }
 
@@ -249,14 +286,14 @@ public onPageChange(event: PageChangeEvent): void {
       this.submitting = true;
 
       const formData = this.userForm.value;
-      
+
       if (this.editingUser) {
         // Actualizar usuario
         const updateData: UpdateUserData = {
           name: formData.name,
           email: formData.email,
           active: formData.active,
-          roles: this.selectedRoles
+          roles: this.selectedRoles,
         };
         this.userService.updateUser(this.editingUser.id, updateData).subscribe({
           next: () => {
@@ -279,21 +316,28 @@ public onPageChange(event: PageChangeEvent): void {
           active: formData.active,
           roles: this.selectedRoles
         };
-        console.log("que enviare",createData)
+        console.log("que enviare", createData)
         this.userService.createUser(createData).subscribe({
           next: () => {
             this.loadUsers();
             this.closeModal();
             this.submitting = false;
-             
+              this.notificationService.show({
+              content: "Se a creado exitosamente el usuario "+ createData.name,
+              hideAfter: 2500,
+              animation: { type: "slide", duration: 2500 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "center", vertical: "top" },
+            });
+
           },
           error: (error) => {
-              this.notificationService.show({
-              content:  JSON.stringify(error.message),
+            this.notificationService.show({
+              content: JSON.stringify(error.message),
               hideAfter: 2500,
               animation: { type: "slide", duration: 2500 },
               type: { style: "warning", icon: true },
-              position: { horizontal: "center", vertical: "top" },
+              position: { horizontal: "center", vertical: "bottom" },
             });
             console.error('Error creating user:', error);
             console.error('Detalles:', error.message);
@@ -337,39 +381,33 @@ public onPageChange(event: PageChangeEvent): void {
     return pages;
   }
 
-  getAvatarUrl(avatar: string): string {
-    console.log("avatar",avatar)
-    // Construir URL del avatar desde PocketBase
-    const url_completa =  `http://172.31.33.105:9000/api/files/users/${this.editingUser?.id}/${avatar}`;
-    console.log("urlcompleta",url_completa)
-    return url_completa
+
+  public togglePassVisibility(isConfirmField?: boolean): void {
+    if (isConfirmField) {
+      const isHidden = this.confirmInputType === "password";
+      this.confirmEyeIcon = isHidden ? eyeIcon : eyeSlashIcon;
+      this.confirmInputType = isHidden ? "text" : "password";
+    } else {
+      const isHidden = this.passInputType === "password";
+      this.eyeIcon = isHidden ? eyeIcon : eyeSlashIcon;
+      this.passInputType = isHidden ? "text" : "password";
+    }
   }
-    public togglePassVisibility(isConfirmField?: boolean): void {
-      if (isConfirmField) {
-        const isHidden = this.confirmInputType === "password";
-        this.confirmEyeIcon = isHidden ? eyeIcon : eyeSlashIcon;
-        this.confirmInputType = isHidden ? "text" : "password";
-      } else {
-        const isHidden = this.passInputType === "password";
-        this.eyeIcon = isHidden ? eyeIcon : eyeSlashIcon;
-        this.passInputType = isHidden ? "text" : "password";
-      }
+
+  public togglePassConfirmVisibility(isConfirmField2?: boolean): void {
+    if (isConfirmField2) {
+      const isHidden = this.confirmInputType2 === "password";
+      this.confirmEyeIcon2 = eyeIcon;
+      this.confirmInputType2 = isHidden ? "text" : "password";
+    } else {
+      const isHidden = this.passInputType2 === "password";
+      this.eyeIcon2 = isHidden ? eyeIcon : eyeSlashIcon;
+      this.passInputType2 = isHidden ? "text" : "password";
     }
-    
-    public togglePassConfirmVisibility(isConfirmField2?: boolean): void {
-      if (isConfirmField2) {
-        const isHidden = this.confirmInputType2 === "password";
-        this.confirmEyeIcon2 = eyeIcon ;
-        this.confirmInputType2 = isHidden ? "text" : "password";
-      } else {
-        const isHidden = this.passInputType2 === "password";
-        this.eyeIcon2 = isHidden ? eyeIcon : eyeSlashIcon;
-        this.passInputType2 = isHidden ? "text" : "password";
-      }
-    }
+  }
 
 
-    // ========== GESTIÓN DE ROLES ==========
+  // ========== GESTIÓN DE ROLES ==========
   openRoleModal(): void {
     this.editingRole = null;
     this.selectedPermissions = [];
@@ -408,7 +446,7 @@ public onPageChange(event: PageChangeEvent): void {
       this.submittingRole = true;
       const formData = { ...this.roleForm.value, permissions: this.selectedPermissions };
 
-      const operation = this.editingRole 
+      const operation = this.editingRole
         ? this.userService.updateRole(this.editingRole.id, formData)
         : this.userService.createRole(formData);
 
@@ -505,7 +543,7 @@ public onPageChange(event: PageChangeEvent): void {
   // ========== MÉTODOS AUXILIARES ==========
   getPermissionsByModule(): { name: string, permissions: Permission[] }[] {
     const modules: { [key: string]: Permission[] } = {};
-    
+
     this.permissions.forEach(permission => {
       if (!modules[permission.module]) {
         modules[permission.module] = [];
@@ -517,5 +555,48 @@ public onPageChange(event: PageChangeEvent): void {
       name: moduleName,
       permissions: modules[moduleName]
     }));
+  }
+  //===============================MANEJO DE AVATARES=============================
+  onAvatarChanged(avatarUrl: string): void {
+
+    // El avatar se actualiza automáticamente en PocketBase
+    // Solo necesitamos recargar la lista si es necesario
+    this.currentAvatarUrl = avatarUrl;
+    if (this.editingUser) {
+      this.editingUser.avatar = avatarUrl;
+    }
+  }
+  // Propiedad para mantener la URL actual del avatar
+
+
+  // Cuando se emite un cambio de avatar desde el componente hijo
+  // onAvatarChanged(newUrl: string): void {
+  //   // Actualiza la URL temporal que usamos en el template
+  //   this.currentAvatarUrl = newUrl;
+
+  //   // Si editingUser existe, actualizamos su avatar
+  //   if (this.editingUser) {
+  //     this.editingUser.avatar = newUrl;
+  //   }
+  // }
+
+  onAvatarUploadError(error: string): void {
+    console.error('Avatar upload error:', error);
+    // Mostrar toast o mensaje de error
+  }
+
+  // getAvatarUrl(userId: string, avatar: string): string {
+  //   if (!avatar) return '';
+  //   return `http://localhost:8090/api/files/users/${userId}/${avatar}`;
+  // }
+
+  getAvatarUrl(userId: string | undefined, avatar: string | undefined): string {
+    console.log("avatar", avatar)
+    console.log("usuario", userId)
+    if (!avatar) return '';
+    // Construir URL del avatar desde PocketBase
+    const url_completa = `http://172.31.33.105:9000/api/files/users/${this.editingUser?.id}/${avatar}`;
+    console.log("urlcompleta", url_completa)
+    return url_completa
   }
 }

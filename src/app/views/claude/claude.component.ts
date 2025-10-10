@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-claude',
   standalone: true,
-  imports: [NavBarComponent,LabelModule,InputsModule,FormsModule,KENDO_BUTTONS,ReactiveFormsModule,CommonModule],
+  imports: [LabelModule,InputsModule,FormsModule,KENDO_BUTTONS,ReactiveFormsModule,CommonModule],
   templateUrl: './claude.component.html',
   styleUrl: './claude.component.scss'
 })

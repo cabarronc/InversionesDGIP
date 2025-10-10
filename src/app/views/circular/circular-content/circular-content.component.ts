@@ -457,7 +457,7 @@ export class CircularContentComponent implements OnInit {
       }
     );
   }
-
+//#############################SEGUIMIENTO ACTIVIDADES #########################################
   public CumplimientoMetas(): void {
     this.isGenerarCumplimiento = true
     this.notificationService.show({

@@ -1,4 +1,4 @@
-import { Component,HostListener,OnInit,ViewEncapsulation } from '@angular/core';
+import { Component,HostListener,Input,OnInit,ViewEncapsulation } from '@angular/core';
 import { KENDO_ICONS, SVGIcon } from "@progress/kendo-angular-icons";
 import { IconsModule } from "@progress/kendo-angular-icons";
 import { homeIcon, bellIcon,menuIcon, userIcon,infoSolidIcon} from "@progress/kendo-svg-icons";
@@ -16,6 +16,7 @@ import { KENDO_BUTTONS } from '@progress/kendo-angular-buttons';
 import { PopupModule } from '@progress/kendo-angular-popup';
 import { interval,Subscription } from 'rxjs';
 import { DialogComponent, DialogTitleBarComponent } from "@progress/kendo-angular-dialog";
+import { NavbarAvatarComponent } from "../navbar-avatar/navbar-avatar.component";
 
 
 
@@ -23,7 +24,7 @@ import { DialogComponent, DialogTitleBarComponent } from "@progress/kendo-angula
   selector: 'app-nav-bar',
   standalone: true,
   imports: [KENDO_ICONS, KENDO_NAVIGATION, KENDO_INDICATORS, KENDO_LAYOUT, CommonModule, RouterOutlet, RouterLink, RouterLinkActive, IconsModule,
-     RouterModule, KENDO_BUTTONS,PopupModule],
+    RouterModule, KENDO_BUTTONS, PopupModule, NavbarAvatarComponent],
   templateUrl: './nav-bar.component.html',
   encapsulation: ViewEncapsulation.None,
   styleUrl: './nav-bar.component.scss'
@@ -36,6 +37,7 @@ export class NavBarComponent implements OnInit{
   showSessionWarning = false;
   private subscription?: Subscription;
   private warningShown = false;
+
   
   @HostListener('document:click', ['$event'])
 onClickOutside(event: Event) {
@@ -77,7 +79,11 @@ ngOnInit(): void {
   private checkSessionWarning(): void {
     if (this.sessionInfo) {
       const fiveMinutes = 5 * 60 * 1000;
-      if (this.sessionInfo.timeLeft <= fiveMinutes && this.sessionInfo.timeLeft > 0 && !this.warningShown) {
+      // if (this.sessionInfo.timeLeft <= fiveMinutes && this.sessionInfo.timeLeft > 0 && !this.warningShown) {
+      //   this.showSessionWarning = true;
+      //   this.warningShown = true;
+      // }
+            if (this.sessionInfo.timeLeft <= fiveMinutes && this.sessionInfo.timeLeft > 0) {
         this.showSessionWarning = true;
         this.warningShown = true;
       }
@@ -103,20 +109,18 @@ ngOnDestroy(): void {
     await this.authService.logout();
   }
 
-  getSessionStatusClass(): string {
-    if (!this.sessionInfo) return 'bg-gray-500';
-    
-    const fiveMinutes = 5 * 60 * 1000;
-    const oneHour = 60 * 60 * 1000;
-    
-    if (this.sessionInfo.timeLeft <= fiveMinutes) {
-      return 'bg-red-500';
-    } else if (this.sessionInfo.timeLeft <= oneHour) {
-      return 'bg-yellow-500';
-    } else {
-      return 'bg-green-500';
-    }
-  }
+ getSessionStatusClass(): string {
+  if (!this.sessionInfo) return 'session-unknown';
+
+  const fiveMinutes = 5 * 60 * 1000;
+  const oneHour = 60 * 60 * 1000;
+  const timeLeft = this.sessionInfo.timeLeft; // en milisegundos
+
+  if (timeLeft <= fiveMinutes) return 'session-critical';
+  if (timeLeft <= oneHour) return 'session-warning';
+  return 'session-safe';
+}
+
 
   getSessionStatusText(): string {
     if (!this.sessionInfo) return 'Desconocido';
@@ -125,7 +129,7 @@ ngOnDestroy(): void {
     const oneHour = 60 * 60 * 1000;
     
     if (this.sessionInfo.timeLeft <= fiveMinutes) {
-      return 'Expirando pronto';
+      return 'Expira pronto';
     } else if (this.sessionInfo.timeLeft <= oneHour) {
       return 'Activa (atención)';
     } else {
@@ -176,6 +180,13 @@ formatTimeLeft(timeLeft: number): string {
    const url_completa =  `http://172.31.33.105:9000/api/files/users/${this.currentUser?.id}/${avatar}`
     return url_completa;
   }
+
+  showSessionDetailsModal = (): void => {
+  this.updateSessionInfo();
+  this.showSessionModal = true;
+}
+
+
   public hIcon: SVGIcon = homeIcon;
   public items: BreadCrumbItem[] = [
     {

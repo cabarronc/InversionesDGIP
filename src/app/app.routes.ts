@@ -14,16 +14,21 @@ import { PermissionGuard} from './guards/permission.guard';
 import {  RoleGuard } from './guards/role.guard'
 import {NavBarComponent} from '../app/views/nav-bar/nav-bar.component'
 import {DashboardComponent} from '../app/views/administracion/dashboard/dashboard.component'
+import {AvatarUploadComponent} from './views/uploads/avatar-upload/avatar-upload.component'
+import { NavbarAvatarComponent } from './views/navbar-avatar/navbar-avatar.component';
+
 
 export const routes: Routes = [
-    { path: 'principal', component: HomeComponent},
-    { path: 'circular', component: CircularComponent},
-    { path: 'correos', component:  MailComponent},
-    { path: 'adecuaciones', component:  AdecuacionesComponent},
-    { path: 'cosainceg', component:  CosaincegComponent},
-    { path: 'claude', component:  ClaudeComponent},
+    // { path: 'principal', component: HomeComponent},
+    // { path: 'circular', component: CircularComponent},
+    // { path: 'correos', component:  MailComponent},
+    // { path: 'adecuaciones', component:  AdecuacionesComponent},
+    // { path: 'cosainceg', component:  CosaincegComponent},
+    // { path: 'claude', component:  ClaudeComponent},
      { path: 'login', component:  LoginComponent},
-      { path: 'admin', component:  AdministracionComponent},
+     { path: 'avatar', component: AvatarUploadComponent},
+     { path: 'avatar_edit', component: NavbarAvatarComponent},
+      // { path: 'admin', component:  AdministracionComponent},
        {path: 'unauthorized',component: UnauthorizedComponent},
     // { path: '', redirectTo: 'login', pathMatch: 'full'},
     {
@@ -43,15 +48,37 @@ export const routes: Routes = [
        
       {
         path: 'admin',
-        component: UserManagementComponent,
+        component: AdministracionComponent,
         canActivate: [PermissionGuard],
         data: { module: 'users', action: 'manage' }
       },
+      
       {
         path: 'circular',
         component: CircularComponent,
         canActivate: [PermissionGuard],
         data: { module: 'circular', action: 'manage' }
+      },
+      {
+        path: 'correos',
+        component: MailComponent,
+        canActivate: [PermissionGuard],
+        data: { module: 'correos', action: 'manage' }
+      },
+        {path: 'adecuaciones',
+        component: AdecuacionesComponent,
+        canActivate: [PermissionGuard],
+        data: { module: 'adecuaciones', action: 'manage' }
+      },
+          {path: 'cosainceg',
+        component: CosaincegComponent,
+        canActivate: [PermissionGuard],
+        data: { module: 'cosainceg', action: 'manage' }
+      },
+             {path: 'claude',
+        component: ClaudeComponent,
+        canActivate: [PermissionGuard],
+        data: { module: 'claude', action: 'manage' }
       },
       // {
       //   path: 'roles',

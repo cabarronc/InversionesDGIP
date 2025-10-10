@@ -11,6 +11,7 @@ import { UserService } from './services/user.service';
 import { AuthGuard} from './guards/auth.guard';
 import { PermissionGuard} from './guards/permission.guard';
 import {  RoleGuard } from './guards/role.guard';
+import { AvatarService } from './services/avatar.service';
 
 
 export const appConfig: ApplicationConfig = {
@@ -23,8 +24,9 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }), 
     provideRouter(routes),
     provideHttpClient(),
-     AuthService,
+    AuthService,
     UserService,
+    AvatarService,
     
     // Guards
     AuthGuard,

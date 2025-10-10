@@ -1,0 +1,73 @@
+<button class="button-perfil" (click)="toggleMenu()" width="36px">
+    <div class="avatar-wrapper">
+        <!-- Botón Avatar -->
+        <button #anchor kendoButton look="flat" class="avatar-button">
+
+            <!-- Imagen -->
+            <img *ngIf="currentAvatarUrl" [src]="currentAvatarUrl" [alt]="currentUser?.name" class="avatar-img"
+                (error)="onImageError()" />
+
+            <!-- Placeholder si no hay avatar -->
+            <div *ngIf="!currentAvatarUrl && currentUser" [innerHTML]="defaultAvatarSvg"></div>
+
+            <!-- Loader sobrepuesto -->
+            <kendo-loader *ngIf="uploading" type="infinite-spinner" themeColor="light" size="small"
+                class="avatar-loader">
+            </kendo-loader>
+        </button>
+
+        <!-- Popup -->
+        <kendo-popup *ngIf="showMenu" [anchor]="anchor" [popupAlign]="{ horizontal: 'left', vertical: 'bottom' }"
+            [anchorAlign]="{ horizontal: 'right', vertical: 'top' }" [animate]="true">
+
+            <div class="menu-container">
+                <!-- Cabecera -->
+                <div class="menu-header">
+                    <div class="avatar-large">
+                        <img *ngIf="currentAvatarUrl" [src]="currentAvatarUrl" [alt]="currentUser?.name"
+                            (error)="onImageError()" />
+                        <div *ngIf="!currentAvatarUrl && currentUser" [innerHTML]="defaultAvatarLargeSvg"></div>
+
+                        <!-- Botón editar -->
+                        <button kendoButton look="flat" (click)="fileInput.click()" class="edit-button">
+                            <span class="k-icon k-i-edit"></span>
+                        </button>
+                    </div>
+
+                    <div class="user-info">
+                        <div class="user-name">{{ currentUser?.name }}</div>
+                        <div class="user-email">{{ currentUser?.email }}</div>
+                    </div>
+                </div>
+
+                <!-- Acciones -->
+                <div class="menu-actions">
+                    <button kendoButton themeColor="primary" (click)="fileInput.click()" [svgIcon]="arrowsSwapIcon" [disabled]="uploading">
+                        {{ currentAvatarUrl ? 'Cambiar' : 'Subir' }}
+                    </button>
+                    <button *ngIf="currentAvatarUrl && !uploading" kendoButton themeColor="error"
+                        (click)="removeAvatar()" [svgIcon]="trashIcon">
+                        Quitar
+                    </button>
+                </div>
+
+                <!-- Info Sesión -->
+                <button kendoButton look="flat" (click)="showSessionDetails()" class="menu-link">
+                   ℹ️ Información de Sesión
+                </button>
+
+
+                <button kendoButton look="flat" (click)="logout()" class="menu-link">
+                  🔒  Cerrar Sesión
+                </button>
+            </div>
+        </kendo-popup>
+
+        <!-- Input oculto -->
+        <input #fileInput type="file" accept="image/jpeg,image/jpg,image/png,image/gif"
+            (change)="onFileSelected($event)" hidden />
+    </div>
+    <span class="text-perfil">
+        {{ currentUser?.name | capitalizeFirst }}
+    </span>
+</button>

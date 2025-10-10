@@ -113,10 +113,11 @@ body {
        opacity: 0.9;
 
 }
-.session-warning {
+.session-warning-content {
   background-color: #f5eed1; /* bg-yellow-50 */
+  align-items: end;
+  align-content: end;
   padding: 1rem; /* p-4 */
-  position: relative;
   font-family: sans-serif;
   border-left: 3px solid #FACC15;
    /* animación */
@@ -197,3 +198,174 @@ body {
   height: 1.25rem;
   width: 1.25rem;
 }
+/* contenedor principal */
+.session-info {
+  display: none;           /* hidden */
+  align-items: center;     /* items-center */
+  font-size: 0.875rem;     /* text-sm */
+  gap: 0.5rem;             /* space-x-2 */
+}
+
+/* breakpoint sm (640px) */
+@media (min-width: 640px) {
+  .session-info {
+    display: flex;         /* sm:flex */
+  }
+}
+
+/* contenedor interno */
+.session-info-inner {
+  display: flex;           /* flex */
+  align-items: center;     /* items-center */
+  gap: 0.25rem;            /* space-x-1 */
+}
+
+/* círculo de estado */
+.session-status {
+  width: 0.5rem;           /* w-2 */
+  height: 0.5rem;          /* h-2 */
+  border-radius: 9999px;   /* rounded-full */
+}
+
+/* texto */
+.session-text {
+  color: #4B5563;          /* text-gray-600 */
+}
+
+.menu-container {
+  width: 18rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  overflow: hidden;
+  position: fixed; /* importante para hijos con z-index */
+  top: 55px;       /* ajusta según la posición del botón */
+  right: 50px;      /* ajusta según la posición del botón */
+  z-index: 9999; /* suficiente */
+ /* número alto para que quede por encima */
+}
+
+.session-info {
+  padding: 0.5rem 1rem; /* px-4 py-2 */
+  font-size: 0.805rem;  /* text-sm */
+  color: #4b5563;       /* text-gray-700 */
+  border-bottom: 1px solid #e5e7eb; /* border-b */
+}
+
+.session-row {
+  display: flex; 
+  justify-content: space-between; /* flex + justify-between */
+  margin-bottom: 0.20rem; /* opcional, espaciado entre filas */
+}
+
+.session-row:last-child {
+  margin-bottom: 0; /* eliminar margen de la última fila */
+}
+
+.session-row .label {
+  color: #6b7280; /* text-gray-600 */
+}
+
+.session-row .value {
+  font-weight: 500; /* font-medium */
+}
+
+.session-info-card {
+  background: #f9fafb;           /* fondo claro y suave */
+  border-radius: 0.75rem;        /* esquinas redondeadas */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* sombra sutil */
+  padding: 1rem 1.25rem;         /* espacio interno cómodo */
+  max-width: 20rem;              /* ancho máximo para evitar estiramiento */
+  font-family: 'Inter', sans-serif;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  
+}
+
+.session-info-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.session-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #e5e7eb; /* separación entre filas */
+}
+
+.session-row:last-child {
+  border-bottom: none; /* quitar borde de la última fila */
+}
+
+.label {
+  color: #6b7280;      /* gris suave para etiquetas */
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.value {
+  color: #000000;      /* texto principal más oscuro */
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-align: right;
+}
+.value-white {
+  color: #ebeef7;      /* texto principal más oscuro */
+  font-weight: 600;
+  font-size: 0.875rem;
+  text-align: right;
+}
+
+/* Opcional: resaltar el tipo de sesión si es "Recordarme" */
+.value.highlight {
+  color: #2563eb; /* azul brillante */
+}
+
+/* Estado seguro: más de 1 hora */
+.session-safe {
+  background-color: #22c55e; /* verde */
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+/* Estado de advertencia: entre 5 minutos y 1 hora */
+.session-warning {
+  background-color: #f59e0b; /* amarillo / ámbar */
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+  text-align: right; 
+}
+
+/* Estado crítico: 5 minutos o menos */
+.session-critical {
+  background-color: #ef4444; /* rojo */
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+/* Estado desconocido o sesión no disponible */
+.session-unknown {
+  background-color: #6b7280; /* gris */
+  color: #ffffff;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  display: inline-block;
+  transition: background-color 0.3s ease;
+}
+
+
+

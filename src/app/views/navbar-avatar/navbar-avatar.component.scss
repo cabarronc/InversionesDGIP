@@ -1,0 +1,141 @@
+.avatar-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+/* Botón redondo */
+.avatar-button {
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar-loader {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Popup */
+.menu-container {
+  width: 20rem;
+  background: #fff;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+  overflow: hidden;
+  position: fixed; /* importante para hijos con z-index */
+  top: 55px;       /* ajusta según la posición del botón */
+  right: 50px;      /* ajusta según la posición del botón */
+  z-index: 9999; /* suficiente */
+  pointer-events: auto; 
+ /* número alto para que quede por encima */
+}
+
+.menu-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: linear-gradient(90deg, #3b82f6, #9333ea);
+  color: #fff;
+ /* número alto para que quede por encima */
+}
+
+.avatar-large {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 0.5rem;
+ /* número alto para que quede por encima */
+}
+
+.avatar-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+ /* número alto para que quede por encima */
+}
+
+.edit-button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border-radius: 50%;
+  background: #fff;
+  padding: 2px;
+ /* número alto para que quede por encima */
+}
+
+.user-info .user-name {
+  font-weight: 600;
+ /* número alto para que quede por encima */
+}
+
+.user-info .user-email {
+  font-size: 0.875rem;
+  opacity: 0.95;
+ /* número alto para que quede por encima */
+}
+
+.menu-actions {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-top: 1px solid #eee;
+ 
+}
+
+.menu-link {
+  width: 100%;
+  text-align: left;
+  justify-content: flex-start;
+  padding: 0.75rem 1rem;
+  border-radius: 0;
+  border-top: 1px solid #eee;
+   z-index: auto;
+ 
+}
+
+.button-perfil{
+   background-color: #344e72;; /* bg-gray-800 */           /* flex */
+  font-size: 0.875rem;  
+   color: white;     /* text-sm → 14px */
+  border-radius: 9999px;
+   border: none;
+  cursor: pointer;     /* rounded-full → círculo/píldora */
+  outline: none;
+  transition: opacity 0.3s ease;  
+             /* focus:outline-none */
+
+}
+.button-perfil:focus{
+     position: relative;
+     z-index: 9999;
+   outline: none;                 /* focus:outline-none */
+  box-shadow: 
+    0 0 0 2px #ffffff,           /* focus:ring-2 + focus:ring-white */
+    0 0 0 4px #1758b4;  
+            /* focus:ring-offset-2 + focus:ring-offset-gray-800 */
+
+}
+.button-perfil:hover{
+       opacity: 0.95;
+      /* número alto para que quede por encima */
+
+}

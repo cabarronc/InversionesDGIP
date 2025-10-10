@@ -50,7 +50,7 @@ export class AuthService {
   // Configuración de tiempos de sesión
   private readonly SESSION_DURATION = {
     REMEMBER_ME: 7 * 24 * 60 * 60 * 1000, // 7 días
-    NORMAL: 1 * 60 * 60 * 1000, // 1 horas
+    NORMAL: 8* 60 * 60 * 1000, // 8 horas
     WARNING_TIME: 5 * 60 * 1000 // 5 minutos antes de expirar
   };
   constructor(private router: Router) {
@@ -433,11 +433,11 @@ export class AuthService {
     };
   }
   // Método para forzar recarga de datos del usuario
-  async forceRefreshUser(): Promise<void> {
-    if (this.pb.authStore.isValid) {
-      await this.refreshUserData();
-    }
-  }
+  // async forceRefreshUser(): Promise<void> {
+  //   if (this.pb.authStore.isValid) {
+  //     await this.refreshUserData();
+  //   }
+  // }
 
   // Método para actualizar contraseña
   async updatePassword(oldPassword: string, newPassword: string): Promise<void> {
@@ -460,4 +460,25 @@ export class AuthService {
       throw new Error(error.message || 'Error al solicitar restablecimiento');
     }
   }
+
+  // Método para actualizar avatar en el usuario actual
+updateCurrentUserAvatar(avatarUrl: string): void {
+  const currentUser = this.currentUserSubject.value;
+  if (currentUser) {
+    currentUser.avatar = avatarUrl;
+    this.currentUserSubject.next({...currentUser});
+    
+    // También actualizar en almacenamiento
+    this.updateStoredUserData(currentUser);
+  }
+}
+async forceRefreshUser(onComplete?: (success: boolean) => void): Promise<void> {
+  try {
+    await this.refreshUserData();
+    if (onComplete) onComplete(true);
+  } catch (error) {
+    console.error('Error refreshing user:', error);
+    if (onComplete) onComplete(false);
+  }
+}
 }

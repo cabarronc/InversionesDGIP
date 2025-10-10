@@ -132,3 +132,8 @@ kendo-combobox {
   color: #374151;            /* text-gray-700 */
   margin-bottom: 0.5rem;     /* mb-2 */
 }
+.row-center {
+  display: flex;
+  align-items: center; /* centra verticalmente los elementos */
+  gap: 0.5rem;         /* espacio horizontal entre hijos (equiv. space-x-2) */
+}
