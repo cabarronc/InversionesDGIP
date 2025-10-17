@@ -227,7 +227,7 @@
                 <ng-template kendoGridCellTemplate let-role>
                     <ng-container *ngIf="role.permissions?.length; else noPerms">
                         <span *ngFor="let permission of role.permissions; let last = last">
-                            {{ permission.name }}<span *ngIf="!last">, </span>
+                            {{ permission.module }}<span *ngIf="!last">, </span>
                         </span>
                     </ng-container>
                     <ng-template #noPerms>

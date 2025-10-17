@@ -129,29 +129,7 @@
                     </kendo-formfield>
                 </div>
             </div>
-            @if(!cheked ){
-            <div class="row mt-3">
-                <div class="col-2"></div>
-                <div class="col-4">
-                    <kendo-formfield>
-                        <kendo-label text="Destinatario:"></kendo-label>
-                        <kendo-autocomplete [clearButton]="true" [data]="Destinatario" formControlName="destinatario"
-                            [size]="'small'" textField="destinatario" valueField="destinatario"
-                            [kendoDropDownFilter]="{ operator: 'contains' }"
-                            (valueChange)="valueChangeDestinatarios($event)">
-                        </kendo-autocomplete>
 
-                    </kendo-formfield>
-                </div>
-                <div class="col-6">
-                    <kendo-label text="Cargo:"></kendo-label><br>
-                    <p>
-                        {{cargo}}
-                    </p>
-                </div>
-
-            </div>
-            }
             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++  Monto   ++++++++++++++++++++++++++++++++++++++++
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -239,7 +217,7 @@
                      <p><strong>DoE:</strong> {{Doe_aux}}</p> 
                 </div>
             </div> -->
-             <div class="row mt-2">
+            <div class="row mt-2">
                 <div class="col-2"></div>
                 <div class="col-2">
                     <button kendoButton [svgIcon]="plusIcon" themeColor="success" (click)="agregarProyecto()">Agregar
@@ -258,7 +236,7 @@
                 </div>
             </div>
 
-             @for(proyecto of proyectoFormGroup; track $index; ; let i = $index ){
+            @for(proyecto of proyectoFormGroup; track $index; ; let i = $index ){
             <div class="row">
                 <div class="col-2"></div>
                 <div class="col-9">
@@ -272,10 +250,9 @@
 
                                     <kendo-formfield>
                                         <kendo-label text="Proyecto:{{i+1}}"></kendo-label>
-                                        <kendo-textbox   formControlName="nombre_proyecto"
-                                            textField="Proyecto" valueField="Proyecto"
-                                            >
-                                        </kendo-textbox >
+                                        <kendo-textbox formControlName="nombre_proyecto" textField="Proyecto"
+                                            valueField="Proyecto">
+                                        </kendo-textbox>
                                     </kendo-formfield>
                                 </div>
                             </div>
@@ -286,11 +263,11 @@
                                 <div class="col-7">
                                     <kendo-formfield>
                                         <label kendoLabel>Dependencia:</label>
-                                        <kendo-autocomplete [data]="dependencias"
-                        textField="nombre" valueField="nombre" [kendoDropDownFilter]="{ operator: 'contains' }"
-                        [size]="'small'" (valueChange)="valueChangeDoE($event)" formControlName="dependencia">
-                    </kendo-autocomplete>
-                                        
+                                        <kendo-autocomplete [data]="dependencias" textField="nombre" valueField="nombre"
+                                            [kendoDropDownFilter]="{ operator: 'contains' }" [size]="'small'"
+                                            (valueChange)="valueChangeDoE($event)" formControlName="dependencia">
+                                        </kendo-autocomplete>
+
                                         <!-- <input kendoTextBox formControlName="dependencia"/> -->
                                     </kendo-formfield>
                                     <p>{{Doe_aux}}</p>
@@ -353,6 +330,33 @@
                         </kendo-autocomplete>
 
                     </kendo-formfield>
+                    @if(!cheked ){
+                    <div class="row mt-3">
+
+                        <div class="col-6">
+                            <kendo-formfield>
+                                <kendo-label text="Destinatario:"></kendo-label>
+                                <kendo-dropdownlist [data]="DestinatarioFiltrado" formControlName="destinatario"
+                                    [valuePrimitive]="true" textField="destinatario" valueField="destinatario"
+                                    (valueChange)="valueChangeDestinatarios($event)">
+                                </kendo-dropdownlist>
+                                <!-- <kendo-autocomplete [clearButton]="true"  [data]="DestinatarioFiltrado"
+                                    formControlName="destinatario" [size]="'small'" textField="destinatario"
+                                    valueField="destinatario" [kendoDropDownFilter]="{ operator: 'contains' }"
+                                    (valueChange)="valueChangeDestinatarios($event)">
+                                </kendo-autocomplete> -->
+
+                            </kendo-formfield>
+                        </div>
+                        <div class="col-6">
+                            <kendo-label text="Cargo:"></kendo-label><br>
+                            <p>
+                                {{cargo}}
+                            </p>
+                        </div>
+
+                    </div>
+                    }
 
                 </div>
 
@@ -843,30 +847,7 @@
                     </kendo-formfield>
                 </div>
             </div>
-            @if(!auth_r){
-            <div class="row mt-3">
-                <div class="col-2"></div>
-                <div class="col-4">
-                    <kendo-formfield>
-                        <kendo-label text="Destinatario:"></kendo-label>
-                        <kendo-autocomplete [size]="'small'" [data]="Destinatario_r" formControlName="destinatario_r"
-                            textField="destinatario" valueField="destinatario"
-                            [kendoDropDownFilter]="{ operator: 'contains' }"
-                            (valueChange)="valueChangeDestinatarios_R($event)">
-                        </kendo-autocomplete>
 
-                    </kendo-formfield>
-                </div>
-                <div class="col-6">
-                    <kendo-label text="Cargo:"></kendo-label><br>
-                    <p>
-                        {{cargo_r}}
-                    </p>
-
-                </div>
-
-            </div>
-            }
             <!-- ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
                     +++++++++++++++++++++++  Monto   ++++++++++++++++++++++++++++++++++++++++
                     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -922,10 +903,11 @@
                 <div class="col-2"></div>
                 <div class="col-7">
                     <kendo-formfield>
-                        <kendo-label text="Proyecto:"></kendo-label>
+                        <kendo-label text="Proyecto Proce:"></kendo-label>
                         <kendo-textbox [clearButton]="true" [size]="'small'"
                             formControlName="proyecto_r"></kendo-textbox>
                     </kendo-formfield>
+
                 </div>
             </div>
             <div class="row mt-2">
@@ -948,12 +930,37 @@
 
                     <kendo-formfield>
                         <kendo-label text="Proyecto:"></kendo-label>
-                        <kendo-autocomplete [size]="'small'" [data]="Proyecto" formControlName="proyecto_r"
+                        <kendo-autocomplete [size]="'small'" [data]="Proyecto_r" formControlName="proyecto_r"
                             textField="Proyecto" valueField="Proyecto" [kendoDropDownFilter]="{ operator: 'contains' }"
                             (valueChange)="valueChangeProyecto_R($event)">
                         </kendo-autocomplete>
 
                     </kendo-formfield>
+                    @if(!auth_r){
+                    <div class="row mt-3">
+
+
+                        <div class="col-6">
+                            <kendo-formfield>
+                                <kendo-label text="Destinatario:"></kendo-label>
+                                 <kendo-dropdownlist [size]="'small'" [data]="DestinatarioFiltrado_r"
+                                    formControlName="destinatario_r" textField="destinatario"  [valuePrimitive]="true" valueField="destinatario"
+                                    [kendoDropDownFilter]="{ operator: 'contains' }"
+                                    (valueChange)="valueChangeDestinatarios_R($event)">
+                                </kendo-dropdownlist>
+
+                            </kendo-formfield>
+                        </div>
+                        <div class="col-6">
+                            <kendo-label text="Cargo:"></kendo-label><br>
+                            <p>
+                                {{cargo_r}}
+                            </p>
+
+                        </div>
+
+                    </div>
+                    }
 
                 </div>
 
