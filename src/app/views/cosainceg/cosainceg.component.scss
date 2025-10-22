@@ -83,3 +83,35 @@
   display: inline-block;
   vertical-align: middle; /* opcional para centrar con texto */
 }
+
+/* Título con efecto máquina de escribir */
+.title2 {
+   display: inline-block;
+  font-size: 1.75rem;
+  font-weight: bold;
+  overflow: hidden;
+  border-right: .15em solid #fff;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: .15em;
+  animation:
+    typing 6.0s steps(40, end),
+    blink-caret .75s step-end infinite;
+}
+
+.title2 span {
+  color: #a81b1b;
+}
+/* Animación máquina de escribir */
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: rgb(255, 254, 254); }
+}
+.row {
+  text-align: center; /* centra horizontalmente el inline-block */
+}
