@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { NavBarComponent } from "../nav-bar/nav-bar.component";
 import { KENDO_LAYOUT } from "@progress/kendo-angular-layout";
 import { KENDO_BUTTONS } from '@progress/kendo-angular-buttons';
@@ -26,17 +26,21 @@ import { KENDO_ICONS } from '@progress/kendo-angular-icons';
 import { CosaincegService } from '../../services/cosainceg.service';
 import { NotificationService } from '@progress/kendo-angular-notification';
 import { catchError, concat, forkJoin, of } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-cosainceg',
   standalone: true,
-  imports: [NavBarComponent,KENDO_LAYOUT,CommonModule,KENDO_BUTTONS,KENDO_GRID,WindowModule,KENDO_PDFVIEWER,KENDO_ICONS,KENDO_INDICATORS,KENDO_DIALOGS,UploadsComponent],
+  imports: [KENDO_LAYOUT,CommonModule,KENDO_BUTTONS,KENDO_GRID,WindowModule,KENDO_PDFVIEWER,KENDO_ICONS,KENDO_INDICATORS,KENDO_DIALOGS,UploadsComponent],
   templateUrl: './cosainceg.component.html',
   styleUrl: './cosainceg.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
 
 export class CosaincegComponent implements OnInit {
+    @Input() selectedItem: string | undefined;
   public isDisabled = false;
   public isDisabledG =false;
   public isDisabledExcelG = false;
@@ -67,8 +71,14 @@ public cosainceg: any;
   selectedPdf: string | null = null; 
   nombre_archivo:string | null = null;
 
+canViewCosainceg = false;
+  canViewDeuda = false;
+
   ngOnInit(): void {
     this.GetFiles();
+       // Inicializamos las variables según los permisos del usuario
+    this.canViewCosainceg = this.authService.hasPermission('cosainceg', 'manage');
+    this.canViewDeuda = this.authService.hasPermission('deuda', 'manage');
   }
   // Reportes Cosainceg
  public data = [
@@ -1028,10 +1038,13 @@ public ActualizacionRubro = [
   ];
 
 
- constructor(private fileService: FileService, private cosaincegService : CosaincegService, private notificationService: NotificationService) {
+ constructor(private fileService: FileService, private cosaincegService : CosaincegService, 
+  private notificationService: NotificationService, private authService: AuthService, private router: Router) {
  
   
  }
+
+
     openPdfModal(pdfBase64: string, name :string) {
     this.selectedPdf = pdfBase64;
     this.nombre_archivo = name;
@@ -1137,6 +1150,9 @@ public DescargaCatalogoRubros(){
     }
   );
 }
+ goBack(): void {
+    this.router.navigate(['/principal']);
+  }
 
 
 }

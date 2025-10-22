@@ -16,6 +16,7 @@ import {NavBarComponent} from '../app/views/nav-bar/nav-bar.component'
 import {DashboardComponent} from '../app/views/administracion/dashboard/dashboard.component'
 import {AvatarUploadComponent} from './views/uploads/avatar-upload/avatar-upload.component'
 import { NavbarAvatarComponent } from './views/navbar-avatar/navbar-avatar.component';
+import { ReportesComponent } from './views/cosainceg/reportes/reportes.component';
 
 
 export const routes: Routes = [
@@ -70,8 +71,8 @@ export const routes: Routes = [
         canActivate: [PermissionGuard],
         data: { module: 'adecuaciones', action: 'manage' }
       },
-          {path: 'cosainceg',
-        component: CosaincegComponent,
+          {path: 'reportes',
+        component: ReportesComponent,
         canActivate: [PermissionGuard],
         data: { module: 'cosainceg', action: 'manage' }
       },

@@ -1,4 +1,4 @@
-<!-- <app-nav-bar></app-nav-bar> -->
+@if (selectedItem === 'Cosainceg' && canViewCosainceg) {
 <div class="container-fluid mt-4">
     <div class="page">
         <div class="content">
@@ -35,84 +35,84 @@
             </div>
         </div>
 
-    <div class="page">
-        <div class="content">
-            <div class="col-12 mt-3">
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <kendo-splitbutton (buttonClick)="GenerarPorFechaActual()" size="medium" [data]="data"
-                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="secondary"
-                            [disabled]="isDisabled">
-                            Generar Reporte COSAINCEG
-                        </kendo-splitbutton>
-                        <span class="ps-2">
-                            @if (isDisabledG) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelRecurso"
-                            [svgIcon]="fileReportIcon" rounded="medium" class="button1" themeColor="secondary"
-                            [disabled]="isDisabled">
-                            Generar Reporte COSAINCEG Recurso
-                        </kendo-splitbutton>
+        <div class="page">
+            <div class="content">
+                <div class="col-12 mt-3">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <kendo-splitbutton (buttonClick)="GenerarPorFechaActual()" size="medium" [data]="data"
+                                [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="secondary"
+                                [disabled]="isDisabled">
+                                Generar Reporte COSAINCEG
+                            </kendo-splitbutton>
+                            <span class="ps-2">
+                                @if (isDisabledG) {
+                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                </kendo-loader>
+                                }
+                            </span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelRecurso"
+                                [svgIcon]="fileReportIcon" rounded="medium" class="button1" themeColor="secondary"
+                                [disabled]="isDisabled">
+                                Generar Reporte COSAINCEG Recurso
+                            </kendo-splitbutton>
 
-                        <span class="ps-2">
-                            @if (isDisabledExcelRecurso) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
-                    </div>
-                    <div class="col-md-4 mb-3">
+                            <span class="ps-2">
+                                @if (isDisabledExcelRecurso) {
+                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                </kendo-loader>
+                                }
+                            </span>
+                        </div>
+                        <div class="col-md-4 mb-3">
 
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4 mb-3">
-                        <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelG"
-                            [svgIcon]="fileExcelIcon" title="Informacion Global de P's,G's,Q's" [disabled]="isDisabled"
-                            themeColor="success" class="button1">Global
-                            (PGQ)</kendo-splitbutton>
-                        <span class="ps-2">
-                            @if (isDisabledExcelG) {
-                            <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
-                    </div>
-                    <div class="col-md-4 mb-3">
-                        <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelDep"
-                            [svgIcon]="fileExcelIcon" title="Agrupacion por Dependencias" [disabled]="isDisabled"
-                            themeColor="success" class="button1">Dependencias (PGQ)</kendo-splitbutton>
-                        <span class="ps-2">
-                            @if (isDisabledExcelD) {
-                            <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
-                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelG"
+                                [svgIcon]="fileExcelIcon" title="Informacion Global de P's,G's,Q's"
+                                [disabled]="isDisabled" themeColor="success" class="button1">Global
+                                (PGQ)</kendo-splitbutton>
+                            <span class="ps-2">
+                                @if (isDisabledExcelG) {
+                                <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
+                                </kendo-loader>
+                                }
+                            </span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelDep"
+                                [svgIcon]="fileExcelIcon" title="Agrupacion por Dependencias" [disabled]="isDisabled"
+                                themeColor="success" class="button1">Dependencias (PGQ)</kendo-splitbutton>
+                            <span class="ps-2">
+                                @if (isDisabledExcelD) {
+                                <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
+                                </kendo-loader>
+                                }
+                            </span>
+                        </div>
 
-                    <div class="col-md-4 mb-3">
-                        <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelRub"
-                            [svgIcon]="fileExcelIcon" title="Agrupacion por Rubro" [disabled]="isDisabled"
-                            themeColor="success" class="button1">Rubros (PGQ)</kendo-splitbutton>
-                        <span class="ps-2">
-                            @if (isDisabledExcelR) {
-                            <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
+                        <div class="col-md-4 mb-3">
+                            <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelRub"
+                                [svgIcon]="fileExcelIcon" title="Agrupacion por Rubro" [disabled]="isDisabled"
+                                themeColor="success" class="button1">Rubros (PGQ)</kendo-splitbutton>
+                            <span class="ps-2">
+                                @if (isDisabledExcelR) {
+                                <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
+                                </kendo-loader>
+                                }
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
 
-    
+
 
         <div class="mt-4 mb-2"></div>
         <kendo-expansionpanel title="Reportes" subtitle="Ver y descargar reportes" [expanded]="true">
@@ -149,3 +149,44 @@
         }
 
     </div>
+</div>
+}
+@if (selectedItem === 'Deuda' && canViewDeuda) {
+aqui va ir lo referente de deuda
+}
+
+@if ((!canViewCosainceg && selectedItem === 'Cosainceg') ||
+(!canViewDeuda && selectedItem === 'Deuda')) {
+<div>
+    <div class="max-w-md w-full space-y-8">
+        <div class="text-center">
+            <div class="mx-auto h-3 w-3 flex items-center justify-center rounded-full">
+                <svg class="alert-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <!-- Línea vertical del signo de exclamación -->
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 9v2" />
+                    <!-- Puntito del signo de exclamación -->
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M12 15h.01" />
+                    <!-- Triángulo de alerta -->
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+                        d="M5.062 20h13.876c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.33 17.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+
+
+
+            </div>
+            <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                Acceso Denegado
+            </h2>
+            <p class="mt-2">
+                No tienes permisos para acceder a esta sección
+            </p>
+            <div class="mt-6">
+                <button kendoButton themeColor="info" (click)="goBack()">
+                    Volver a la Pagina Principal
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+}
