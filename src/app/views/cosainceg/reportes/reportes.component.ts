@@ -1,8 +1,8 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
-import {fileWordIcon,menuIcon, chartBarClusteredIcon, SVGIcon,fileExcelIcon,graphIcon,alignJustifyIcon, aggregateFieldsIcon,fileWrenchIcon} from '@progress/kendo-svg-icons';
+import {fileWordIcon,menuIcon, chartBarClusteredIcon, SVGIcon, chevronDoubleDownIcon,fileExcelIcon,graphIcon,alignJustifyIcon, aggregateFieldsIcon,fileWrenchIcon} from '@progress/kendo-svg-icons';
 import { KENDO_INDICATORS } from "@progress/kendo-angular-indicators";
-import { KENDO_LAYOUT } from "@progress/kendo-angular-layout";
+import { DrawerPosition, KENDO_LAYOUT } from "@progress/kendo-angular-layout";
 import { DrawerItem, DrawerSelectEvent } from "@progress/kendo-angular-layout";
 import { CosaincegComponent } from "../cosainceg.component";
 import { PermissionGuard } from '../../../guards/permission.guard';
@@ -19,10 +19,12 @@ export class ReportesComponent {
     public selected = "Cicular";
     public wordIcon: SVGIcon = fileWordIcon;
     public menuSvg: SVGIcon = menuIcon;
+    public position: DrawerPosition = "start";
+    public chevronDoubleDownIcon: SVGIcon = chevronDoubleDownIcon
     public items: Array<DrawerItem> = [
       { text: "Cosainceg", svgIcon: fileWordIcon, selected: true },
       { separator: true },
-      { text: "Deuda", svgIcon: chartBarClusteredIcon},
+      { text: "Deuda", svgIcon: chevronDoubleDownIcon},
       { separator: true }
     ];
     constructor() {    

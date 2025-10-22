@@ -24,7 +24,7 @@ export class PermissionGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     
-    const requiredModule = route.data['module'];
+    const requiredModule = route.data['module'] || route.data['modules'];
     const requiredAction = route.data['action'] || 'read';
 
     if (!requiredModule) {
@@ -35,6 +35,15 @@ export class PermissionGuard implements CanActivate {
       this.router.navigate(['/login']);
       return false;
     }
+    // soporte para array o string
+  if (Array.isArray(requiredModule)) {
+    const hasAccess = requiredModule.some(mod => this.authService.hasPermission(mod, requiredAction));
+    if (!hasAccess) {
+      this.router.navigate(['/unauthorized']);
+      return false;
+    }
+    return true;
+  }
 
     if (!this.authService.hasPermission(requiredModule, requiredAction)) {
       this.router.navigate(['/unauthorized']);

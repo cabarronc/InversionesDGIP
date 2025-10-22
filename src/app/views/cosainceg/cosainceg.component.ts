@@ -79,6 +79,8 @@ canViewCosainceg = false;
        // Inicializamos las variables según los permisos del usuario
     this.canViewCosainceg = this.authService.hasPermission('cosainceg', 'manage');
     this.canViewDeuda = this.authService.hasPermission('deuda', 'manage');
+    console.log(this.canViewCosainceg)
+    console.log(this.canViewDeuda)
   }
   // Reportes Cosainceg
  public data = [

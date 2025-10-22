@@ -74,8 +74,9 @@ export const routes: Routes = [
           {path: 'reportes',
         component: ReportesComponent,
         canActivate: [PermissionGuard],
-        data: { module: 'cosainceg', action: 'manage' }
+        data: { modules: ['cosainceg', 'deuda'], action: 'manage' }
       },
+   
              {path: 'claude',
         component: ClaudeComponent,
         canActivate: [PermissionGuard],
