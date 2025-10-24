@@ -161,6 +161,29 @@
     <div class="row">
         <h1 class="title2">Reporte<span> DEUDA</span></h1>
     </div>
+    <div class="page">
+        <div class="content">
+            <div class="col-12 mt-3">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelRecursoDeuda"
+                            [svgIcon]="fileReportIcon" rounded="medium" class="button1" themeColor="secondary"
+                            [disabled]="isDisabled">
+                            Generar Reporte Deuda Recurso
+                        </kendo-splitbutton>
+
+                        <span class="ps-2">
+                            @if (isDisabledExcelRecurso) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
+                        </span>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 }
 

@@ -720,7 +720,7 @@ public dataExcelDep = [
     },
   ];
 ////////////////////////////////////////////////////////////////
-
+////////////////////// Recurso Consainceg //////////////////////////
 public dataExcelRecurso = [
     {
       text: 'Primer Trimestre',
@@ -862,6 +862,173 @@ public dataExcelRecurso = [
          this.isDisabled = true;
          this.isDisabledExcelRecurso = true
         this.cosaincegService.GenerarDescargasCosaincegRecurso(cuarttoTrimestre,filename).subscribe(
+  (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelRecurso = false
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+  ];
+
+  ////////////////////////////////////////////////////////////////
+////////////////////// Recurso Deuda //////////////////////////
+public dataExcelRecursoDeuda = [
+    {
+      text: 'Primer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+         const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const primerTrimestre =`${anio}-04-10`;
+        const filename  = `Rel Obras Financiamiento Deuda01`
+        console.log("Primer Trimestre: ",primerTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelRecurso = true
+        this.cosaincegService.GenerarDescargasDeudaRecurso(primerTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        const downloadFilename = filename.endsWith('.zip') ? filename : `${filename}.zip`;
+        link.href = url;
+        link.download = downloadFilename;
+        document.body.appendChild(link);
+        link.click();
+
+        // Limpieza
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(url);
+
+       this.notificationService.show({
+        content: "Excel Generado Correctamente, espero que se descargue!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      this.isDisabled = false;
+      this.isDisabledExcelRecurso = false
+     
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Segundo Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const segundoTrimestre =`${anio}-07-10`;
+        const filename  = `Rel Obras Financiamiento Deuda02`
+        console.log("Segundo Trimestre: ",segundoTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelRecurso = true
+        this.cosaincegService.GenerarDescargasDeudaRecurso(segundoTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelRecurso = false
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+    {
+      text: 'Tercer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const tercerTrimestre =`${anio}-10-10`;
+        console.log("Tercer Trimestre: ",tercerTrimestre)
+        const filename  = `Rel Obras Financiamiento Deuda03`
+         this.isDisabled = true;
+         this.isDisabledExcelRecurso = true
+        this.cosaincegService.GenerarDescargasDeudaRecurso(tercerTrimestre,filename).subscribe(
+    (blob) => {
+       const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+        this.isDisabled = false;
+        this.isDisabledExcelRecurso = false
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Cuarto Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        const Year = new Date(today);
+        Year.setFullYear(today.getFullYear());
+        lastYearDate.setFullYear(today.getFullYear() - 1);
+        const anio = Year.getFullYear().toString();
+        const anio_menosuno = lastYearDate.getFullYear().toString(); 
+        const cuarttoTrimestre =`${anio}-01-10`;
+        const filename  = `Rel Obras Financiamiento Deuda04`
+        console.log("cuartoTrimestre: ",cuarttoTrimestre)
+         this.isDisabled = true;
+         this.isDisabledExcelRecurso = true
+        this.cosaincegService.GenerarDescargasDeudaRecurso(cuarttoTrimestre,filename).subscribe(
   (blob) => {
        const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');

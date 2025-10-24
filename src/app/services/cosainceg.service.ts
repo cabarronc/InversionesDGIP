@@ -55,6 +55,15 @@ export class CosaincegService {
     }) as Observable<Blob>;
   }
 
+        GenerarDescargasDeudaRecurso(fecha: any,filename: string): Observable<Blob> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = { fecha }; // crea objeto JSON con clave "fecha"
+    return this.http.post(`${this.apiUrl}/GetDescargasDeudaRecurso/${filename}`, body, {
+      headers,
+      responseType: 'blob'
+    }) as Observable<Blob>;
+  }
+
   GetCatalogoRubros(filename: string): Observable<Blob>{
    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(`${this.apiUrl}/GetCatalogoRubros/${filename}.xlsx`, null, {
