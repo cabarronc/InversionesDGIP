@@ -43,12 +43,15 @@ export class CosaincegComponent implements OnInit {
     @Input() selectedItem: string | undefined;
   public isDisabled = false;
   public isDisabledG =false;
+  public isDisabled_deuda = false;
+  public isDisabledG_deuda = false;
   public isDisabledExcelG = false;
   public isDisabledD =false;
   public isDisabledExcelD = false;
   public isDisabledR =false;
   public isDisabledExcelR = false;
   public isDisabledExcelRecurso = false;
+  public isDisabledExcelRecursoDeuda =false
   public isDisabledCatalogoR = false;
   public isDisabledActualizacionRubros =false;
   
@@ -60,6 +63,7 @@ export class CosaincegComponent implements OnInit {
 
 
 public FilesCosainceg: any[] = [];
+public FilesDeuda: any[] = [];
 public cosainceg: any;
   public menuSettings: ColumnMenuSettings = {
     lock: true,
@@ -71,11 +75,15 @@ public cosainceg: any;
   selectedPdf: string | null = null; 
   nombre_archivo:string | null = null;
 
+    selectedPdf_2: string | null = null; 
+  nombre_archivo_2:string | null = null;
+
 canViewCosainceg = false;
   canViewDeuda = false;
 
   ngOnInit(): void {
     this.GetFiles();
+    this.GetFilesDeuda();
        // Inicializamos las variables según los permisos del usuario
     this.canViewCosainceg = this.authService.hasPermission('cosainceg', 'manage');
     this.canViewDeuda = this.authService.hasPermission('deuda', 'manage');
@@ -244,6 +252,172 @@ canViewCosainceg = false;
       },
     },
   ];
+///////////////////////////// Deuda ///////////
+
+ public dataDeuda = [
+    {
+      text: 'Primer Trimestre',
+      svgIcon: fileWordIcon,
+      click: (): void => {
+         const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const primerTrimestre =`${anio}-04-10`;
+        console.log("Primer Trimestre: ",primerTrimestre)
+         this.isDisabled_deuda = true;
+         this.isDisabledG_deuda =true;
+        this.cosaincegService.GenerarDeuda(primerTrimestre).subscribe(
+    (data) => {
+      this.cosainceg = data;
+      this.GetFilesDeuda()
+      console.log("primer trimestre",this.cosainceg)
+       this.notificationService.show({
+        content: "Reporte Generado Correctamente!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+        this.isDisabled = false;
+        this.isDisabledG = false;
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Segundo Trimestre',
+      svgIcon: fileWordIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const segundoTrimestre =`${anio}-07-10`;
+        console.log("Segundo Trimestre: ",segundoTrimestre)
+         this.isDisabled_deuda = true;
+         this.isDisabledG_deuda =true;
+        this.cosaincegService.GenerarDeuda(segundoTrimestre).subscribe(
+    (data) => {
+      this.cosainceg = data;
+       this.cosainceg = data;
+       this.GetFilesDeuda()
+       this.notificationService.show({
+        content: "Reporte Generado Correctamente!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+        this.isDisabled_deuda = false;
+        this.isDisabledG_deuda = false;
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+    {
+      text: 'Tercer Trimestre',
+      svgIcon: fileWordIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString(); 
+        const tercerTrimestre =`${anio}-10-10`;
+        console.log("Tercer Trimestre: ",tercerTrimestre)
+         this.isDisabled_deuda = true;
+         this.isDisabledG_deuda =true;
+        this.cosaincegService.GenerarDeuda(tercerTrimestre).subscribe(
+    (data) => {
+      this.cosainceg = data;
+      this.GetFilesDeuda()
+       this.notificationService.show({
+        content: "Reporte Generado Correctamente!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+        this.isDisabled_deuda = false;
+        this.isDisabledG_deuda = false;
+    },
+    (error) => {
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.error('Error fetching files', error);
+    }
+  );
+      },
+    },
+    {
+      text: 'Cuarto Trimestre',
+      svgIcon: fileWordIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear() - 1);
+        const anio_menosuno = lastYearDate.getFullYear().toString(); 
+        const cuarttoTrimestre =`${anio_menosuno}-01-10`;
+        console.log("cuartoTrimestre: ",cuarttoTrimestre)
+          this.isDisabled_deuda = true;
+         this.isDisabledG_deuda =true;
+        this.cosaincegService.GenerarDeuda(cuarttoTrimestre).subscribe(
+    (data) => {
+      this.cosainceg = data;
+      this.GetFilesDeuda()
+       this.notificationService.show({
+        content: "Reporte Generado Correctamente!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      console.log(this.cosainceg)
+        this.isDisabled_deuda = false;
+        this.isDisabledG_deuda = false;
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+      this.notificationService.show({
+        content: "Existe un Error en la Generacion del Reporte!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+    }
+  );
+      },
+    },
+  ];
+
+
+
 
   /////excel///////////////////////////////////////////////////////////////////////////////////////////////////
   public dataExcelG = [
@@ -1216,10 +1390,20 @@ public ActualizacionRubro = [
 
     openPdfModal(pdfBase64: string, name :string) {
     this.selectedPdf = pdfBase64;
+    
     this.nombre_archivo = name;
   }
     closePdfModal() {
     this.selectedPdf = null;
+  }
+
+    openPdfModal_2(pdfBase64: string, name :string) {
+    this.selectedPdf_2 = pdfBase64;
+    this.nombre_archivo_2 = name;
+    console.log( this.nombre_archivo_2)
+  }
+    closePdfModal_2() {
+    this.selectedPdf_2 = null;
   }
 DescargarExcel() {
    this.notificationService.show({
@@ -1248,9 +1432,56 @@ DescargarExcel() {
   );
   }
 
-  //DESCARGAR ARCHIVOS
+    GetFilesDeuda(){
+ forkJoin([
+    this.fileService.getFilesDeuda1T(),
+    this.fileService.getFilesDeuda2T(),
+    this.fileService.getFilesDeuda3T(),
+    this.fileService.getFilesDeuda4T()
+  ]).subscribe(
+    ([files1, files2, files3, files4]) => {
+      // Unir ambos arreglos
+      this.FilesDeuda = [...files1, ...files2,...files3,...files4];
+    },
+    (error) => {
+      console.error('Error fetching files', error);
+    }
+  );
+  }
+
+  //DESCARGAR ARCHIVOS COSAINCEG
   downloadFile(filename: string): void {
     this.fileService.downloadFileCosainceg(filename).subscribe(
+      (blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        link.click();
+       this.notificationService.show({
+        content: "Reporte Descargado Correctamente!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "success", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      },
+      (error) => {
+        console.error('Error downloading file', error);
+       this.notificationService.show({
+        content: "Error en la Descarga!",
+        hideAfter: 1500,
+        animation: { type: "slide", duration: 900 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "left", vertical: "top" },
+      });
+      }
+    );
+  
+  }
+    //DESCARGAR ARCHIVOS DEUDA
+  downloadFile_Deuda(filename: string): void {
+    this.fileService.downloadFileDeuda(filename).subscribe(
       (blob) => {
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');

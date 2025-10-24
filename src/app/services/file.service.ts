@@ -46,6 +46,21 @@ export class FileService {
     return this.http.get<any>(`${this.apiUrl}/get-filesConsainceg4T`);
   }
 
+  getFilesDeuda1T(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-filesDeuda1T`);
+  }
+
+  getFilesDeuda2T(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-filesDeuda2T`);
+  }
+
+  getFilesDeuda3T(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-filesDeuda3T`);
+  }
+  getFilesDeuda4T(): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/get-filesDeuda4T`);
+  }
+
   downloadFile(filename: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/download/${filename}`, { responseType: 'blob' });
   }
@@ -68,6 +83,10 @@ export class FileService {
 
    downloadFileCosainceg(filename: string): Observable<Blob> {
     return this.http.get(`${this.apiUrl}/download_cosainceg/${filename}`, { responseType: 'blob' });
+  }
+
+     downloadFileDeuda(filename: string): Observable<Blob> {
+    return this.http.get(`${this.apiUrl}/download_deuda/${filename}`, { responseType: 'blob' });
   }
 
     downloadExcelGCosainceg(filename: string): Observable<Blob> {

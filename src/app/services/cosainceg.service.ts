@@ -12,11 +12,17 @@ export class CosaincegService {
 
   constructor(private http: HttpClient) { }
 
-  // 📌 Método para enviar el JSON al backend
+  // 📌 COSAINCEG
   GenerarCosainceg(fecha: any): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     return this.http.post<any>(`${this.apiUrl}/GetReporteCosainceg`, body, { headers });
+  }
+   // 📌 Deuda
+  GenerarDeuda(fecha: any): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = { fecha }; // crea objeto JSON con clave "fecha"
+    return this.http.post<any>(`${this.apiUrl}/GetReporteDeuda`, body, { headers });
   }
     // 📌 Método para enviar el JSON al backend
   GenerarDescargasCosainceg(fecha: any,filename: string): Observable<Blob> {

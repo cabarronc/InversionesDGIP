@@ -166,21 +166,70 @@
             <div class="col-12 mt-3">
                 <div class="row">
                     <div class="col-md-4 mb-3">
+                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataDeuda"
+                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="secondary"
+                            [disabled]="isDisabled_deuda">
+                            Generar Reporte Deuda
+                        </kendo-splitbutton>
+                        <span class="ps-2">
+                            @if (isDisabledG_deuda) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
+                        </span>
+                    </div>
+                    <div class="col-md-4 mb-3">
+
+
                         <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelRecursoDeuda"
                             [svgIcon]="fileReportIcon" rounded="medium" class="button1" themeColor="secondary"
-                            [disabled]="isDisabled">
+                            [disabled]="isDisabled_deuda">
                             Generar Reporte Deuda Recurso
                         </kendo-splitbutton>
 
                         <span class="ps-2">
-                            @if (isDisabledExcelRecurso) {
+                            @if (isDisabledExcelRecursoDeuda) {
                             <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
                             </kendo-loader>
                             }
                         </span>
 
                     </div>
+
                 </div>
+                <div class="mt-4 mb-2"></div>
+                <kendo-expansionpanel title="Reportes Deuda" subtitle="Ver y descargar reportes" [expanded]="true">
+                    <div class="row mt-2 mb-3">
+                        <kendo-grid [data]="FilesDeuda" [kendoGridBinding]="FilesDeuda" [filterable]="true"
+                            [pageable]="true" [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
+                            [resizable]="true">
+                            <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
+                            <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
+                                [width]="130"></kendo-grid-column>
+                            <kendo-grid-column field="creation_time" title="Creación" [width]="160">
+                            </kendo-grid-column>
+                            <kendo-grid-column field="modification_time" title="Modificación"
+                                [width]="160"></kendo-grid-column>
+                            <kendo-grid-command-column title="Acciones" [width]="210">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <button kendoButton (click)="downloadFile_Deuda(dataItem.name)"
+                                        class="k-primary">Descargar</button>
+                                    @if(dataItem.extension === '.pdf' ){
+                                    <button kendoButton (click)="openPdfModal_2(dataItem.base64, dataItem.name)">Ver
+                                        PDF</button>
+                                    }
+                                </ng-template>
+
+                            </kendo-grid-command-column>
+                        </kendo-grid>
+                    </div>
+                </kendo-expansionpanel>
+                 @if(selectedPdf_2){
+        <kendo-window [title]="'REPORTE: ' + nombre_archivo_2" (close)="closePdfModal_2()" [minWidth]="350" [width]="750"
+            [height]="500">
+            <kendo-pdfviewer [data]="selectedPdf_2" style="height: 900px;"></kendo-pdfviewer>
+        </kendo-window>
+        }
             </div>
         </div>
     </div>
