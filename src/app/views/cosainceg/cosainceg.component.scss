@@ -115,3 +115,57 @@
 .row {
   text-align: center; /* centra horizontalmente el inline-block */
 }
+
+::ng-deep .k-window-titlebar {
+  background-color: #4a90e2 !important; /* Tu color personalizado */
+  color: white !important;
+}
+.my-custom-window .k-window-titlebar {
+  background-color: #4a90e2; /* color personalizado */
+  color: #fff;
+}
+.my-custom-window .k-window-content {
+  background-color: #fff8f5;
+}
+
+
+.k-button.k-custom {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+  color: #fff;
+
+  &:hover {
+    background-color: #2e5683;
+  }
+}
+
+.k-button.k-descarga {
+  background-color: #D32F2F;;
+  border-color: #D32F2F;
+  color: #fff;
+
+  &:hover {
+    background-color: #a72626;
+  }
+}
+
+.k-button.k-descarga-word {
+  background-color: #2B579A;;
+  border-color: #2B579A;
+  color: #fff;
+
+  &:hover {
+    background-color: #254a81;
+  }
+}
+
+
+.k-split-button.k-custom .k-button {
+  background-color: #4a90e2;
+  border-color: #4a90e2;
+  color: #fff;
+}
+
+.k-split-button.k-custom .k-button:hover {
+  background-color: #4a90e2;
+}
