@@ -169,3 +169,23 @@
 .k-split-button.k-custom .k-button:hover {
   background-color: #4a90e2;
 }
+/* SWITCH ENCENDIDO */
+.switch-on .k-switch-track {
+  background-color: #28a745 !important; /* Verde */
+  border-color: #ffffff !important;
+}
+
+/* SWITCH APAGADO */
+.switch-off .k-switch-track {
+  background-color: #fa0101 !important; /* Gris claro */
+  border-color: #ffffff !important;
+}
+
+/* Color del círculo (thumb) */
+.switch-on .k-switch-thumb {
+  background-color: white !important;
+}
+
+.switch-off .k-switch-thumb {
+  background-color: rgb(255, 255, 255) !important;
+}

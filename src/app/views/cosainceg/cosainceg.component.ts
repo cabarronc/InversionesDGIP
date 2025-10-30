@@ -10,6 +10,10 @@ import { FileService } from '../../services/file.service';
 import { KENDO_INDICATORS } from '@progress/kendo-angular-indicators';
 import { KENDO_DIALOGS } from '@progress/kendo-angular-dialog';
 import { UploadsComponent } from "../uploads/uploads.component";
+import { KENDO_INPUTS } from "@progress/kendo-angular-inputs";
+import { KENDO_LABELS } from "@progress/kendo-angular-label";
+import { FormsModule } from '@angular/forms';
+
 
 import {
   clipboardIcon,
@@ -36,7 +40,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-cosainceg',
   standalone: true,
-  imports: [KENDO_LAYOUT, CommonModule, KENDO_BUTTONS, KENDO_GRID, WindowModule, KENDO_PDFVIEWER, KENDO_ICONS, KENDO_INDICATORS, KENDO_DIALOGS, UploadsComponent],
+  imports: [KENDO_LAYOUT, CommonModule, KENDO_BUTTONS, KENDO_GRID, WindowModule, KENDO_PDFVIEWER, KENDO_ICONS, KENDO_INDICATORS, KENDO_DIALOGS
+    , UploadsComponent, KENDO_INPUTS, KENDO_LABELS, FormsModule],
   templateUrl: './cosainceg.component.html',
   styleUrl: './cosainceg.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -59,7 +64,8 @@ export class CosaincegComponent implements OnInit {
   public isDisabledExcelRecursoDeuda = false
   public isDisabledCatalogoR = false;
   public isDisabledActualizacionRubros = false;
-
+  public checked = false
+  public windowWidth = 600;
 
   public isMetas = false
   public isMetasD = false
@@ -76,6 +82,7 @@ export class CosaincegComponent implements OnInit {
   public FilesCosainceg: any[] = [];
   public FilesDeuda: any[] = [];
   public Metas: any[] = [];
+  public Top: any[] = [];
   public cosainceg: any;
   public menuSettings: ColumnMenuSettings = {
     lock: true,
@@ -1751,9 +1758,10 @@ export class CosaincegComponent implements OnInit {
             link.href = window.URL.createObjectURL(blob);
             link.download = filename;
             link.click();
-            this.Metas = resp.json
+            this.Top = resp.json
+            this.Metas = resp.metas
             // JSON adicional
-            console.log(resp.json);
+            console.log(resp.metas);
 
             this.notificationService.show({
               content: "Excel Generado Correctamente, espero que se descargue!",
@@ -1807,7 +1815,8 @@ export class CosaincegComponent implements OnInit {
             link.href = window.URL.createObjectURL(blob);
             link.download = filename;
             link.click();
-             this.Metas = resp.json
+            this.Top = resp.json
+            this.Metas = resp.metas
             // JSON adicional
             console.log(resp.json);
 
@@ -1862,7 +1871,8 @@ export class CosaincegComponent implements OnInit {
             link.href = window.URL.createObjectURL(blob);
             link.download = filename;
             link.click();
-             this.Metas = resp.json
+            this.Top = resp.json
+            this.Metas = resp.metas
             // JSON adicional
             console.log(resp.json);
 
@@ -1920,7 +1930,8 @@ export class CosaincegComponent implements OnInit {
             link.href = window.URL.createObjectURL(blob);
             link.download = filename;
             link.click();
-             this.Metas = resp.json
+            this.Top = resp.json
+            this.Metas = resp.metas
             // JSON adicional
             console.log(resp.json);
 
@@ -2116,6 +2127,5 @@ export class CosaincegComponent implements OnInit {
   goBack(): void {
     this.router.navigate(['/principal']);
   }
-
 
 }

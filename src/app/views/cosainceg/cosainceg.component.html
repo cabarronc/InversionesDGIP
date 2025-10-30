@@ -223,17 +223,20 @@
                 </div>
 
                 <kendo-expansionpanel title="📝 Reportes Deuda" subtitle="Ver y descargar reportes" [expanded]="true">
-                            @if (!opened) {
-                            <button kendoButton (click)="open()"  class="k-custom">🎯 Consultar Metas</button>
-                            } @if (opened) {
-                            <kendo-window class="my-custom-window" (close)="close()" title=" 🥇🥈🥉 Top 3 Proyectos" [minWidth]="1150" [width]="1150">
+                    @if (!opened) {
+                    <button kendoButton (click)="open()" class="k-custom">🎯 Consultar Metas</button>
+                    } @if (opened) {
+                    <kendo-window class="my-custom-window" (close)="close()" title=" 🥇🥈🥉 Top 3 Proyectos"
+                        [(width)]="windowWidth">
 
-                                <p style=" margin: 20px; text-align: center; font-size: 1.2rem;"> 🗹 Elige el Trimestre que
-                                    deseas consultar:</p>
-                                <div class="col-md-12 mb-3">
-                                    <kendo-splitbutton   kendoButton (buttonClick)="DescargarExcel()"
-                                        [data]="dataExcelDeudaMetas" [svgIcon]="fileExcelIcon" title="Eleccion del trimestre"
-                                        [disabled]="isMetas"   class="k-custom"
+                        <p style="margin-top: 0.5rem; text-align: center; font-size: 1.2rem;"> 🗹 Elige el Trimestre que
+                            deseas consultar:</p>
+                      
+                            <div class="row mb-2 mt-1">
+                                   <div class="col-auto">
+                                    <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()"
+                                        [data]="dataExcelDeudaMetas" [svgIcon]="fileExcelIcon"
+                                        title="Eleccion del trimestre" [disabled]="isMetas"
                                         class="button1">Trimestre</kendo-splitbutton>
                                     <span class="ps-2">
                                         @if (isMetasD) {
@@ -241,46 +244,59 @@
                                         </kendo-loader>
                                         }
                                     </span>
+
                                 </div>
+                                 <div class="col-auto">
+                                    <div kendoTooltip style="text-align: center;">
+                                        <kendo-switch title="Activa para ver el detalle por metas" name="switch"
+                                            [ngClass]="{ 'switch-on': checked, 'switch-off': !checked }"
+                                            class="custom-switch" [(ngModel)]="checked"></kendo-switch>
+                                    </div>
+                                </div>
+                            </div>
 
-                                <kendo-grid [data]="Metas" [kendoGridBinding]="Metas" [filterable]="true"
-                                    [pageable]="true" [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings"
-                                    size="small" [resizable]="true">
-                                    <kendo-grid-column field="nombre" title="Nombre del Proyecto"
-                                        [width]="290"></kendo-grid-column>
-                                    <kendo-grid-column field="ejercicio" title="Ejercicio" [class]="{ 'text-center': true }"
-                                        [width]="100"></kendo-grid-column>
-                                    <kendo-grid-column field="modificado_formateado" title="Monto" [width]="160">
-                                    </kendo-grid-column>
-                                    <kendo-grid-column field="ranking" title="Posicion"
-                                        [width]="100"></kendo-grid-column>
-                                    <!-- <kendo-grid-command-column title="Acciones" [width]="210">
-                                        <ng-template kendoGridCellTemplate let-dataItem>
-                                            @if(dataItem.extension === '.pdf' ){
-                                            <button kendoButton   [svgIcon]="fileExcelIcon" (click)="downloadFile_Deuda(dataItem.name)"
-                                                class="k-primary">Descargar</button>
-                                                
-                                            }
-                                            @else {
-                                                <button kendoButton   [svgIcon]="fileExcelIcon" (click)="downloadFile_Deuda(dataItem.name)"
-                                                class="k-primary">Descargar word</button>
+       
 
-                                            }
-                                            @if(dataItem.extension === '.pdf' ){
-                                            <button kendoButton [svgIcon]="fileExcelIcon"
-                                                (click)="openPdfModal_2(dataItem.base64, dataItem.name)">Ver
-                                                PDF</button>
-                                            }
-                                        </ng-template>
 
-                                    </kendo-grid-command-column> -->
-                                </kendo-grid>
-                            </kendo-window>
-                            }
+                        @if (!checked){
+                        <kendo-grid [data]="Top" [kendoGridBinding]="Top" [filterable]="true" [pageable]="true"
+                            [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
+                            [resizable]="true">
+
+                            <kendo-grid-column field="nombre" title="Nombre del Proyecto"
+                                [width]="290"></kendo-grid-column>
+                            <kendo-grid-column field="ejercicio" title="Ejercicio" [class]="{ 'text-center': true }"
+                                [width]="100"></kendo-grid-column>
+                            <kendo-grid-column field="modificado_formateado" title="Monto" [width]="160">
+                            </kendo-grid-column>
+                            <kendo-grid-column field="ranking" title="Posicion" [width]="100"></kendo-grid-column>
+                            <kendo-grid-excel fileName="metas.xlsx"></kendo-grid-excel>
+                        </kendo-grid>
+                        }
+                        @else{
+                        <kendo-grid [data]="Metas" [kendoGridBinding]="Metas" [filterable]="true" [pageable]="true"
+                            [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
+                            [resizable]="true">
+                            <kendo-grid-column field="clave_recodificada" title="Clave"
+                                [width]="50"></kendo-grid-column>
+                            <kendo-grid-column field="nombre" title="Nombre del Proyecto"
+                                [width]="300"></kendo-grid-column>
+                            <kendo-grid-column field="meta_estandarizada" title="Meta" [class]="{ 'text-center': true }"
+                                [width]="100"></kendo-grid-column>
+                            <kendo-grid-column field="descripmeta" title="Descripcion Meta" [width]="260">
+                            </kendo-grid-column>
+                            <kendo-grid-column field="Modificado" title="modificado" [width]="80"></kendo-grid-column>
+                            <kendo-grid-column field="ejercicio" title="Ejercicio" [width]="80"></kendo-grid-column>
+                            <kendo-grid-excel fileName="metas.xlsx"></kendo-grid-excel>
+                        </kendo-grid>
+                        }
+                    </kendo-window>
+                    }
                     <div class="row mt-2 mb-3">
                         <kendo-grid [data]="FilesDeuda" [kendoGridBinding]="FilesDeuda" [filterable]="true"
                             [pageable]="true" [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
                             [resizable]="true">
+
                             <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
                             <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
                                 [width]="130"></kendo-grid-column>
@@ -291,22 +307,26 @@
                             <kendo-grid-command-column title="Acciones" [width]="210">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     @if(dataItem.extension === '.pdf' ){
-                                            <button kendoButton   [svgIcon]="filePdfIcon" (click)="downloadFile_Deuda(dataItem.name)"
-                                                class="k-descarga">↓ Descargar</button>
-                                                
-                                            }
-                                            @else {
-                                                <button kendoButton   [svgIcon]="fileWordIcon" (click)="downloadFile_Deuda(dataItem.name)"
-                                                class="k-descarga-word">↓ Descargar</button>
+                                    <button kendoButton [svgIcon]="filePdfIcon"
+                                        (click)="downloadFile_Deuda(dataItem.name)" class="k-descarga">↓
+                                        Descargar</button>
 
-                                            }
+                                    }
+                                    @else {
+                                    <button kendoButton [svgIcon]="fileWordIcon"
+                                        (click)="downloadFile_Deuda(dataItem.name)" class="k-descarga-word">↓
+                                        Descargar</button>
+
+                                    }
                                     @if(dataItem.extension === '.pdf' ){
-                                    <button kendoButton class="k-descarga" (click)="openPdfModal_2(dataItem.base64, dataItem.name)">🔎 Ver
+                                    <button kendoButton class="k-descarga"
+                                        (click)="openPdfModal_2(dataItem.base64, dataItem.name)">🔎 Ver
                                         PDF</button>
                                     }
                                 </ng-template>
 
                             </kendo-grid-command-column>
+
                         </kendo-grid>
                     </div>
                 </kendo-expansionpanel>
