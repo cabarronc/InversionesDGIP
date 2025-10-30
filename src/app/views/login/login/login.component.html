@@ -6,169 +6,80 @@
           src="https://github.com/cabarronc/RecursosMultimedia/blob/main/LOGO_FINANZAS_HORIZONTAL_FONDO%20AZUL.png?raw=True"
           width="70%" height="90%">
       </div>
-      <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
-        Iniciar Sesión
-      </h2>
-      <p class="mt-2 text-center text-sm text-gray-600">
-        Accede a tu cuenta para continuar
-      </p>
     </div>
-
-    <!-- <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <div class="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label for="email" class="sr-only ">Email</label>
-              <input 
-                id="email"
-                name="email"
-                type="email"
-                formControlName="email"
-                required
-                class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                [class.border-red-500]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
-                placeholder="Correo electrónico">
-              <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" 
-                   class="text-red-500 text-xs mt-1">
+    <!-- <div class="row">
+      <div class="col-2"></div>
+      <div class="col-3"> -->
+    <div class="container">
+      <div class="row mt-4">
+        <div class="col-12 col-sm-8 col-md-6 col-lg-4">
+          <h2 class="mt-6 ml-4 text-3xl space-y-12 font-extrabold text-gray-900">
+            Iniciar Sesión
+          </h2>
+          <p class="mt-2 text-sm space-y-12  text-gray-600">
+            Accede a tu cuenta para continuar
+          </p>
+          <form sclass="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <kendo-formfield>
+              <kendo-label for="email">Correo electrónico</kendo-label>
+              <input kendoTextBox id="email" type="email" formControlName="email" placeholder="Correo electrónico" />
+              <kendo-formerror *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
                 El email es requerido y debe ser válido
-              </div>
-            </div>
-            
-            <div>
-              <label for="password" class="sr-only">Contraseña</label>
-              <input 
-                id="password"
-                name="password"
-                [type]="showPassword ? 'text' : 'password'"
-                formControlName="password"
-                required
-                class="appearance-none rounded-none relative block w-full px-3 py-2 pr-10 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-blue-500 focus:border-blue-500 focus:z-10 sm:text-sm"
-                [class.border-red-500]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
-                placeholder="Contraseña">
-              
-              <button 
-                type="button"
-                class="absolute inset-y-0 right-0 pr-3 flex items-center"
-                (click)="togglePasswordVisibility()"
-                style="margin-top: -32px; margin-right: 8px;">
-                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path *ngIf="!showPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
-                  <path *ngIf="showPassword" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                    d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.878 9.878L3 3m6.878 6.878L21 21"/>
-                </svg>
-              </button>
-              
-              <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" 
-                   class="text-red-500 text-xs mt-1">
+              </kendo-formerror>
+            </kendo-formfield>
+
+            <kendo-formfield>
+              <kendo-label for="password">Contraseña</kendo-label>
+
+              <kendo-textbox id="password" [type]="passInputType" formControlName="password"
+                placeholder="Ingresa tu contraseña">
+
+                <ng-template kendoTextBoxSuffixTemplate>
+                  <button kendoButton look="flat" type="button" [svgIcon]="eyeIcon" (click)="togglePassVisibility()">
+
+                  </button>
+                </ng-template>
+              </kendo-textbox>
+
+              <kendo-formerror *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
                 La contraseña es requerida
-              </div>
-            </div>
-          </div>
+              </kendo-formerror>
+            </kendo-formfield>
 
-          <div *ngIf="errorMessage" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
-            <span class="block sm:inline">{{ errorMessage }}</span>
-          </div>
 
-          <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input 
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                formControlName="rememberMe"
-                class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-              <label for="remember-me" class="ml-2 block text-sm text-gray-900">
-                Recordarme
-              </label>
-            </div>
+            <div class="flex items-center justify-between my-3">
+              <kendo-label text="Recuerdame" style="font-weight: bold;">
+                <span style="margin-left: 0.2rem;">
+                  <kendo-svgicon [icon]="questionCircleIcon"
+                    title="Duración de sesión:&#10;Normal: 8 horas  &#10;Con Recordarme: 30 días"></kendo-svgicon>
+                </span>&nbsp;
+              </kendo-label>
+              <kendo-checkbox id="recuerdame" formControlName="rememberMe" label="Recordarme"
+                #recuerdame></kendo-checkbox>&nbsp;
 
-            <div class="text-sm">
-              <button type="button" (click)="showForgotPassword = true" 
-                      class="font-medium text-blue-600 hover:text-blue-500">
+
+              <button kendoButton type="button" themeColor="warning" (click)="showForgotPassword = true">
                 ¿Olvidaste tu contraseña?
               </button>
             </div>
-          </div>
 
-          <div>
-            <button 
-              type="submit"
-              [disabled]="loginForm.invalid || loading"
-              class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
-              
-              <span *ngIf="loading" class="absolute left-0 inset-y-0 flex items-center pl-3">
-                <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-              </span>
-              
-              {{ loading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
-            </button>
-          </div>
-        </form> -->
-    <div class="row">
-      <div class="col-2"></div>
-      <div class="col-3">
-        <form sclass="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <kendo-formfield>
-            <kendo-label for="email">Correo electrónico</kendo-label>
-            <input kendoTextBox id="email" type="email" formControlName="email" placeholder="Correo electrónico" />
-            <kendo-formerror *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
-              El email es requerido y debe ser válido
-            </kendo-formerror>
-          </kendo-formfield>
-
-          <kendo-formfield>
-            <kendo-label for="password">Contraseña</kendo-label>
-
-            <kendo-textbox id="password" [type]="passInputType" formControlName="password"
-              placeholder="Ingresa tu contraseña">
-
-              <ng-template kendoTextBoxSuffixTemplate>
-                <button kendoButton look="flat" type="button" [svgIcon]="eyeIcon" (click)="togglePassVisibility()">
-
-                </button>
-              </ng-template>
-            </kendo-textbox>
-
-            <kendo-formerror *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-              La contraseña es requerida
-            </kendo-formerror>
-          </kendo-formfield>
+            <div *ngIf="errorMessage" class="k-messagebox k-messagebox-error mb-3">
+              {{ errorMessage }}
+            </div>
 
 
-          <div class="flex items-center justify-between my-3">
-            <kendo-label  text="Recuerdame"  style="font-weight: bold;">
-              <span style="margin-left: 0.2rem;">
-                <kendo-svgicon [icon]="questionCircleIcon"
-                  title="Duración de sesión:&#10;Normal: 8 horas  &#10;Con Recordarme: 30 días"></kendo-svgicon>
-              </span>&nbsp;
-            </kendo-label>
-            <kendo-checkbox id="recuerdame" formControlName="rememberMe" label="Recordarme"
-              #recuerdame></kendo-checkbox>&nbsp;
-
-
-            <button kendoButton type="button" themeColor="warning" (click)="showForgotPassword = true">
-              ¿Olvidaste tu contraseña?
-            </button>
-          </div>
-
-          <div *ngIf="errorMessage" class="k-messagebox k-messagebox-error mb-3">
-            {{ errorMessage }}
-          </div>
-
-
-          <!-- <div kendoTooltip [tooltipTemplate]="template" style="padding-top: 10px;">
+            <!-- <div kendoTooltip [tooltipTemplate]="template" style="padding-top: 10px;">
           </div> -->
 
-          <button kendoButton type="submit" [disabled]="loginForm.invalid || loading" [primary]="true" class="w-full">
-            <span *ngIf="loading" class="k-icon k-i-loading"></span>
-            {{ loading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
-          </button>
-        </form>
+            <button kendoButton type="submit" [disabled]="loginForm.invalid || loading" [primary]="true" class="w-full">
+              <span *ngIf="loading" class="k-icon k-i-loading"></span>
+              {{ loading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+            </button>
+          </form>
+        </div>
       </div>
     </div>
+
     <kendo-dialog *ngIf="showForgotPassword" (close)="showForgotPassword = false" [minWidth]="400" [width]="450">
       <kendo-dialog-titlebar>
         Recuperar Contraseña
