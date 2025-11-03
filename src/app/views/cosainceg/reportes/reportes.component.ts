@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
-import {fileWordIcon,menuIcon, chartBarClusteredIcon, SVGIcon, chevronDoubleDownIcon,fileExcelIcon,graphIcon,alignJustifyIcon, aggregateFieldsIcon,fileWrenchIcon} from '@progress/kendo-svg-icons';
+import {fileWordIcon,menuIcon, chartBarClusteredIcon, SVGIcon,
+  dollarIcon, chevronDoubleDownIcon,fileExcelIcon,graphIcon,alignJustifyIcon, aggregateFieldsIcon,fileWrenchIcon} from '@progress/kendo-svg-icons';
 import { KENDO_INDICATORS } from "@progress/kendo-angular-indicators";
 import { DrawerPosition, KENDO_LAYOUT } from "@progress/kendo-angular-layout";
 import { DrawerItem, DrawerSelectEvent } from "@progress/kendo-angular-layout";
@@ -19,12 +20,15 @@ export class ReportesComponent {
     public selected = "Cicular";
     public wordIcon: SVGIcon = fileWordIcon;
     public menuSvg: SVGIcon = menuIcon;
+    public dollarIcon: SVGIcon = dollarIcon
     public position: DrawerPosition = "start";
     public chevronDoubleDownIcon: SVGIcon = chevronDoubleDownIcon
     public items: Array<DrawerItem> = [
       { text: "Cosainceg", svgIcon: fileWordIcon, selected: true },
       { separator: true },
       { text: "Deuda", svgIcon: chevronDoubleDownIcon},
+      { separator: true },
+      { text: "Inversion", svgIcon: dollarIcon},
       { separator: true }
     ];
     constructor() {    

@@ -98,6 +98,7 @@ export class CosaincegComponent implements OnInit {
   nombre_archivo_2: string | null = null;
 
   canViewCosainceg = false;
+  canViewInversion = false;
   canViewDeuda = false;
 
 
@@ -117,6 +118,7 @@ export class CosaincegComponent implements OnInit {
     this.GetFilesDeuda();
     // Inicializamos las variables según los permisos del usuario
     this.canViewCosainceg = this.authService.hasPermission('cosainceg', 'manage');
+     this.canViewInversion = this.authService.hasPermission('inversion', 'manage');
     this.canViewDeuda = this.authService.hasPermission('deuda', 'manage');
     console.log(this.canViewCosainceg)
     console.log(this.canViewDeuda)
