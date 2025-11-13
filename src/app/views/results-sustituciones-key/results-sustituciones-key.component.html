@@ -1,0 +1,63 @@
+<div class="results-key-container" *ngIf="rowChanges">
+  <h3>🔹 Comparación por clave</h3>
+
+  <!-- Agregados -->
+  <section *ngIf="rowChanges.added?.length">
+    <h4 class="added">➕ Filas agregadas</h4>
+    <table class="table table-sm table-striped">
+      <thead>
+        <tr>
+          <th *ngFor="let key of objectKeys(rowChanges.added[0])">{{ key }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rowChanges.added">
+          <td *ngFor="let key of objectKeys(row)">{{ row[key] }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Eliminados -->
+  <section *ngIf="rowChanges.removed?.length">
+    <h4 class="removed">❌ Filas eliminadas</h4>
+    <table class="table table-sm table-striped">
+      <thead>
+        <tr>
+          <th *ngFor="let key of objectKeys(rowChanges.removed[0])">{{ key }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of rowChanges.removed">
+          <td *ngFor="let key of objectKeys(row)">{{ row[key] }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Modificados -->
+  <section *ngIf="rowChanges.modified && objectKeys(rowChanges.modified).length">
+    <h4 class="modified">✏️ Filas modificadas</h4>
+
+    <div *ngFor="let key of objectKeys(rowChanges.modified)" class="modified-block">
+      <strong>Clave: {{ key }}</strong>
+      <table class="table table-sm table-bordered mt-2">
+        <thead>
+          <tr>
+            <th>Campo</th>
+            <th>Valor anterior</th>
+            <th>Valor nuevo</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let field of objectKeys(rowChanges.modified[key])">
+            <td>{{ field }}</td>
+            <td>{{ rowChanges.modified[key][field]?.substitutions[0]?.from }}</td>
+            <td>{{ rowChanges.modified[key][field]?.substitutions[0]?.to }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+</div>
+

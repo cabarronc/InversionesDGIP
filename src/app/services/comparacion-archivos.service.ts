@@ -60,10 +60,21 @@ export interface ComparisonResult {
   message?: string;
   file1_info?: any;
   file2_info?: any;
-   // NUEVO: Análisis de sustituciones línea por línea
+   //Análisis de sustituciones línea por línea
   field_substitutions?: {
-    [fieldName: string]: FieldSubstitutions;
+    [fieldName: string]: FieldSubstitutions | KeyFieldSubstitutions;
   };
+  // NUEVO: Análisis basado en claves (substitutions_by_key)
+  row_changes?: {
+    added: any[];
+    removed: any[];
+    modified: {
+      [key: string]: {
+        [fieldName: string]: KeyFieldSubstitutions;
+      };
+    };
+  };
+
 }
 export interface FieldSubstitutions {
   column_name: string;
@@ -74,6 +85,11 @@ export interface FieldSubstitutions {
   line_by_line_changes: LineChange[];
   value_mappings: { [oldValue: string]: ValueMapping[] };
   unique_changes_summary: UniqueChangesSummary;
+}
+
+export interface KeyFieldSubstitutions {
+  has_changes: boolean;
+  substitutions: Array<{ from: any; to: any }>;
 }
 
 export interface LineChange {
@@ -200,7 +216,7 @@ private apiUrl = environment.apiUrl_compacion;
       );
   }
   // Método en el servicio para el nuevo endpoint
-compareFilesSubstitutions(file1Id: string, file2Id: string): Observable<ComparisonResult> {
+compareFilesSubstitutions(file1Id: string, file2Id: string,): Observable<ComparisonResult> {
   return this.http.get<ComparisonResult>(`${this.apiUrl}/compare/${file1Id}/${file2Id}/substitutions`)
     .pipe(
       retry(2),
@@ -213,6 +229,23 @@ compareFilesSubstitutions(file1Id: string, file2Id: string): Observable<Comparis
         retry(2),
         catchError(this.handleError)
       );
+  }
+    // Método en el servicio para el nuevo endpoint
+compareFilesSubstitutions_by_id(file1Id: string, file2Id: string,  keyColumns: string[] = ['id_proceso_proyecto'] ): Observable<ComparisonResult> {
+  const url = `${this.apiUrl}/compare/${file1Id}/${file2Id}/substitutions_by_key`;
+  const body = { key_columns: keyColumns }; // el body que espera el endpoint
+  return this.http.post<ComparisonResult>(url, body).pipe(
+    retry(2),
+    catchError(this.handleError)
+  );
+
+
+  // listFiles(): Observable<FileInfo[]> {
+  //   return this.http.get<FileInfo[]>(`${this.apiUrl}/files`)
+  //     .pipe(
+  //       retry(2),
+  //       catchError(this.handleError)
+  //     );
   }
 private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocurrió un error desconocido';

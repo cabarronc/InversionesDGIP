@@ -33,13 +33,14 @@ import { ComparacionArchivosService } from '../../../services/comparacion-archiv
 import { ComparacionArchivosComponent } from '../../uploads/comparacion-archivos/comparacion-archivos.component';
 import { ResultsComponent } from "../../results/results.component";
 import { ResultsSustitucionesComponent } from "../../results-sustituciones/results-sustituciones.component";
+import { ResultsSustitucionesKeyComponent } from "../../results-sustituciones-key/results-sustituciones-key.component";
 
 @Component({
   selector: 'app-circular-content',
   standalone: true,
   imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
     KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
-    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent],
+    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent, ResultsSustitucionesKeyComponent],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './circular-content.component.html',
   styleUrl: './circular-content.component.scss'
@@ -734,6 +735,11 @@ onComparisonRequested(comparisonData: any) {
     case 'substitutions':
       compareMethod = this.comparacionArchivos.compareFilesSubstitutions(
         comparisonData.file1Id, comparisonData.file2Id
+      );
+      break;
+       case 'substitutions_by_key':
+        compareMethod = this.comparacionArchivos.compareFilesSubstitutions_by_id(
+        comparisonData.file1Id, comparisonData.file2Id,['id_proceso_proyecto']
       );
       break;
     default:

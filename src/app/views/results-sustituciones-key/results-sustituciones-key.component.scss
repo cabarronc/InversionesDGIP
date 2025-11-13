@@ -1,0 +1,25 @@
+.results-key-container {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+h4.added {
+  color: #1b5e20;
+}
+
+h4.removed {
+  color: #b71c1c;
+}
+
+h4.modified {
+  color: #0d47a1;
+}
+
+.modified-block {
+  margin-bottom: 1.5rem;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}

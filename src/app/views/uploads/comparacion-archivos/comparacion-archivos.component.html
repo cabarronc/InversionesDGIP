@@ -45,6 +45,10 @@
                 <button class="btn btn-substitutions" [disabled]="isUploading" (click)="uploadFiles('substitutions')">
           {{ isUploading ? 'Subiendo...' : '🔄 Análisis de Sustituciones' }}
         </button>
+           <button class="btn btn-substitutions" [disabled]="isUploading" (click)="uploadFiles('substitutions_by_key')">
+          {{ isUploading ? 'Subiendo...' : '🔄 Análisis de Sustituciones Pro' }}
+        </button>
+        
         <button class="btn btn-secondary" (click)="clearFiles()">
           🗑️ Limpiar
         </button>

@@ -20,7 +20,7 @@ export class ComparacionArchivosComponent {
   @Output() comparisonRequested = new EventEmitter<{
   file1Id: string, 
   file2Id: string, 
-  analysisType?: 'normal' | 'detailed' | 'substitutions'
+  analysisType?: 'normal' | 'detailed' | 'substitutions' | 'substitutions_by_key'
 }>();
   file1: File | null = null;
   file2: File | null = null;
@@ -178,7 +178,7 @@ loadExistingFiles() {
   //   });
   // }
 
-uploadFiles(analysisType: 'normal' | 'detailed' | 'substitutions' = 'normal') {
+uploadFiles(analysisType: 'normal' | 'detailed' | 'substitutions' | 'substitutions_by_key'='normal') {
   if (!this.file1 || !this.file2) {
     this.showStatus('Selecciona ambos archivos antes de continuar.', 'error');
     return;
@@ -210,7 +210,7 @@ uploadFiles(analysisType: 'normal' | 'detailed' | 'substitutions' = 'normal') {
   });
 }
 
-compareExistingFiles(analysisType: 'normal' | 'detailed' | 'substitutions' = 'normal') {
+compareExistingFiles(analysisType: 'normal' | 'detailed' |  'substitutions' | 'substitutions_by_key'='normal') {
   if (!this.selectedFile1 || !this.selectedFile2) {
     this.showStatus('Selecciona ambos archivos para comparar.', 'error');
     return;
