@@ -231,31 +231,31 @@
 
                         <p style="margin-top: 0.5rem; text-align: center; font-size: 1.2rem;"> 🗹 Elige el Trimestre que
                             deseas consultar:</p>
-                      
-                            <div class="row mb-2 mt-1">
-                                   <div class="col-auto">
-                                    <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()"
-                                        [data]="dataExcelDeudaMetas" [svgIcon]="fileExcelIcon"
-                                        title="Eleccion del trimestre" [disabled]="isMetas"
-                                        class="button1">Trimestre</kendo-splitbutton>
-                                    <span class="ps-2">
-                                        @if (isMetasD) {
-                                        <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                                        </kendo-loader>
-                                        }
-                                    </span>
 
-                                </div>
-                                 <div class="col-auto">
-                                    <div kendoTooltip style="text-align: center;">
-                                        <kendo-switch title="Activa para ver el detalle por metas" name="switch"
-                                            [ngClass]="{ 'switch-on': checked, 'switch-off': !checked }"
-                                            class="custom-switch" [(ngModel)]="checked"></kendo-switch>
-                                    </div>
+                        <div class="row mb-2 mt-1">
+                            <div class="col-auto">
+                                <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()"
+                                    [data]="dataExcelDeudaMetas" [svgIcon]="fileExcelIcon"
+                                    title="Eleccion del trimestre" [disabled]="isMetas"
+                                    class="button1">Trimestre</kendo-splitbutton>
+                                <span class="ps-2">
+                                    @if (isMetasD) {
+                                    <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
+                                    </kendo-loader>
+                                    }
+                                </span>
+
+                            </div>
+                            <div class="col-auto">
+                                <div kendoTooltip style="text-align: center;">
+                                    <kendo-switch title="Activa para ver el detalle por metas" name="switch"
+                                        [ngClass]="{ 'switch-on': checked, 'switch-off': !checked }"
+                                        class="custom-switch" [(ngModel)]="checked"></kendo-switch>
                                 </div>
                             </div>
+                        </div>
 
-       
+
 
 
                         @if (!checked){
@@ -342,7 +342,88 @@
 </div>
 }
 @if (selectedItem === 'Inversion' && canViewInversion) {
+<div class="container-fluid mt-4">
+    <div class="row">
+        <h1 class="title2">Reporte<span> INVERSIÓN</span>📋</h1>
 
+    </div>
+    <div class="page">
+        <div class="content">
+            <div class="col-12 mt-3">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelInversionHojaTrabajo"
+                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="secondary"
+                            [disabled]="isInversionGeneral">
+                            Generar Reporte Inversión Entregables
+                        </kendo-splitbutton>
+                        <span class="ps-2">
+                            @if (isInversionGeneralD) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
+                        </span>
+                    </div>
+                    <div class="col-md-3 mb-3">
+
+
+                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelInversionentregables"
+                            [svgIcon]="fileZipIcon" rounded="medium" class="button1" themeColor="secondary"
+                            [disabled]="generandoReporte">
+                            Generar Reporte Inversión Entregables
+                        </kendo-splitbutton>
+
+                        <span class="ps-2">
+                            @if (generandoReporteD) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
+                        </span>
+                    </div>
+                        <div class="col-md-3 mb-3">
+
+
+                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelInversionesCopias"
+                            [svgIcon]="copyIcon" rounded="medium" class="button1" themeColor="tertiary" fillMode="solid"
+                            [disabled]="isCoping">
+                            Copiar Archivos
+                        </kendo-splitbutton>
+
+                        <span class="ps-2">
+                            @if (isCoping) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
+                        </span>
+                    </div>
+                     
+
+                </div>
+                 @if (hasProps(info)){
+                        <kendo-grid [data]="info" [kendoGridBinding]="info" [filterable]="true" [pageable]="true"
+                            [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
+                            [resizable]="true">
+                             <kendo-grid-column field="descripcion_eje" title="Eje"
+                                [width]="180"></kendo-grid-column>
+                                 <kendo-grid-column field="id_programa_presupuestario" title="Programa presupuestario"
+                                [width]="180"></kendo-grid-column>
+                                 <kendo-grid-column field="siglas_dependencia" title="Dependencia"
+                                [width]="100"></kendo-grid-column>
+                                 <kendo-grid-column field="id_centro_gestor" title="Unidad Responsable" [width]="200">
+                            </kendo-grid-column>
+                                 <kendo-grid-column field="id_proceso_proyecto" title="Clave Q"
+                                [width]="100"></kendo-grid-column>
+                            <kendo-grid-column field="descripcion_proceso_proyecto" title="Nombre"
+                                [width]="350"></kendo-grid-column>
+                            <kendo-grid-column field="Monto" title="Monto" [class]="{ 'text-center': true }"
+                                [width]="100"></kendo-grid-column>
+                           
+                        </kendo-grid>
+                        }
+            </div>
+        </div>
+    </div>
+</div>
 }
 
 @if ((!canViewCosainceg && selectedItem === 'Cosainceg') ||

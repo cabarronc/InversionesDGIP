@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
@@ -102,6 +102,44 @@ export class CosaincegService {
   const body = { fecha };
   return this.http.post(`${this.apiUrl}/GetDescargasDeudaMetas/${filename}`, body);
 }
+// //Hojas de Trabajo
+// GenerarDescargasInversionHojaTrabajo(fecha: any, filename: string): Observable<Blob> {
+//   const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+//   const body = { fecha };
+//   return this.http.post(`${this.apiUrl}/InversionesGeneralHojasTrabajo/${filename}`, body, {
+//       headers,
+//       responseType: 'blob'
+//     })as Observable<Blob>;
+// }
+// Hojas de Trabajo
+GenerarDescargasInversionHojaTrabajo(fecha: any, filename: string): Observable<HttpResponse<Blob>> {
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  const body = { fecha };
+
+  return this.http.post(
+    `${this.apiUrl}/InversionesGeneralHojasTrabajo/${filename}`,
+    body,
+    {
+      headers,
+      responseType: 'blob',
+      observe: 'response'  // 👈 NECESARIO PARA RECIBIR HEADERS
+    }
+  ) as Observable<HttpResponse<Blob>>;
+}
+
+//Entregables
+  GenerarDescargasInversionEntregables(fecha: any,filename: string): Observable<Blob> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = { fecha }; // crea objeto JSON con clave "fecha"
+    return this.http.post(`${this.apiUrl}/InversionesGeneralEntregables/${filename}`, body, {
+      headers,
+      responseType: 'blob'
+    }) as Observable<Blob>;
+  }
+    InversionCopy(fecha: any): Observable<any> {
+       const body = { fecha }
+    return this.http.post(`${this.apiUrl}/GetInversionCopy`,body);
+  }
 
 
   GetCatalogoRubros(filename: string): Observable<Blob>{
