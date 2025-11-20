@@ -351,11 +351,24 @@
         <div class="content">
             <div class="col-12 mt-3">
                 <div class="row">
+                    <div class="col-md-2 mb-3">
+                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataCascaron"
+                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="secondary"
+                            [disabled]="EjecutandoInversion">
+                            Generar Cascaron
+                        </kendo-splitbutton>
+                        <span class="ps-2">
+                            @if (cascaron) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
+                        </span>
+                    </div>
                     <div class="col-md-3 mb-3">
                         <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelInversionHojaTrabajo"
                             [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="secondary"
-                            [disabled]="isInversionGeneral">
-                            Generar Reporte Inversión Entregables
+                            [disabled]="EjecutandoInversion">
+                            Generar Hojas de Trabajo Inversión
                         </kendo-splitbutton>
                         <span class="ps-2">
                             @if (isInversionGeneralD) {
@@ -369,7 +382,7 @@
 
                         <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelInversionentregables"
                             [svgIcon]="fileZipIcon" rounded="medium" class="button1" themeColor="secondary"
-                            [disabled]="generandoReporte">
+                            [disabled]="EjecutandoInversion">
                             Generar Reporte Inversión Entregables
                         </kendo-splitbutton>
 
@@ -385,7 +398,7 @@
 
                         <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelInversionesCopias"
                             [svgIcon]="copyIcon" rounded="medium" class="button1" themeColor="tertiary" fillMode="solid"
-                            [disabled]="isCoping">
+                            [disabled]="EjecutandoInversion">
                             Copiar Archivos
                         </kendo-splitbutton>
 

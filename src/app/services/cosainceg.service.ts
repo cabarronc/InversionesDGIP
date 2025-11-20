@@ -141,6 +141,11 @@ GenerarDescargasInversionHojaTrabajo(fecha: any, filename: string): Observable<H
     return this.http.post(`${this.apiUrl}/GetInversionCopy`,body);
   }
 
+      GetCascaron(fecha: any): Observable<any> {
+       const body = { fecha }
+    return this.http.post(`${this.apiUrl}/GetCascaron`,body);
+  }
+
 
   GetCatalogoRubros(filename: string): Observable<Blob>{
    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });

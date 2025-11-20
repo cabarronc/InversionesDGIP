@@ -113,6 +113,8 @@ export class CosaincegComponent implements OnInit {
   copiado_respuesta: any
   interval: any;
   info: any;
+  EjecutandoInversion: boolean =false;
+  cascaron: boolean = false;
 
   public close(): void {
     this.opened = false;
@@ -1989,7 +1991,7 @@ export class CosaincegComponent implements OnInit {
         const primerTrimestre = `${anio}-04-10`;
         const filename = `inversion_1t_${anio}_(HT).xlsx`
         console.log("Primer Trimestre: ", primerTrimestre)
-        this.isInversionGeneral = true;
+        this.EjecutandoInversion = true;
         this.isInversionGeneralD = true
         this.cosaincegService.GenerarDescargasInversionHojaTrabajo(primerTrimestre, filename).subscribe(
           (resp => {
@@ -2014,7 +2016,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-            this.isInversionGeneral = false;
+             this.EjecutandoInversion = false;
             this.isInversionGeneralD = false
 
           }),
@@ -2042,7 +2044,7 @@ export class CosaincegComponent implements OnInit {
         const segundoTrimestre = `${anio}-07-10`;
         const filename = `inversion_2t_${anio}_(HT).xlsx`
         console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.isInversionGeneral = true;
+         this.EjecutandoInversion = true;
         this.isInversionGeneralD = true
         this.cosaincegService.GenerarDescargasInversionHojaTrabajo(segundoTrimestre, filename).subscribe(
           (resp => {
@@ -2068,7 +2070,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-            this.isInversionGeneral = false;
+             this.EjecutandoInversion = false;
             this.isInversionGeneralD = false
 
           }),
@@ -2096,7 +2098,7 @@ export class CosaincegComponent implements OnInit {
         const tercerTrimestre = `${anio}-10-10`;
         console.log("Tercer Trimestre: ", tercerTrimestre)
         const filename = `inversion_3t_${anio}_(HT).xlsx`
-        this.isInversionGeneral = true;
+         this.EjecutandoInversion = true;
         this.isInversionGeneralD = true
         this.cosaincegService.GenerarDescargasInversionHojaTrabajo(tercerTrimestre, filename).subscribe(
           (resp => {
@@ -2122,7 +2124,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-            this.isInversionGeneral = false;
+             this.EjecutandoInversion = false;
             this.isInversionGeneralD = false
           }),
           (error) => {
@@ -2152,7 +2154,7 @@ export class CosaincegComponent implements OnInit {
         const cuarttoTrimestre = `${anio}-02-10`;
         const filename = `inversion_4t_${anio}_(HT).xlsx`
         console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.isInversionGeneral = true;
+        this.EjecutandoInversion = true;
         this.isInversionGeneralD = true
         this.cosaincegService.GenerarDescargasInversionHojaTrabajo(cuarttoTrimestre, filename).subscribe(
           (resp => {
@@ -2177,7 +2179,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-            this.isInversionGeneral = true;
+             this.EjecutandoInversion = false;
             this.isInversionGeneralD = true
           }),
           (error) => {
@@ -2208,7 +2210,7 @@ export class CosaincegComponent implements OnInit {
         const primerTrimestre = `${anio}-04-10`;
         const filename = `Inversion_entregable_01_${anio}`
         console.log("Primer Trimestre: ", primerTrimestre)
-        this.generandoReporte = true;
+         this.EjecutandoInversion = true;
         this.generandoReporteD = true
         this.cosaincegService.GenerarDescargasInversionEntregables(primerTrimestre, filename).subscribe(
           (blob) => {
@@ -2231,7 +2233,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-            this.generandoReporte = false;
+            this.EjecutandoInversion = false;
             this.generandoReporteD = false
 
           },
@@ -2259,7 +2261,7 @@ export class CosaincegComponent implements OnInit {
         const segundoTrimestre = `${anio}-07-10`;
         const filename = `Inversion_entregable_02_${anio}`
         console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.generandoReporte = true;
+        this.EjecutandoInversion = true;
         this.generandoReporteD = true
         this.cosaincegService.GenerarDescargasInversionEntregables(segundoTrimestre, filename).subscribe(
           (blob) => {
@@ -2268,8 +2270,13 @@ export class CosaincegComponent implements OnInit {
             link.href = url;
             link.download = filename;
             link.click();
-            this.generandoReporte = false;
+            // Limpieza
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            this.EjecutandoInversion = false;
             this.generandoReporteD = false
+
           },
           (error) => {
             console.error('Error fetching files', error);
@@ -2295,7 +2302,7 @@ export class CosaincegComponent implements OnInit {
         const tercerTrimestre = `${anio}-10-10`;
         console.log("Tercer Trimestre: ", tercerTrimestre)
         const filename = `Inversion_entregable_03_${anio}`
-        this.generandoReporte = true;
+        this.EjecutandoInversion = true;
         this.generandoReporteD = true
         this.cosaincegService.GenerarDescargasInversionEntregables(tercerTrimestre, filename).subscribe(
           (blob) => {
@@ -2304,7 +2311,11 @@ export class CosaincegComponent implements OnInit {
             link.href = url;
             link.download = filename;
             link.click();
-            this.generandoReporte = false;
+            // Limpieza
+            // document.body.removeChild(link);
+            // window.URL.revokeObjectURL(url);
+
+            this.EjecutandoInversion = false;
             this.generandoReporteD = false
           },
           (error) => {
@@ -2334,7 +2345,7 @@ export class CosaincegComponent implements OnInit {
         const cuarttoTrimestre = `${anio}-02-10`;
         const filename = `Inversion_entregable_04_${anio}`
         console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.generandoReporte = true;
+        this.EjecutandoInversion = true;
         this.generandoReporteD = true
         this.cosaincegService.GenerarDescargasInversionEntregables(cuarttoTrimestre, filename).subscribe(
           (blob) => {
@@ -2343,7 +2354,11 @@ export class CosaincegComponent implements OnInit {
             link.href = url;
             link.download = filename;
             link.click();
-            this.generandoReporte = false;
+            // Limpieza
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+
+            this.EjecutandoInversion = false;
             this.generandoReporteD = false
           },
           (error) => {
@@ -2360,7 +2375,7 @@ export class CosaincegComponent implements OnInit {
       },
     },
   ];
-
+///Copias
   public dataExcelInversionesCopias = [
     {
       text: 'Primer Trimestre',
@@ -2372,6 +2387,7 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const primerTrimestre = `${anio}-04-10`;
         console.log("Primer Trimestre: ", primerTrimestre)
+        this.EjecutandoInversion = true;
         this.isCoping = true
         this.cosaincegService.InversionCopy(primerTrimestre).subscribe(
           (resp) => {
@@ -2384,7 +2400,8 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-            this.isCoping = false
+            this.EjecutandoInversion = false;
+             this.isCoping = false
 
           },
           (error) => {
@@ -2410,7 +2427,8 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const segundoTrimestre = `${anio}-07-10`;
         console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.isCoping = true
+        this.EjecutandoInversion = true;
+         this.isCoping = true
         this.cosaincegService.InversionCopy(segundoTrimestre).subscribe(
           (resp) => {
             console.log(resp)
@@ -2421,7 +2439,8 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-            this.isCoping = false
+            this.EjecutandoInversion = false;
+             this.isCoping = false
           },
           (error) => {
             console.error('Error fetching files', error);
@@ -2446,7 +2465,8 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const tercerTrimestre = `${anio}-10-10`;
         console.log("Tercer Trimestre: ", tercerTrimestre)
-        this.isCoping = true
+        this.EjecutandoInversion = true;
+         this.isCoping = true
         this.cosaincegService.InversionCopy(tercerTrimestre).subscribe(
           (resp) => {
             console.log(resp)
@@ -2457,7 +2477,8 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-            this.isCoping = false
+            this.EjecutandoInversion = false;
+             this.isCoping = false
           },
           (error) => {
             this.notificationService.show({
@@ -2485,18 +2506,20 @@ export class CosaincegComponent implements OnInit {
         const anio_menosuno = lastYearDate.getFullYear().toString();
         const cuarttoTrimestre = `${anio}-02-10`;
         console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.isCoping = true
+        this.EjecutandoInversion = true;
+         this.isCoping = true
         this.cosaincegService.InversionCopy(cuarttoTrimestre).subscribe(
           (resp) => {
             console.log(resp)
             this.notificationService.show({
-              content: "Excel Copiado Correctamente, espere......!",
+              content: "Se Genero la estructura para el trimestre.....!",
               hideAfter: 1500,
               animation: { type: "slide", duration: 900 },
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-            this.isCoping = false
+            this.EjecutandoInversion = false;
+             this.isCoping = false
           },
           (error) => {
             console.error('Error fetching files', error);
@@ -2512,7 +2535,166 @@ export class CosaincegComponent implements OnInit {
       },
     },
   ];
+///Crear Cascaron
+  public dataCascaron = [
+    {
+      text: 'Primer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const primerTrimestre = `${anio}-04-10`;
+        console.log("Primer Trimestre: ", primerTrimestre)
+        this.EjecutandoInversion = true;
+        this.cascaron =true
+        this.cosaincegService.GetCascaron(primerTrimestre).subscribe(
+          (resp) => {
+            console.log(resp)
 
+            this.notificationService.show({
+              content: "Se Genero la estructura para el trimestre.....!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+            this.EjecutandoInversion = false;
+            this.cascaron = false
+
+          },
+          (error) => {
+            this.notificationService.show({
+              content: "Existe un error en la generacion!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+            console.error('Error fetching files', error);
+          }
+        );
+      },
+    },
+    {
+      text: 'Segundo Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const segundoTrimestre = `${anio}-07-10`;
+        console.log("Segundo Trimestre: ", segundoTrimestre)
+        this.EjecutandoInversion = true;
+        this.cascaron =true
+        this.cosaincegService.GetCascaron(segundoTrimestre).subscribe(
+          (resp) => {
+            console.log(resp)
+            this.notificationService.show({
+              content: "Se Genero la estructura para el trimestre.....!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+            this.EjecutandoInversion = false;
+            this.cascaron = false
+          },
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un error en la generacion!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+      },
+    },
+    {
+      text: 'Tercer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const tercerTrimestre = `${anio}-10-10`;
+        console.log("Tercer Trimestre: ", tercerTrimestre)
+        this.EjecutandoInversion = true;
+        this.cascaron =true
+        this.cosaincegService.GetCascaron(tercerTrimestre).subscribe(
+          (resp) => {
+            console.log(resp)
+            this.notificationService.show({
+              content: "Se Genero la estructura para el trimestre.....!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+            this.EjecutandoInversion = false;
+            this.cascaron = false
+          },
+          (error) => {
+            this.notificationService.show({
+              content: "Existe un error en la generacion!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+            console.error('Error fetching files', error);
+          }
+        );
+      },
+    },
+    {
+      text: 'Cuarto Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        const Year = new Date(today);
+        Year.setFullYear(today.getFullYear());
+        lastYearDate.setFullYear(today.getFullYear() - 1);
+        const anio = Year.getFullYear().toString();
+        const anio_menosuno = lastYearDate.getFullYear().toString();
+        const cuarttoTrimestre = `${anio}-02-10`;
+        console.log("cuartoTrimestre: ", cuarttoTrimestre)
+        this.EjecutandoInversion = true;
+        this.cascaron =true
+        this.cosaincegService.GetCascaron(cuarttoTrimestre).subscribe(
+          (resp) => {
+            console.log(resp)
+            this.notificationService.show({
+              content: "Excel Copiado Correctamente, espere......!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+            this.EjecutandoInversion = false;
+            this.cascaron = false
+          },
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un error en la generacion!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+      },
+    },
+  ];
 
   constructor(private fileService: FileService, private cosaincegService: CosaincegService,
     private notificationService: NotificationService, private authService: AuthService, private router: Router) {
