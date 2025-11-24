@@ -39,7 +39,7 @@
       </div>
       @if(file1 && file2){
       <div class="upload-actions">
-        <button class="btn btn-primary" [disabled]="isUploading" (click)="uploadFiles()">
+        <button class="btn btn-primary" [disabled]="isUploading" (click)="uploadFiles('normal')">
           {{ isUploading ? 'Subiendo...' : '📤 Subir y Comparar' }}
         </button>
                 <button class="btn btn-substitutions" [disabled]="isUploading" (click)="uploadFiles('substitutions')">
@@ -89,7 +89,7 @@
           <div class="col-12 d-flex flex-column align-items-center mb-3">
             <button class="btn btn-primary mb-3"
               [disabled]="!selectedFile1 || !selectedFile2 || selectedFile1 === selectedFile2"
-              (click)="compareExistingFiles()">
+              (click)="compareExistingFiles('normal')">
               🔍 Comparar Archivos Seleccionados
             </button>
 
@@ -103,6 +103,9 @@
               (click)="compareExistingFiles('substitutions')">
               🔄 Ver Sustituciones
             </button>
+             <button class="btn btn-substitutions" [disabled]="isUploading"  (click)="compareExistingFiles('substitutions_by_key')">
+           🔄 Ver Sustituciones Por Clave
+        </button>
           </div>
         </div>
 

@@ -178,7 +178,7 @@ loadExistingFiles() {
   //   });
   // }
 
-uploadFiles(analysisType: 'normal' | 'detailed' | 'substitutions' | 'substitutions_by_key'='normal') {
+uploadFiles(analysisType: 'normal' | 'detailed' | 'substitutions' | 'substitutions_by_key') {
   if (!this.file1 || !this.file2) {
     this.showStatus('Selecciona ambos archivos antes de continuar.', 'error');
     return;
@@ -188,6 +188,7 @@ uploadFiles(analysisType: 'normal' | 'detailed' | 'substitutions' | 'substitutio
   let statusMessage = 'Subiendo archivos...';
   if (analysisType === 'detailed') statusMessage = 'Subiendo archivos para análisis detallado...';
   if (analysisType === 'substitutions') statusMessage = 'Subiendo archivos para análisis de sustituciones...';
+   if (analysisType === 'substitutions_by_key') statusMessage = 'Subiendo archivos para análisis de sustituciones Pro...';
   
   this.showStatus(statusMessage, 'info');
 
@@ -210,7 +211,7 @@ uploadFiles(analysisType: 'normal' | 'detailed' | 'substitutions' | 'substitutio
   });
 }
 
-compareExistingFiles(analysisType: 'normal' | 'detailed' |  'substitutions' | 'substitutions_by_key'='normal') {
+compareExistingFiles(analysisType: 'normal' | 'detailed' |  'substitutions' | 'substitutions_by_key') {
   if (!this.selectedFile1 || !this.selectedFile2) {
     this.showStatus('Selecciona ambos archivos para comparar.', 'error');
     return;
@@ -224,6 +225,7 @@ compareExistingFiles(analysisType: 'normal' | 'detailed' |  'substitutions' | 's
   let statusMessage = 'Iniciando comparación...';
   if (analysisType === 'detailed') statusMessage = 'Iniciando análisis detallado...';
   if (analysisType === 'substitutions') statusMessage = 'Iniciando análisis de sustituciones...';
+  if (analysisType === 'substitutions_by_key') statusMessage = 'Iniciando análisis de sustituciones... Pro';
   
   this.showStatus(statusMessage, 'info');
   this.comparisonRequested.emit({

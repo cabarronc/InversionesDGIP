@@ -34,13 +34,13 @@ import { ComparacionArchivosComponent } from '../../uploads/comparacion-archivos
 import { ResultsComponent } from "../../results/results.component";
 import { ResultsSustitucionesComponent } from "../../results-sustituciones/results-sustituciones.component";
 import { ResultsSustitucionesKeyComponent } from "../../results-sustituciones-key/results-sustituciones-key.component";
-
+import { JsonPipe } from '@angular/common';
 @Component({
   selector: 'app-circular-content',
   standalone: true,
   imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
     KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
-    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent, ResultsSustitucionesKeyComponent],
+    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent, ResultsSustitucionesKeyComponent,JsonPipe],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './circular-content.component.html',
   styleUrl: './circular-content.component.scss'
@@ -677,50 +677,15 @@ onFilesUploaded(uploadResult: any) {
     console.log('Archivos subidos:', uploadResult);
   }
 
-// onComparisonRequested(comparisonData: any) {
-//     this.isComparing = true;
-//     this.comparacionArchivos.compareFiles(
-//       comparisonData.file1Id, 
-//       comparisonData.file2Id
-//     ).subscribe({
-//       next: (result) => {
-//         this.comparisonResult = result;
-//         this.isComparing = false;
-//       },
-//       error: (error) => {
-//         console.error('Error en la comparación:', error);
-//         this.isComparing = false;
-//         // Aquí podrías mostrar un mensaje de error al usuario
-//       }
-//     });
-//   }
+
 onStructureChanged(hasChanges:boolean){
  console.log('Hubo cambios estructurales:', hasChanges);
 }
 onStructureChangedAdd(hasChanges:boolean){
    console.log('Hubo cambios en filas agregadas:', hasChanges);
 }
-// onComparisonRequested(comparisonData: any) {
-//     this.isComparing = true;
-    
-//     const compareMethod = comparisonData.detailedAnalysis 
-//       ? this.comparacionArchivos.compareFilesDetailed(comparisonData.file1Id, comparisonData.file2Id)
-//       : this.comparacionArchivos.compareFiles(comparisonData.file1Id, comparisonData.file2Id);
-    
-//     compareMethod.subscribe({
-//       next: (result) => {
-//         this.comparisonResult = result;
-//         console.log(this.comparisonResult)
-//         this.isComparing = false;
-        
-//       },
-//       error: (error) => {
-//         console.error('Error en la comparación:', error);
-//         this.isComparing = false;
-//         // Aquí podrías mostrar un mensaje de error al usuario
-//       }
-//     });
-//   }
+   
+
 onComparisonRequested(comparisonData: any) {
   this.isComparing = true;
   
@@ -751,6 +716,8 @@ onComparisonRequested(comparisonData: any) {
   compareMethod.subscribe({
     next: (result) => {
       this.comparisonResult = result;
+      console.log('ROW CHANGES modified raw:', this.comparisonResult?.row_changes?.modified);
+      console.log('Keys:', Object.keys(this.comparisonResult?.row_changes?.modified || {}));
       console.log(this.comparisonResult)
       this.isComparing = false;
     },

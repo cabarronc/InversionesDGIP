@@ -411,18 +411,24 @@
                             [isLoading]="isComparing">
                         </app-results>
                     </div>
-                    @if(comparisonResult?.type === 'csv_diff_with_substitutions' &&
-                    comparisonResult?.field_substitutions){
+
+                    <!-- 🔹 Caso: sustituciones normales -->
+                    @if (comparisonResult?.type === 'csv_diff_with_substitutions' &&
+                    comparisonResult?.field_substitutions) {
+
                     <app-results-sustituciones [fieldSubstitutions]="comparisonResult.field_substitutions">
                     </app-results-sustituciones>
-                    <!-- 🔹 Por clave -->
-                    @if (comparisonResult?.type === 'csv_diff_by_key' && comparisonResult?.row_changes) {
+                    }
+
+                    <!-- 🔹 Caso: sustituciones por clave -->
+                    @if (comparisonResult?.type === 'csv_diff_by_key' &&
+                    comparisonResult?.row_changes) {
+
                     <app-results-sustituciones-key [rowChanges]="comparisonResult.row_changes">
                     </app-results-sustituciones-key>
                     }
                     }
 
-                    }
 
                     @if (isComparing) {
                     <div class="loading-overlay">
