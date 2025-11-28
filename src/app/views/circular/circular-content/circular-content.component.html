@@ -394,15 +394,21 @@
                         Comparador de Archivos
                     </h1>
                     <p class="subtitle">Compara archivos de diferentes períodos de tiempo</p>
+                     <kendo-label class="k-display-block" [for]="textbox" text="Selecciona un identificador por el cual comparar"></kendo-label>
+                        <kendo-textbox #textbox [style.width.px]="500" [clearButton]="true"  [(ngModel)]="customKeyColumn"></kendo-textbox>
                 </div>
             </header>
 
             <main class="main-content">
                 <div class="container">
+
                     <div class="upload-section">
+                       
                         <app-comparacion-archivos (filesUploaded)="onFilesUploaded($event)"
                             (comparisonRequested)="onComparisonRequested($event)">
+                            
                         </app-comparacion-archivos>
+
                     </div>
                     @if (comparisonResult) {
                     <div class="comparison-section">

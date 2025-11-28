@@ -13,7 +13,8 @@ import { FormsModule } from '@angular/forms';
 export class ComparacionArchivosComponent {
   @ViewChild('fileInput1') fileInput1!: ElementRef<HTMLInputElement>;
   @ViewChild('fileInput2') fileInput2!: ElementRef<HTMLInputElement>;
-
+  //Llevar 
+  @Output() KeyColumn = new EventEmitter<string>();
   @Output() filesUploaded = new EventEmitter<UploadResponse>();
     // @Output() comparisonRequested = new EventEmitter<{file1Id: string, file2Id: string}>();
   // @Output() comparisonRequested = new EventEmitter<{file1Id: string, file2Id: string, detailedAnalysis?: boolean}>();
@@ -34,9 +35,16 @@ export class ComparacionArchivosComponent {
   
   statusMessage = '';
   statusType: 'success' | 'error' | 'info' = 'info';
+customKeyColumn: string = 'vamos a mandar algo';
 
   constructor(private comparacionArchivos:ComparacionArchivosService) {  
      this.loadExistingFiles();
+      
+
+    
+  }
+    getCommonColumns(list1: string[], list2: string[]) {
+    return list1.filter(col => list2.includes(col));
   }
 loadExistingFiles() {
     this.comparacionArchivos.listFiles().subscribe({
@@ -177,7 +185,12 @@ loadExistingFiles() {
   //     detailedAnalysis: detailedAnalysis
   //   });
   // }
+// onColumnsDetected(cols: string[]) {
+//   console.log("Columnas detectadas:", cols);
+//   this.availableColumns = cols;
+// }
 
+ 
 uploadFiles(analysisType: 'normal' | 'detailed' | 'substitutions' | 'substitutions_by_key') {
   if (!this.file1 || !this.file2) {
     this.showStatus('Selecciona ambos archivos antes de continuar.', 'error');
@@ -185,6 +198,7 @@ uploadFiles(analysisType: 'normal' | 'detailed' | 'substitutions' | 'substitutio
   }
 
   this.isUploading = true;
+
   let statusMessage = 'Subiendo archivos...';
   if (analysisType === 'detailed') statusMessage = 'Subiendo archivos para análisis detallado...';
   if (analysisType === 'substitutions') statusMessage = 'Subiendo archivos para análisis de sustituciones...';

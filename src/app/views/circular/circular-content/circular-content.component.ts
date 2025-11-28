@@ -40,7 +40,7 @@ import { JsonPipe } from '@angular/common';
   standalone: true,
   imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
     KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
-    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent, ResultsSustitucionesKeyComponent,JsonPipe],
+    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent, ResultsSustitucionesKeyComponent],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './circular-content.component.html',
   styleUrl: './circular-content.component.scss'
@@ -100,6 +100,7 @@ export class CircularContentComponent implements OnInit {
   isComparing = false;
   currentYear = new Date().getFullYear();
 
+
   constructor(private apiService: ApiService, private notificationService: NotificationService, private fileService: FileService, private sanitizer: DomSanitizer
     , private comparacionArchivos:ComparacionArchivosService
   ) {
@@ -109,6 +110,7 @@ export class CircularContentComponent implements OnInit {
     });
      this.dashUrl = this.sanitizer.bypassSecurityTrustResourceUrl(environment.apiUrlDash);
   }
+ customKeyColumn: string = '';
   public allowCustom = true;
   public selectedValues1: string = "2025";
   public selectedValues2: string = "2025";
@@ -684,7 +686,8 @@ onStructureChanged(hasChanges:boolean){
 onStructureChangedAdd(hasChanges:boolean){
    console.log('Hubo cambios en filas agregadas:', hasChanges);
 }
-   
+
+
 
 onComparisonRequested(comparisonData: any) {
   this.isComparing = true;
@@ -704,7 +707,7 @@ onComparisonRequested(comparisonData: any) {
       break;
        case 'substitutions_by_key':
         compareMethod = this.comparacionArchivos.compareFilesSubstitutions_by_id(
-        comparisonData.file1Id, comparisonData.file2Id,['id_proceso_proyecto']
+        comparisonData.file1Id, comparisonData.file2Id, [this.customKeyColumn] 
       );
       break;
     default:

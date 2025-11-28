@@ -8,11 +8,14 @@ import { SVGIcon,fileExcelIcon } from '@progress/kendo-svg-icons';
 import { ClaudeService,QueryRequest,QueryResponse  } from '../../services/claude.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { DialogModule } from '@progress/kendo-angular-dialog';
+import { FloatingActionButtonModule } from '@progress/kendo-angular-buttons';
 
 @Component({
   selector: 'app-claude',
   standalone: true,
-  imports: [LabelModule,InputsModule,FormsModule,KENDO_BUTTONS,ReactiveFormsModule,CommonModule],
+  imports: [LabelModule,InputsModule,FormsModule,KENDO_BUTTONS,ReactiveFormsModule,CommonModule,DialogModule,
+    FloatingActionButtonModule],
   templateUrl: './claude.component.html',
   styleUrl: './claude.component.scss'
 })
@@ -38,7 +41,7 @@ error_ml: string | null = null;
 respuesta_ml:string=''
 Conteo_ml:string="";
 public fileExcelIcon: SVGIcon = fileExcelIcon;
-
+public image = "https://github.com/cabarronc/RecursosMultimedia/blob/main/inversiones.png?raw=true";
  ngOnInit(): void {
     
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError, retry, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export interface FileInfo {
@@ -18,6 +18,11 @@ export interface UploadResponse {
   file2_id: string;
   file1_hash: string;
   file2_hash: string;
+  columns_info : {
+        "file1_columns": string[],
+        "file2_columns": string[]
+    }
+
 }
 
 
@@ -186,6 +191,8 @@ export interface FileMetadata {
 })
 export class ComparacionArchivosService {
 private apiUrl = environment.apiUrl_compacion;
+ private uploadedColumnsSource = new BehaviorSubject<any>(null);
+  uploadedColumns$ = this.uploadedColumnsSource.asObservable();
   constructor(private http: HttpClient) { }
 
   uploadFiles(file1: File, file2: File): Observable<UploadResponse> {
@@ -195,6 +202,12 @@ private apiUrl = environment.apiUrl_compacion;
 
     return this.http.post<UploadResponse>(`${this.apiUrl}/upload`, formData)
       .pipe(
+         tap(res => {
+          // ⬅️ NUEVO: guardar columnas enviadas por el backend
+          if (res.columns_info) {
+            this.uploadedColumnsSource.next(res.columns_info);
+          }
+        }),
         retry(2),
         catchError(this.handleError)
       );

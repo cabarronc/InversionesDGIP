@@ -35,3 +35,59 @@ h4.modified {
 .scroll-table table {
   width: max-content; /* permite scroll horizontal si hay muchas columnas */
 }
+
+.table-container {
+    width: 70%;
+    margin: 30px auto;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: "Segoe UI", sans-serif;
+     border-collapse: collapse;
+    border-radius: 12px;
+}
+
+th {
+    background: #0078D7;
+    color: white;
+    padding: 14px;
+    text-align: left;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+    background: #f5faff;
+}
+.glass-table {
+    width: 70%;
+    margin: 40px auto;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+}
+
+.glass-table th, .glass-table td {
+    padding: 15px;
+    color: #fff;
+}
+
+.glass-table th {
+    background: rgba(255,255,255,0.3);
+}
+
+.glass-table tr:nth-child(even) {
+    background: rgba(255,255,255,0.15);
+}
