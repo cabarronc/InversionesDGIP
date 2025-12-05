@@ -33,7 +33,7 @@
                 <div class="container">
                     <div class="row mt-3 justify-content-center">
                         <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center">
-                            <button kendoButton (click)="GenerarCicular()" [disabled]="!form.valid" fillMode="outline"
+                            <button kendoButton (click)="GenerarCicular()" [disabled]="!form.valid" fillMode="solid"
                                 size="large" rounded="medium" themeColor="info" [svgIcon]="wordIcon"
                                 [disabled]="isDisabled">Generar Circular</button>
                             <span class="ps-2">
@@ -45,7 +45,7 @@
                             </span>
                         </div>
                         <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center">
-                            <button kendoButton (click)="CopiarCircular()" [disabled]="!form.valid" fillMode="outline"
+                            <button kendoButton (click)="CopiarCircular()" [disabled]="!form.valid" fillMode="solid"
                                 size="large" rounded="medium" themeColor="tertiary" [svgIcon]="copyIcon"
                                 [disabled]="isCoping">Copiar Archivos</button>
                             <span class="ps-2"> </span>
@@ -56,7 +56,7 @@
 
                         </div>
                         <div class="col-12 ml-2 col-md-4  col-lg-2 mb-3 d-flex justify-content-center">
-                            <button kendoButton (click)="clearForm()" fillMode="outline" size="large" rounded="medium"
+                            <button kendoButton (click)="clearForm()" fillMode="solid" size="large" rounded="medium"
                                 themeColor="warning">Limpiar</button>
 
                         </div>
@@ -163,7 +163,7 @@
             <div class="row d-flex">
                 <div class="col-5"></div>
                 <div class="col-6">
-                    <button kendoButton (click)="Graficos()" [disabled]="isGraficos" fillMode="outline" size="large"
+                    <button kendoButton (click)="Graficos()" [disabled]="isGraficos" fillMode="solid" size="large"
                         rounded="medium" themeColor="info" [svgIcon]="chartDoughnutIcon">Generar Graficos</button>
                     <span class="ps-2">
                         @if(isGraficos) {

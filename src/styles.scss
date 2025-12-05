@@ -1,7 +1,25 @@
 /* You can add global styles to this file, and also import other style files */
-$kendo-grid-size: 35px; /* Tamaño de las filas */
-$kendo-font-size: 13px; /* Tamaño de la fuente */
-@import "@progress/kendo-theme-bootstrap/dist/bootstrap-urban.scss";
+
+// @import "@progress/kendo-theme-bootstrap/dist/bootstrap-urban.scss";
+// @use '@progress/kendo-theme-bootstrap/scss/all.scss' as *;
+@use "@progress/kendo-theme-bootstrap/scss/all.scss" as * with (
+$kendo-font-size: 0.75rem,
+// $kendo-grid-header-bg: #e3eef4,
+// $kendo-grid-bg:#2280b3,
+// $kendo-table-text: #e3eef4,
+//   $kendo-grid-header-text: #000000,
+//   $kendo-grid-hover-bg: #b6bfc0,
+//   $kendo-grid-selected-bg: #cfe2ff,
+//   $kendo-grid-border: #a0a0a3,
+//   $kendo-grid-footer-bg:#e3eef4
+);
+
+// @use "@progress/kendo-theme-material/scss/all.scss" as *;
+// @use "@progress/kendo-theme-classic/scss/all.scss" as *;
+
+body {
+    background-color: rgb(223, 223, 212)!important;
+}
 a {
     text-decoration: none !important;
   }
@@ -51,4 +69,157 @@ a {
   bottom: 20px;
   right: 20px;
   z-index: 99999;
+}
+
+
+/* ================================
+   KENDO GRID CUSTOM LOOK (AZUL CLARO)
+   ================================ */
+
+/* HEADER ------------------------------------------------------*/
+.k-grid .k-table-thead > tr > th,
+.k-grid .k-grouping-header {
+  background-color: #e3eef4 !important;  /* azul claro */
+  border-bottom: 1px solid #d0dde5 !important;
+}
+
+/* FILA DE FILTROS --------------------------------------------*/
+.k-grid .k-filter-row th {
+  background-color: #e3eef4 !important;
+}
+
+/* COLOR DEL ICONO DE FILTRO */
+.k-grid .k-filter-menu .k-icon,
+.k-grid .k-filter-row .k-button {
+  background-color: #4f8bbd !important;
+  color: white !important;
+}
+
+/* BOTONES DE FILTRO HOVER */
+.k-grid .k-filter-row .k-button:hover {
+  background-color: #3c6f96 !important;
+}
+
+/* GRUPOS (Estado: Procedente / Improcedente) ------------------*/
+.k-grid .k-grouping-row {
+  background-color: #d4e4ed !important;
+  font-weight: bold;
+  color: #2e4b62;
+}
+
+/* PAGINADOR ---------------------------------------------------*/
+.k-grid .k-pager,
+.k-grid .k-pager-wrap {
+  background-color: #e3eef4 !important;
+  border-top: 1px solid #d0dde5 !important;
+}
+
+/* BOTONES DEL PAGINADOR */
+.k-grid .k-pager .k-button {
+  background-color: white !important;
+  border: 1px solid #c9d7e2 !important;
+}
+
+.k-grid .k-pager .k-button:hover {
+  background-color: #dce7ed !important;
+}
+
+.k-grid .k-pager .k-button.k-selected {
+  background-color: #4f8bbd !important;
+  color: white !important;
+}
+
+/* FILAS -------------------------------------------------------*/
+.k-grid .k-table-tbody > tr:hover {
+  background-color: #f2f7fa !important;
+}
+
+/* Ajuste general */
+.k-grid {
+  border: 1px solid #d0dde5 !important;
+}
+
+.btn-exportar {
+  background-color: #4f8bbd !important;   /* azul principal */
+  color: white !important;
+  border: none !important;
+  padding: 6px 14px !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-exportar:hover {
+  background-color: #3c6f96 !important;
+}
+.btn-editar {
+  background-color: #6ba1c8 !important;
+  color: white !important;
+  border: none !important;
+  padding: 4px 14px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+}
+
+
+/* Contenedor de nieve */
+.snow {
+    pointer-events: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 5000;
+}
+
+/* Capa de copos grandes */
+.snow::before,
+.snow::after {
+    content: "";
+    position: absolute;
+    top: -100px;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    background-repeat: repeat;
+    background-size: 300px 300px; /* ❄ tamaño más grande */
+    animation: snowfall 10s linear infinite;
+    opacity: 0.7;
+}
+
+/* Copos grandes */
+.snow::before {
+    background-image:
+        radial-gradient(8px 8px at 20px 20px, white 70%, transparent 70%),
+        radial-gradient(6px 6px at 120px 80px, white 70%, transparent 70%),
+        radial-gradient(10px 10px at 200px 150px, white 70%, transparent 70%),
+        radial-gradient(8px 8px at 20px 320px, white 70%, transparent 70%),
+        radial-gradient(6px 6px at 120px 380px, white 70%, transparent 70%),
+        radial-gradient(10px 10px at 200px 450px, white 70%, transparent 70%);
+    animation-duration: 16s; /* más lento */
+}
+
+/* Copos medianos */
+.snow::after {
+    background-image:
+        radial-gradient(4px 4px at 50px 50px, white 70%, transparent 70%),
+        radial-gradient(5px 5px at 150px 120px, white 70%, transparent 70%),
+        radial-gradient(3px 3px at 250px 200px, white 70%, transparent 70%),
+
+        radial-gradient(4px 4px at 50px 350px, white 70%, transparent 70%),
+        radial-gradient(5px 5px at 150px 420px, white 70%, transparent 70%),
+        radial-gradient(3px 3px at 250px 500px, white 70%, transparent 70%);
+    animation-duration: 10s; /* más rápido */
+}
+
+/* Animación suave */
+@keyframes snowfall {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(0%); }
 }

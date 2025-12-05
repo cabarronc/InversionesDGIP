@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   // public image = "https://github.com/cabarronc/RecursosMultimedia/blob/main/inversiones.png?raw=true";
    public image:string = "assets/inversiones.png";
   title = 'dgip-front';
+    navidadActiva = false;
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -34,6 +35,17 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
+
+toggleNavidad(estado: boolean) {
+  this.navidadActiva = estado;
+
+  if (estado) {
+    document.body.classList.add('modo-navidad');
+  } else {
+    document.body.classList.remove('modo-navidad');
+  }
+}
  
     abrirInterfaz() {
       this.dialogService.open({

@@ -139,3 +139,33 @@
       /* número alto para que quede por encima */
 
 }
+
+
+.mini-scene {
+  position: relative;
+  width: 60px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.mini-person {
+  position: absolute;
+  left: 0;
+  font-size: 18px;
+  animation: walkOut 3.6s linear infinite;
+}
+
+.mini-door {
+  position: absolute;
+  right:0;
+  font-size: 20px;
+}
+
+/* Animación super mini */
+@keyframes walkOut {
+  0%   { transform: translateX(0); opacity: 1; }
+  80%  { transform: translateX(20px); opacity: 1; }
+  100% { transform: translateX(30px); opacity: 0; }
+}
+

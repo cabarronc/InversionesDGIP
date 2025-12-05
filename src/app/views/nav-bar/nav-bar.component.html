@@ -56,7 +56,7 @@
             <div *ngIf="currentUser">
                 <!-- <div *ngIf="currentUser.avatar"> -->
                     <app-navbar-avatar [showSessionDetails]="showSessionDetailsModal" [logout]="logout"
-                        [showUserMenu]="showUserMenu" [showSessionModal]="showSessionModal">
+                        [showUserMenu]="showUserMenu" [showSessionModal]="showSessionModal" [animating]="animating">
                         <button kendoButton #infoButton class="button-perfil"
                             (click)="showSessionModal = !showSessionModal" [svgIcon]="infoSolidIcon" width="36px"
                             height="36px">

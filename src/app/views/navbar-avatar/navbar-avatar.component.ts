@@ -20,6 +20,7 @@ export class NavbarAvatarComponent {
 @Input() showSessionDetails!: () => void;
   @Input() logout!: () => void;
   @Input() showUserMenu: boolean = false;
+  @Input() animating:boolean =true
    @Input() showSessionModal: boolean = false;
  sessionInfo: { timeLeft: number ; rememberMe: boolean} | null = null;
   public trashIcon: SVGIcon = trashIcon;

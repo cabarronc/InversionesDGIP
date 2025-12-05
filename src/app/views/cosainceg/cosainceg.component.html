@@ -13,7 +13,7 @@
                         <p class="titulo mt-3 mb-2 ms-3">1. Actualizar Catalogos </p>
                         <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="ActualizacionRubro"
                             [svgIcon]="fileExcelIcon" title="Actualizacion de Rubros" [disabled]="isDisabled"
-                            themeColor="secondary" class="button1">Actualizacion Rubros</kendo-splitbutton>
+                            themeColor="primary" class="button1">Actualizacion Rubros</kendo-splitbutton>
                         <span class="ps-2">
                             @if (isDisabledActualizacionRubros) {
                             <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
@@ -23,7 +23,7 @@
                     </div>
                     <div class="col-md-3">
                         <p class="titulo mt-3 mb-2 ms-3">2. Descargar Catalogos </p>
-                        <button kendoButton class="button2" (click)="DescargaCatalogoRubros()" themeColor="secondary"
+                        <button kendoButton class="button2" (click)="DescargaCatalogoRubros()" themeColor="primary"
                             [svgIcon]="downloadIcon">Catalogo Rubros</button>
                         <span class="ps-2">
                             @if (isDisabledCatalogoR) {
@@ -46,7 +46,7 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="data"
-                                [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="secondary"
+                                [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
                                 [disabled]="isDisabled">
                                 Generar Reporte COSAINCEG
                             </kendo-splitbutton>
@@ -59,7 +59,7 @@
                         </div>
                         <div class="col-md-4 mb-3">
                             <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelRecurso"
-                                [svgIcon]="fileZipIcon" rounded="medium" class="button1" themeColor="secondary"
+                                [svgIcon]="fileZipIcon" rounded="medium" class="button1" themeColor="primary"
                                 [disabled]="isDisabled">
                                 Generar Reporte COSAINCEG Recurso
                             </kendo-splitbutton>
@@ -134,7 +134,7 @@
                     <kendo-grid-command-column title="Acciones" [width]="210">
                         <ng-template kendoGridCellTemplate let-dataItem>
                             <button kendoButton (click)="downloadFile(dataItem.name)"
-                                class="k-primary">Descargar</button>
+                                class="btn-editar">Descargar</button>
                             @if(dataItem.extension === '.pdf' ){
                             <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
                                 PDF</button>
@@ -168,7 +168,7 @@
                 <div class="row">
                     <div class="col-md-3 mb-3">
                         <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataDeuda"
-                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="secondary"
+                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
                             [disabled]="isDisabled_deuda">
                             Generar Reporte Deuda
                         </kendo-splitbutton>
@@ -183,7 +183,7 @@
 
 
                         <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelRecursoDeuda"
-                            [svgIcon]="fileZipIcon" rounded="medium" class="button1" themeColor="secondary"
+                            [svgIcon]="fileZipIcon" rounded="medium" class="button1" themeColor="primary"
                             [disabled]="isDisabled_deuda">
                             Generar Reporte Deuda Recurso
                         </kendo-splitbutton>
@@ -353,7 +353,7 @@
                 <div class="row">
                     <div class="col-md-2 mb-3">
                         <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataCascaron"
-                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="secondary"
+                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
                             [disabled]="EjecutandoInversion">
                             Generar Cascaron
                         </kendo-splitbutton>
@@ -366,7 +366,7 @@
                     </div>
                     <div class="col-md-3 mb-3">
                         <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelInversionHojaTrabajo"
-                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="secondary"
+                            [svgIcon]="fileReportIcon" class="button1" rounded="medium"  themeColor="primary"
                             [disabled]="EjecutandoInversion">
                             Generar Hojas de Trabajo Inversión
                         </kendo-splitbutton>
@@ -381,7 +381,7 @@
 
 
                         <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelInversionentregables"
-                            [svgIcon]="fileZipIcon" rounded="medium" class="button1" themeColor="secondary"
+                            [svgIcon]="fileZipIcon" rounded="medium" class="button1" themeColor="primary"
                             [disabled]="EjecutandoInversion">
                             Generar Reporte Inversión Entregables
                         </kendo-splitbutton>

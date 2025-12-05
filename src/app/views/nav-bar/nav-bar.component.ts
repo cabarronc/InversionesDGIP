@@ -33,6 +33,7 @@ export class NavBarComponent implements OnInit{
   currentUser: User | null = null;
   sessionInfo: { timeLeft: number; rememberMe: boolean } | null = null;
   showUserMenu = false;
+  animating = false;
   showSessionModal = false;
   showSessionWarning = false;
   private subscription?: Subscription;
@@ -106,6 +107,7 @@ ngOnDestroy(): void {
   }
 
   async logout(): Promise<void> {
+    this.animating = true;
     await this.authService.logout();
   }
 

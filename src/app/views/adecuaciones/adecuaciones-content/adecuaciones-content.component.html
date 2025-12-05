@@ -31,7 +31,7 @@
                 }
                 <div class="col-6 d-flex justify-content-center">
 
-                    <kendo-switch [ngClass]="{ 'switch-on': cheked, 'switch-off': !cheked }" class="custom-switch"
+                    <kendo-switch [ngClass]="{ 'switch-on': cheked, 'switch-off': !cheked }" 
                         (valueChange)="onChangeProcedencias($event)" name="switch" [size]="'small'" [(ngModel)]="cheked"
                         style="width: 60px;"></kendo-switch>
                 </div>
@@ -137,7 +137,7 @@
                 <div class="col-2"></div>
                 <div class="col-2">
                     <kendo-label text="Fecha"></kendo-label>
-                    <kendo-datepicker formControlName="fecha"></kendo-datepicker>
+                    <kendo-datepicker componentType="modern" themecolor="primary"  formControlName="fecha"></kendo-datepicker>
                 </div>
                 <div class="col-3">
                     <div kendoTooltip>
@@ -337,7 +337,7 @@
                             <kendo-formfield>
                                 <kendo-label text="Destinatario:"></kendo-label>
                                 <kendo-dropdownlist [data]="DestinatarioFiltrado" formControlName="destinatario"
-                                    [valuePrimitive]="true" textField="destinatario" valueField="destinatario"
+                                    [valuePrimitive]="true" textField="destinatario"    valueField="destinatario"
                                     (valueChange)="valueChangeDestinatarios($event)">
                                 </kendo-dropdownlist>
                                 <!-- <kendo-autocomplete [clearButton]="true"  [data]="DestinatarioFiltrado"
@@ -544,7 +544,7 @@
             <div class="row mt-2">
                 <div class="col-2"></div>
                 <div class="col-2">
-                    <button class="btn btn-warning" (click)="clearCopia()">Limpiar Todo</button>
+                    <button kendoButton themeColor="warning"  (click)="clearCopia()">Limpiar Todo</button>
                 </div>
             </div>
             }
@@ -555,7 +555,7 @@
                     <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center">
                         @if(!idRegistroSeleccionado){
                         <button kendoButton (click)="GenerarAmpliacion()"
-                            [disabled]="!!!copia.trim() || !!!resultadoFinal.trim() || !form.valid" fillMode="outline"
+                            [disabled]="!!!copia.trim() || !!!resultadoFinal.trim() || !form.valid" fillMode="solid"
                             size="large" rounded="medium" themeColor="info" [svgIcon]="plusCircleIcon">Generar
                             Oficio</button>
                         <span class="ps-2">
@@ -598,7 +598,7 @@
                         </span>
                         }
                         @else{
-                        <button kendoButton (click)="guardarCambios()">Guardar</button>
+                        <button kendoButton themeColor="primary"  (click)="guardarCambios()">Guardar</button>
                         <span class="ps-2">
                             @if (isDisabled) {
                             <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
@@ -623,14 +623,14 @@
                         [sortable]="true" [group]="group" [pageable]="true" [pageSize]="5" [columnMenu]="menuSettings"
                         style="height: auto; width: 1300px;" size="small" [resizable]="true">
                         <ng-template kendoGridToolbarTemplate>
-                            <button [size]="'small'" type="button" kendoGridExcelCommand [svgIcon]="fileExcelIcon">
+                            <button [size]="'small'" type="button"  class="btn-exportar" kendoGridExcelCommand [svgIcon]="fileExcelIcon">
                                 Exportar Excel
                             </button>
                         </ng-template>
                         <kendo-grid-command-column title="Accion" [width]="150">
                             <ng-template kendoGridCellTemplate let-dataItem>
-                                <button kendoButton [size]="'medium'" (click)="editarRegistro(dataItem)"
-                                    class="k-primary">
+                                <button kendoButton  [size]="'medium'" (click)="editarRegistro(dataItem)"
+                                    class="btn-editar">
                                     Editar
                                 </button>
                             </ng-template>
@@ -855,7 +855,7 @@
                 <div class="col-2"></div>
                 <div class="col-2">
                     <kendo-label text="Fecha"></kendo-label>
-                    <kendo-datepicker [size]="'small'" formControlName="fecha_r"></kendo-datepicker>
+                    <kendo-datepicker [size]="'small'" componentType="modern" formControlName="fecha_r"></kendo-datepicker>
                 </div>
                 <div class="col-3">
                     <div kendoTooltip>
@@ -1156,7 +1156,7 @@
                         @if(!idRegistroSeleccionado_r){
                         <button [size]="'small'" kendoButton (click)="GenerarReduccion()"
                             [disabled]="!!!copia_r.trim() || !!!resultadoFinal_r.trim() || !form_r.valid"
-                            fillMode="outline" size="large" rounded="medium" themeColor="info"
+                            fillMode="solid" size="large" rounded="medium" themeColor="info"
                             [svgIcon]="plusCircleIcon">Generar Oficio</button>
                         <span class="ps-2">
                             @if (isDisabled) {
@@ -1168,7 +1168,7 @@
                         }
                         @else{
                         <button kendoButton [size]="'small'" [disabled]="isDisabled"
-                            (click)="guardarCambiosReducciones()">Guardar</button>
+                            (click)="guardarCambiosReducciones()" themeColor="primary"> Guardar</button>
                         <span class="ps-2">
                             @if (isDisabled) {
                             <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
@@ -1193,14 +1193,14 @@
                         [group]="group" [pageable]="true" [pageSize]="5" [columnMenu]="menuSettings"
                         style="height: auto; width: 1300px;" size="small" [resizable]="true">
                         <ng-template kendoGridToolbarTemplate>
-                            <button [size]="'small'" type="button" kendoGridExcelCommand [svgIcon]="fileExcelIcon">
+                            <button [size]="'small'"  class="btn-exportar" type="button" kendoGridExcelCommand [svgIcon]="fileExcelIcon">
                                 Exportar Excel
                             </button>
                         </ng-template>
                         <kendo-grid-command-column title="Accion" [width]="150">
                             <ng-template kendoGridCellTemplate let-dataItem>
-                                <button kendoButton [size]="'small'" (click)="editarRegistro_R(dataItem)"
-                                    class="k-primary">
+                                <button kendoButton [size]="'small'" class="btn-editar" (click)="editarRegistro_R(dataItem)"
+                                    >
                                     Editar
                                 </button>
                             </ng-template>

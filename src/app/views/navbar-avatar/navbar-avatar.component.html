@@ -42,7 +42,8 @@
 
                 <!-- Acciones -->
                 <div class="menu-actions">
-                    <button kendoButton themeColor="primary" (click)="fileInput.click()" [svgIcon]="arrowsSwapIcon" [disabled]="uploading">
+                    <button kendoButton themeColor="primary" (click)="fileInput.click()" [svgIcon]="arrowsSwapIcon"
+                        [disabled]="uploading">
                         {{ currentAvatarUrl ? 'Cambiar' : 'Subir' }}
                     </button>
                     <button *ngIf="currentAvatarUrl && !uploading" kendoButton themeColor="error"
@@ -53,13 +54,21 @@
 
                 <!-- Info Sesión -->
                 <button kendoButton look="flat" (click)="showSessionDetails()" class="menu-link">
-                   ℹ️ Información de Sesión
+                    ℹ️ Información de Sesión
                 </button>
 
 
-                <button kendoButton look="flat" (click)="logout()" class="menu-link">
-                  🔒  Cerrar Sesión
-                </button>
+                <!-- <button kendoButton look="flat" (click)="logout()" class="menu-link">
+                    🔒 Cerrar Sesión
+                </button>  -->
+                 <button  kendoButton look="flat" class="menu-link" (click)="logout()">
+                  🔒  Cerrar Sesion
+
+                    <span class="mini-scene">
+                        <span class="mini-person">🏃‍♂️‍➡️</span>
+                        <span class="mini-door">🚪</span>
+                    </span>
+                </button> 
             </div>
         </kendo-popup>
 

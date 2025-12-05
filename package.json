@@ -44,6 +44,7 @@
     "@progress/kendo-licensing": "^1.0.2",
     "@progress/kendo-svg-icons": "^3.0.0",
     "@progress/kendo-theme-bootstrap": "^9.1.0",
+    "@progress/kendo-theme-classic": "^12.3.0",
     "@progress/kendo-theme-default": "^8.2.1",
     "@progress/kendo-theme-fluent": "^9.1.0",
     "@progress/kendo-theme-material": "^9.1.0",

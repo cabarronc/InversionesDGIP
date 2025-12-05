@@ -5,6 +5,14 @@
         <h1 class="header-title">Gestión de Usuarios</h1>
         <div class="col 9"></div>
         <div class="col-2 d-flex justify-end">
+            <!-- @if (navidadActiva) {
+<div class="modo-navidad"></div>
+
+} -->
+            <kendo-switch
+    [(ngModel)]="navidadActiva"
+    (valueChange)="toggleNavidad($event)"
+></kendo-switch>
             <button kendoButton themeColor="success" (click)="openCreateModal()">
                 <kendo-icon name="plus"></kendo-icon>
                 <span>Nuevo Usuario</span>

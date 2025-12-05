@@ -88,7 +88,19 @@ export class UserManagementComponent implements OnInit {
 
   public currentAvatarUrl: string = '';
 
+navidadActiva = false;
 
+toggleNavidad(estado: boolean) {
+  this.navidadActiva = estado;
+
+  if (estado) {
+    document.body.classList.add('modo-navidad');
+  
+  } else {
+    document.body.classList.add('modo-navidad');
+
+  }
+}
   constructor(
     private userService: UserService,
     private formBuilder: FormBuilder, private notificationService: NotificationService
