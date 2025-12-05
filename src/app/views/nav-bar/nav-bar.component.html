@@ -1,6 +1,6 @@
 <!--Load the font icons package:-->
 <link rel="stylesheet" href="https://unpkg.com/@progress/kendo-font-icons/dist/index.css" />
-<kendo-appbar position="bottom" [themeColor]="themeColor">
+<kendo-appbar position="top" [themeColor]="themeColor" class="fixed-navbar">
     <kendo-appbar-section>
         <kendo-icon name="home" size="large" themeColor="info"></kendo-icon>
     </kendo-appbar-section>
@@ -105,6 +105,7 @@
     </kendo-appbar-section>
 
 </kendo-appbar>
+
 <div class="session-warning-content" *ngIf="showSessionWarning">
     <div class="row">
         <div class="session-text">
@@ -124,6 +125,22 @@
 
     </div>
 </div>
+<!-- <ul class="luces-css">
+    <li></li><li></li><li></li><li></li><li></li>
+    <li></li><li></li><li></li><li></li><li></li>
+     <li></li><li></li><li></li><li></li><li></li>
+</ul> -->
+<div class="luces-nav">
+  <div class="cable"></div>
+
+  <span class="foco rojo pos1"></span>
+  <span class="foco verde pos2"></span>
+  <span class="foco azul pos3"></span>
+  <span class="foco amarillo pos4"></span>
+  <span class="foco morado pos5"></span>
+</div>
+
+
 
 <router-outlet></router-outlet>
 <!-- <div 

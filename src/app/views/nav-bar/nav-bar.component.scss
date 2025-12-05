@@ -1,5 +1,6 @@
 body {
     background: #ffffffff;
+    padding-top: 64px; 
   }
   .title {
     font-size: 18px;
@@ -367,5 +368,140 @@ body {
   transition: background-color 0.3s ease;
 }
 
+.fixed-navbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+/* Luces navideñas */
+// .luces-css {
+//     position: fixed;
+//     top: 72px; /* <-- AJUSTA según altura de tu navbar */
+//     left: 0;
+//     width: 100%;
+//     height: 50px;
+//     padding: 0;
+//     margin: 0;
+//     display: flex;
+//     justify-content: space-around;
+//     list-style: none;
+//     z-index: 9999; /* debajo del navbar pero encima del contenido */
+//     background: transparent;
+// }
 
+// .luces-css li {
+//   background-color: currentColor;
+//     width: 10px;
+//     height: 20px;
+//     border-radius: 50%;
+//     position: relative;
+//     animation: parpadeo 1.5s infinite ease-in-out;
+//     box-shadow: 0 0 12px currentColor;
+// }
+
+// /* Colores repetidos */
+// .luces-css li:nth-child(5n+1) { color: red; }
+// .luces-css li:nth-child(5n+2) { color: green; }
+// .luces-css li:nth-child(5n+3) { color: blue; }
+// .luces-css li:nth-child(5n+4) { color: yellow; }
+// .luces-css li:nth-child(5n+5) { color: purple; }
+
+// /* Cable arriba de cada foco */
+// .luces-css li::before {
+//     content: '';
+//     position: absolute;
+//     top: -10px;
+//     left: 50%;
+//     width: 22px;
+//     height: 2px;
+//     background: #2c3e50;
+//     transform: translateX(-50%);
+//     border-radius: 2px;
+// }
+
+// /* Parpadeo */
+// @keyframes parpadeo {
+//     0%, 100% { opacity: 0.5s; transform: scale(1); }
+//     50% { opacity: 0.4; transform: scale(0.9); }
+// }
+.luces-nav {
+  position: fixed;
+  top: 60px; /* ajusta según tu navbar */
+  left: 0;
+  width: 100%;
+  height: 100px;
+  pointer-events: none;
+  z-index: 999999;
+}
+
+/* CABLE ULTRA DELGADO */
+.cable {
+  position: absolute;
+  top: 8px;
+  left: 0;
+  width: 100%;
+  height: 20px; /* menor alto del contenedor */
+  background: #1c3b1c;
+
+  /* Path ajustado para cable delgado */
+  mask-image: url("data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'>\
+      <path d='M0 8 Q 12.5 20 25 8 T50 8 T75 8 T100 8' stroke=\"white\" stroke-width=\"1\" fill=\"none\"/>\
+    </svg>");
+  mask-size: calc(100% / 5) 20px;
+  mask-repeat: repeat-x;
+
+  -webkit-mask-image: url("data:image/svg+xml;utf8,\
+    <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'>\
+      <path d='M0 8 Q 12.5 20 25 8 T50 8 T75 8 T100 8' stroke=\"white\" stroke-width=\"1\" fill=\"none\"/>\
+    </svg>");
+  -webkit-mask-size: calc(100% / 5) 20px;
+  -webkit-mask-repeat: repeat-x;
+}
+
+/* FOCOS */
+.foco {
+  position: absolute;
+  top: 30px; /* bajamos un poco para coincidir con el nuevo cable */
+  width: 12px;
+  height: 20px;
+  border-radius: 50% 50% 60% 60%;
+  animation: parpadeo 2s infinite ease-in-out;
+}
+
+/* CABLECITO ULTRA DELGADO */
+.foco::before {
+  content: "";
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  width: 1.5px;    /* más delgado */
+  height: 18px;
+  transform: translateX(-50%);
+  background: #1c3b1c;
+  border-radius: 1px;
+}
+
+/* colores */
+.rojo     { background: #ff4d4d; }
+.verde    { background: #3ee45a; }
+.azul     { background: #4da6ff; }
+.amarillo { background: #ffe066; }
+.morado   { background: #cc66ff; }
+
+/* posiciones exactas debajo del valle */
+.pos1 { left: 8%;  animation-delay: 0.1s; }
+.pos2 { left: 28%; animation-delay: 0.4s; }
+.pos3 { left: 48%; animation-delay: 0.25s; }
+.pos4 { left: 68%; animation-delay: 0.55s; }
+.pos5 { left: 88%; animation-delay: 0.35s; }
+
+
+/* parpadeo */
+@keyframes parpadeo {
+  0%,100% { opacity: 1;   filter: brightness(1); }
+  50%     { opacity: .55; filter: brightness(1.8); }
+}
 
