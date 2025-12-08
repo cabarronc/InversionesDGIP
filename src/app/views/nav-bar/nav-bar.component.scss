@@ -450,23 +450,23 @@ body {
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'>\
       <path d='M0 8 Q 12.5 20 25 8 T50 8 T75 8 T100 8' stroke=\"white\" stroke-width=\"1\" fill=\"none\"/>\
     </svg>");
-  mask-size: calc(100% / 5) 20px;
+  mask-size: calc(100% / 7) 20px;
   mask-repeat: repeat-x;
 
   -webkit-mask-image: url("data:image/svg+xml;utf8,\
     <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'>\
       <path d='M0 8 Q 12.5 20 25 8 T50 8 T75 8 T100 8' stroke=\"white\" stroke-width=\"1\" fill=\"none\"/>\
     </svg>");
-  -webkit-mask-size: calc(100% / 5) 20px;
+  -webkit-mask-size: calc(100% / 7) 20px;
   -webkit-mask-repeat: repeat-x;
 }
 
 /* FOCOS */
 .foco {
   position: absolute;
-  top: 30px; /* bajamos un poco para coincidir con el nuevo cable */
-  width: 12px;
-  height: 20px;
+  top: 39px; /* bajamos un poco para coincidir con el nuevo cable */
+  width: 10px;
+  height: 18px;
   border-radius: 50% 50% 60% 60%;
   animation: parpadeo 2s infinite ease-in-out;
 }
@@ -492,11 +492,19 @@ body {
 .morado   { background: #cc66ff; }
 
 /* posiciones exactas debajo del valle */
-.pos1 { left: 8%;  animation-delay: 0.1s; }
-.pos2 { left: 28%; animation-delay: 0.4s; }
-.pos3 { left: 48%; animation-delay: 0.25s; }
-.pos4 { left: 68%; animation-delay: 0.55s; }
-.pos5 { left: 88%; animation-delay: 0.35s; }
+.pos1 { left: 8.5%;  animation-delay: 0.1s; }
+.pos2 { left: 15.6%; animation-delay: 0.4s; }
+.pos3 { left: 22.7%; animation-delay: 0.25s; }
+.pos4 { left: 29.8%; animation-delay: 0.55s; }
+.pos5 { left: 36.9%; animation-delay: 0.35s; }
+.pos6 { left: 44.2%; animation-delay: 0.1s; }
+.pos7 { left: 51.2%; animation-delay: 0.4s; }
+.pos8 { left: 58.5%; animation-delay: 0.25s; }
+.pos9 { left: 65.5%; animation-delay: 0.55s; }
+.pos10 { left: 72.7%; animation-delay: 0.35s; }
+.pos11 { left: 80%;  animation-delay: 0.1s; }
+.pos12 { left: 87.3%; animation-delay: 0.4s; }
+.pos13 { left: 94.2%; animation-delay: 0.25s; }
 
 
 /* parpadeo */
