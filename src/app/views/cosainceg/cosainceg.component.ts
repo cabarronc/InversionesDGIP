@@ -1119,8 +1119,8 @@ export class CosaincegComponent implements OnInit {
         const primerTrimestre = `${anio}-04-10`;
         const filename = `Rel Obras Financiamiento Deuda01`
         console.log("Primer Trimestre: ", primerTrimestre)
-        this.isDisabled = true;
-        this.isDisabledExcelRecurso = true
+        this.isDisabled_deuda = true;
+        this.isDisabledExcelRecursoDeuda = true
         this.cosaincegService.GenerarDescargasDeudaRecurso(primerTrimestre, filename).subscribe(
           (blob) => {
             const url = window.URL.createObjectURL(blob);
@@ -1142,8 +1142,8 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-            this.isDisabled = false;
-            this.isDisabledExcelRecurso = false
+           this.isDisabled_deuda = true;
+            this.isDisabledExcelRecursoDeuda = false
 
           },
           (error) => {
@@ -1170,8 +1170,8 @@ export class CosaincegComponent implements OnInit {
         const segundoTrimestre = `${anio}-07-10`;
         const filename = `Rel Obras Financiamiento Deuda02`
         console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.isDisabled = true;
-        this.isDisabledExcelRecurso = true
+        this.isDisabled_deuda = true;
+       this.isDisabledExcelRecursoDeuda = true
         this.cosaincegService.GenerarDescargasDeudaRecurso(segundoTrimestre, filename).subscribe(
           (blob) => {
             const url = window.URL.createObjectURL(blob);
@@ -1179,8 +1179,8 @@ export class CosaincegComponent implements OnInit {
             link.href = url;
             link.download = filename;
             link.click();
-            this.isDisabled = false;
-            this.isDisabledExcelRecurso = false
+            this.isDisabled_deuda = false;
+            this.isDisabledExcelRecursoDeuda = false
           },
           (error) => {
             console.error('Error fetching files', error);
@@ -1206,8 +1206,8 @@ export class CosaincegComponent implements OnInit {
         const tercerTrimestre = `${anio}-10-10`;
         console.log("Tercer Trimestre: ", tercerTrimestre)
         const filename = `Rel Obras Financiamiento Deuda03`
-        this.isDisabled = true;
-        this.isDisabledExcelRecurso = true
+        this.isDisabled_deuda = true;
+        this.isDisabledExcelRecursoDeuda = true
         this.cosaincegService.GenerarDescargasDeudaRecurso(tercerTrimestre, filename).subscribe(
           (blob) => {
             const url = window.URL.createObjectURL(blob);
@@ -1215,8 +1215,8 @@ export class CosaincegComponent implements OnInit {
             link.href = url;
             link.download = filename;
             link.click();
-            this.isDisabled = false;
-            this.isDisabledExcelRecurso = false
+            this.isDisabled_deuda = false;
+            this.isDisabledExcelRecursoDeuda = false
           },
           (error) => {
             this.notificationService.show({
@@ -1245,8 +1245,8 @@ export class CosaincegComponent implements OnInit {
         const cuarttoTrimestre = `${anio}-02-10`;
         const filename = `Rel Obras Financiamiento Deuda04`
         console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.isDisabled = true;
-        this.isDisabledExcelRecurso = true
+        this.isDisabled_deuda = true;
+        this.isDisabledExcelRecursoDeuda = true
         this.cosaincegService.GenerarDescargasDeudaRecurso(cuarttoTrimestre, filename).subscribe(
           (blob) => {
             const url = window.URL.createObjectURL(blob);
@@ -1254,8 +1254,8 @@ export class CosaincegComponent implements OnInit {
             link.href = url;
             link.download = filename;
             link.click();
-            this.isDisabled = false;
-            this.isDisabledExcelRecurso = false
+            this.isDisabled_deuda = false;
+            this.isDisabledExcelRecursoDeuda = false
           },
           (error) => {
             console.error('Error fetching files', error);
