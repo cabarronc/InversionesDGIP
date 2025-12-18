@@ -193,7 +193,7 @@
             <div class="row d-flex">
                 <div class="col-4"></div>
                 <div class="col-4">
-                    <button kendoButton (click)="PuntosAtencion()" [disabled]="isPuntos" fillMode="outline" size="large"
+                    <button kendoButton (click)="PuntosAtencion()" [disabled]="isPuntos" fillMode="solid" size="large"
                         rounded="medium" themeColor="info" [svgIcon]="wordIcon">Generar Puntos Atencion</button>
                     <span class="ps-2">
                         @if(isPuntos) {
@@ -224,7 +224,7 @@
             </div>
             <div class="row mt-3 mb-3 d-flex">
                 <div class="col-3">
-                    <button kendoButton (click)="Integracion()" fillMode="outline" size="large" rounded="medium"
+                    <button kendoButton (click)="Integracion()" fillMode="solid" size="large" rounded="medium"
                         themeColor="success" [svgIcon]="wordIcon" [disabled]="isIntegracion">Ejecutar
                         Integracion</button>
                     <span class="ps-2">
