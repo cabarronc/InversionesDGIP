@@ -1671,10 +1671,12 @@ export class AdecuacionesContentComponent implements OnInit {
   //FUNCION PARA ELIMINAR TODOS LOS FIMANTES
   public clearCopia(): void {
     this.copia = "";
+    this.form.reset()
     this.form.controls["copias"].setValue("");;
   }
   public clearCopia_R(): void {
     this.copia_r = "";
+    this.form_r.reset()
     this.form_r.controls["copias_r"].setValue("");
     console.log("Variable copia limpiada.");
   }
