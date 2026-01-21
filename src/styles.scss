@@ -13,8 +13,10 @@ $kendo-font-size: 0.75rem,
 //   $kendo-grid-border: #a0a0a3,
 //   $kendo-grid-footer-bg:#e3eef4
 );
-
-// @use "@progress/kendo-theme-material/scss/all.scss" as *;
+// @import "@progress/kendo-theme-bootstrap/scss/all.scss";
+// @use "@progress/kendo-theme-material/scss/all.scss" as *with (
+//   $kendo-font-size: 0.75rem,
+// );
 // @use "@progress/kendo-theme-classic/scss/all.scss" as *;
 
 body {
@@ -164,62 +166,73 @@ a {
   font-size: 13px !important;
   font-weight: 500 !important;
 }
+.k-expander-content {
+  padding: 0 1rem 0 1rem !important;
+  background-color: #e7f0ff;
+}
+.k-expander-content-wrapper {
+  background-color: #e7f0ff;
+}
 
+
+
+
+// tema de navidad
 
 /* Contenedor de nieve */
-.snow {
-    pointer-events: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    z-index: 5000;
-}
+// .snow {
+//     pointer-events: none;
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     width: 100%;
+//     height: 100%;
+//     overflow: hidden;
+//     z-index: 5000;
+// }
 
-/* Capa de copos grandes */
-.snow::before,
-.snow::after {
-    content: "";
-    position: absolute;
-    top: -100px;
-    left: 0;
-    width: 100%;
-    height: 200%;
-    background-repeat: repeat;
-    background-size: 300px 300px; /* ❄ tamaño más grande */
-    animation: snowfall 10s linear infinite;
-    opacity: 0.7;
-}
+// /* Capa de copos grandes */
+// .snow::before,
+// .snow::after {
+//     content: "";
+//     position: absolute;
+//     top: -100px;
+//     left: 0;
+//     width: 100%;
+//     height: 200%;
+//     background-repeat: repeat;
+//     background-size: 300px 300px; /* ❄ tamaño más grande */
+//     animation: snowfall 10s linear infinite;
+//     opacity: 0.7;
+// }
 
-/* Copos grandes */
-.snow::before {
-    background-image:
-        radial-gradient(8px 8px at 20px 20px, white 70%, transparent 70%),
-        radial-gradient(6px 6px at 120px 80px, white 70%, transparent 70%),
-        radial-gradient(10px 10px at 200px 150px, white 70%, transparent 70%),
-        radial-gradient(8px 8px at 20px 320px, white 70%, transparent 70%),
-        radial-gradient(6px 6px at 120px 380px, white 70%, transparent 70%),
-        radial-gradient(10px 10px at 200px 450px, white 70%, transparent 70%);
-    animation-duration: 16s; /* más lento */
-}
+// /* Copos grandes */
+// .snow::before {
+//     background-image:
+//         radial-gradient(8px 8px at 20px 20px, white 70%, transparent 70%),
+//         radial-gradient(6px 6px at 120px 80px, white 70%, transparent 70%),
+//         radial-gradient(10px 10px at 200px 150px, white 70%, transparent 70%),
+//         radial-gradient(8px 8px at 20px 320px, white 70%, transparent 70%),
+//         radial-gradient(6px 6px at 120px 380px, white 70%, transparent 70%),
+//         radial-gradient(10px 10px at 200px 450px, white 70%, transparent 70%);
+//     animation-duration: 16s; /* más lento */
+// }
 
-/* Copos medianos */
-.snow::after {
-    background-image:
-        radial-gradient(4px 4px at 50px 50px, white 70%, transparent 70%),
-        radial-gradient(5px 5px at 150px 120px, white 70%, transparent 70%),
-        radial-gradient(3px 3px at 250px 200px, white 70%, transparent 70%),
+// /* Copos medianos */
+// .snow::after {
+//     background-image:
+//         radial-gradient(4px 4px at 50px 50px, white 70%, transparent 70%),
+//         radial-gradient(5px 5px at 150px 120px, white 70%, transparent 70%),
+//         radial-gradient(3px 3px at 250px 200px, white 70%, transparent 70%),
 
-        radial-gradient(4px 4px at 50px 350px, white 70%, transparent 70%),
-        radial-gradient(5px 5px at 150px 420px, white 70%, transparent 70%),
-        radial-gradient(3px 3px at 250px 500px, white 70%, transparent 70%);
-    animation-duration: 10s; /* más rápido */
-}
+//         radial-gradient(4px 4px at 50px 350px, white 70%, transparent 70%),
+//         radial-gradient(5px 5px at 150px 420px, white 70%, transparent 70%),
+//         radial-gradient(3px 3px at 250px 500px, white 70%, transparent 70%);
+//     animation-duration: 10s; /* más rápido */
+// }
 
-/* Animación suave */
-@keyframes snowfall {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(0%); }
-}
+// /* Animación suave */
+// @keyframes snowfall {
+//     0% { transform: translateY(-100%); }
+//     100% { transform: translateY(0%); }
+// }

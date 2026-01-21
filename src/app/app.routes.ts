@@ -17,6 +17,7 @@ import {DashboardComponent} from '../app/views/administracion/dashboard/dashboar
 import {AvatarUploadComponent} from './views/uploads/avatar-upload/avatar-upload.component'
 import { NavbarAvatarComponent } from './views/navbar-avatar/navbar-avatar.component';
 import { ReportesComponent } from './views/cosainceg/reportes/reportes.component';
+import { SimuladorComponent } from './views/simulador/simulador.component';
 
 
 export const routes: Routes = [
@@ -31,6 +32,7 @@ export const routes: Routes = [
      { path: 'avatar_edit', component: NavbarAvatarComponent},
       // { path: 'admin', component:  AdministracionComponent},
        {path: 'unauthorized',component: UnauthorizedComponent},
+
     // { path: '', redirectTo: 'login', pathMatch: 'full'},
     {
     path: '',
@@ -46,6 +48,10 @@ export const routes: Routes = [
         path: 'principal',
         component: HomeComponent
       },
+      {path: 'simulador',
+        component: SimuladorComponent,
+       canActivate: [PermissionGuard],
+        data: { module: 'users', action: 'manage' }},
        
       {
         path: 'admin',
