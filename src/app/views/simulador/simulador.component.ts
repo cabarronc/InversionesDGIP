@@ -34,7 +34,8 @@ export class SimuladorComponent implements OnInit {
 
   public icons = { paperclip: paperclipIcon, infoSolidIcon: infoSolidIcon, imageIcon: imageIcon };
   fecha: Date = new Date()
-  resultado = 1245300.75;
+  Pon1!:number;
+  Pon2!:number;
   public CalProm!: number;
   currentUser: User | null = null;
 
@@ -71,7 +72,7 @@ export class SimuladorComponent implements OnInit {
     background: ""
   };
 
-  TotalDp!: number;
+  TotalRacionalidad!: number;
   TotalMir!: number;
   CalGlob!: number;
   public animation = true;
@@ -113,53 +114,42 @@ export class SimuladorComponent implements OnInit {
   onProductoChange(item: any) {
     this.itemSeleccionado = item;
   }
+public Respuesta1(value: any): void {
+  
+ if (value.value == 0) {
+    this.Pon1 = 10;
+    this.MethodTotalDp()
+    }
+    else if (value.value == 1) {
+     this.Pon1 = 5;
+     this.MethodTotalDp()
+    }
+    else if (value.value == 2) {
+    this.Pon1 = 2;
+    this.MethodTotalDp()
+    }
+}  
 
-
+public Respuesta2(value: any): void {
+ if (value.value == 0) {
+    this.Pon2 = 10;
+    this.MethodTotalDp()
+    }
+    else if (value.value == 1) {
+     this.Pon2 = 5;
+     this.MethodTotalDp()
+    }
+    else if (value.value == 2) {
+    this.Pon2 = 2;
+    this.MethodTotalDp()
+    }
+}
 
   public MethodTotalDp(): any {
-    this.CalGlob = this.TotalDp + this.TotalMir;
+    this.TotalRacionalidad = this.Pon1  
+    this.TotalMir = this.Pon2  
+    this.CalGlob = this.TotalRacionalidad + this.TotalMir;
     this.CalProm = this.CalGlob / 2;
-    // switch (this.TotalDp) {
-    //   case 50: this.updateAppearance("#f50707");
-    //     break;
-    //   case 51:
-    //   case 52:
-    //   case 53:
-    //   case 54:
-    //   case 55:
-    //   case 56:
-    //   case 57:
-    //   case 58:
-    //   case 59:
-    //   case 60:
-    //   case 61:
-    //   case 70: this.updateAppearance("#ee9f05");
-    //     break;
-    //   case 71:
-    //   case 72:
-    //   case 73:
-    //   case 74:
-    //   case 75:
-    //   case 76:
-    //   case 77:
-    //   case 78:
-    //   case 79:
-    //   case 80: this.updateAppearance("#368541");
-    //     break;
-    //   case 81:
-    //   case 82:
-    //   case 83:
-    //   case 84:
-    //   case 85:
-    //   case 86:
-    //   case 87:
-    //   case 88:
-    //   case 89:
-    //   case 90:
-    //   default:
-
-
-    // }
     const ranges = [
       { max: 50, color: '#f50707' },
       { max: 70, color: '#ee9f05' },
@@ -167,7 +157,8 @@ export class SimuladorComponent implements OnInit {
       { max: 90, color: '#2e7d32' }
     ];
 
-    const range = ranges.find(r => this.TotalDp <= r.max);
+    this.TotalRacionalidad = this.Pon1  
+    const range = ranges.find(r => this.TotalRacionalidad <= r.max);
     this.updateAppearance(range?.color ?? '#000');
   }
 

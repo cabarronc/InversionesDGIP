@@ -1,80 +1,80 @@
 <section id="sectiondefault">
 
-    <ng-template #tooltipProyecto>
-      <div class="tooltip-justificado">
-        Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
-      </div>
-    </ng-template>
-    <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
-      <kendo-label [for]="sizes" text="1.- Elige un Proyecto de Inversión"></kendo-label>
-      <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-        <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-      </span>
+  <ng-template #tooltipProyecto>
+    <div class="tooltip-justificado">
+      Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
     </div>
-    <div class="col-md-2 mt-2 mb-2">
-      <div class="kendo-wrapper">
-        <kendo-combobox #sizes [data]="listItems" valueField="id" [valuePrimitive]="false" textField="id" [(value)]="itemSeleccionado"
-          (valueChange)="onProductoChange($event)" placeholder="Proyecto"></kendo-combobox>
-      </div>
+  </ng-template>
+  <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
+    <kendo-label [for]="sizes" text="1.- Elige un Proyecto de Inversión"></kendo-label>
+    <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+      <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+    </span>
+  </div>
+  <div class="col-md-2 mt-2 mb-2">
+    <div class="kendo-wrapper">
+      <kendo-combobox #sizes [data]="listItems" valueField="id" [valuePrimitive]="false" textField="id"
+        [(value)]="itemSeleccionado" (valueChange)="onProductoChange($event)" placeholder="Proyecto"></kendo-combobox>
     </div>
+  </div>
 
- <div class="row">
+  <div class="row">
 
-  <div class="col-md-5 mt-2 mb-2">
-    <kendo-card width="100%" orientation="vertical"
-      style="background-color:#dee4ec; border-radius: 15px; box-shadow: 5px 10px 18px #888888;">
-      <kendo-card-header
-        style="background-color:#0d6efd; color:rgb(255, 255, 255); border-top-left-radius: 15px; border-top-right-radius: 15px;">
-        <div class="row align-items-center">
-          <div class="col-12 col-md-9">
-            @if (itemSeleccionado) {   
+    <div class="col-md-5 mt-2 mb-2">
+      <kendo-card width="100%" orientation="vertical"
+        style="background-color:#dee4ec; border-radius: 15px; box-shadow: 5px 10px 18px #888888;">
+        <kendo-card-header
+          style="background-color:#0d6efd; color:rgb(255, 255, 255); border-top-left-radius: 15px; border-top-right-radius: 15px;">
+          <div class="row align-items-center">
+            <div class="col-12 col-md-9">
+              @if (itemSeleccionado) {
               <div class="texto"> Nombre: <strong>{{itemSeleccionado.nombre}}</strong></div>
-              <div class="texto">Monto:<strong> $ {{ itemSeleccionado.precio }}</strong></div>  
-            }
+              <div class="texto">Monto:<strong> $ {{ itemSeleccionado.precio }}</strong></div>
+              }
 
-          </div>
-          <div class="col-md-1 pe-3">
-            @if (itemSeleccionado){
-            <kendo-circulargauge [value]="CalProm || 0" [scale]="{ max: 100 }" [colors]="colors"
-              style="width: 100px; height: 100px;">
-              <ng-template kendoCircularGaugeCenterTemplate let-value="CalProm" let-color="color">
-                <strong>
+            </div>
+            <div class="col-md-1 pe-3">
+              @if (itemSeleccionado){
+              <kendo-circulargauge [value]="CalProm || 0" [scale]="{ max: 100 }" [colors]="colors"
+                style="width: 100px; height: 100px;">
+                <ng-template kendoCircularGaugeCenterTemplate let-value="CalProm" let-color="color">
+                  <strong>
+                    <span>
+                      <font color="white">{{ CalProm || 0}} % &nbsp;</font>
+                    </span>
+                  </strong>
+                  <br>
                   <span>
-                    <font color="white">{{ CalProm || 0}} % &nbsp;</font>
+                    <font color="white">{{itemSeleccionado.id}} </font>
                   </span>
-                </strong>
-                <br>
-                <span>
-                  <font color="white">{{itemSeleccionado.id}} </font>           
-                </span>
-              </ng-template>
-            </kendo-circulargauge>
-             }
+                </ng-template>
+              </kendo-circulargauge>
+              }
+            </div>
+            <div class="col-md-1">
+
+            </div>
           </div>
-           <div class="col-md-1">
-
-           </div>
-        </div>
-      </kendo-card-header>
-    </kendo-card>
-  </div>
-  <div class="col-md-6 mt-2">
-    <kendo-panelbar>
-      <kendo-panelbar-item title="Descripción" [expanded]="true">
-        <ng-template kendoPanelBarContent>
-           @if (itemSeleccionado) { 
-              <div class="m-3">
+        </kendo-card-header>
+      </kendo-card>
+    </div>
+    <div class="col-md-6 mt-2">
+      <kendo-panelbar>
+        <kendo-panelbar-item title="Descripción" [expanded]="true">
+          <ng-template kendoPanelBarContent>
+            @if (itemSeleccionado) {
+            <div class="m-3">
               <div class="texto"><strong>{{ itemSeleccionado.descripcion }}</strong> </div>
-              </div>  
+            </div>
             }
-        </ng-template>
-      </kendo-panelbar-item>
-    </kendo-panelbar>
+          </ng-template>
+        </kendo-panelbar-item>
+      </kendo-panelbar>
 
+    </div>
   </div>
-</div>
   <div class="col-3 mt-3">
- <ng-template #tooltipProyecto>
+    <ng-template #tooltipProyecto>
       <div class="tooltip-justificado">
         Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
       </div>
@@ -89,7 +89,7 @@
   <div class="col-md-9 mt-3 mb-3">
     <kendo-label text="Calificacion Racionalidad Pública " style="font-weight: bold;">
       &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles" [animation]="animation" style="width: 800px;"
-        [value]="TotalDp||0">
+        [value]="TotalRacionalidad||0">
       </kendo-progressbar>
     </kendo-label>
   </div>
@@ -127,15 +127,17 @@
                           </span>
                         </div>
                         <div class="row mt-2 mb-4">
-                          <span>
-                            <kendo-badge-container>
-                              <kendo-badge themeColor="success">Bajo</kendo-badge>
-                            </kendo-badge-container>
-                          </span>
-
-                          <div class="col-10">
+                          <div class="col-1">
+                            <span>
+                              <kendo-badge-container>
+                                <kendo-badge themeColor="success">Bajo</kendo-badge>
+                              </kendo-badge-container>
+                            </span>
+                          </div>
+                          <div class="col-9">
                             <kendo-dropdownlist [data]="OpDp4" textField="text" valueField="value"
-                              [value]="valorSeleccionado" [valuePrimitive]="true">
+                              [value]="valorSeleccionado" [valuePrimitive]="true"
+                              (selectionChange)="Respuesta1($event)">
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
                                 <span class="item-content">
@@ -147,21 +149,19 @@
                                   <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
                                 </span>
                               </ng-template>
-
                             </kendo-dropdownlist>
-
                           </div>
                           <div class="col-1">
                             <span>
-                              <kendo-chip label="{{ resultado | number:'1.2-2' }}" themeColor="info" size="medium"
+                              @if(Pon1){
+                              <kendo-chip label="{{ Pon1 | number:'1.2-2'  }}" themeColor="info" size="medium"
                                 rounded="full">
                               </kendo-chip>
+                              }
                             </span>
                           </div>
                         </div>
                       </div>
-
-
                     </section>
                   </div>
                 </kendo-expansionpanel>
@@ -196,34 +196,52 @@
                         </div>
 
 
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <kendo-badge-container>
+                              <kendo-badge themeColor="success">Bajo</kendo-badge>
+                            </kendo-badge-container>
+                          </div>
+                          <div class="col-9">
 
-
-                        <div class="col-1">
-                          <kendo-badge-container>
-                            <kendo-badge themeColor="success">Bajo</kendo-badge>
-                          </kendo-badge-container>
-                        </div>
-                        <div class="col-9">
-
-                          <kendo-dropdownlist #sizes [data]="OpDp4" textField="text" valueField="value"
-                            [valuePrimitive]="true" [value]="valorSeleccionado">
+                            <kendo-dropdownlist #sizes [data]="OpDp4" textField="text" valueField="value"
+                              [valuePrimitive]="true" (selectionChange)="Respuesta2($event)"
+                              [value]="valorSeleccionado">
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
                                 <span class="item-content">
-                                  <span [ngClass]="getTemplateClass(dataItem.value)" >{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                  <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
                                 </span>
                               </ng-template>
                               <ng-template kendoDropDownListValueTemplate let-dataItem>
                                 <span class="item-content">
-                                  <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                  <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
                                 </span>
                               </ng-template>
 
-                          </kendo-dropdownlist>
+                            </kendo-dropdownlist>
 
+
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon2){
+                              <kendo-chip label="{{ Pon2 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+
+                            </span>
+                          </div>
                         </div>
-                        <p> </p>
+
+
                       </div>
+
                     </section>
                   </div>
                 </kendo-expansionpanel>
