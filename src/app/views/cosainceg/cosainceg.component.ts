@@ -2724,7 +2724,7 @@ export class CosaincegComponent implements OnInit {
     this.notificationService.show({
       content: "Debe Seleccionar un Trimestre 🔻",
       hideAfter: 2500,
-      animation: { type: "fade", duration: 500 },
+      animation: { type: "fade", duration: 1500 },
       type: { style: "warning", icon: true },
       position: { horizontal: "center", vertical: "top" },
     });

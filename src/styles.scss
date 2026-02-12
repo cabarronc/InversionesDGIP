@@ -18,6 +18,19 @@ $kendo-font-size: 0.75rem,
 //   $kendo-font-size: 0.75rem,
 // );
 // @use "@progress/kendo-theme-classic/scss/all.scss" as *;
+/* Fuerza layout vertical en ComboBox de Kendo */
+.k-list,
+.k-list-content,
+.k-list-ul {
+  display: block !important;
+}
+
+.k-list-item {
+  display: block !important;
+  width: 100% !important;
+  float: none !important;
+}
+
 
 body {
     background-color: rgb(223, 223, 212)!important;

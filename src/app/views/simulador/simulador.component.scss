@@ -1,100 +1,149 @@
  #sectiondefault {
-    margin: 0 auto;
-    height: auto;
-    width: 100%;
-    padding-top: 30px;
-    padding-left: 15px;
-    padding-right: 10px;
+   margin: 0 auto;
+   height: auto;
+   width: 100%;
+   padding-top: 30px;
+   padding-left: 15px;
+   padding-right: 10px;
 
-    box-sizing: border-box;
-  }
-.templatenull {
-  display: inline-block;
-  background:#3333333f;
-  color: #fff;
-  font-weight:bold;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  text-align: center;
-  line-height: 1;  
-    padding-top: 2.5px;
-}
+   box-sizing: border-box;
+ }
 
-.template {
-  display: inline-block;
-  background:#5392e4;
-  color: #fff;
-  border-radius: 50%;
-  width: 15px;
-  height: 15px;
-  text-align: center;
-  line-height: 1;  
-    padding-top: 2.5px;
-      font-size: 11px;      /* puedes subir/bajar */
-  font-weight: 600;
-}
+ .kendo-wrapper {
+   display: block;
+ }
 
-.template9 {
-  display: inline-block;
-  background:#09ac32;
-  color: #000000;
-  font-weight:bold;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  text-align: center;
-  line-height: 1;  
-    padding-top: 1px;
-}
-.template6 {
-  display: inline-block;
-  background:#e0e406;
-  color: #000000;
-  font-weight:bold;
-  border-radius: 75%;
-  width: 18px;
-  height: 18px;
-  text-align: center;
-   line-height: 1;  
-    padding-top: 1px;
-}
-.template3 {
-  display: inline-block;
-  background:#f10808;
-  color:#000000;
-  font-weight:bold;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  text-align: center;
-   line-height: 1;  
-    padding-top: 1px;
-}
-.row2{
-  flex-wrap: wrap;
-  display: flex;
-overflow-x: auto;  
-}
-.placeholder {
-  opacity: 0.6;
-}
+ .templatenull {
+   display: inline-block;
+   background: #3333333f;
+   color: #fff;
+   font-weight: bold;
+   border-radius: 50%;
+     width: 20px;
+   height: 20px;
+   justify-content: center;
+   align-items: center;
+   padding-top: 2.5px;
+ }
 
-.tooltip-justificado {
-  max-width: 320px;
-  text-align: justify;
-  white-space: normal;
-  line-height: 1.4;
-}
-/* Contenido interno */
-.item-content {
-  display: inline-flex;
-  align-items: center;
-  text-align: center;
-  gap: 8px;
-     font-size: 11px;      /* puedes subir/bajar */
-  font-weight: 600;
-}
-.k-list-item-content {
-  padding: 2px 6px;
-}
+ .template {
+   display: inline-flex;
+   background: #5392e4;
+   font-weight: bold;
+   color: #fff;
+   border-radius: 50%;
+   width: 20px;
+   height: 20px;
+   justify-content: center;
+   align-items: center;
+ }
+
+ .template9 {
+   display: inline-flex;
+   background: #046b1e;
+   color: #fff;
+   font-weight: bold;
+   border-radius: 50%;
+   width: 20px;
+   height: 20px;
+   justify-content: center;
+   align-items: center;
+ }
+
+  .template8 {
+   display: inline-flex;
+   background: #099b2e;
+   color: #fff;
+   font-weight: bold;
+   border-radius: 50%;
+   width: 20px;
+   height: 20px;
+   justify-content: center;
+   align-items: center;
+ }
+ .template7 {
+   display: inline-flex;
+   background: #e26613;
+   color: #fff;
+   font-weight: bold;
+   border-radius: 50%;
+   width: 20px;
+   height: 20px;
+   justify-content: center;
+   align-items: center;
+
+ }
+
+ .template6 {
+   display: inline-flex;
+   background: #c4c706;
+   color: #fff;
+   font-weight: bold;
+   border-radius: 50%;
+   width: 20px;
+   height: 20px;
+   justify-content: center;
+   align-items: center;
+
+ }
+
+ .template3 {
+   display: inline-flex;
+   justify-content: center;
+   align-items: center;
+   background: #f10808;
+   color: #ffffff;
+   font-weight: bold;
+   width: 20px;
+   height: 20px;
+   border-radius: 50%;
+ }
+
+ .row2 {
+   flex-wrap: wrap;
+   display: flex;
+   overflow-x: auto;
+ }
+
+ .placeholder {
+   opacity: 0.6;
+ }
+
+ .tooltip-justificado {
+   max-width: 320px;
+   text-align: justify;
+   white-space: normal;
+   line-height: 1.4;
+ }
+
+ /* Contenido interno */
+ .item-content {
+   display: inline-flex;
+   align-items: center;
+   text-align: center;
+   gap: 8px;
+   font-size: 11px;
+   /* puedes subir/bajar */
+   font-weight: 600;
+ }
+
+ .k-list-item-content {
+   padding: 2px 6px;
+ }
+
+ .texto-grande {
+   font-size: 20px;
+ }
+
+ .card-gauge {
+   display: inline-flex;
+   justify-content: center;
+   align-items: center;
+   padding: 12px 16px;
+   /* espacio arriba y abajo */
+   width: fit-content;
+   /* se ajusta al contenido */
+   background-color: #0d6efd;
+   border-radius: 15px;
+   box-shadow: 5px 10px 18px #888888;
+ }

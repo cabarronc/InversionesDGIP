@@ -352,6 +352,7 @@
             <div class="col-12 mt-3">
                 <div class="row">
                     <div class="col-md-2 mb-3">
+                        <p class="titulo mt-3 mb-2 ms-3">1. Generar Carpetas </p>
                         <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataCascaron"
                             [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
                             [disabled]="EjecutandoInversion">
@@ -365,9 +366,10 @@
                         </span>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelInversionHojaTrabajo"
-                            [svgIcon]="fileReportIcon" class="button1" rounded="medium"  themeColor="primary"
-                            [disabled]="EjecutandoInversion">
+                        <p class="titulo mt-3 mb-2 ms-3">2. Hoja de Trabajo</p>
+                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium"
+                            [data]="dataExcelInversionHojaTrabajo" [svgIcon]="fileReportIcon" class="button1"
+                            rounded="medium" themeColor="primary" [disabled]="EjecutandoInversion">
                             Generar Hojas de Trabajo Inversión
                         </kendo-splitbutton>
                         <span class="ps-2">
@@ -379,10 +381,10 @@
                     </div>
                     <div class="col-md-3 mb-3">
 
-
-                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelInversionentregables"
-                            [svgIcon]="fileZipIcon" rounded="medium" class="button1" themeColor="primary"
-                            [disabled]="EjecutandoInversion">
+                        <p class="titulo mt-3 mb-2 ms-3">3. Reporte </p>
+                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium"
+                            [data]="dataExcelInversionentregables" [svgIcon]="fileZipIcon" rounded="medium"
+                            class="button1" themeColor="primary" [disabled]="EjecutandoInversion">
                             Generar Reporte Inversión Entregables
                         </kendo-splitbutton>
 
@@ -393,12 +395,12 @@
                             }
                         </span>
                     </div>
-                        <div class="col-md-3 mb-3">
+                    <div class="col-md-3 mb-3">
 
-
-                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelInversionesCopias"
-                            [svgIcon]="copyIcon" rounded="medium" class="button1" themeColor="tertiary" fillMode="solid"
-                            [disabled]="EjecutandoInversion">
+                        <p class="titulo mt-3 mb-2 ms-3">4. Enviar Reporte </p>
+                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium"
+                            [data]="dataExcelInversionesCopias" [svgIcon]="copyIcon" rounded="medium" class="button1"
+                            themeColor="tertiary" fillMode="solid" [disabled]="EjecutandoInversion">
                             Copiar Archivos
                         </kendo-splitbutton>
 
@@ -409,30 +411,26 @@
                             }
                         </span>
                     </div>
-                     
+
 
                 </div>
-                 @if (hasProps(info)){
-                        <kendo-grid [data]="info" [kendoGridBinding]="info" [filterable]="true" [pageable]="true"
-                            [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
-                            [resizable]="true">
-                             <kendo-grid-column field="descripcion_eje" title="Eje"
-                                [width]="180"></kendo-grid-column>
-                                 <kendo-grid-column field="id_programa_presupuestario" title="Programa presupuestario"
-                                [width]="180"></kendo-grid-column>
-                                 <kendo-grid-column field="siglas_dependencia" title="Dependencia"
-                                [width]="100"></kendo-grid-column>
-                                 <kendo-grid-column field="id_centro_gestor" title="Unidad Responsable" [width]="200">
-                            </kendo-grid-column>
-                                 <kendo-grid-column field="id_proceso_proyecto" title="Clave Q"
-                                [width]="100"></kendo-grid-column>
-                            <kendo-grid-column field="descripcion_proceso_proyecto" title="Nombre"
-                                [width]="350"></kendo-grid-column>
-                            <kendo-grid-column field="Monto" title="Monto" [class]="{ 'text-center': true }"
-                                [width]="100"></kendo-grid-column>
-                           
-                        </kendo-grid>
-                        }
+                @if (hasProps(info)){
+                <kendo-grid [data]="info" [kendoGridBinding]="info" [filterable]="true" [pageable]="true" [pageSize]="5"
+                    [sortable]="true" [columnMenu]="menuSettings" size="small" [resizable]="true">
+                    <kendo-grid-column field="descripcion_eje" title="Eje" [width]="180"></kendo-grid-column>
+                    <kendo-grid-column field="id_programa_presupuestario" title="Programa presupuestario"
+                        [width]="180"></kendo-grid-column>
+                    <kendo-grid-column field="siglas_dependencia" title="Dependencia" [width]="100"></kendo-grid-column>
+                    <kendo-grid-column field="id_centro_gestor" title="Unidad Responsable" [width]="200">
+                    </kendo-grid-column>
+                    <kendo-grid-column field="id_proceso_proyecto" title="Clave Q" [width]="100"></kendo-grid-column>
+                    <kendo-grid-column field="descripcion_proceso_proyecto" title="Nombre"
+                        [width]="350"></kendo-grid-column>
+                    <kendo-grid-column field="Monto" title="Monto" [class]="{ 'text-center': true }"
+                        [width]="100"></kendo-grid-column>
+
+                </kendo-grid>
+                }
             </div>
         </div>
     </div>
