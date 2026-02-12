@@ -34,8 +34,8 @@ export class SimuladorComponent implements OnInit {
 
   public icons = { paperclip: paperclipIcon, infoSolidIcon: infoSolidIcon, imageIcon: imageIcon };
   fecha: Date = new Date()
-  Pon1!:number;
-  Pon2!:number;
+  Pon1!:number | null;
+  Pon2!:number | null;
   public CalProm!: number;
   currentUser: User | null = null;
 
@@ -47,34 +47,52 @@ export class SimuladorComponent implements OnInit {
     { id: 'QS3456', nombre: 'nombre dummy 3', descripcion: 'Descripcion 3', precio: 80 }
   ];
   itemSeleccionado: any = null;
-  public colors = [
+  // public colors = [
+  //   {
+  //     to: 25,
+  //     color: "#8396B8",
+  //   },
+  //   {
+  //     from: 25,
+  //     to: 50,
+  //     color: "#F69006",
+  //   },
+  //   {
+  //     from: 50,
+  //     to: 75,
+  //     color: "#FAFA02",
+  //   },
+  //   {
+  //     from: 75,
+  //     color: "#02FA27",
+  //   },
+  // ];
+  getColorByValue(value: number): string {
+  if (value < 10) return '#d61b1b';
+  if (value < 5) return '#F69006';
+  if (value < 2) return '#FAFA02';
+  return '#02FA27';
+}
+getGaugeColors() {
+  const value = this.CalProm ?? 0;
+
+  return [
     {
-      to: 25,
-      color: "#8396B8",
-    },
-    {
-      from: 25,
-      to: 50,
-      color: "#F69006",
-    },
-    {
-      from: 50,
-      to: 75,
-      color: "#FAFA02",
-    },
-    {
-      from: 75,
-      color: "#02FA27",
-    },
+      from: 0,
+      to: value,
+      color: this.getColorByValue(value),
+    }
   ];
+}
+
   public progressStyles: { [key: string]: string } = {
     color: "",
     background: ""
   };
 
-  TotalRacionalidad!: number;
-  TotalMir!: number;
-  CalGlob!: number;
+  TotalRacionalidad!: number| null;
+  TotalMir!: number| null;
+  CalGlob!: number| null;
   public animation = true;
   valorSeleccionado: number | null = null;
 
@@ -111,8 +129,13 @@ export class SimuladorComponent implements OnInit {
 
   }
 
-  onProductoChange(item: any) {
+  onProyChange(item: any) {
     this.itemSeleccionado = item;
+    this.Pon1 = 0;
+    this.Pon2 = 0;
+    this.valorSeleccionado =null 
+    this.Respuesta1(this.Pon1)
+    this.Respuesta2(this.Pon2)
   }
 public Respuesta1(value: any): void {
   
@@ -126,6 +149,10 @@ public Respuesta1(value: any): void {
     }
     else if (value.value == 2) {
     this.Pon1 = 2;
+    this.MethodTotalDp()
+    }
+     else if (value.value == null) {
+    this.Pon1 = 0;
     this.MethodTotalDp()
     }
 }  
@@ -143,12 +170,16 @@ public Respuesta2(value: any): void {
     this.Pon2 = 2;
     this.MethodTotalDp()
     }
+    else if (value.value == null) {
+    this.Pon2 = 0;
+    this.MethodTotalDp()
+    }
 }
 
   public MethodTotalDp(): any {
     this.TotalRacionalidad = this.Pon1  
     this.TotalMir = this.Pon2  
-    this.CalGlob = this.TotalRacionalidad + this.TotalMir;
+    this.CalGlob = this.TotalRacionalidad! + this.TotalMir!;
     this.CalProm = this.CalGlob / 2;
     const ranges = [
       { max: 50, color: '#f50707' },
@@ -158,7 +189,7 @@ public Respuesta2(value: any): void {
     ];
 
     this.TotalRacionalidad = this.Pon1  
-    const range = ranges.find(r => this.TotalRacionalidad <= r.max);
+    const range = ranges.find(r => this.TotalRacionalidad! <= r.max);
     this.updateAppearance(range?.color ?? '#000');
   }
 

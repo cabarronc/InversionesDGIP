@@ -1,4 +1,5 @@
 <section id="sectiondefault">
+  
 
   <ng-template #tooltipProyecto>
     <div class="tooltip-justificado">
@@ -14,7 +15,7 @@
   <div class="col-md-2 mt-2 mb-2">
     <div class="kendo-wrapper">
       <kendo-combobox #sizes [data]="listItems" valueField="id" [valuePrimitive]="false" textField="id"
-        [(value)]="itemSeleccionado" (valueChange)="onProductoChange($event)" placeholder="Proyecto"></kendo-combobox>
+        [(value)]="itemSeleccionado" (valueChange)="onProyChange($event)" placeholder="Proyecto"></kendo-combobox>
     </div>
   </div>
 
@@ -35,9 +36,9 @@
             </div>
             <div class="col-md-1 pe-3">
               @if (itemSeleccionado){
-              <kendo-circulargauge [value]="CalProm || 0" [scale]="{ max: 100 }" [colors]="colors"
+              <kendo-circulargauge [value]="CalProm || 0" [scale]="{ max: 100, rangePlaceholderColor: '#d9d9d9' }" [colors]="getGaugeColors()"
                 style="width: 100px; height: 100px;">
-                <ng-template kendoCircularGaugeCenterTemplate let-value="CalProm" let-color="color">
+                <ng-template kendoCircularGaugeCenterTemplate let-value="CalProm">
                   <strong>
                     <span>
                       <font color="white">{{ CalProm || 0}} % &nbsp;</font>
@@ -135,8 +136,8 @@
                             </span>
                           </div>
                           <div class="col-9">
-                            <kendo-dropdownlist [data]="OpDp4" textField="text" valueField="value"
-                              [value]="valorSeleccionado" [valuePrimitive]="true"
+                            <kendo-dropdownlist [data]="OpDp4.slice(1)" textField="text" valueField="value"
+                              [value]="valorSeleccionado" [valuePrimitive]="true" (valueChange)="valorSeleccionado = $event" [defaultItem]="{ text: 'Selecciona', value: null }"
                               (selectionChange)="Respuesta1($event)">
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
