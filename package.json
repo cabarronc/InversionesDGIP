@@ -43,7 +43,7 @@
     "@progress/kendo-angular-treeview": "18.5.2",
     "@progress/kendo-angular-upload": "^18.5.2",
     "@progress/kendo-drawing": "^1.17.2",
-    "@progress/kendo-licensing": "^1.0.2",
+    "@progress/kendo-licensing": "^1.10.1",
     "@progress/kendo-svg-icons": "^4.0.0",
     "@progress/kendo-theme-bootstrap": "^9.1.0",
     "@progress/kendo-theme-classic": "^12.3.0",
