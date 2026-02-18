@@ -88,6 +88,11 @@ export const routes: Routes = [
         canActivate: [PermissionGuard],
         data: { module: 'claude', action: 'manage' }
       },
+      {path: 'simulador',
+        component: SimuladorComponent,
+        canActivate: [PermissionGuard],
+        data: { module: 'simulador', action: 'manage' }
+      },
       // {
       //   path: 'roles',
       //   component: UserManagementComponent,
