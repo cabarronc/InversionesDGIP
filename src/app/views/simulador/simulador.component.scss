@@ -147,12 +147,30 @@
    border-radius: 15px;
    box-shadow: 5px 10px 18px #888888;
  }
+ .k-badge {
+  z-index: 1 !important;
+}
 .barra {
   position: sticky;
-  top: 68px; /* altura del navbar */
-  z-index: 999; 
+  top: 110px; /* altura del navbar */
+  z-index: 9999; 
   background: #e0e0d5 /* importante para que no se vea transparente */
 }
+
+.barra2 {
+  position: sticky;
+  top: 130px; /* altura del navbar */
+  z-index: 9999; 
+  background: #e0e0d5 /* importante para que no se vea transparente */
+}
+
+.barra3 {
+  position: sticky;
+  top: 60px; /* altura del navbar */
+  z-index: 99; 
+  background: #e0e0d5 /* importante para que no se vea transparente */
+}
+
 
 
 /* Tablet */
@@ -165,6 +183,6 @@
 /* Móvil */
 @media (max-width: 576px) {
   .barra {
-    top: 140px; /* cuando el navbar crece en mobile */
+    top: 140px;
   }
 }

@@ -46,6 +46,8 @@ export class SimuladorComponent implements OnInit {
   Pon7!:number | null;
   public CalProm!: number;
   currentUser: User | null = null;
+  topBarraRacionalidad: number = 110;
+  topBarraImpactoSocial: number = 130;
 
   // listItems = [
   //   { id: 'QA4567', nombre: 'nombre dummy 1', descripcion: 'El Programa consiste en un proceso de formación socioeducativo que va dirigido a la población guanajuatense de 15 años en adelante, con la finalidad de incrementar su desarrollo personal y sus capacidades para visualizarse como un actor de transformación social, mediante un modelo en el que la persona se coloca al centro de su desarrollo, fortaleciendo sus capacidades, habilidades y actitudes, desarrollando la autogestión, integración y compromiso social, reconociendo y respetando la equidad, viviendo en valores en la familia y comunidad, ampliando su visión para mejorar sus oportunidades, y transformando su entorno en comunidad. El programa está estructurado en 4 módulos integrados por un total de 25 sesiones: Módulo 1, Descubriendo quién soy; Módulo 2, Viviendo en comunidad; Módulo 3, Constructores del cambio hacia la felicidad; y Módulo 4, Organizándonos para el nuevo comienzo. Una vez que concluye el proceso de formación, se realizan acciones comunitarias que involucran la participación de las personas que conformaron los grupos, a partir de la detección de problemáticas en su entorno, con el fin de buscar soluciones que beneficien a todas y todos los miembros de la comunidad, contribuyendo a la construcción de una sociedad más justa y equitativa. Para acceder a los servicios del Programa, las personas interesadas deberán presentar su solicitud en el formato establecido. La unidad responsable de la Secretaría conformará los grupos con las personas interesadas, informándoles la programación para el desarrollo de los módulos. Las personas beneficiarias deberán acudir a las sesiones programadas, registrar su asistencia en cada sesión, y cumplir con los entregables de cada módulo, debiendo cumplir con una asistencia mínima del 75% de las sesiones para recibir un reconocimiento de participación.', precio: 1200 },
@@ -90,6 +92,7 @@ getGaugeColors() {
   valorSeleccionado5: number | null = null;
   valorSeleccionado6: number | null = null;
   valorSeleccionado7: number | null = null;
+  valorSeleccionado8: number | null = null;
   
 
   public OpDp4: Array<{ text: string; value: number | null }> = [
@@ -146,6 +149,17 @@ getGaugeColors() {
     { text: "Minima", value: 3 },
   ];
 
+       public OpRP7: Array<{ text: string; value: number | null }> = [
+    { text: "Selecciona", value: null },
+    { text: "Muy alta", value: 0 },
+    { text: "Alta", value: 1 },
+    { text: "Media", value: 2 },
+    { text: "Baja", value: 3 },
+    { text: "Sin", value: 4 },
+  ];
+
+  
+
      public OpIS1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Muy alto", value: 0 },
@@ -199,12 +213,16 @@ getGaugeColors() {
     this.valorSeleccionado4 = null 
     this.valorSeleccionado5 = null 
     this.valorSeleccionado6 = null
+    this.valorSeleccionado7 = null
     this.Pon1 = 0
     this.Pon2 = 0
     this.Pon3 = 0
     this.Pon4 = 0
     this.Pon5 = 0
     this.Pon6 = 0
+    this.Pon7 = 0
+    this.topBarraRacionalidad = 210
+    this.topBarraImpactoSocial = 230
     this.RespuestaRP1(this.Pon1)
     this.RespuestaRP2(this.Pon2)
   }
@@ -397,6 +415,32 @@ public RespuestaRP6(value: any): void {
     this.MethodTotal()
     }
 }
+public RespuestaRP7(value: any): void {
+ if (value.value == 0) {
+    this.Pon7 = 1;
+    this.MethodTotal()
+    }
+    else if (value.value == 1) {
+     this.Pon7 = 0.66;
+     this.MethodTotal()
+    }
+    else if (value.value == 2) {
+    this.Pon7 = 0.4;
+    this.MethodTotal()
+    }
+    else if (value.value == 3) {
+    this.Pon7 = 0.2;
+    this.MethodTotal()
+    }
+    else if (value.value == 4) {
+    this.Pon7 = 0.06;
+    this.MethodTotal()
+    }
+    else if (value.value == null) {
+    this.Pon7 = 0;
+    this.MethodTotal()
+    }
+}
   public MethodTotal(): any {
     const pon1 = this.Pon1 ?? 0
     const pon2 = this.Pon2 ?? 0
@@ -404,7 +448,8 @@ public RespuestaRP6(value: any): void {
     const pon4 = this.Pon4 ?? 0
     const pon5 = this.Pon5 ?? 0
     const pon6 = this.Pon6 ?? 0
-    this.TotalRacionalidad = pon1  + pon2  + pon3 + pon4 + pon5 + pon6
+    const pon7 = this.Pon7 ?? 0
+    this.TotalRacionalidad = pon1  + pon2  + pon3 + pon4 + pon5 + pon6 + pon7
     console.log("calificacion racionalidad",this.TotalRacionalidad)
     this.TotalSocial = 0
     this.TotalEconomico =0
