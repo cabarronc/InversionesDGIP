@@ -1,21 +1,106 @@
 <section id="sectiondefault">
 
+  <div class="row">
+    <div class="col-md-4 mt-2 mb-2">
+      @if (!opened) {
+      <ng-template #tooltipProyecto>
+        <div class="tooltip-justificado">
+          En este apartado en necesario configurar ciertas caracteristicas de un proyecto de inversion de prueba
+        </div>
+      </ng-template>
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
+        <kendo-label [for]="sizes" text="1- Crea y configura tu propio proyecto de inversión"></kendo-label>
+        <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+          <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+        </span>
 
-  <ng-template #tooltipProyecto>
-    <div class="tooltip-justificado">
-      Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
+      </div>
+      <button kendoButton (click)="open()" themeColor="success" class="mt-2">Crear Proyecto</button>
+
+      } @if (dataSaved) {
+      <p>Se a creado con exito!</p>
+      } @if (opened) {
+      <kendo-window title="Por favor llene el formulario" (close)="close()" [minWidth]="250" [width]="450">
+        <form class="k-form">
+          <fieldset>
+            <legend>Creacion de Proyecto</legend>
+            <label class="k-form-field">
+              <span>Primer item</span>
+              <kendo-textbox placeholder="clave"></kendo-textbox>
+            </label>
+            <label class="k-form-field">
+              <span>Segundo item</span>
+              <kendo-textbox placeholder="nombre"></kendo-textbox>
+            </label>
+          </fieldset>
+          <div class="k-actions k-actions-end">
+            <button kendoButton type="button" (click)="close()">Cancelar</button>
+            <button kendoButton themeColor="primary" type="button" (click)="submit()">
+              Crear
+            </button>
+          </div>
+        </form>
+      </kendo-window>
+      }
     </div>
-  </ng-template>
-  <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
-    <kendo-label [for]="sizes" text="1.- Elige un Proyecto de Inversión"></kendo-label>
-    <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-      <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-    </span>
-  </div>
-  <div class="col-md-2 mt-2 mb-2">
-    <div class="kendo-wrapper">
-      <kendo-combobox #sizes [data]="listItems" valueField="idProy" [valuePrimitive]="false" textField="idProy"
-        [(value)]="itemSeleccionado" (valueChange)="onProyChange($event)" placeholder="Proyecto"></kendo-combobox>
+    <div class="col-md-3 mt-2 mb-2">
+      <ng-template #tooltipProyecto>
+        <div class="tooltip-justificado">
+          Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
+        </div>
+      </ng-template>
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
+        <kendo-label [for]="sizes" text="2.- Elige un Proyecto de Inversión" ></kendo-label>
+        <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+          <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+        </span>
+        <kendo-combobox class="mt-2" #sizes [data]="listItems" valueField="idProy" [valuePrimitive]="false" textField="idProy"
+          [(value)]="itemSeleccionado" (valueChange)="onProyChange($event)" placeholder="Proyecto"></kendo-combobox>
+      </div>
+
+
+    </div>
+    <div class="col-md-3 mt-2 mb-2">
+      @if (!opened2) {
+      <ng-template #tooltipProyecto>
+        <div class="tooltip-justificado">
+          En este apartado comparamos mas de 3 proyectos 
+        </div>
+      </ng-template>
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
+        <kendo-label [for]="sizes" text="3.- Comparador"></kendo-label>
+        <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+          <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+        </span>
+
+      </div>
+      <button kendoButton (click)="open2()" themeColor="tertiary" class="mt-2">Comparador</button>
+
+      } @if (dataSaved2) {
+      <p>Comparacion exitosa!!</p>
+      } @if (opened2) {
+      <kendo-window title="Comparador perron" (close)="close2()" [minWidth]="450" [width]="750">
+        <form class="k-form">
+          <fieldset>
+            <legend>Selecciona al menos 2 proyectos</legend>
+            <label class="k-form-field">
+              <span>Primer proyecto</span>
+              <kendo-textbox placeholder="clave"></kendo-textbox>
+            </label>
+            <label class="k-form-field">
+              <span>Segundo proyecto</span>
+              <kendo-textbox placeholder="nombre"></kendo-textbox>
+            </label>
+          </fieldset>
+          <div class="k-actions k-actions-end">
+            <button kendoButton type="button" (click)="close2()">Cancelar</button>
+            <button kendoButton themeColor="primary" type="button" (click)="submit2()">
+              Crear
+            </button>
+          </div>
+        </form>
+      </kendo-window>
+      }
     </div>
   </div>
 
@@ -88,7 +173,7 @@
     </div>
   </div>
   <div class="col-md-12 mt-3 mb-3 barra" [style.top.px]="topBarraRacionalidad">
-    <kendo-label text="Calificacion Racionalidad Pública "  style="font-weight: bold;">
+    <kendo-label text="Calificacion Racionalidad Pública " style="font-weight: bold;">
       &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles" [animation]="animation" style="width: 800px;"
         [value]="TotalRacionalidad||0">
       </kendo-progressbar>
@@ -141,7 +226,7 @@
                           <div class="col-9">
                             <kendo-dropdownlist [data]="OpRP1" textField="text" valueField="value"
                               [value]="valorSeleccionado1" [valuePrimitive]="true"
-                               (valueChange)="valorSeleccionado1 = $event"
+                              (valueChange)="valorSeleccionado1 = $event"
                               [defaultItem]="{ text: 'Selecciona', value: null }"
                               (selectionChange)="RespuestaRP1($event)">
 
@@ -213,8 +298,7 @@
                             <kendo-dropdownlist [data]="OpRP2" textField="text" valueField="value"
                               [valuePrimitive]="true" (selectionChange)="RespuestaRP2($event)"
                               (valueChange)="valorSeleccionado2 = $event"
-                               [defaultItem]="{ text: 'Selecciona', value: null }"
-                              [value]="valorSeleccionado2">
+                              [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado2">
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
                                 <span class="item-content">
@@ -295,8 +379,8 @@
                           </div>
                           <div class="col-9">
                             <kendo-dropdownlist [data]="OpRP3.slice(1)" textField="text" valueField="value"
-                              [value]="valorSeleccionado3" (valueChange)="valorSeleccionado3 = $event" [valuePrimitive]="true"
-                              [defaultItem]="{ text: 'Selecciona', value: null }"
+                              [value]="valorSeleccionado3" (valueChange)="valorSeleccionado3 = $event"
+                              [valuePrimitive]="true" [defaultItem]="{ text: 'Selecciona', value: null }"
                               (selectionChange)="RespuestaRP3($event)">
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
@@ -330,15 +414,16 @@
               <!--========================================= Variable 1.4 Fuente financiamiento" 7 %   ================-->
               <!--====================================================================================================-->
               <div class="col-md-6">
-                <kendo-expansionpanel title="Fuente de financiamiento"
-                  subtitle="Cualidad: Racionalidad Pública(1.4)" [expanded]="true">
+                <kendo-expansionpanel title="Fuente de financiamiento" subtitle="Cualidad: Racionalidad Pública(1.4)"
+                  [expanded]="true">
                   <div class="container-fluid">
                     <p> </p>
                     <section class="row">
                       <div class="col-md-12">
                         <ng-template #tooltipTemplate4>
                           <div class="tooltip-justificado">
-                           Proporcion del total del presupuesto corresponde a fuentes de financiamiento etiquetadas(destino específico) o libre disposición
+                            Proporcion del total del presupuesto corresponde a fuentes de financiamiento
+                            etiquetadas(destino específico) o libre disposición
 
                           </div>
                         </ng-template>
@@ -363,9 +448,9 @@
                           <div class="col-9">
 
                             <kendo-dropdownlist #sizes [data]="OpRP4.slice(1)" textField="text" valueField="value"
-                              [valuePrimitive]="true" (selectionChange)="RespuestaRP4($event)"(valueChange)="valorSeleccionado4 = $event"
-                              [defaultItem]="{ text: 'Selecciona', value: null }"
-                              [value]="valorSeleccionado4">
+                              [valuePrimitive]="true" (selectionChange)="RespuestaRP4($event)"
+                              (valueChange)="valorSeleccionado4 = $event"
+                              [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado4">
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
                                 <span class="item-content">
@@ -428,7 +513,7 @@
                         </ng-template>
                         <div kendoTooltip [tooltipTemplate]="tooltipTemplate5" filter=".info-icon">
                           <kendo-label style="font-weight: bold;">
-                            5.- Proporcion Inversión Productiva 
+                            5.- Proporcion Inversión Productiva
                           </kendo-label>
 
                           <span class="info-icon" style="cursor: pointer; display: inline-flex;">
@@ -477,9 +562,9 @@
                   </div>
                 </kendo-expansionpanel>
               </div>
-                <!--=====================================================================================================-->
-                <!--=================================== Variable 1.6 Cobertura de la población objetivo 6 % ============-->
-                <!--=====================================================================================================-->
+              <!--=====================================================================================================-->
+              <!--=================================== Variable 1.6 Cobertura de la población objetivo 6 % ============-->
+              <!--=====================================================================================================-->
               <div class="col-md-6">
                 <kendo-expansionpanel title=" Cobertura de la población objetivo"
                   subtitle="Cualidad: Racionalidad Pública(1.6)" [expanded]="true">
@@ -489,7 +574,7 @@
                       <div class="col-md-12">
                         <ng-template #tooltipTemplate6>
                           <div class="tooltip-justificado">
-                           Proporción de los beneficiarios directos respecto a la población onbjetivo
+                            Proporción de los beneficiarios directos respecto a la población onbjetivo
                           </div>
                         </ng-template>
 
@@ -514,8 +599,7 @@
 
                             <kendo-dropdownlist #sizes [data]="OpRP6" textField="text" valueField="value"
                               [valuePrimitive]="true" (selectionChange)="RespuestaRP6($event)"
-                              (valueChange)="valorSeleccionado6 = $event"
-                              [value]="valorSeleccionado6">
+                              (valueChange)="valorSeleccionado6 = $event" [value]="valorSeleccionado6">
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
                                 <span class="item-content">
@@ -561,9 +645,9 @@
               </div>
             </div>
             <div class="row mt-3 mb-2">
-               <!--=====================================================================================================-->
-                <!--=================================== Variable 1.7 Concurrencia 1 % ============-->
-                <!--=====================================================================================================-->
+              <!--=====================================================================================================-->
+              <!--=================================== Variable 1.7 Concurrencia 1 % ============-->
+              <!--=====================================================================================================-->
               <div class="col-md-6">
                 <kendo-expansionpanel title="Concurrencia" subtitle="Cualidad: Racionalidad Pública(1.7)"
                   [expanded]="true">
@@ -648,7 +732,7 @@
     <!-- ================================= Seccion 2  Impacto Social ======================== -->
     <!-- ============================================================================================================= -->
     <br>
-    <div class="col-md-12 mt-3 mb-3 barra2"  [style.top.px]="topBarraRacionalidad">
+    <div class="col-md-12 mt-3 mb-3 barra2" [style.top.px]="topBarraRacionalidad">
       <kendo-label text="Calificacion Impacto Social " style="font-weight: bold;">
         &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles" [animation]="animation" style="width: 800px;"
           [value]="TotalSocial||0">
@@ -661,22 +745,31 @@
           <kendo-card width="auto" style="padding: 1rem; align-content: center;">
             <div class="row mt-3 mb-2">
               <div class="col-md-6">
-                <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
+                <kendo-expansionpanel title="Atención rezago social" subtitle="Cualidad: Impacto Social(2.1)"
                   [expanded]="true">
                   <div class="container-fluid">
                     <p> </p>
                     <section class="row">
                       <div class="col-md-12">
-                        <ng-template #tooltipTemplate>
+                        <ng-template #tooltipTemplate8>
                           <div class="tooltip-justificado">
-                            Proporción del presupuesto de los proyectos que corresponde a partidas no sustantivas,
-                            según la naturaleza y propósito de sus entregables
+                            <ul>
+                              <li>La distribución territorial del presupuesto incluye de manera específica a uno
+                                o más municipios con grado de rezago social medio (Atarjea, Tierra Blanca y Xichú)</li>
+                              <li>La distribución territorial del presupuesto incluye de manera específica a uno o
+                                más municipios con grado de rezago social bajo (24 municipios) pero no con grado de
+                                rezago social medio
+                              </li>
+                              <li>
+                                La distribución territorial del presupuesto no incluye de manera específica a alguno de
+                                los municipios anteriores
+                              </li>
+                            </ul>
                           </div>
                         </ng-template>
-                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate8" filter=".info-icon">
                           <kendo-label style="font-weight: bold;">
-                            1.- Proporción del presupuesto en
-                            partidas no sustantivas
+                            1.- Atención a municipios con rezago social
                           </kendo-label>
 
                           <span class="info-icon" style="cursor: pointer; display: inline-flex;">
@@ -692,9 +785,9 @@
                             </span>
                           </div>
                           <div class="col-9">
-                            <kendo-dropdownlist [data]="OpDp4.slice(1)" textField="text" valueField="value"
-                              [value]="valorSeleccionado" [valuePrimitive]="true"
-                              (valueChange)="valorSeleccionado = $event"
+                            <kendo-dropdownlist [data]="OpIS1.slice(1)" textField="text" valueField="value"
+                              [value]="valorSeleccionado8" [valuePrimitive]="true"
+                              (valueChange)="valorSeleccionado8 = $event"
                               [defaultItem]="{ text: 'Selecciona', value: null }"
                               (selectionChange)="Respuesta1($event)">
 

@@ -10,6 +10,8 @@ import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
 import { KENDO_PROGRESSBARS } from "@progress/kendo-angular-progressbar";
 import { KENDO_INPUTS } from "@progress/kendo-angular-inputs";
 import { KENDO_INDICATORS } from "@progress/kendo-angular-indicators";
+import { KENDO_DIALOGS } from "@progress/kendo-angular-dialog";
+
 
 import { KENDO_DROPDOWNS } from "@progress/kendo-angular-dropdowns";
 import { FormsModule } from '@angular/forms';
@@ -24,7 +26,7 @@ import { PocketbaseService } from '../../services/pocketbase.service';
 @Component({
   selector: 'app-simulador',
   standalone: true,
-  imports: [KENDO_ICONS, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT, KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule],
+  imports: [KENDO_ICONS, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT, KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule,KENDO_DIALOGS],
   templateUrl: './simulador.component.html',
   styleUrl: './simulador.component.scss'
 })
@@ -44,11 +46,44 @@ export class SimuladorComponent implements OnInit {
   Pon5!:number | null;
   Pon6!:number | null;
   Pon7!:number | null;
+  Pon8!:number | null;
   public CalProm!: number;
   currentUser: User | null = null;
   topBarraRacionalidad: number = 110;
   topBarraImpactoSocial: number = 130;
 
+
+  public opened = false;
+  public dataSaved = false;
+
+  public close(): void {
+    this.opened = false;
+  }
+
+  public open(): void {
+    this.opened = true;
+  }
+
+  public submit(): void {
+    this.dataSaved = true;
+    this.close();
+  }
+
+   public opened2 = false;
+  public dataSaved2 = false;
+
+  public close2(): void {
+    this.opened2 = false;
+  }
+
+  public open2(): void {
+    this.opened2 = true;
+  }
+
+  public submit2(): void {
+    this.dataSaved2 = true;
+    this.close2();
+  }
   // listItems = [
   //   { id: 'QA4567', nombre: 'nombre dummy 1', descripcion: 'El Programa consiste en un proceso de formación socioeducativo que va dirigido a la población guanajuatense de 15 años en adelante, con la finalidad de incrementar su desarrollo personal y sus capacidades para visualizarse como un actor de transformación social, mediante un modelo en el que la persona se coloca al centro de su desarrollo, fortaleciendo sus capacidades, habilidades y actitudes, desarrollando la autogestión, integración y compromiso social, reconociendo y respetando la equidad, viviendo en valores en la familia y comunidad, ampliando su visión para mejorar sus oportunidades, y transformando su entorno en comunidad. El programa está estructurado en 4 módulos integrados por un total de 25 sesiones: Módulo 1, Descubriendo quién soy; Módulo 2, Viviendo en comunidad; Módulo 3, Constructores del cambio hacia la felicidad; y Módulo 4, Organizándonos para el nuevo comienzo. Una vez que concluye el proceso de formación, se realizan acciones comunitarias que involucran la participación de las personas que conformaron los grupos, a partir de la detección de problemáticas en su entorno, con el fin de buscar soluciones que beneficien a todas y todos los miembros de la comunidad, contribuyendo a la construcción de una sociedad más justa y equitativa. Para acceder a los servicios del Programa, las personas interesadas deberán presentar su solicitud en el formato establecido. La unidad responsable de la Secretaría conformará los grupos con las personas interesadas, informándoles la programación para el desarrollo de los módulos. Las personas beneficiarias deberán acudir a las sesiones programadas, registrar su asistencia en cada sesión, y cumplir con los entregables de cada módulo, debiendo cumplir con una asistencia mínima del 75% de las sesiones para recibir un reconocimiento de participación.', precio: 1200 },
   //   { id: 'QX4567', nombre: 'nombre dummy 2', descripcion: 'Descripcion 2', precio: 25 },
@@ -393,28 +428,7 @@ public RespuestaRP5(value: any): void {
     this.MethodTotal()
     }
 }
-public RespuestaRP6(value: any): void {
- if (value.value == 0) {
-    this.Pon6 = 6;
-    this.MethodTotal()
-    }
-    else if (value.value == 1) {
-     this.Pon6 = 3.6;
-     this.MethodTotal()
-    }
-    else if (value.value == 2) {
-    this.Pon6 = 1.8;
-    this.MethodTotal()
-    }
-    else if (value.value == 3) {
-    this.Pon6 = 0.6;
-    this.MethodTotal()
-    }
-    else if (value.value == null) {
-    this.Pon6 = 0;
-    this.MethodTotal()
-    }
-}
+
 public RespuestaRP7(value: any): void {
  if (value.value == 0) {
     this.Pon7 = 1;
@@ -438,6 +452,47 @@ public RespuestaRP7(value: any): void {
     }
     else if (value.value == null) {
     this.Pon7 = 0;
+    this.MethodTotal()
+    }
+}
+public RespuestaIS1(value: any): void {
+ if (value.value == 0) {
+    this.Pon8 = 8.5;
+    this.MethodTotal()
+    }
+    else if (value.value == 1) {
+     this.Pon8 = 4.25;
+     this.MethodTotal()
+    }
+    else if (value.value == 2) {
+    this.Pon8 = 1.41;
+    this.MethodTotal()
+    }
+    else if (value.value == null) {
+    this.Pon8 = 0;
+    this.MethodTotal()
+    }
+}
+///////Impacto Social
+public RespuestaRP6(value: any): void {
+ if (value.value == 0) {
+    this.Pon6 = 6;
+    this.MethodTotal()
+    }
+    else if (value.value == 1) {
+     this.Pon6 = 3.6;
+     this.MethodTotal()
+    }
+    else if (value.value == 2) {
+    this.Pon6 = 1.8;
+    this.MethodTotal()
+    }
+    else if (value.value == 3) {
+    this.Pon6 = 0.6;
+    this.MethodTotal()
+    }
+    else if (value.value == null) {
+    this.Pon6 = 0;
     this.MethodTotal()
     }
 }

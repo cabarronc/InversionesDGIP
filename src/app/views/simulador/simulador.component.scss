@@ -153,14 +153,14 @@
 .barra {
   position: sticky;
   top: 110px; /* altura del navbar */
-  z-index: 9999; 
+  z-index: 99; 
   background: #e0e0d5 /* importante para que no se vea transparente */
 }
 
 .barra2 {
   position: sticky;
   top: 130px; /* altura del navbar */
-  z-index: 9999; 
+  z-index: 100; 
   background: #e0e0d5 /* importante para que no se vea transparente */
 }
 
@@ -171,8 +171,12 @@
   background: #e0e0d5 /* importante para que no se vea transparente */
 }
 
-
-
+.k-tooltip {
+  z-index: 20000 !important;
+}
+.k-animation-container {
+  z-index: 20000 !important;
+}
 /* Tablet */
 @media (max-width: 992px) {
   .barra {
