@@ -1,5 +1,5 @@
 <section id="sectiondefault">
-  
+
 
   <ng-template #tooltipProyecto>
     <div class="tooltip-justificado">
@@ -14,7 +14,7 @@
   </div>
   <div class="col-md-2 mt-2 mb-2">
     <div class="kendo-wrapper">
-      <kendo-combobox #sizes [data]="listItems" valueField="id" [valuePrimitive]="false" textField="id"
+      <kendo-combobox #sizes [data]="listItems" valueField="idProy" [valuePrimitive]="false" textField="idProy"
         [(value)]="itemSeleccionado" (valueChange)="onProyChange($event)" placeholder="Proyecto"></kendo-combobox>
     </div>
   </div>
@@ -30,14 +30,14 @@
             <div class="col-12 col-md-9">
               @if (itemSeleccionado) {
               <div class="texto"> Nombre: <strong>{{itemSeleccionado.nombre}}</strong></div>
-              <div class="texto">Monto:<strong> $ {{ itemSeleccionado.precio }}</strong></div>
+              <div class="texto">Monto:<strong> $ {{ itemSeleccionado.montoAsignado | number:'1.2-2' }}</strong></div>
               }
 
             </div>
             <div class="col-md-1 pe-3">
               @if (itemSeleccionado){
-              <kendo-circulargauge [value]="CalProm || 0" [scale]="{ max: 100, rangePlaceholderColor: '#d9d9d9' }" [colors]="getGaugeColors()"
-                style="width: 100px; height: 100px;">
+              <kendo-circulargauge [value]="CalProm || 0" [scale]="{ max: 100, rangePlaceholderColor: '#d9d9d9' }"
+                [colors]="getGaugeColors()" style="width: 100px; height: 100px;">
                 <ng-template kendoCircularGaugeCenterTemplate let-value="CalProm">
                   <strong>
                     <span>
@@ -46,7 +46,7 @@
                   </strong>
                   <br>
                   <span>
-                    <font color="white">{{itemSeleccionado.id}} </font>
+                    <font color="white">{{itemSeleccionado.idProy}} </font>
                   </span>
                 </ng-template>
               </kendo-circulargauge>
@@ -87,23 +87,483 @@
       </span>
     </div>
   </div>
-  <div class="col-md-9 mt-3 mb-3">
-    <kendo-label text="Calificacion Racionalidad Pública " style="font-weight: bold;">
+  <div class="col-md-12 mt-3 mb-3 barra">
+    <kendo-label text="Calificacion Racionalidad Pública "  style="font-weight: bold;">
       &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles" [animation]="animation" style="width: 800px;"
         [value]="TotalRacionalidad||0">
       </kendo-progressbar>
     </kendo-label>
   </div>
+   <div class="col-3 mt-3 mb-3 barra">
+
+   </div>
   <div class="col-md-11">
+    <!-- ============================================================================================================= -->
+    <!-- ================================= Seccion 1  Racionalodad Publica 62 % ======================== -->
+    <!-- ============================================================================================================= -->
     <kendo-panelbar>
-      <kendo-panelbar-item class="k-item2" [svgIcon]="icons.infoSolidIcon" title="Racionalidad Pública"
+      <kendo-panelbar-item class="k-item2" [svgIcon]="icons.buildingsOutlineIcon" title="Racionalidad Pública"
         [expanded]="true">
         <ng-template kendoPanelBarContent>
           <kendo-card width="auto" style="padding: 1rem; align-content: center;">
-            <!-- ============================================================================================================ -->
-            <!--==========================================Seccion Racionalidad Pública========================================== -->
-            <!-- ============================================================================================================ -->
-            <div class="row mt-3 mb-3">
+            <div class="row mt-3 mb-2">
+              <!-- ============================================================================================================-->
+              <!--========================================== Variable 1.1 Gasto administracion 19% ================================-->
+              <!-- ============================================================================================================-->
+              <div class="col-md-6">
+                <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
+                  [expanded]="true">
+                  <div class="container-fluid">
+                    <p> </p>
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate>
+                          <div class="tooltip-justificado">
+                            Proporción del presupuesto de los proyectos que corresponde a partidas no sustantivas,
+                            según la naturaleza y propósito de sus entregables
+                          </div>
+                        </ng-template>
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            1.- Proporción del presupuesto en
+                            partidas no sustantivas
+                          </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
+                        </div>
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <span>
+                              <kendo-badge-container>
+                                <kendo-badge themeColor="success">Alto</kendo-badge>
+                              </kendo-badge-container>
+                            </span>
+                          </div>
+                          <div class="col-9">
+                            <kendo-dropdownlist [data]="OpRP1" textField="text" valueField="value"
+                              [value]="valorSeleccionado1" [valuePrimitive]="true"
+                               (valueChange)="valorSeleccionado1 = $event"
+                              [defaultItem]="{ text: 'Selecciona', value: null }"
+                              (selectionChange)="RespuestaRP1($event)">
+
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                            </kendo-dropdownlist>
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon1){
+                              <kendo-chip label="{{ Pon1 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </kendo-expansionpanel>
+              </div>
+              <!--==========================================================================================================-->
+              <!--========================================= Variable 1.2 Grado de preparación técnica 13 %  ================-->
+              <!--==========================================================================================================-->
+              <div class="col-md-6">
+                <kendo-expansionpanel title="Grado de preparación técnica"
+                  subtitle="Cualidad: Racionalidad Pública(1.2)" [expanded]="true">
+                  <div class="container-fluid">
+                    <p> </p>
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate2>
+                          <div class="tooltip-justificado">
+                            Estado de los proyectos según los elementos conceptuales y técnicos de preparación
+                            con los que cuentan, en relación con los requeridos para su adecuada ejecución;
+                            se determina conforme al promedio de la calificación técnica de las iniciativas
+                            de inversión en el Banco Integrado de Proyectos.
+                          </div>
+                        </ng-template>
+
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate2" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            2.- Estado de los proyectos según los elementos conceptuales y técnicos de preparación
+                          </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
+                        </div>
+
+
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <kendo-badge-container>
+                              <kendo-badge themeColor="success">Alto</kendo-badge>
+                            </kendo-badge-container>
+                          </div>
+                          <div class="col-9">
+
+                            <kendo-dropdownlist [data]="OpRP2" textField="text" valueField="value"
+                              [valuePrimitive]="true" (selectionChange)="RespuestaRP2($event)"
+                              (valueChange)="valorSeleccionado2 = $event"
+                               [defaultItem]="{ text: 'Selecciona', value: null }"
+                              [value]="valorSeleccionado2">
+
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span class="item-content">
+                                  <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span> -->
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                <span class="item-content">
+                                  <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span> -->
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+
+                            </kendo-dropdownlist>
+
+
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon2){
+                              <kendo-chip label="{{ Pon2 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+
+                            </span>
+                          </div>
+                        </div>
+
+
+                      </div>
+
+                    </section>
+                  </div>
+                </kendo-expansionpanel>
+              </div>
+            </div>
+            <div class="row mt-3 mb-2">
+              <!--====================================================================================================-->
+              <!--========================================= Variable 1.3 Desempeño historico" 10 %     ===============-->
+              <!--====================================================================================================-->
+              <div class="col-md-6">
+                <kendo-expansionpanel title="Desempeño histórico" subtitle="Cualidad: Racionalidad Pública(1.3)"
+                  [expanded]="true">
+                  <div class="container-fluid">
+                    <p> </p>
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate3>
+                          <div class="tooltip-justificado">
+                            Ponderacion Multianual del Avance financiero (pagado entre el modificado) y fisico
+                            (cumplimiento de metas) del proyecto
+                          </div>
+                        </ng-template>
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate3" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            3.- Indicador de desempeño
+                          </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
+                        </div>
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <span>
+                              <kendo-badge-container>
+                                <kendo-badge themeColor="success">Alto</kendo-badge>
+                              </kendo-badge-container>
+                            </span>
+                          </div>
+                          <div class="col-9">
+                            <kendo-dropdownlist [data]="OpRP3.slice(1)" textField="text" valueField="value"
+                              [value]="valorSeleccionado3" (valueChange)="valorSeleccionado3 = $event" [valuePrimitive]="true"
+                              [defaultItem]="{ text: 'Selecciona', value: null }"
+                              (selectionChange)="RespuestaRP3($event)">
+
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                            </kendo-dropdownlist>
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon3){
+                              <kendo-chip label="{{ Pon3 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </kendo-expansionpanel>
+              </div>
+              <!--====================================================================================================-->
+              <!--========================================= Variable 1.4 Fuente financiamiento" 7 %   ================-->
+              <!--====================================================================================================-->
+              <div class="col-md-6">
+                <kendo-expansionpanel title="Fuente de financiamiento"
+                  subtitle="Cualidad: Racionalidad Pública(1.4)" [expanded]="true">
+                  <div class="container-fluid">
+                    <p> </p>
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate4>
+                          <div class="tooltip-justificado">
+                           Proporcion del total del presupuesto corresponde a fuentes de financiamiento etiquetadas(destino específico) o libre disposición
+
+                          </div>
+                        </ng-template>
+
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate4" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            4.- Fuente financiamiento
+                          </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
+                        </div>
+
+
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <kendo-badge-container>
+                              <kendo-badge themeColor="warning">Medio</kendo-badge>
+                            </kendo-badge-container>
+                          </div>
+                          <div class="col-9">
+
+                            <kendo-dropdownlist #sizes [data]="OpRP4.slice(1)" textField="text" valueField="value"
+                              [valuePrimitive]="true" (selectionChange)="RespuestaRP4($event)"(valueChange)="valorSeleccionado4 = $event"
+                              [defaultItem]="{ text: 'Selecciona', value: null }"
+                              [value]="valorSeleccionado4">
+
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span class="item-content">
+                                  <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span> -->
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                <span class="item-content">
+                                  <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span> -->
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+
+                            </kendo-dropdownlist>
+
+
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon4){
+                              <kendo-chip label="{{ Pon4 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+
+                            </span>
+                          </div>
+                        </div>
+
+
+                      </div>
+
+                    </section>
+                  </div>
+                </kendo-expansionpanel>
+              </div>
+            </div>
+            <div class="row mt-3 mb-2">
+              <!--====================================================================================================-->
+              <!--========================================= Variable 1.5 Inversion productiva 6 %   ================-->
+              <!--====================================================================================================-->
+              <div class="col-md-6">
+                <kendo-expansionpanel title="Inversión poroductiva" subtitle="Cualidad: Racionalidad Pública(1.6)"
+                  [expanded]="true">
+                  <div class="container-fluid">
+                    <p> </p>
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate5>
+                          <div class="tooltip-justificado">
+                            Proporción del presupuesto en inversión pública productiva
+                          </div>
+                        </ng-template>
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate5" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            5.- Proporcion Inversión Productiva 
+                          </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
+                        </div>
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <span>
+                              <kendo-badge-container>
+                                <kendo-badge themeColor="warning">Medio</kendo-badge>
+                              </kendo-badge-container>
+                            </span>
+                          </div>
+                          <div class="col-9">
+                            <kendo-dropdownlist [data]="OpRP5.slice(1)" textField="text" valueField="value"
+                              [value]="valorSeleccionado5" [valuePrimitive]="true"
+                              (valueChange)="valorSeleccionado5 = $event"
+                              [defaultItem]="{ text: 'Selecciona', value: null }"
+                              (selectionChange)="RespuestaRP5($event)">
+
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                            </kendo-dropdownlist>
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon5){
+                              <kendo-chip label="{{ Pon5 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </kendo-expansionpanel>
+              </div>
+                <!--=====================================================================================================-->
+                <!--=================================== Variable 1.6 Cobertura de la población objetivo 6 % ============-->
+                <!--=====================================================================================================-->
+              <div class="col-md-6">
+                <kendo-expansionpanel title=" Cobertura de la población objetivo"
+                  subtitle="Cualidad: Racionalidad Pública(1.6)" [expanded]="true">
+                  <div class="container-fluid">
+                    <p> </p>
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate6>
+                          <div class="tooltip-justificado">
+                           Proporción de los beneficiarios directos respecto a la población onbjetivo
+                          </div>
+                        </ng-template>
+
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate6" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            6.- Proporcion de los beneficiarios directos
+                          </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
+                        </div>
+
+
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <kendo-badge-container>
+                              <kendo-badge themeColor="error">Bajo</kendo-badge>
+                            </kendo-badge-container>
+                          </div>
+                          <div class="col-9">
+
+                            <kendo-dropdownlist #sizes [data]="OpRP6" textField="text" valueField="value"
+                              [valuePrimitive]="true" (selectionChange)="RespuestaRP6($event)"
+                              (valueChange)="valorSeleccionado6 = $event"
+                              [value]="valorSeleccionado6">
+
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span class="item-content">
+                                  <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span> -->
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                <span class="item-content">
+                                  <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span> -->
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+
+                            </kendo-dropdownlist>
+
+
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon6){
+                              <kendo-chip label="{{ Pon6 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+
+                            </span>
+                          </div>
+                        </div>
+
+
+                      </div>
+
+                    </section>
+                  </div>
+                </kendo-expansionpanel>
+              </div>
+            </div>
+            <div class="row mt-3 mb-2">
               <div class="col-md-6">
                 <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
                   [expanded]="true">
@@ -137,7 +597,107 @@
                           </div>
                           <div class="col-9">
                             <kendo-dropdownlist [data]="OpDp4.slice(1)" textField="text" valueField="value"
-                              [value]="valorSeleccionado" [valuePrimitive]="true" (valueChange)="valorSeleccionado = $event" [defaultItem]="{ text: 'Selecciona', value: null }"
+                              [value]="valorSeleccionado" [valuePrimitive]="true"
+                              (valueChange)="valorSeleccionado = $event"
+                              [defaultItem]="{ text: 'Selecciona', value: null }"
+                              (selectionChange)="Respuesta1($event)">
+
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span class="item-content">
+                                  <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span> -->
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                <span class="item-content">
+                                  <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span> -->
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                            </kendo-dropdownlist>
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon1){
+                              <kendo-chip label="{{ Pon1 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </kendo-expansionpanel>
+              </div>
+            </div>
+
+
+
+          </kendo-card>
+        </ng-template>
+      </kendo-panelbar-item>
+    </kendo-panelbar>
+
+    <!-- ============================================================================================================= -->
+    <!-- ================================= Seccion 2  Impacto Social ======================== -->
+    <!-- ============================================================================================================= -->
+    <br>
+    <div class="col-md-9 mt-3 mb-3">
+      <kendo-label text="Calificacion Impacto Social " style="font-weight: bold;">
+        &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles" [animation]="animation" style="width: 800px;"
+          [value]="TotalSocial||0">
+        </kendo-progressbar>
+      </kendo-label>
+    </div>
+    <kendo-panelbar>
+      <kendo-panelbar-item class="k-item2" [svgIcon]="icons.accessibilityIcon" title="Impacto Social" [expanded]="true">
+        <ng-template kendoPanelBarContent>
+          <kendo-card width="auto" style="padding: 1rem; align-content: center;">
+            <div class="row mt-3 mb-2">
+              <div class="col-md-6">
+                <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
+                  [expanded]="true">
+                  <div class="container-fluid">
+                    <p> </p>
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate>
+                          <div class="tooltip-justificado">
+                            Proporción del presupuesto de los proyectos que corresponde a partidas no sustantivas,
+                            según la naturaleza y propósito de sus entregables
+                          </div>
+                        </ng-template>
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            1.- Proporción del presupuesto en
+                            partidas no sustantivas
+                          </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
+                        </div>
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <span>
+                              <kendo-badge-container>
+                                <kendo-badge themeColor="success">Bajo</kendo-badge>
+                              </kendo-badge-container>
+                            </span>
+                          </div>
+                          <div class="col-9">
+                            <kendo-dropdownlist [data]="OpDp4.slice(1)" textField="text" valueField="value"
+                              [value]="valorSeleccionado" [valuePrimitive]="true"
+                              (valueChange)="valorSeleccionado = $event"
+                              [defaultItem]="{ text: 'Selecciona', value: null }"
                               (selectionChange)="Respuesta1($event)">
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
@@ -248,2256 +808,395 @@
                 </kendo-expansionpanel>
               </div>
             </div>
-            <!-- ============================================================================================================= -->
-            <!-- ================================= Seccion 3.4 Identificación/Definición del problema ======================== -->
-            <!-- ============================================================================================================= -->
-            <kendo-panelbar>
-              <kendo-panelbar-item [svgIcon]="icons.infoSolidIcon" title="Identificación/Definición del problema"
-                [expanded]="true">
-                <ng-template kendoPanelBarContent>
+            <div class="row mt-3 mb-2">
+              <div class="col-md-6">
+                <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
+                  [expanded]="true">
                   <div class="container-fluid">
                     <p> </p>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <!--  ////////////////////////////////////// 6 Dp  ////////////////////////////////////////// -->
-
-
-                        <div class="col-lg-12 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-
-                          <kendo-label class="k-radio-label" style="font-weight: bold;">6.-¿El DP explica
-                            claramente el problema que se pretende atender?
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate>
+                          <div class="tooltip-justificado">
+                            Proporción del presupuesto de los proyectos que corresponde a partidas no sustantivas,
+                            según la naturaleza y propósito de sus entregables
+                          </div>
+                        </ng-template>
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            1.- Proporción del presupuesto en
+                            partidas no sustantivas
                           </kendo-label>
 
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
                         </div>
-                        <div class="row pt-lg-3">
-                          <div class="col-md-3">
-                            <kendo-badge-container>
-                              <kendo-badge themeColor="error" [cutoutBorder]="true">Alto</kendo-badge>
-                            </kendo-badge-container>
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <span>
+                              <kendo-badge-container>
+                                <kendo-badge themeColor="success">Bajo</kendo-badge>
+                              </kendo-badge-container>
+                            </span>
                           </div>
-                          <div class="col-md-6">
-                            <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                              textField="text" valueField="value" [valuePrimitive]="true" #Dp6 required>
+                          <div class="col-9">
+                            <kendo-dropdownlist [data]="OpDp4.slice(1)" textField="text" valueField="value"
+                              [value]="valorSeleccionado" [valuePrimitive]="true"
+                              (valueChange)="valorSeleccionado = $event"
+                              [defaultItem]="{ text: 'Selecciona', value: null }"
+                              (selectionChange)="Respuesta1($event)">
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
-
-                                @switch (dataItem?.value) {
-                                @case (null) {
-
-                                <span class="templatenull">{{ dataItem?.value }}</span>
-                                &nbsp;&nbsp;{{ dataItem?.text }}
-
-                                }
-                                @case (9) {
-
-                                <span class="template9">{{ dataItem?.value }}</span>
-                                &nbsp;&nbsp;{{ dataItem?.text }}
-
-                                }
-                                @case (6) {
-
-                                <span class="template6">{{ dataItem?.value }}</span>
-                                &nbsp;&nbsp;{{ dataItem?.text }}
-
-                                }
-                                @case (3) {
-
-                                <span class="template3">{{ dataItem?.value }}</span>
-                                &nbsp;&nbsp;{{ dataItem?.text }}
-
-                                }
-                                @default {
-
-                                {{ dataItem?.text }}
-
-                                }
-                                }
-
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
                               </ng-template>
                               <ng-template kendoDropDownListValueTemplate let-dataItem>
-
-                                @switch (dataItem?.value) {
-                                @case (null) {
-
-                                <span class="templatenull">{{ dataItem?.value }}</span>
-                                &nbsp;&nbsp;{{ dataItem?.text }}
-
-                                }
-                                @case (9) {
-
-                                <span class="template9">{{ dataItem?.value }}</span>
-                                &nbsp;&nbsp;{{ dataItem?.text }}
-
-                                }
-                                @case (6) {
-
-                                <span class="template6">{{ dataItem?.value }}</span>
-                                &nbsp;&nbsp;{{ dataItem?.text }}
-
-                                }
-                                @case (3) {
-
-                                <span class="template3">{{ dataItem?.value }}</span>
-                                &nbsp;&nbsp;{{ dataItem?.text }}
-
-                                }
-                                @default {
-
-                                {{ dataItem?.text }}
-
-                                }
-                                }
-
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
                               </ng-template>
-
                             </kendo-dropdownlist>
                           </div>
-                          <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                          </div>
-                          <div class="row pt-lg-3">
+                          <div class="col-1">
+                            <span>
+                              @if(Pon1){
+                              <kendo-chip label="{{ Pon1 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+                            </span>
                           </div>
                         </div>
-                        <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                        <p> </p>
-                        <!-- 6Dp Especifica &nbsp; -->
-
-                        <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon"></button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">6 DP RE</kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <p> </p>
-                        <!-- ----------------6Dp Generica &nbsp; --------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp6" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon" [disabled]="false">Respuesta Generica</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">6 DP Generica
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <!--------------------- 6Dp Ponderacion -------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="PonDp6" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" suffix-clear-button fillMode="clear" [disabled]="false"
-                              [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-
-                        <kendo-formhint style="font-weight: normal;" align="start">6 DP Ponderacion
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-
-                        <p> </p>
-
-                        <!-- ////////////////////////////////////////7 Dp ///////////////////////////////////////////// -->
-
-
-                        <div class="col-lg-10 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                          <kendo-label class="k-radio-label" style="font-weight: bold;">7.- ¿Las causas se
-                            encuentran documentadas cualitativa y cuantitativamente de tal forma
-                            que se identifica su relación con el problema? &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                          </kendo-label>
-                        </div>
-                        <div class="row pt-lg-3">
-                          <div class="col-md-3">
-                            <kendo-badge-container>
-                              <kendo-badge themeColor="error" [cutoutBorder]="true">Alto</kendo-badge>
-                            </kendo-badge-container>
-                          </div>
-                          <div class="col-md-6">
-                            <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                              textField="text" valueField="value" [valuePrimitive]="true" #Dp7 required>
-
-                              <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                @switch (dataItem?.value) {
-                                @case (null) {
-                                <div>
-                                  <span class="templatenull">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (9) {
-                                <div>
-                                  <span class="template9">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (6) {
-                                <div>
-                                  <span class="template6">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (3) {
-                                <div>
-                                  <span class="template3">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @default {
-                                <div>
-                                  {{ dataItem?.text }}
-                                </div>
-                                }
-                                }
-                              </ng-template>
-                              <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                @switch (dataItem?.value) {
-                                @case (null) {
-                                <div>
-                                  <span class="templatenull">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (9) {
-                                <div>
-                                  <span class="template9">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (6) {
-                                <div>
-                                  <span class="template6">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (3) {
-                                <div>
-                                  <span class="template3">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @default {
-                                <div>
-                                  {{ dataItem?.text }}
-                                </div>
-                                }
-                                }
-                              </ng-template>
-
-                            </kendo-dropdownlist>
-                          </div>
-                          <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                          </div>
-                          <div class="row pt-lg-3">
-                          </div>
-
-                        </div>
-                        <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                        <p> </p>
-                        <!-- 7Dp Especifica &nbsp; -->
-
-                        <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon"></button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">7 DP RE</kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <p> </p>
-                        <!-- ----------------7Dp Generica &nbsp; --------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp7" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton [disabled]="false" type="button" class="suffix-clear-button"
-                              fillMode="clear" [svgIcon]="icons.infoSolidIcon">Respuesta Generica</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">7 DP Generica
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <!--------------------- 7Dp Ponderacion -------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="PonDp5" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon" [disabled]="false">Ponderacion</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">7 DP Ponderacion
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-
-                        <p> </p>
-
                       </div>
-                      <div class="col-md-6">
-                        <!-- ////////////////////////////////////////////// 8 Dp ///////////////////////////////////////////// -->
-
-
-                        <div class="col-lg-12 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                          <kendo-label class="k-radio-label" style="font-weight: bold;">8.- ¿El árbol de
-                            problemas expresa correctamente las relaciones
-                            causales?
-                          </kendo-label>
-                        </div>
-                        <div class="row pt-lg-3">
-                          <div class="col-md-3">
-                            <kendo-badge-container>
-                              <kendo-badge themeColor="error" [cutoutBorder]="true">Alto</kendo-badge>
-                            </kendo-badge-container>
-                          </div>
-                          <div class="col-md-6">
-                            <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                              textField="text" valueField="value" [valuePrimitive]="true" #Dp8 required>
-
-                              >
-                              <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                @switch (dataItem?.value) {
-                                @case (null) {
-                                <div>
-                                  <span class="templatenull">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (9) {
-                                <div>
-                                  <span class="template9">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (6) {
-                                <div>
-                                  <span class="template6">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (3) {
-                                <div>
-                                  <span class="template3">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @default {
-                                <div>
-                                  {{ dataItem?.text }}
-                                </div>
-                                }
-                                }
-                              </ng-template>
-                              <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                @switch (dataItem?.value) {
-                                @case (null) {
-                                <div>
-                                  <span class="templatenull">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (9) {
-                                <div>
-                                  <span class="template9">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (6) {
-                                <div>
-                                  <span class="template6">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (3) {
-                                <div>
-                                  <span class="template3">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @default {
-                                <div>
-                                  {{ dataItem?.text }}
-                                </div>
-                                }
-                                }
-                              </ng-template>
-                            </kendo-dropdownlist>
-                          </div>
-                          <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                          </div>
-                          <div class="row pt-lg-3">
-                          </div>
-                        </div>
-
-
-                        <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                        <p> </p>
-                        <!-- 8Dp Especifica &nbsp; -->
-
-                        <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon"></button>
-
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">8 DP RE</kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <p> </p>
-                        <!-- ----------------8Dp Generica &nbsp; --------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp8" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon">Respuesta
-                              Generica</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">8 DP Generica
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <!--------------------- 8Dp Ponderacion -------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="PonDp8" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">8 DP Ponderacion
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-
-                        <p> </p>
-                      </div>
-                    </div>
+                    </section>
                   </div>
-                </ng-template>
-              </kendo-panelbar-item>
-            </kendo-panelbar>
-
-            <!-- ====================================================================================================== -->
-            <!-- =========================Seccion 3.5  Análisis del Problema/Evolución ================================ -->
-            <!-- ====================================================================================================== -->
-            <kendo-panelbar>
-              <kendo-panelbar-item [svgIcon]="icons.infoSolidIcon" title="Análisis del Problema/Evolución"
-                [expanded]="true">
-                <ng-template kendoPanelBarContent>
+                </kendo-expansionpanel>
+              </div>
+              <div class="col-md-6">
+                <!--=====================================================================================================-->
+                <!--=============== Seccion 1.2 Racionalidad Pública title="02 Grado de preparación técnica"============-->
+                <!--=====================================================================================================-->
+                <kendo-expansionpanel title="Grado de preparación técnica"
+                  subtitle="Cualidad: Racionalidad Pública(1.2)" [expanded]="true">
                   <div class="container-fluid">
                     <p> </p>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <!-- ////////////////////////////////////////// 9 Dp  /////////////////////////////////////////// -->
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate>
+                          <div class="tooltip-justificado">
+                            Estado de los proyectos según los elementos conceptuales y técnicos de preparación
+                            con los que cuentan, en relación con los requeridos para su adecuada ejecución;
+                            se determina conforme al promedio de la calificación técnica de las iniciativas
+                            de inversión en el Banco Integrado de Proyectos.
+                          </div>
+                        </ng-template>
 
-
-                        <div class="col-lg-11 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                          <kendo-label class="k-radio-label" style="font-weight: bold;">9.- ¿Se cuenta con
-                            información histórica del problema que permita visualizar
-                            cómo ha cambiado la problemática en el
-                            tiempo?&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            2.- Estado de los proyectos según los elementos conceptuales y técnicos de preparación
                           </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
                         </div>
-                        <div class="row pt-lg-3">
-                          <div class="col-md-3">
+
+
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
                             <kendo-badge-container>
-                              <kendo-badge themeColor="warning" [cutoutBorder]="true">Medio</kendo-badge>
+                              <kendo-badge themeColor="success">Bajo</kendo-badge>
                             </kendo-badge-container>
                           </div>
-                          <div class="col-md-6">
-                            <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                              textField="text" valueField="value" [valuePrimitive]="true" adaptiveMode="auto" #Dp9
-                              required>
+                          <div class="col-9">
+
+                            <kendo-dropdownlist #sizes [data]="OpDp4" textField="text" valueField="value"
+                              [valuePrimitive]="true" (selectionChange)="Respuesta2($event)"
+                              [value]="valorSeleccionado">
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                @switch (dataItem?.value) {
-                                @case (null) {
-                                <div>
-                                  <span class="templatenull">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (9) {
-                                <div>
-                                  <span class="template9">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (6) {
-                                <div>
-                                  <span class="template6">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (3) {
-                                <div>
-                                  <span class="template3">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @default {
-                                <div>
-                                  {{ dataItem?.text }}
-                                </div>
-                                }
-                                }
+                                <span class="item-content">
+                                  <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span>
                               </ng-template>
                               <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                @switch (dataItem?.value) {
-                                @case (null) {
-                                <div>
-                                  <span class="templatenull">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (9) {
-                                <div>
-                                  <span class="template9">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (6) {
-                                <div>
-                                  <span class="template6">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (3) {
-                                <div>
-                                  <span class="template3">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @default {
-                                <div>
-                                  {{ dataItem?.text }}
-                                </div>
-                                }
-                                }
+                                <span class="item-content">
+                                  <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span>
                               </ng-template>
+
                             </kendo-dropdownlist>
+
+
                           </div>
-                          <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                          </div>
-                          <div class="row pt-lg-3">
-                          </div>
-                        </div>
-                        <kendo-formerror>Error: Campo requerido </kendo-formerror>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon2){
+                              <kendo-chip label="{{ Pon2 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
 
-                        <p> </p>
-                        <!-- 9Dp Especifica &nbsp; -->
-
-                        <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon"></button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">9 DP RE
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <p> </p>
-                        <!-- ----------------9Dp Generica &nbsp; --------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp9" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon">Respuesta
-                              Generica</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">9 DP Generica
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <!--------------------- 9Dp Ponderacion -------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="PonDp9" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">9 DP Ponderacion
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <p> </p>
-                        <!-- //////////////////////////////// 10 DP //////////////////////////////////////7  -->
-
-
-                        <div class="col-lg-11 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                          <kendo-label class="k-radio-label" style="font-weight: bold;">10.- ¿El DP
-                            describe
-                            y
-                            cuantifica la situación actual del
-                            problema?
-                          </kendo-label>
-                        </div>
-                        <div class="row pt-lg-3">
-                          <div class="col-md-3">
-                            <kendo-badge-container>
-                              <kendo-badge themeColor="error" [cutoutBorder]="true">Alto</kendo-badge>
-                            </kendo-badge-container>
-                          </div>
-                          <div class="col-md-6">
-                            <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                              textField="text" valueField="value" [valuePrimitive]="true" #Dp10 required>
-
-
-                              <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                @switch (dataItem?.value) {
-                                @case (null) {
-                                <div>
-                                  <span class="templatenull">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (9) {
-                                <div>
-                                  <span class="template9">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (6) {
-                                <div>
-                                  <span class="template6">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (3) {
-                                <div>
-                                  <span class="template3">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @default {
-                                <div>
-                                  {{ dataItem?.text }}
-                                </div>
-                                }
-                                }
-                              </ng-template>
-                              <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                @switch (dataItem?.value) {
-                                @case (null) {
-                                <div>
-                                  <span class="templatenull">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (9) {
-                                <div>
-                                  <span class="template9">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (6) {
-                                <div>
-                                  <span class="template6">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (3) {
-                                <div>
-                                  <span class="template3">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @default {
-                                <div>
-                                  {{ dataItem?.text }}
-                                </div>
-                                }
-                                }
-                              </ng-template>
-                            </kendo-dropdownlist>
-                          </div>
-                          <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                          </div>
-                          <div class="row pt-lg-3">
+                            </span>
                           </div>
                         </div>
-                        <kendo-formerror>Error: Campo requerido </kendo-formerror>
 
-                        <p> </p>
-                        <!-- 10Dp Especifica &nbsp; -->
 
-                        <kendo-textarea style="font-weight: normal;" fill="outline" resizable="auto" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon"></button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">10 DP RE
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <p> </p>
-                        <!-- ----------------10Dp Generica &nbsp; --------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp10" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon">Respuesta
-                              Generica</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">10 DP Generica
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <!--------------------- 10Dp Ponderacion -------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="PonDp10" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">10 DP Ponderacion
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <p> </p>
                       </div>
-                      <div class="col-md-6">
-                        <!-- //////////////////////////////////////// 11 DP //////////////////////////////////////// -->
 
-
-                        <div class="col-lg-12 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                          <kendo-label class="k-radio-label" style="font-weight: bold;">11.- ¿Se cuenta
-                            con al
-                            menos dos niveles de causas?
-                          </kendo-label>
-                        </div>
-                        <div class="row pt-lg-3">
-                          <div class="col-md-3">
-                            <kendo-badge-container>
-                              <kendo-badge themeColor="warning" [cutoutBorder]="true">Medio</kendo-badge>
-                            </kendo-badge-container>
-                          </div>
-                          <div class="col-md-6">
-                            <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                              textField="text" valueField="value" [valuePrimitive]="true" #Dp11 required>
-
-
-                              <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                @switch (dataItem?.value) {
-                                @case (null) {
-                                <div>
-                                  <span class="templatenull">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (9) {
-                                <div>
-                                  <span class="template9">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (6) {
-                                <div>
-                                  <span class="template6">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (3) {
-                                <div>
-                                  <span class="template3">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @default {
-                                <div>
-                                  {{ dataItem?.text }}
-                                </div>
-                                }
-                                }
-                              </ng-template>
-                              <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                @switch (dataItem?.value) {
-                                @case (null) {
-                                <div>
-                                  <span class="templatenull">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (9) {
-                                <div>
-                                  <span class="template9">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (6) {
-                                <div>
-                                  <span class="template6">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @case (3) {
-                                <div>
-                                  <span class="template3">{{ dataItem?.value }}</span>
-                                  &nbsp;&nbsp;{{ dataItem?.text }}
-                                </div>
-                                }
-                                @default {
-                                <div>
-                                  {{ dataItem?.text }}
-                                </div>
-                                }
-                                }
-                              </ng-template>
-                            </kendo-dropdownlist>
-                          </div>
-                          <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                          </div>
-                          <div class="row pt-lg-3">
-                          </div>
-                        </div>
-
-                        <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                        <p> </p>
-                        <!-- 11Dp Especifica &nbsp; -->
-
-                        <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon"></button>
-
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">11 DP RE
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <p> </p>
-                        <!-- ----------------11Dp Generica &nbsp; --------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp11" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon">Respuesta
-                              Generica</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">11 DP Generica
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <!--------------------- 11Dp Ponderacion -------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="PonDp10" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">11 DP Ponderacion
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-
-                        <p> </p>
-                        <!--//////////////////////////////////////////////// 12 DP ////////////////////////////////////////////-->
-
-
-                        <div class="col-lg-12 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                          <kendo-label class="k-radio-label" style="font-weight: bold;">12.- ¿Cuantas
-                            causas
-                            se presentan en el árbol de problemas?
-                          </kendo-label>
-                        </div>
-                        <div class="row pt-lg-3">
-                          <div class="col-md-3">
-                            <kendo-badge-container>
-                              <kendo-badge themeColor="warning" [cutoutBorder]="true">Medio</kendo-badge>
-                            </kendo-badge-container>
-                          </div>
-                          <div class="col-md-6">
-                            <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                              textField="text" valueField="value" [valuePrimitive]="true" #Dp12 required>
-
-
-                              <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                <div class="item-container">
-                                  @switch (dataItem?.value) {
-                                  @case (null) {
-                                  <div>
-                                    <span class="templatenull">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (9) {
-                                  <div>
-                                    <span class="template9">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (6) {
-                                  <div>
-                                    <span class="template6">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (3) {
-                                  <div>
-                                    <span class="template3">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @default {
-                                  <div>
-                                    {{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  }
-                                </div>
-                              </ng-template>
-                              <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                <div class="item-container">
-                                  @switch (dataItem?.value) {
-                                  @case (null) {
-                                  <div>
-                                    <span class="templatenull">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (9) {
-                                  <div>
-                                    <span class="template9">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (6) {
-                                  <div>
-                                    <span class="template6">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (3) {
-                                  <div>
-                                    <span class="template3">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @default {
-                                  <div>
-                                    {{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  }
-                                </div>
-                              </ng-template>
-                            </kendo-dropdownlist>
-                          </div>
-                          <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                          </div>
-                          <div class="row pt-lg-3">
-                          </div>
-                        </div>
-                        <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                        <p> </p>
-                        <!-- 12Dp Especifica &nbsp; -->
-
-                        <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon"></button>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon">Sin
-                              recomendaciones</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">12 DP RE
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <p> </p>
-                        <!-- ----------------12Dp Generica &nbsp; --------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp12" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon">Respuesta
-                              Generica</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">12 DP Generica
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <!--------------------- 12Dp Ponderacion -------->
-
-                        <kendo-textarea [readonly]="true" resizable="auto" name="PonDp12" flow="horizontal">
-                          <kendo-textarea-suffix>
-                            <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                              [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                          </kendo-textarea-suffix>
-                        </kendo-textarea>
-                        <kendo-formhint style="font-weight: normal;" align="start">12 DP Ponderacion
-                        </kendo-formhint>
-                        <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                        <p> </p>
-                      </div>
-                    </div>
+                    </section>
                   </div>
-                </ng-template>
-              </kendo-panelbar-item>
-            </kendo-panelbar>
-            <!--=============================================================================================================-->
-            <!--================================== Seccion 3.6  Análisis de Corresponsabilidad ==============================-->
-            <!--=============================================================================================================-->
-            <div class="row">
-              <div class="col-md-6">
-                <kendo-panelbar>
-                  <kendo-panelbar-item [svgIcon]="icons.infoSolidIcon" title="Análisis de Corresponsabilidad"
-                    [expanded]="true">
-                    <ng-template kendoPanelBarContent>
-
-
-                      <div class="container-fluid">
-                        <div class="row">
-                          <div class="col-md-12">
-                            <!--//////////////////////////////////////// 13 DP /////////////////////////////////////////////////-->
-
-
-                            <div class="col-lg-12 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                              <kendo-label class="k-radio-label" style="font-weight: bold;">13.- ¿El DP cuenta
-                                con
-                                una lógica correcta entre las relaciones causas-medios y efectos-fines de los
-                                dos
-                                árboles?
-                              </kendo-label>
-                            </div>
-                            <div class="row pt-lg-3">
-                              <div class="col-md-3">
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="warning" [cutoutBorder]="true">Medio</kendo-badge>
-                                </kendo-badge-container>
-                              </div>
-                              <div class="col-md-6">
-                                <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                                  textField="text" valueField="value" [valuePrimitive]="true" #Dp13 required>
-
-
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                              </div>
-                              <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                              </div>
-                              <div class="row pt-lg-3">
-                              </div>
-                            </div>
-                            <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                            <p> </p>
-                            <!-- 13Dp Especifica &nbsp; -->
-
-                            <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon"></button>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Sin
-                                  recomendaciones</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">13 DP RE
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                            <!-- ----------------13Dp Generica &nbsp; --------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp13" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Respuesta
-                                  Generica</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">13 DP Generica
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <!--------------------- 13Dp Ponderacion -------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="PonDp13" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">13 DP Ponderacion
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                          </div>
-                          <div class="col-md-12">
-                            <!--///////////////////////////// 14 DP ///////////////////////// -->
-
-
-                            <div class="col-lg-11 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                              <kendo-label class="k-radio-label" style="font-weight: bold;">14.- ¿El DP
-                                presenta
-                                un
-                                análisis de alternativas, donde se selecciona la mejor medida de intervención
-                                gubernamental? (De acuerdo a las atribuciones normativas,
-                                factibilidad técnica, económica y ambiental, así como aquella que resulte
-                                pertinente, eficiente y eficaz)
-                              </kendo-label>
-                            </div>
-                            <div class="row pt-lg-3">
-                              <div class="col-md-3">
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="warning" [cutoutBorder]="true">Medio</kendo-badge>
-                                </kendo-badge-container>
-                              </div>
-                              <div class="col-md-6">
-                                <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                                  textField="text" valueField="value" [valuePrimitive]="true" #Dp14 required>
-
-
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                              </div>
-                              <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                              </div>
-                              <div class="row pt-lg-3">
-                              </div>
-                            </div>
-                            <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                            <p> </p>
-                            <!-- 14Dp Especifica &nbsp; -->
-
-                            <kendo-textarea style="font-weight: normal;" flow="horizontal" resizable="auto">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon"></button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">14 DP RE
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                            <!-- ----------------14Dp Generica &nbsp; --------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp14" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Respuesta
-                                  Generica</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">10 DP Generica
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <!--------------------- 14Dp Ponderacion -------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="PonDp14" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">10 DP Ponderacion
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                          </div>
-                        </div>
-                      </div>
-                    </ng-template>
-                  </kendo-panelbar-item>
-                </kendo-panelbar>
-              </div>
-              <div class="col-md-6">
-                <!--==================================================================================-->
-                <!--==================== Seccion 3.7 Estructura analítica del programa ===============-->
-                <!--==================================================================================-->
-                <kendo-panelbar>
-                  <kendo-panelbar-item [svgIcon]="icons.infoSolidIcon" title="Estructura analítica del programa"
-                    [expanded]="true">
-                    <ng-template kendoPanelBarContent>
-                      <div class="container-fluid">
-                        <!--////////////////////////////////// 15 DP //////////////////////////////////-->
-                        <div class="row">
-                          <div class="col-md-12">
-
-
-                            <div class="col-lg-12 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                              <kendo-label class="k-radio-label" style="font-weight: bold;">15.- ¿El DP
-                                presenta
-                                la
-                                estructura analítica del programa, incluyendo los
-                                objetivos que serán parte de la intervención de gobierno?
-                              </kendo-label>
-                            </div>
-                            <div class="row pt-lg-3">
-                              <div class="col-md-3">
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="warning" [cutoutBorder]="true">Medio</kendo-badge>
-                                </kendo-badge-container>
-                              </div>
-                              <div class="col-md-6">
-                                <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                                  textField="text" valueField="value" [valuePrimitive]="true" #Dp15 required>
-
-
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                              </div>
-                              <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                              </div>
-                              <div class="row pt-lg-3">
-                              </div>
-                            </div>
-                            <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                            <p> </p>
-                            <!-- 15Dp Especifica &nbsp; -->
-
-                            <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon"></button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">15 DP RE
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                            <!-- ----------------15Dp Generica &nbsp; --------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp15" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Respuesta
-                                  Generica</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">15 DP Generica
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <!--------------------- 15Dp Ponderacion -------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="PonDp15" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">15 DP Ponderacion
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                          </div>
-                        </div>
-                      </div>
-                    </ng-template>
-                  </kendo-panelbar-item>
-                </kendo-panelbar>
+                </kendo-expansionpanel>
               </div>
             </div>
-            <div class="row">
-              <div class="col-sm-6">
-                <!--========================================================================================== -->
-                <!--=======================Seccion 3.8 Justificación de los objetivos de la intervención====== -->
-                <!--========================================================================================== -->
-                <kendo-panelbar>
-                  <kendo-panelbar-item [svgIcon]="icons.infoSolidIcon"
-                    title="Justificación de los objetivos de la intervención" [expanded]="true">
-                    <ng-template kendoPanelBarContent>
-                      <div class="container-fluid">
-                        <!-- /////////////////////////////////////// 16 DP /////////////////////////////////// -->
-                        <div class="row">
-                          <div class="col-sm-12">
-
-
-                            <div class="col-lg-12 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                              <kendo-label class="k-radio-label" style="font-weight: bold;">16.- ¿Se
-                                justifican
-                                cualitativa y cuantitativamente las
-                                intervenciones para solucionar la problemática?
-                              </kendo-label>
-                            </div>
-                            <div class="row pt-lg-3">
-                              <div class="col-md-3">
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="warning" [cutoutBorder]="true">Medio</kendo-badge>
-                                </kendo-badge-container>
-                              </div>
-                              <div class="col-md-6">
-                                <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                                  textField="text" valueField="value" [valuePrimitive]="true" #Dp16 required>
-
-
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                              </div>
-                              <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                              </div>
-                              <div class="row pt-lg-3">
-                              </div>
-                            </div>
-
-
-                            <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                            <p> </p>
-                            <!-- 16Dp Especifica &nbsp; -->
-
-                            <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon"></button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">16 DP RE
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                            <!-- ----------------16Dp Generica &nbsp; --------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp16" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Respuesta
-                                  Generica</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">16 DP Generica
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <!--------------------- 16Dp Ponderacion -------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="PonDp16" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">16 DP Ponderacion
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                          </div>
-                        </div>
-                      </div>
-                    </ng-template>
-                  </kendo-panelbar-item>
-                </kendo-panelbar>
-              </div>
+            <div class="row mt-3 mb-2">
               <div class="col-md-6">
-                <!-- ===================================================================================================-->
-                <!-- ======================================== Seccion 3.9 Cobertura del programa =======================-->
-                <!-- ===================================================================================================-->
-
-                <kendo-panelbar>
-                  <kendo-panelbar-item [svgIcon]="icons.infoSolidIcon" title="Cobertura del programa" [expanded]="true">
-                    <ng-template kendoPanelBarContent>
-                      <div class="container-fluid">
-                        <!--//////////////////////////////// 17 DP /////////////////////////////// -->
-                        <div class="col-md-12">
-
-
-                          <div class="col-lg-12 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                            <kendo-label class="k-radio-label" style="font-weight: bold;">17.- ¿Se presenta la
-                              identificación y cuantificación de la población de acuerdo al
-                              tipo de intervención? (Tabla en guía DxP)
-                            </kendo-label>
+                <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
+                  [expanded]="true">
+                  <div class="container-fluid">
+                    <p> </p>
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate>
+                          <div class="tooltip-justificado">
+                            Proporción del presupuesto de los proyectos que corresponde a partidas no sustantivas,
+                            según la naturaleza y propósito de sus entregables
                           </div>
-                          <div class="row pt-lg-3">
-                            <div class="col-md-3">
+                        </ng-template>
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            1.- Proporción del presupuesto en
+                            partidas no sustantivas
+                          </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
+                        </div>
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <span>
                               <kendo-badge-container>
-                                <kendo-badge themeColor="error" [cutoutBorder]="true">Alto</kendo-badge>
+                                <kendo-badge themeColor="success">Bajo</kendo-badge>
                               </kendo-badge-container>
-                            </div>
-                            <div class="col-md-6">
-                              <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                                textField="text" valueField="value" [valuePrimitive]="true" #Dp17 required>
-                                <ng-template kendoDropDownListPrefixTemplate>
-                                  <button title="" kendoButton fillMode="clear"
-                                    [svgIcon]="icons.infoSolidIcon"></button>
-                                  <kendo-textbox-separator></kendo-textbox-separator>
-                                </ng-template>
-
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  @switch (dataItem?.value) {
-                                  @case (null) {
-                                  <div>
-                                    <span class="templatenull">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (9) {
-                                  <div>
-                                    <span class="template9">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (6) {
-                                  <div>
-                                    <span class="template6">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (3) {
-                                  <div>
-                                    <span class="template3">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @default {
-                                  <div>
-                                    {{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  }
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  @switch (dataItem?.value) {
-                                  @case (null) {
-                                  <div>
-                                    <span class="templatenull">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (9) {
-                                  <div>
-                                    <span class="template9">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (6) {
-                                  <div>
-                                    <span class="template6">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (3) {
-                                  <div>
-                                    <span class="template3">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @default {
-                                  <div>
-                                    {{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  }
-                                </ng-template>
-                              </kendo-dropdownlist>
-                            </div>
-                            <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                            </div>
-                            <div class="row pt-lg-3">
-                            </div>
+                            </span>
                           </div>
-                          <kendo-formerror>Error: Campo requerido </kendo-formerror>
+                          <div class="col-9">
+                            <kendo-dropdownlist [data]="OpDp4.slice(1)" textField="text" valueField="value"
+                              [value]="valorSeleccionado" [valuePrimitive]="true"
+                              (valueChange)="valorSeleccionado = $event"
+                              [defaultItem]="{ text: 'Selecciona', value: null }"
+                              (selectionChange)="Respuesta1($event)">
 
-                          <p> </p>
-                          <!-- 17Dp Especifica &nbsp; -->
-
-                          <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                            <kendo-textarea-suffix>
-                              <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                [svgIcon]="icons.infoSolidIcon"></button>
-                            </kendo-textarea-suffix>
-                          </kendo-textarea>
-                          <kendo-formhint style="font-weight: normal;" align="start">17 DP RE</kendo-formhint>
-                          <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                          <p> </p>
-                          <!-- ----------------17Dp Generica &nbsp; --------->
-
-                          <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp17" flow="horizontal">
-                            <kendo-textarea-suffix>
-                              <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                [svgIcon]="icons.infoSolidIcon">Respuesta
-                                Generica</button>
-                            </kendo-textarea-suffix>
-                          </kendo-textarea>
-                          <kendo-formhint style="font-weight: normal;" align="start">17 DP Generica
-                          </kendo-formhint>
-                          <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                          <!--------------------- 17Dp Ponderacion -------->
-
-                          <kendo-textarea [readonly]="true" resizable="auto" name="PonDp17" flow="horizontal">
-                            <kendo-textarea-suffix>
-                              <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                                [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                            </kendo-textarea-suffix>
-                          </kendo-textarea>
-                          <kendo-formhint style="font-weight: normal;" align="start">17 DP Ponderacion
-                          </kendo-formhint>
-                          <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                          <p> </p>
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                            </kendo-dropdownlist>
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon1){
+                              <kendo-chip label="{{ Pon1 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+                            </span>
+                          </div>
                         </div>
                       </div>
-                    </ng-template>
-                  </kendo-panelbar-item>
-                </kendo-panelbar>
+                    </section>
+                  </div>
+                </kendo-expansionpanel>
               </div>
+
             </div>
-            <div class="row">
-              <div class="col-md-4">
-                <!-- ================================================================================ -->
-                <!-- =============== Seccion 3.10 Relación con otros Programas presupuestarios ====== -->
-                <!-- ================================================================================ -->
-                <kendo-panelbar>
-                  <kendo-panelbar-item [svgIcon]="icons.infoSolidIcon"
-                    title="Relación con otros Programas presupuestarios" [expanded]="true">
-                    <ng-template kendoPanelBarContent>
-                      <div class="container-fluid">
-                        <!--//////////////////////////////////////// 18 DP ////////////////////////////-->
-                        <div class="row">
-                          <div class="col-md-12">
-
-
-                            <div class="col-lg-12 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                              <kendo-label class="k-radio-label" style="font-weight: bold;">18.-¿Se
-                                identifican
-                                programas complementarios?
-                              </kendo-label>
-                            </div>
-                            <div class="row pt-lg-3">
-                              <div class="col-md-3">
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="success" [cutoutBorder]="true">Bajo</kendo-badge>
-                                </kendo-badge-container>
-                              </div>
-                              <div class="col-md-6">
-                                <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                                  textField="text" valueField="value" [valuePrimitive]="true" #Dp18 required>
-
-
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                              </div>
-                              <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                              </div>
-                              <div class="row pt-lg-3">
-                              </div>
-                            </div>
-                            <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                            <p> </p>
-                            <!-- 18Dp Especifica &nbsp; -->
-
-                            <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon"></button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">18 DP RE
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                            <!-- ----------------18Dp Generica &nbsp; --------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp18" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Respuesta
-                                  Generica</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">18 DP Generica
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <!--------------------- 18Dp Ponderacion -------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="PonDp18" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">18 DP Ponderacion
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                          </div>
-                        </div>
-                      </div>
-                    </ng-template>
-                  </kendo-panelbar-item>
-                </kendo-panelbar>
-              </div>
-              <div class="col-md-4">
-                <!-- ==================================================================================== -->
-                <!-- ======================= Seccion 3.11 Padrón de beneficiarios ======================= -->
-                <!-- ==================================================================================== -->
-                <kendo-panelbar>
-                  <kendo-panelbar-item [svgIcon]="icons.infoSolidIcon" title="Padrón de beneficiarios"
-                    [expanded]="true">
-                    <ng-template kendoPanelBarContent>
-                      <div class="container-fluid">
-                        <!-- /////////////////////////////////// 19 DP //////////////////////////////////-->
-                        <div class="row">
-                          <div class="col-md-12">
-
-
-                            <div class="col-lg-12 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                              <kendo-label class="k-radio-label" style="font-weight: bold;">19.-¿Se identifica
-                                el
-                                tipo de beneficiario y elementos que se requieren para la construcción del
-                                padrón?
-                              </kendo-label>
-                            </div>
-                            <div class="row pt-lg-3">
-                              <div class="col-md-3">
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="success" [cutoutBorder]="true">Bajo</kendo-badge>
-                                </kendo-badge-container>
-                              </div>
-                              <div class="col-md-6">
-                                <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                                  textField="text" valueField="value" [valuePrimitive]="true" #Dp19 required>
-
-
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    @switch (dataItem?.value) {
-                                    @case (null) {
-                                    <div>
-                                      <span class="templatenull">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (9) {
-                                    <div>
-                                      <span class="template9">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (6) {
-                                    <div>
-                                      <span class="template6">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @case (3) {
-                                    <div>
-                                      <span class="template3">{{ dataItem?.value }}</span>
-                                      &nbsp;&nbsp;{{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    @default {
-                                    <div>
-                                      {{ dataItem?.text }}
-                                    </div>
-                                    }
-                                    }
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                              </div>
-                              <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                              </div>
-                              <div class="row pt-lg-3">
-                              </div>
-                            </div>
-                            <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                            <p> </p>
-                            <!-- 19Dp Especifica &nbsp; -->
-
-                            <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon"></button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">19 DP RE
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                            <!-- ----------------19Dp Generica &nbsp; --------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp19" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Respuesta
-                                  Generica</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">19 DP Generica
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <!--------------------- 19Dp Ponderacion -------->
-
-                            <kendo-textarea [readonly]="true" resizable="auto" name="PonDp19" flow="horizontal">
-                              <kendo-textarea-suffix>
-                                <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                                  [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                              </kendo-textarea-suffix>
-                            </kendo-textarea>
-                            <kendo-formhint style="font-weight: normal;" align="start">19 DP Ponderacion
-                            </kendo-formhint>
-                            <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                            <p> </p>
-                          </div>
-                        </div>
-                      </div>
-                    </ng-template>
-                  </kendo-panelbar-item>
-                </kendo-panelbar>
-              </div>
-
-
-              <div class="col-md-4">
-                <!-- ==============================================================================================-->
-                <!-- ===================================== Seccion 3.12 MIR =======================================-->
-                <!-- ==============================================================================================-->
-                <kendo-panelbar>
-                  <kendo-panelbar-item [svgIcon]="icons.infoSolidIcon" title="MIR" [expanded]="true">
-                    <ng-template kendoPanelBarContent>
-                      <div class="container-fluid">
-                        <!-- ///////////////////////////////// 20 DP ////////////////////////////////////////////// -->
-                        <div class="col-md-12">
-
-
-
-                          <div class="col-lg-12 d-flex flex-column" style="padding-top: 0.5rem; margin-left: 1rem;">
-                            <kendo-label class="k-radio-label" style="font-weight: bold;">20.-¿Se presenta
-                              MIR
-                              que
-                              cumpla con la estructura de 4X4?
-                            </kendo-label>
-                          </div>
-                          <div class="row pt-lg-3">
-                            <div class="col-md-3">
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="success" [cutoutBorder]="true">Bajo</kendo-badge>
-                              </kendo-badge-container>
-                            </div>
-                            <div class="col-md-6">
-                              <kendo-dropdownlist #dropdownlist2 style="font-weight: normal;" [data]="OpDp4"
-                                textField="text" valueField="value" [valuePrimitive]="true" #Dp20 required>
-                                <ng-template kendoDropDownListPrefixTemplate>
-                                  <button title="" kendoButton fillMode="clear"
-                                    [svgIcon]="icons.infoSolidIcon"></button>
-                                  <kendo-textbox-separator></kendo-textbox-separator>
-                                </ng-template>
-
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  @switch (dataItem?.value) {
-                                  @case (null) {
-                                  <div>
-                                    <span class="templatenull">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (9) {
-                                  <div>
-                                    <span class="template9">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (6) {
-                                  <div>
-                                    <span class="template6">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (3) {
-                                  <div>
-                                    <span class="template3">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @default {
-                                  <div>
-                                    {{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  }
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  @switch (dataItem?.value) {
-                                  @case (null) {
-                                  <div>
-                                    <span class="templatenull">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (9) {
-                                  <div>
-                                    <span class="template9">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (6) {
-                                  <div>
-                                    <span class="template6">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @case (3) {
-                                  <div>
-                                    <span class="template3">{{ dataItem?.value }}</span>
-                                    &nbsp;&nbsp;{{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  @default {
-                                  <div>
-                                    {{ dataItem?.text }}
-                                  </div>
-                                  }
-                                  }
-                                </ng-template>
-                              </kendo-dropdownlist>
-                            </div>
-                            <div class="col-md-1 d-flex flex-column" style="padding-top: 1rem; margin-left: 1rem;">
-                            </div>
-                            <div class="row pt-lg-3">
-                            </div>
-                          </div>
-                          <kendo-formerror>Error: Campo requerido </kendo-formerror>
-
-                          <p> </p>
-                          <!-- 20Dp Especifica &nbsp; -->
-
-                          <kendo-textarea style="font-weight: normal;" resizable="auto" flow="horizontal">
-                            <kendo-textarea-suffix>
-                              <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                [svgIcon]="icons.infoSolidIcon"></button>
-                            </kendo-textarea-suffix>
-                          </kendo-textarea>
-                          <kendo-formhint style="font-weight: normal;" align="start">20 DP RE
-                          </kendo-formhint>
-                          <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                          <p> </p>
-                          <!-- ----------------20Dp Generica &nbsp; --------->
-
-                          <kendo-textarea [readonly]="true" resizable="auto" name="CalfDp20" flow="horizontal">
-                            <kendo-textarea-suffix>
-                              <button kendoButton type="button" class="suffix-clear-button" fillMode="clear"
-                                [svgIcon]="icons.infoSolidIcon">Respuesta
-                                Generica</button>
-                            </kendo-textarea-suffix>
-                          </kendo-textarea>
-                          <kendo-formhint style="font-weight: normal;" align="start">20 DP Generica
-                          </kendo-formhint>
-                          <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                          <!--------------------- 20Dp Ponderacion -------->
-
-                          <kendo-textarea [readonly]="true" resizable="auto" name="PonDp20" flow="horizontal">
-                            <kendo-textarea-suffix>
-                              <button kendoButton type="button" suffix-clear-button fillMode="clear"
-                                [svgIcon]="icons.infoSolidIcon">Ponderacion</button>
-                            </kendo-textarea-suffix>
-                          </kendo-textarea>
-                          <kendo-formhint style="font-weight: normal;" align="start">20 DP Ponderacion
-                          </kendo-formhint>
-                          <kendo-formerror>Error: es requerido</kendo-formerror>
-
-                          <p> </p>
-                        </div>
-                      </div>
-                    </ng-template>
-                  </kendo-panelbar-item>
-                </kendo-panelbar>
-              </div>
-            </div>
-
 
           </kendo-card>
         </ng-template>
       </kendo-panelbar-item>
     </kendo-panelbar>
+
+    <!-- ============================================================================================================= -->
+    <!-- ================================= Seccion 3  Impacto Economico ======================== -->
+    <!-- ============================================================================================================= -->
+    <div class="col-md-9 mt-3 mb-3">
+      <kendo-label text="Calificacion Impacto Ecónomico " style="font-weight: bold;">
+        &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles" [animation]="animation" style="width: 800px;"
+          [value]="TotalEconomico||0">
+        </kendo-progressbar>
+      </kendo-label>
+    </div>
+    <br>
+    <kendo-panelbar>
+      <kendo-panelbar-item class="k-item2" [svgIcon]="icons.dollarIcon" title="Impacto Economico" [expanded]="true">
+        <ng-template kendoPanelBarContent>
+          <kendo-card width="auto" style="padding: 1rem; align-content: center;">
+            <div class="row mt-3 mb-2">
+              <div class="col-md-6">
+                <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
+                  [expanded]="true">
+                  <div class="container-fluid">
+                    <p> </p>
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate>
+                          <div class="tooltip-justificado">
+                            Proporción del presupuesto de los proyectos que corresponde a partidas no sustantivas,
+                            según la naturaleza y propósito de sus entregables
+                          </div>
+                        </ng-template>
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            1.- Proporción del presupuesto en
+                            partidas no sustantivas
+                          </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
+                        </div>
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <span>
+                              <kendo-badge-container>
+                                <kendo-badge themeColor="success">Bajo</kendo-badge>
+                              </kendo-badge-container>
+                            </span>
+                          </div>
+                          <div class="col-9">
+                            <kendo-dropdownlist [data]="OpDp4.slice(1)" textField="text" valueField="value"
+                              [value]="valorSeleccionado" [valuePrimitive]="true"
+                              (valueChange)="valorSeleccionado = $event"
+                              [defaultItem]="{ text: 'Selecciona', value: null }"
+                              (selectionChange)="Respuesta1($event)">
+
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                </span>
+                              </ng-template>
+                            </kendo-dropdownlist>
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon1){
+                              <kendo-chip label="{{ Pon1 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </kendo-expansionpanel>
+              </div>
+              <div class="col-md-6">
+                <!--=====================================================================================================-->
+                <!--=============== Seccion 1.2 Racionalidad Pública title="02 Grado de preparación técnica"============-->
+                <!--=====================================================================================================-->
+                <kendo-expansionpanel title="Grado de preparación técnica"
+                  subtitle="Cualidad: Racionalidad Pública(1.2)" [expanded]="true">
+                  <div class="container-fluid">
+                    <p> </p>
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate>
+                          <div class="tooltip-justificado">
+                            Estado de los proyectos según los elementos conceptuales y técnicos de preparación
+                            con los que cuentan, en relación con los requeridos para su adecuada ejecución;
+                            se determina conforme al promedio de la calificación técnica de las iniciativas
+                            de inversión en el Banco Integrado de Proyectos.
+                          </div>
+                        </ng-template>
+
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            2.- Estado de los proyectos según los elementos conceptuales y técnicos de preparación
+                          </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
+                        </div>
+
+
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <kendo-badge-container>
+                              <kendo-badge themeColor="success">Bajo</kendo-badge>
+                            </kendo-badge-container>
+                          </div>
+                          <div class="col-9">
+
+                            <kendo-dropdownlist #sizes [data]="OpDp4" textField="text" valueField="value"
+                              [valuePrimitive]="true" (selectionChange)="Respuesta2($event)"
+                              [value]="valorSeleccionado">
+
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span>
+                              </ng-template>
+                              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span>
+                              </ng-template>
+
+                            </kendo-dropdownlist>
+
+
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon2){
+                              <kendo-chip label="{{ Pon2 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+
+                            </span>
+                          </div>
+                        </div>
+
+
+                      </div>
+
+                    </section>
+                  </div>
+                </kendo-expansionpanel>
+              </div>
+            </div>
+
+          </kendo-card>
+        </ng-template>
+      </kendo-panelbar-item>
+    </kendo-panelbar>
+    <br>
   </div>
 
 </section>
