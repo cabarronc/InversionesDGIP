@@ -31,6 +31,10 @@ export class PocketbaseService {
     return this.pb.collection('proyectoSimulador').getFullList();
   }
 
+    async crearProy(collection: string, data: any) {
+    return await this.pb.collection(collection).create(data);
+  }
+
   // Método para insertar un registro en una colección
   async addRecord(ampliaciones: string, data: any) {
     try {

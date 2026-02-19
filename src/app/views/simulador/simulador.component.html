@@ -1,15 +1,18 @@
 <section id="sectiondefault">
-
+  <kendo-stepper [steps]="steps" stepType="full" [(currentStep)]="currentStep" [style.width.px]="770">
+  </kendo-stepper>
   <div class="row">
-    <div class="col-md-4 mt-2 mb-2">
+    <!-- Creacion -->
+    <div class="col-md-1 mt-2 mb-2">
       @if (!opened) {
       <ng-template #tooltipProyecto>
         <div class="tooltip-justificado">
-          En este apartado en necesario configurar ciertas caracteristicas de un proyecto de inversion de prueba
+          En este apartado en necesario configurar ciertas caracteristicas del proyecto de inversion prueba, como nombre
+          y descripción
         </div>
       </ng-template>
       <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
-        <kendo-label [for]="sizes" text="1- Crea y configura tu propio proyecto de inversión"></kendo-label>
+        <kendo-label [for]="sizes" text="1- Crea"></kendo-label>
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
@@ -18,22 +21,50 @@
       <button kendoButton (click)="open()" themeColor="success" class="mt-2">Crear Proyecto</button>
 
       } @if (dataSaved) {
-      <p>Se a creado con exito!</p>
       } @if (opened) {
       <kendo-window title="Por favor llene el formulario" (close)="close()" [minWidth]="250" [width]="450">
-        <form class="k-form">
+        <form class="k-form" [formGroup]="form">
           <fieldset>
             <legend>Creacion de Proyecto</legend>
-            <label class="k-form-field">
-              <span>Primer item</span>
-              <kendo-textbox placeholder="clave"></kendo-textbox>
+            <label class="k-form-field ">
+              <span>Clave</span>
+              <kendo-formfield showHints="initial">
+                <kendo-textbox placeholder="clave" formControlName="clave" showErrorIcon="initial"
+                  showSuccessIcon="initial" [clearButton]="true"></kendo-textbox>
+                <kendo-formhint>Ingrese un clave valida</kendo-formhint>
+                <kendo-formerror>Patron invalido</kendo-formerror>
+              </kendo-formfield>
+
             </label>
-            <label class="k-form-field">
-              <span>Segundo item</span>
-              <kendo-textbox placeholder="nombre"></kendo-textbox>
+            <label class="k-form-field mt-2">
+              <span>Nombre</span>
+              <kendo-formfield showHints="initial">
+                <kendo-textbox placeholder="nombre" formControlName="nombre" showErrorIcon="initial"
+                  showSuccessIcon="initial" [clearButton]="true"></kendo-textbox>
+                <kendo-formhint>Ingrese un nombre para el proyecto</kendo-formhint>
+
+              </kendo-formfield>
+
+            </label>
+            <label class="k-form-field mt-2 mb-3">
+              <span>Descripcion</span>
+              <kendo-formfield showHints="initial">
+                <kendo-textarea placeholder="descripcion" formControlName="descripcion" showErrorIcon="initial"
+                  showSuccessIcon="initial" [style.width.px]="300" resizable="auto" [maxlength]="maxlength"
+                  (valueChange)="onValueChangeDesc($event)">
+                  <kendo-textarea-suffix class="custom-styling">
+                    <span class="counter">{{ counter }}</span>
+                    <button kendoButton look="clear" (click)="limpiarDescripcion()">
+                      <kendo-svgicon [icon]="icons.trashIcon" style="color: rgb(230, 26, 11);"></kendo-svgicon>
+                    </button>
+                  </kendo-textarea-suffix>
+                </kendo-textarea>
+                <kendo-formhint>Ingrese una descripción para el proyecto</kendo-formhint>
+              </kendo-formfield>
+
             </label>
           </fieldset>
-          <div class="k-actions k-actions-end">
+          <div class="k-actions k-actions-center">
             <button kendoButton type="button" (click)="close()">Cancelar</button>
             <button kendoButton themeColor="primary" type="button" (click)="submit()">
               Crear
@@ -43,6 +74,7 @@
       </kendo-window>
       }
     </div>
+    <!-- Simula -->
     <div class="col-md-3 mt-2 mb-2">
       <ng-template #tooltipProyecto>
         <div class="tooltip-justificado">
@@ -50,25 +82,27 @@
         </div>
       </ng-template>
       <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
-        <kendo-label [for]="sizes" text="2.- Elige un Proyecto de Inversión" ></kendo-label>
+        <kendo-label [for]="sizes" text="2.- Simula"></kendo-label>
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
-        <kendo-combobox class="mt-2" #sizes [data]="listItems" valueField="idProy" [valuePrimitive]="false" textField="idProy"
-          [(value)]="itemSeleccionado" (valueChange)="onProyChange($event)" placeholder="Proyecto"></kendo-combobox>
+        <kendo-combobox class="mt-2" #sizes [data]="listItems" valueField="clave" [valuePrimitive]="false"
+          textField="clave" [(value)]="itemSeleccionado" (valueChange)="onProyChange($event)"
+          placeholder="Proyecto"></kendo-combobox>
       </div>
 
 
     </div>
+    <!-- Compara -->
     <div class="col-md-3 mt-2 mb-2">
       @if (!opened2) {
       <ng-template #tooltipProyecto>
         <div class="tooltip-justificado">
-          En este apartado comparamos mas de 3 proyectos 
+          En este apartado comparamos mas de 3 proyectos
         </div>
       </ng-template>
       <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
-        <kendo-label [for]="sizes" text="3.- Comparador"></kendo-label>
+        <kendo-label [for]="sizes" text="3.- Compara !!"></kendo-label>
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
@@ -105,7 +139,6 @@
   </div>
 
   <div class="row barra3">
-
     <div class="col-md-5 mt-2 mb-2 ">
       <kendo-card width="100%" orientation="vertical"
         style="background-color:#dee4ec; border-radius: 15px; box-shadow: 5px 10px 18px #888888;">
