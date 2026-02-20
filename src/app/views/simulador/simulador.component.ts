@@ -49,6 +49,10 @@ export class SimuladorComponent implements OnInit {
   Pon6!: number | null;
   Pon7!: number | null;
   Pon8!: number | null;
+  Pon9!: number | null;
+  Pon10!: number | null;
+  Pon11!: number | null;
+  Pon12!: number | null;
   public CalProm!: number;
   currentUser: User | null = null;
   topBarraRacionalidad: number = 110;
@@ -62,10 +66,10 @@ export class SimuladorComponent implements OnInit {
   public simuala = false;
   public compara = false;
   public steps = [
-    { label: "Crea Proyecto", isValid: this.crear },
-    { label: "Simula", isValid: true },
-    { label: "Compara", isValid: true },
-    { label: "Finaliza", isValid: true },
+    { label: "Crea Proyecto", isValid: this.crear, emoji: "⚙️" },
+    { label: "Simula", isValid: true, emoji: "🖥️" },
+    { label: "Compara", isValid: true, emoji: "🆚" },
+    { label: "Finaliza", isValid: true, emoji: "✅" },
   ];
 
   // listItems = [
@@ -76,9 +80,9 @@ export class SimuladorComponent implements OnInit {
   itemSeleccionado: any = null;
 
   getColorByValue(value: number): string {
-    if (value < 10) return '#d61b1b';
-    if (value < 5) return '#F69006';
-    if (value < 2) return '#FAFA02';
+    if (value < 50) return '#d61b1b';
+    if (value < 83) return '#FAFA02';
+    if (value > 83) return '#02FA27';
     return '#02FA27';
   }
   getGaugeColors() {
@@ -112,6 +116,10 @@ export class SimuladorComponent implements OnInit {
   valorSeleccionado6: number | null = null;
   valorSeleccionado7: number | null = null;
   valorSeleccionado8: number | null = null;
+  valorSeleccionado9: number | null = null;
+  valorSeleccionado10: number | null = null;
+  valorSeleccionado11: number | null = null;
+  valorSeleccionado12: number | null = null;
 
 
   public OpDp4: Array<{ text: string; value: number | null }> = [
@@ -186,12 +194,33 @@ export class SimuladorComponent implements OnInit {
     { text: "Medio", value: 2 },
     { text: "Bajo", value: 3 },
   ];
+
+    public OpIS2: Array<{ text: string; value: number | null }> = [
+    { text: "Selecciona", value: null },
+    { text: "Directa", value: 2 },
+    { text: "Indirecta", value: 1 },
+    { text: "Ninguna", value: 0 },
+  ];
+   public OpIS3: Array<{ text: string; value: number | null }> = [
+    { text: "Selecciona", value: null },
+    { text: "Personales", value: 2 },
+    { text: "Otros", value: 1 },
+    { text: "Ninguno", value: 0 },
+  ];
   getTemplateClass(value: number): string {
     if (value == 0) return 'template9';
     if (value == 1) return 'template8';
     if (value == 2) return 'template7';
     if (value == 3) return 'template6';
     if (value == 4) return 'template3';
+
+    return 'template';
+  }
+    getTemplateClass_22(value: number): string {
+    if (value == 0) return 'template3';
+    if (value == 1) return 'template6';
+    if (value == 2) return 'template9';
+
 
     return 'template';
   }
@@ -352,6 +381,11 @@ export class SimuladorComponent implements OnInit {
     this.valorSeleccionado5 = null
     this.valorSeleccionado6 = null
     this.valorSeleccionado7 = null
+    this.valorSeleccionado8 = null
+    this.valorSeleccionado9 = null
+    this.valorSeleccionado10 = null
+    this.valorSeleccionado11 = null
+    this.valorSeleccionado12 = null
     this.Pon1 = 0
     this.Pon2 = 0
     this.Pon3 = 0
@@ -531,6 +565,29 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
     }
   }
+    
+  public RespuestaRP6(value: any): void {
+    if (value.value == 0) {
+      this.Pon6 = 6;
+      this.MethodTotal()
+    }
+    else if (value.value == 1) {
+      this.Pon6 = 3.6;
+      this.MethodTotal()
+    }
+    else if (value.value == 2) {
+      this.Pon6 = 1.8;
+      this.MethodTotal()
+    }
+    else if (value.value == 3) {
+      this.Pon6 = 0.6;
+      this.MethodTotal()
+    }
+    else if (value.value == null) {
+      this.Pon6 = 0;
+      this.MethodTotal()
+    }
+  }
 
   public RespuestaRP7(value: any): void {
     if (value.value == 0) {
@@ -558,6 +615,7 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
     }
   }
+  ///////Impacto Social
   public RespuestaIS1(value: any): void {
     if (value.value == 0) {
       this.Pon8 = 8.5;
@@ -576,29 +634,45 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
     }
   }
-  ///////Impacto Social
-  public RespuestaRP6(value: any): void {
+
+    public RespuestaIS2(value: any): void {
     if (value.value == 0) {
-      this.Pon6 = 6;
+      this.Pon9 = 1.25;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon6 = 3.6;
+      this.Pon9 = 2.5;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon6 = 1.8;
-      this.MethodTotal()
-    }
-    else if (value.value == 3) {
-      this.Pon6 = 0.6;
+      this.Pon9 = 3.75;
       this.MethodTotal()
     }
     else if (value.value == null) {
-      this.Pon6 = 0;
+      this.Pon9 = 0;
       this.MethodTotal()
     }
   }
+
+      public RespuestaIS3(value: any): void {
+    if (value.value == 0) {
+      this.Pon10 = 1.08;
+      this.MethodTotal()
+    }
+    else if (value.value == 1) {
+      this.Pon10 = 2.1;
+      this.MethodTotal()
+    }
+    else if (value.value == 2) {
+      this.Pon10 = 3.25;
+      this.MethodTotal()
+    }
+    else if (value.value == null) {
+      this.Pon10 = 0;
+      this.MethodTotal()
+    }
+  }
+
   public MethodTotal(): any {
     const pon1 = this.Pon1 ?? 0
     const pon2 = this.Pon2 ?? 0
@@ -607,12 +681,17 @@ export class SimuladorComponent implements OnInit {
     const pon5 = this.Pon5 ?? 0
     const pon6 = this.Pon6 ?? 0
     const pon7 = this.Pon7 ?? 0
+    const pon8 = this.Pon8 ?? 0
+    const pon9 = this.Pon9 ?? 0
+    const pon10 = this.Pon10 ?? 0
+    const pon11 = this.Pon11 ?? 0
+    const pon12 = this.Pon12 ?? 0
     this.TotalRacionalidad = pon1 + pon2 + pon3 + pon4 + pon5 + pon6 + pon7
     console.log("calificacion racionalidad", this.TotalRacionalidad)
-    this.TotalSocial = 0
+    this.TotalSocial = pon8 + pon9 +pon10 +pon11 +pon12
     this.TotalEconomico = 0
-    this.CalGlob = (this.TotalRacionalidad ?? 0) + (this.TotalSocial ?? 0) + (this.TotalEconomico ?? 0);
-    this.CalProm = this.CalGlob / 2;
+    this.CalGlob = (this.TotalRacionalidad ?? 0)*0.5 + (this.TotalSocial ?? 0)*0.33 + (this.TotalEconomico ?? 0)*0.16;
+    this.CalProm = this.CalGlob;
     const ranges = [
       { max: 50, color: '#f50707' },
       { max: 70, color: '#ee9f05' },
@@ -623,6 +702,9 @@ export class SimuladorComponent implements OnInit {
     // this.TotalRacionalidad = this.Pon1  
     const range = ranges.find(r => this.TotalRacionalidad! <= r.max);
     this.updateAppearance(range?.color ?? '#000');
+
+    const range_social = ranges.find(r => this.TotalSocial! <= r.max);
+    this.updateAppearance(range_social?.color ?? '#000');
   }
 
   private updateAppearance(

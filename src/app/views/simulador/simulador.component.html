@@ -1,5 +1,8 @@
 <section id="sectiondefault">
   <kendo-stepper [steps]="steps" stepType="full" [(currentStep)]="currentStep" [style.width.px]="770">
+    <ng-template kendoStepperIndicatorTemplate let-step>
+      <span class="emoji">{{ step.emoji }}</span>
+    </ng-template>
   </kendo-stepper>
   <div class="row">
     <!-- Creacion -->
@@ -137,7 +140,7 @@
       }
     </div>
   </div>
-
+  <!-- Datos Generales -->
   <div class="row barra3">
     <div class="col-md-5 mt-2 mb-2 ">
       <kendo-card width="100%" orientation="vertical"
@@ -177,6 +180,7 @@
         </kendo-card-header>
       </kendo-card>
     </div>
+    <!-- Descripcion -->
     <div class="col-md-6 mt-2">
       <kendo-panelbar>
         <kendo-panelbar-item title="Descripción" [expanded]="true">
@@ -192,6 +196,7 @@
 
     </div>
   </div>
+  <!-- Simulador -->
   <div class="col-3 mt-3">
     <ng-template #tooltipProyecto>
       <div class="tooltip-justificado">
@@ -205,6 +210,7 @@
       </span>
     </div>
   </div>
+  <!-- Progress bar racionalidad -->
   <div class="col-md-12 mt-3 mb-3 barra" [style.top.px]="topBarraRacionalidad">
     <kendo-label text="Calificacion Racionalidad Pública " style="font-weight: bold;">
       &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles" [animation]="animation" style="width: 800px;"
@@ -212,7 +218,7 @@
       </kendo-progressbar>
     </kendo-label>
   </div>
-  <div class="col-md-11">
+  <div class="col-md-12">
     <!-- ============================================================================================================= -->
     <!-- ================================= Seccion 1  Racionalodad Publica 62 % ======================== -->
     <!-- ============================================================================================================= -->
@@ -221,11 +227,12 @@
         [expanded]="true">
         <ng-template kendoPanelBarContent>
           <kendo-card width="auto" style="padding: 1rem; align-content: center;">
+            <!-- Primer Linea -->
             <div class="row mt-3 mb-2">
               <!-- ============================================================================================================-->
               <!--========================================== Variable 1.1 Gasto administracion 19% ================================-->
               <!-- ============================================================================================================-->
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
                   [expanded]="true">
                   <div class="container-fluid">
@@ -293,7 +300,7 @@
               <!--==========================================================================================================-->
               <!--========================================= Variable 1.2 Grado de preparación técnica 13 %  ================-->
               <!--==========================================================================================================-->
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <kendo-expansionpanel title="Grado de preparación técnica"
                   subtitle="Cualidad: Racionalidad Pública(1.2)" [expanded]="true">
                   <div class="container-fluid">
@@ -375,12 +382,10 @@
                   </div>
                 </kendo-expansionpanel>
               </div>
-            </div>
-            <div class="row mt-3 mb-2">
               <!--====================================================================================================-->
               <!--========================================= Variable 1.3 Desempeño historico" 10 %     ===============-->
               <!--====================================================================================================-->
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <kendo-expansionpanel title="Desempeño histórico" subtitle="Cualidad: Racionalidad Pública(1.3)"
                   [expanded]="true">
                   <div class="container-fluid">
@@ -443,10 +448,14 @@
                   </div>
                 </kendo-expansionpanel>
               </div>
+            </div>
+            <!-- Segunda Linea -->
+            <div class="row mt-3 mb-2">
+
               <!--====================================================================================================-->
               <!--========================================= Variable 1.4 Fuente financiamiento" 7 %   ================-->
               <!--====================================================================================================-->
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <kendo-expansionpanel title="Fuente de financiamiento" subtitle="Cualidad: Racionalidad Pública(1.4)"
                   [expanded]="true">
                   <div class="container-fluid">
@@ -527,12 +536,10 @@
                   </div>
                 </kendo-expansionpanel>
               </div>
-            </div>
-            <div class="row mt-3 mb-2">
               <!--====================================================================================================-->
               <!--========================================= Variable 1.5 Inversion productiva 6 %   ================-->
               <!--====================================================================================================-->
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <kendo-expansionpanel title="Inversión poroductiva" subtitle="Cualidad: Racionalidad Pública(1.6)"
                   [expanded]="true">
                   <div class="container-fluid">
@@ -598,7 +605,7 @@
               <!--=====================================================================================================-->
               <!--=================================== Variable 1.6 Cobertura de la población objetivo 6 % ============-->
               <!--=====================================================================================================-->
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <kendo-expansionpanel title=" Cobertura de la población objetivo"
                   subtitle="Cualidad: Racionalidad Pública(1.6)" [expanded]="true">
                   <div class="container-fluid">
@@ -677,11 +684,12 @@
                 </kendo-expansionpanel>
               </div>
             </div>
+            <!-- Tercera Linea -->
             <div class="row mt-3 mb-2">
               <!--=====================================================================================================-->
               <!--=================================== Variable 1.7 Concurrencia 1 % ============-->
               <!--=====================================================================================================-->
-              <div class="col-md-6">
+              <div class="col-md-4">
                 <kendo-expansionpanel title="Concurrencia" subtitle="Cualidad: Racionalidad Pública(1.7)"
                   [expanded]="true">
                   <div class="container-fluid">
@@ -753,31 +761,32 @@
                 </kendo-expansionpanel>
               </div>
             </div>
-
-
-
           </kendo-card>
         </ng-template>
       </kendo-panelbar-item>
     </kendo-panelbar>
-
-    <!-- ============================================================================================================= -->
-    <!-- ================================= Seccion 2  Impacto Social ======================== -->
-    <!-- ============================================================================================================= -->
     <br>
-    <div class="col-md-12 mt-3 mb-3 barra2" [style.top.px]="topBarraRacionalidad">
+    <!-- Progress bar impacto social -->
+    <div class="col-md-12 mt-3 mb-3 barra2" [style.top.px]="topBarraImpactoSocial">
       <kendo-label text="Calificacion Impacto Social " style="font-weight: bold;">
         &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles" [animation]="animation" style="width: 800px;"
           [value]="TotalSocial||0">
         </kendo-progressbar>
       </kendo-label>
     </div>
+    <!-- ============================================================================================================= -->
+    <!-- ================================= Seccion 2  Impacto Social 32.5 % ========================================== -->
+    <!-- ============================================================================================================= -->
     <kendo-panelbar>
       <kendo-panelbar-item class="k-item2" [svgIcon]="icons.accessibilityIcon" title="Impacto Social" [expanded]="true">
         <ng-template kendoPanelBarContent>
           <kendo-card width="auto" style="padding: 1rem; align-content: center;">
+            <!-- Primer linea -->
             <div class="row mt-3 mb-2">
-              <div class="col-md-6">
+              <!--=====================================================================================================-->
+              <!--=============== Variable 2.1 Atención Rezago Social 8.5 % ===========================================-->
+              <!--=====================================================================================================-->
+              <div class="col-md-4">
                 <kendo-expansionpanel title="Atención rezago social" subtitle="Cualidad: Impacto Social(2.1)"
                   [expanded]="true">
                   <div class="container-fluid">
@@ -822,7 +831,7 @@
                               [value]="valorSeleccionado8" [valuePrimitive]="true"
                               (valueChange)="valorSeleccionado8 = $event"
                               [defaultItem]="{ text: 'Selecciona', value: null }"
-                              (selectionChange)="Respuesta1($event)">
+                              (selectionChange)="RespuestaIS1($event)">
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
                                 <span class="item-content">
@@ -838,8 +847,8 @@
                           </div>
                           <div class="col-1">
                             <span>
-                              @if(Pon1){
-                              <kendo-chip label="{{ Pon1 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                              @if(Pon8){
+                              <kendo-chip label="{{ Pon8 | number:'1.2-2'  }}" themeColor="info" size="medium"
                                 rounded="full">
                               </kendo-chip>
                               }
@@ -851,28 +860,93 @@
                   </div>
                 </kendo-expansionpanel>
               </div>
-              <div class="col-md-6">
-                <!--=====================================================================================================-->
-                <!--=============== Seccion 1.2 Racionalidad Pública title="02 Grado de preparación técnica"============-->
-                <!--=====================================================================================================-->
-                <kendo-expansionpanel title="Grado de preparación técnica"
-                  subtitle="Cualidad: Racionalidad Pública(1.2)" [expanded]="true">
+              <!--=====================================================================================================-->
+              <!--=============== Variable 2.2 Igualdad de Genero 7.5 %   =============================================-->
+              <!--=====================================================================================================-->
+              <div class="col-md-4">
+                <kendo-expansionpanel title="Igualdad de género" subtitle="Cualidad: Impacto Social (2.2)"
+                  [expanded]="true">
                   <div class="container-fluid">
                     <p> </p>
                     <section class="row">
                       <div class="col-md-12">
-                        <ng-template #tooltipTemplate>
+                        <ng-template #tooltipTemplate9>
                           <div class="tooltip-justificado">
-                            Estado de los proyectos según los elementos conceptuales y técnicos de preparación
-                            con los que cuentan, en relación con los requeridos para su adecuada ejecución;
-                            se determina conforme al promedio de la calificación técnica de las iniciativas
-                            de inversión en el Banco Integrado de Proyectos.
+                            Los alcances del proyecto contribuyen de manera directa a la igualdad de oportunidades entre
+                            mujeres y hombres
                           </div>
                         </ng-template>
 
-                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate9" filter=".info-icon">
                           <kendo-label style="font-weight: bold;">
-                            2.- Estado de los proyectos según los elementos conceptuales y técnicos de preparación
+                            2.- Contribución a la igualdad de género
+                          </kendo-label>
+
+                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                          </span>
+                        </div>
+                        <div class="row mt-2 mb-4">
+                          <div class="col-1">
+                            <kendo-badge-container>
+                              <kendo-badge themeColor="success">Alto</kendo-badge>
+                            </kendo-badge-container>
+                          </div>
+                          <div class="col-9">
+                            <kendo-dropdownlist #sizes [data]="OpIS2" textField="text" valueField="value"
+                              [valuePrimitive]="true" (selectionChange)="RespuestaIS2($event)"
+                              (valueChange)="valorSeleccionado9 = $event" [value]="valorSeleccionado9">
+                              <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span>
+                              </ng-template>
+                              <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                <span class="item-content">
+                                  <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                    }}</span>&nbsp;{{
+                                  dataItem?.text }}
+                                </span>
+                              </ng-template>
+                            </kendo-dropdownlist>
+                          </div>
+                          <div class="col-1">
+                            <span>
+                              @if(Pon9){
+                              <kendo-chip label="{{ Pon9 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                rounded="full">
+                              </kendo-chip>
+                              }
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </kendo-expansionpanel>
+              </div>
+              <!--=====================================================================================================-->
+              <!--=============== Variable 2.2 Subsidios sociales 6.5 %============-->
+              <!--=====================================================================================================-->
+              <div class="col-md-4">
+                <kendo-expansionpanel title="Subsidios sociales" subtitle="Cualidad: Impacto Social (2.3)"
+                  [expanded]="true">
+                  <div class="container-fluid">
+                    <p> </p>
+                    <section class="row">
+                      <div class="col-md-12">
+                        <ng-template #tooltipTemplate10>
+                          <div class="tooltip-justificado">
+                            El proyecto tiene como alcance específico otorgar recursos con propósitos sociales a
+                            personas
+                          </div>
+                        </ng-template>
+
+                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate10" filter=".info-icon">
+                          <kendo-label style="font-weight: bold;">
+                            3.- Subsidios Sociales
                           </kendo-label>
 
                           <span class="info-icon" style="cursor: pointer; display: inline-flex;">
@@ -884,25 +958,26 @@
                         <div class="row mt-2 mb-4">
                           <div class="col-1">
                             <kendo-badge-container>
-                              <kendo-badge themeColor="success">Bajo</kendo-badge>
+                              <kendo-badge themeColor="warning">Medio</kendo-badge>
                             </kendo-badge-container>
                           </div>
                           <div class="col-9">
 
-                            <kendo-dropdownlist #sizes [data]="OpDp4" textField="text" valueField="value"
-                              [valuePrimitive]="true" (selectionChange)="Respuesta2($event)"
-                              [value]="valorSeleccionado">
+                            <kendo-dropdownlist #sizes [data]="OpIS3" textField="text" valueField="value"
+                              [valuePrimitive]="true" (selectionChange)="RespuestaIS3($event)"
+                              (valueChange)="valorSeleccionado10 = $event" [value]="valorSeleccionado10"
+                              >
 
                               <ng-template kendoDropDownListItemTemplate let-dataItem>
                                 <span class="item-content">
-                                  <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                  <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
                                     }}</span>&nbsp;{{
                                   dataItem?.text }}
                                 </span>
                               </ng-template>
                               <ng-template kendoDropDownListValueTemplate let-dataItem>
                                 <span class="item-content">
-                                  <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                  <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
                                     }}</span>&nbsp;{{
                                   dataItem?.text }}
                                 </span>
@@ -914,8 +989,8 @@
                           </div>
                           <div class="col-1">
                             <span>
-                              @if(Pon2){
-                              <kendo-chip label="{{ Pon2 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                              @if(Pon10){
+                              <kendo-chip label="{{ Pon10 | number:'1.2-2'  }}" themeColor="info" size="medium"
                                 rounded="full">
                               </kendo-chip>
                               }
@@ -932,72 +1007,9 @@
                 </kendo-expansionpanel>
               </div>
             </div>
+            <!-- Segunda linea -->
             <div class="row mt-3 mb-2">
-              <div class="col-md-6">
-                <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
-                  [expanded]="true">
-                  <div class="container-fluid">
-                    <p> </p>
-                    <section class="row">
-                      <div class="col-md-12">
-                        <ng-template #tooltipTemplate>
-                          <div class="tooltip-justificado">
-                            Proporción del presupuesto de los proyectos que corresponde a partidas no sustantivas,
-                            según la naturaleza y propósito de sus entregables
-                          </div>
-                        </ng-template>
-                        <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
-                          <kendo-label style="font-weight: bold;">
-                            1.- Proporción del presupuesto en
-                            partidas no sustantivas
-                          </kendo-label>
 
-                          <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                            <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                          </span>
-                        </div>
-                        <div class="row mt-2 mb-4">
-                          <div class="col-1">
-                            <span>
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="success">Bajo</kendo-badge>
-                              </kendo-badge-container>
-                            </span>
-                          </div>
-                          <div class="col-9">
-                            <kendo-dropdownlist [data]="OpDp4.slice(1)" textField="text" valueField="value"
-                              [value]="valorSeleccionado" [valuePrimitive]="true"
-                              (valueChange)="valorSeleccionado = $event"
-                              [defaultItem]="{ text: 'Selecciona', value: null }"
-                              (selectionChange)="Respuesta1($event)">
-
-                              <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                <span class="item-content">
-                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
-                                </span>
-                              </ng-template>
-                              <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                <span class="item-content">
-                                  <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
-                                </span>
-                              </ng-template>
-                            </kendo-dropdownlist>
-                          </div>
-                          <div class="col-1">
-                            <span>
-                              @if(Pon1){
-                              <kendo-chip label="{{ Pon1 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                rounded="full">
-                              </kendo-chip>
-                              }
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </kendo-expansionpanel>
-              </div>
               <div class="col-md-6">
                 <!--=====================================================================================================-->
                 <!--=============== Seccion 1.2 Racionalidad Pública title="02 Grado de preparación técnica"============-->
