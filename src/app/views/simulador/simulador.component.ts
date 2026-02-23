@@ -7,7 +7,6 @@ import { KENDO_LABELS } from "@progress/kendo-angular-label";
 import { KENDO_LAYOUT } from "@progress/kendo-angular-layout";
 import { AuthService, User } from '../../services/auth.service';
 import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
-import { KENDO_PROGRESSBARS } from "@progress/kendo-angular-progressbar";
 import { KENDO_INPUTS } from "@progress/kendo-angular-inputs";
 import { KENDO_INDICATORS } from "@progress/kendo-angular-indicators";
 import { KENDO_DIALOGS } from "@progress/kendo-angular-dialog";
@@ -22,7 +21,10 @@ import { DecimalPipe } from '@angular/common';
 import { PocketbaseService } from '../../services/pocketbase.service';
 import { NotificationService } from '@progress/kendo-angular-notification';
 import { StorageService } from '../../services/storage.service';
-
+import {
+  KENDO_PROGRESSBARS,
+  LabelSettings,
+} from "@progress/kendo-angular-progressbar";
 
 
 @Component({
@@ -53,7 +55,16 @@ export class SimuladorComponent implements OnInit {
   Pon10!: number | null;
   Pon11!: number | null;
   Pon12!: number | null;
+  Pon13!: number | null;
+  Pon14!: number | null;
+  Pon15!: number | null;
+  cantidadBol = true
   public CalProm!: number;
+  public label: LabelSettings = {
+    visible: true,
+    format: "percent",
+    position: "start",
+  };
   currentUser: User | null = null;
   topBarraRacionalidad: number = 110;
   topBarraImpactoSocial: number = 130;
@@ -71,33 +82,18 @@ export class SimuladorComponent implements OnInit {
     { label: "Compara", isValid: true, emoji: "🆚" },
     { label: "Finaliza", isValid: true, emoji: "✅" },
   ];
-
-  // listItems = [
-  //   { id: 'QA4567', nombre: 'nombre dummy 1', descripcion: 'El Programa consiste en un proceso de formación socioeducativo que va dirigido a la población guanajuatense de 15 años en adelante, con la finalidad de incrementar su desarrollo personal y sus capacidades para visualizarse como un actor de transformación social, mediante un modelo en el que la persona se coloca al centro de su desarrollo, fortaleciendo sus capacidades, habilidades y actitudes, desarrollando la autogestión, integración y compromiso social, reconociendo y respetando la equidad, viviendo en valores en la familia y comunidad, ampliando su visión para mejorar sus oportunidades, y transformando su entorno en comunidad. El programa está estructurado en 4 módulos integrados por un total de 25 sesiones: Módulo 1, Descubriendo quién soy; Módulo 2, Viviendo en comunidad; Módulo 3, Constructores del cambio hacia la felicidad; y Módulo 4, Organizándonos para el nuevo comienzo. Una vez que concluye el proceso de formación, se realizan acciones comunitarias que involucran la participación de las personas que conformaron los grupos, a partir de la detección de problemáticas en su entorno, con el fin de buscar soluciones que beneficien a todas y todos los miembros de la comunidad, contribuyendo a la construcción de una sociedad más justa y equitativa. Para acceder a los servicios del Programa, las personas interesadas deberán presentar su solicitud en el formato establecido. La unidad responsable de la Secretaría conformará los grupos con las personas interesadas, informándoles la programación para el desarrollo de los módulos. Las personas beneficiarias deberán acudir a las sesiones programadas, registrar su asistencia en cada sesión, y cumplir con los entregables de cada módulo, debiendo cumplir con una asistencia mínima del 75% de las sesiones para recibir un reconocimiento de participación.', precio: 1200 },
-  //   { id: 'QX4567', nombre: 'nombre dummy 2', descripcion: 'Descripcion 2', precio: 25 },
-  //   { id: 'QS3456', nombre: 'nombre dummy 3', descripcion: 'Descripcion 3', precio: 80 }
-  // ];
   itemSeleccionado: any = null;
 
-  getColorByValue(value: number): string {
-    if (value < 50) return '#d61b1b';
-    if (value < 83) return '#FAFA02';
-    if (value > 83) return '#02FA27';
-    return '#02FA27';
-  }
-  getGaugeColors() {
-    const value = this.CalProm ?? 0;
-
-    return [
-      {
-        from: 0,
-        to: value,
-        color: this.getColorByValue(value),
-      }
-    ];
-  }
 
   public progressStyles: { [key: string]: string } = {
+    color: "",
+    background: ""
+  };
+  public progressStyles2: { [key: string]: string } = {
+    color: "",
+    background: ""
+  };
+  public progressStyles3: { [key: string]: string } = {
     color: "",
     background: ""
   };
@@ -120,6 +116,9 @@ export class SimuladorComponent implements OnInit {
   valorSeleccionado10: number | null = null;
   valorSeleccionado11: number | null = null;
   valorSeleccionado12: number | null = null;
+  valorSeleccionado13: number | null = null;
+  valorSeleccionado14: number | null = null;
+  valorSeleccionado15: number | null = null;
 
 
   public OpDp4: Array<{ text: string; value: number | null }> = [
@@ -189,52 +188,65 @@ export class SimuladorComponent implements OnInit {
 
   public OpIS1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Muy alto", value: 0 },
-    { text: "Alto", value: 1 },
-    { text: "Medio", value: 2 },
-    { text: "Bajo", value: 3 },
+    { text: "Con rezago medio", value: 0 },
+    { text: "Con rezago bajo", value: 1 },
+    { text: "Otros", value: 2 },
   ];
 
-    public OpIS2: Array<{ text: string; value: number | null }> = [
+  public OpIS2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Directa", value: 2 },
     { text: "Indirecta", value: 1 },
     { text: "Ninguna", value: 0 },
   ];
-   public OpIS3: Array<{ text: string; value: number | null }> = [
+  public OpIS3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Personales", value: 2 },
     { text: "Otros", value: 1 },
     { text: "Ninguno", value: 0 },
   ];
-  getTemplateClass(value: number): string {
-    if (value == 0) return 'template9';
-    if (value == 1) return 'template8';
-    if (value == 2) return 'template7';
-    if (value == 3) return 'template6';
-    if (value == 4) return 'template3';
+  public OpIS4: Array<{ text: string; value: number | null }> = [
+    { text: "Selecciona", value: null },
+    { text: "Prioridad alta", value: 3 },
+    { text: "Prioridad media", value: 2 },
+    { text: "Prioridad baja", value: 1 },
+    { text: "Otros", value: 0 },
+  ];
 
-    return 'template';
-  }
-    getTemplateClass_22(value: number): string {
-    if (value == 0) return 'template3';
-    if (value == 1) return 'template6';
-    if (value == 2) return 'template9';
+  public OpIS5: Array<{ text: string; value: number | null }> = [
+    { text: "Selecciona", value: null },
+    { text: "Prioridad alta", value: 3 },
+    { text: "Prioridad media", value: 2 },
+    { text: "Prioridad baja", value: 1 },
+    { text: "Otros", value: 0 },
+  ];
 
 
-    return 'template';
-  }
+  public OpIE1: Array<{ text: string; value: number | null }> = [
+    { text: "Selecciona", value: null },
+    { text: "Alta", value: 3 },
+    { text: "Media", value: 2 },
+    { text: "Baja", value: 1 },
+    { text: "Nula", value: 0 },
+  ];
+  public OpIE2: Array<{ text: string; value: number | null }> = [
+    { text: "Selecciona", value: null },
+    { text: "Más relevante", value: 2 },
+    { text: "Relevante", value: 1 },
+    { text: "Otros", value: 0 },
+  ];
+  public OpIE3: Array<{ text: string; value: number | null }> = [
+    { text: "Selecciona", value: null },
+    { text: "Alta", value: 2 },
+    { text: "Baja", value: 1 },
+    { text: "Nula", value: 0 },
+  ];
+
+
   public charachtersCount: number;
   public counter: string
   public maxlength = 300;
-  limpiarDescripcion() {
-    this.form.get("descripcion")?.setValue('');
-    this.counter = ""
-  }
-  public onValueChangeDesc(ev: string): void {
-    this.charachtersCount = ev.length;
-    this.counter = `${this.charachtersCount}/${this.maxlength}`;
-  }
+
   constructor(private authService: AuthService, private pocketBaseService: PocketbaseService, private notificationService: NotificationService, private viewContainerRef: ViewContainerRef, private storageService: StorageService) {
     this.form = new FormGroup({
       clave: new FormControl("", [Validators.required, Validators.pattern(/^[A-Za-z]{2}\d{4}$/)]),
@@ -251,10 +263,60 @@ export class SimuladorComponent implements OnInit {
     });
     this.MethodTotal();
     this.LoadProy();
-    console.log(this.valorSeleccionado1);
 
   }
+  //Funciones Auxiliares
+  limpiarDescripcion() {
+    this.form.get("descripcion")?.setValue('');
+    this.counter = ""
+  }
+  public onValueChangeDesc(ev: string): void {
+    this.charachtersCount = ev.length;
+    this.counter = `${this.charachtersCount}/${this.maxlength}`;
+  }
+  getColorByValue(value: number): string {
+    if (value < 50) return '#d61b1b';
+    if (value < 83) return '#FAFA02';
+    if (value > 83) return '#02FA27';
+    return '#02FA27';
+  }
+  getGaugeColors() {
+    const value = this.CalProm ?? 0;
 
+    return [
+      {
+        from: 0,
+        to: value,
+        color: this.getColorByValue(value),
+      }
+    ];
+  }
+  getTemplateClass(value: number): string {
+    if (value == 0) return 'template9';
+    if (value == 1) return 'template8';
+    if (value == 2) return 'template7';
+    if (value == 3) return 'template6';
+    if (value == 4) return 'template3';
+
+    return 'template';
+  }
+  getTemplateClass_22(value: number): string {
+    if (value == 0) return 'template3';
+    if (value == 1) return 'template6';
+    if (value == 2) return 'template9';
+    return 'template';
+  }
+
+  getTemplateClass_33(value: number): string {
+    if (value == 0) return 'template3';
+    if (value == 1) return 'template6';
+    if (value == 2) return 'template8';
+    if (value == 3) return 'template9';
+
+
+    return 'template';
+  }
+  //Funciones Principales
   guardar_local() {
     const nuevoRegistro = this.form.value;
     const registros = this.storageService.getLocal<any[]>('proyectos') || [];
@@ -337,12 +399,84 @@ export class SimuladorComponent implements OnInit {
     console.log(cantidad)
     if (cantidad === 0) {
       this.currentStep = 0;
+
     } else if (cantidad <= 2) {
       this.currentStep = 1;
-    } else {
+    } else if (cantidad >= 3) {
       this.currentStep = 2;
+      this.cantidadBol = false
+    } else {
+      this.currentStep = 3;
+
+
     }
+
   }
+
+  //   onStepChange(stepIndex: number) {
+  //   this.currentStep = stepIndex;
+  //   if (stepIndex === 3) {
+  //     localStorage.removeItem('proyectos');
+  //     this.LoadProy()
+  //   }
+  // }
+
+  previousStep = 0;
+  //Logica de los estados del steper
+  onStepChange(stepIndex: number) {
+    const cantidad = this.storageService.getLocal<any[]>('proyectos')?.length ?? 0;
+    if (stepIndex === 0) {
+      setTimeout(() => {
+        this.currentStep = this.previousStep + 1;
+      });
+      return;
+    }
+    if (stepIndex === 0 && cantidad === 0) {
+      setTimeout(() => {
+        this.currentStep = this.previousStep;
+      });
+      return;
+    }
+    //Simula
+    if (stepIndex === 1 && cantidad === 0) {
+      setTimeout(() => {
+        this.currentStep = this.previousStep;
+      });
+      return;
+    }
+    if (stepIndex === 1 && cantidad < 3) {
+      setTimeout(() => {
+        this.currentStep = this.previousStep + 1;
+      });
+      return;
+    }
+    if (stepIndex === 1 && cantidad == 3) {
+      setTimeout(() => {
+        this.currentStep = this.previousStep + 2;
+      });
+      return;
+    }
+    //Compara
+    if (stepIndex === 2 && cantidad >= 1) {
+      setTimeout(() => {
+        this.currentStep = this.previousStep + 1;
+      });
+      return;
+    }
+    if (stepIndex === 2 && cantidad < 3) {
+      setTimeout(() => {
+        this.currentStep = this.previousStep;
+      });
+      return;
+    }
+    else if (stepIndex == 3) {
+      localStorage.removeItem('proyectos');
+      this.LoadProy()
+    }
+    this.previousStep = stepIndex;
+    this.currentStep = stepIndex;
+  }
+
 
   public close(): void {
     this.opened = false;
@@ -386,6 +520,9 @@ export class SimuladorComponent implements OnInit {
     this.valorSeleccionado10 = null
     this.valorSeleccionado11 = null
     this.valorSeleccionado12 = null
+    this.valorSeleccionado13 = null
+    this.valorSeleccionado14 = null
+    this.valorSeleccionado15 = null
     this.Pon1 = 0
     this.Pon2 = 0
     this.Pon3 = 0
@@ -393,10 +530,24 @@ export class SimuladorComponent implements OnInit {
     this.Pon5 = 0
     this.Pon6 = 0
     this.Pon7 = 0
+    this.Pon8 = 0
+    this.Pon9 = 0
+    this.Pon10 = 0
+    this.Pon11 = 0
+    this.Pon12 = 0
+    this.Pon13 = 0
+    this.Pon14 = 0
+    this.Pon15 = 0
     this.topBarraRacionalidad = 210
     this.topBarraImpactoSocial = 230
     this.RespuestaRP1(this.Pon1)
     this.RespuestaRP2(this.Pon2)
+    this.RespuestaIS1(this.Pon8)
+    this.RespuestaIS2(this.Pon9)
+    this.RespuestaIS3(this.Pon10)
+    this.RespuestaIS4(this.Pon11)
+    this.RespuestaIS5(this.Pon12)
+    this.RespuestaISE1(this.Pon15)
   }
   public Respuesta1(value: any): void {
 
@@ -470,8 +621,6 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
     }
   }
-
-
   public RespuestaRP2(value: any): void {
     if (value.value == 0) {
       this.Pon2 = 13;
@@ -494,7 +643,6 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
     }
   }
-
   public RespuestaRP3(value: any): void {
     if (value.value == 0) {
       this.Pon3 = 10;
@@ -565,7 +713,6 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
     }
   }
-    
   public RespuestaRP6(value: any): void {
     if (value.value == 0) {
       this.Pon6 = 6;
@@ -588,7 +735,6 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
     }
   }
-
   public RespuestaRP7(value: any): void {
     if (value.value == 0) {
       this.Pon7 = 1;
@@ -618,7 +764,7 @@ export class SimuladorComponent implements OnInit {
   ///////Impacto Social
   public RespuestaIS1(value: any): void {
     if (value.value == 0) {
-      this.Pon8 = 8.5;
+      this.Pon8 = 1.41;
       this.MethodTotal()
     }
     else if (value.value == 1) {
@@ -626,7 +772,7 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon8 = 1.41;
+      this.Pon8 = 8.5;
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -634,18 +780,17 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
     }
   }
-
-    public RespuestaIS2(value: any): void {
+  public RespuestaIS2(value: any): void {
     if (value.value == 0) {
       this.Pon9 = 1.25;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon9 = 2.5;
+      this.Pon9 = 3.75;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon9 = 3.75;
+      this.Pon9 = 7.5;
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -653,18 +798,17 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
     }
   }
-
-      public RespuestaIS3(value: any): void {
+  public RespuestaIS3(value: any): void {
     if (value.value == 0) {
       this.Pon10 = 1.08;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon10 = 2.1;
+      this.Pon10 = 3.25;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon10 = 3.25;
+      this.Pon10 = 6.5;
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -672,7 +816,109 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
     }
   }
-
+  public RespuestaIS4(value: any): void {
+    if (value.value == 0) {
+      this.Pon11 = 0.6;
+      this.MethodTotal()
+    }
+    else if (value.value == 1) {
+      this.Pon11 = 1.8;
+      this.MethodTotal()
+    }
+    else if (value.value == 2) {
+      this.Pon11 = 3.6;
+      this.MethodTotal()
+    }
+    else if (value.value == 3) {
+      this.Pon11 = 6;
+      this.MethodTotal()
+    }
+    else if (value.value == null) {
+      this.Pon11 = 0;
+      this.MethodTotal()
+    }
+  }
+  public RespuestaIS5(value: any): void {
+    if (value.value == 0) {
+      this.Pon12 = 0.4;
+      this.MethodTotal()
+    }
+    else if (value.value == 1) {
+      this.Pon12 = 1.2;
+      this.MethodTotal()
+    }
+    else if (value.value == 2) {
+      this.Pon12 = 2.4;
+      this.MethodTotal()
+    }
+    else if (value.value == 3) {
+      this.Pon12 = 4;
+      this.MethodTotal()
+    }
+    else if (value.value == null) {
+      this.Pon12 = 0;
+      this.MethodTotal()
+    }
+  }
+  ///////Impacto Economico
+  public RespuestaISE1(value: any): void {
+    if (value.value == 0) {
+      this.Pon13 = 0.3;
+      this.MethodTotal()
+    }
+    else if (value.value == 1) {
+      this.Pon13 = 0.9;
+      this.MethodTotal()
+    }
+    else if (value.value == 2) {
+      this.Pon13 = 1.8;
+      this.MethodTotal()
+    }
+    else if (value.value == 3) {
+      this.Pon13 = 3;
+      this.MethodTotal()
+    }
+    else if (value.value == null) {
+      this.Pon13 = 0;
+      this.MethodTotal()
+    }
+  }
+  public RespuestaISE2(value: any): void {
+    if (value.value == 0) {
+      this.Pon14 = 0.33;
+      this.MethodTotal()
+    }
+    else if (value.value == 1) {
+      this.Pon14 = 1;
+      this.MethodTotal()
+    }
+    else if (value.value == 2) {
+      this.Pon14 = 2;
+      this.MethodTotal()
+    }
+    else if (value.value == null) {
+      this.Pon14 = 0;
+      this.MethodTotal()
+    }
+  }
+  public RespuestaISE3(value: any): void {
+    if (value.value == 0) {
+      this.Pon15 = 0.08;
+      this.MethodTotal()
+    }
+    else if (value.value == 1) {
+      this.Pon15 = 0.25;
+      this.MethodTotal()
+    }
+    else if (value.value == 2) {
+      this.Pon15 = 0.50;
+      this.MethodTotal()
+    }
+    else if (value.value == null) {
+      this.Pon15 = 0;
+      this.MethodTotal()
+    }
+  }
   public MethodTotal(): any {
     const pon1 = this.Pon1 ?? 0
     const pon2 = this.Pon2 ?? 0
@@ -686,33 +932,47 @@ export class SimuladorComponent implements OnInit {
     const pon10 = this.Pon10 ?? 0
     const pon11 = this.Pon11 ?? 0
     const pon12 = this.Pon12 ?? 0
-    this.TotalRacionalidad = pon1 + pon2 + pon3 + pon4 + pon5 + pon6 + pon7
+    const pon13 = this.Pon13 ?? 0
+    const pon14 = this.Pon14 ?? 0
+    const pon15 = this.Pon15 ?? 0
+    this.TotalRacionalidad = (pon1) + (pon2) + (pon3) + (pon4) + (pon5) + (pon6) + (pon7)
+    // this.TotalRacionalidad = (pon1)*1.6126 + (pon2)*1.6130 + (pon3)*1.6120 + (pon4)*1.6142 + (pon5)*1.6133 + (pon6)*1.6133 + (pon7)*1.61
     console.log("calificacion racionalidad", this.TotalRacionalidad)
-    this.TotalSocial = pon8 + pon9 +pon10 +pon11 +pon12
-    this.TotalEconomico = 0
-    this.CalGlob = (this.TotalRacionalidad ?? 0)*0.5 + (this.TotalSocial ?? 0)*0.33 + (this.TotalEconomico ?? 0)*0.16;
+    this.TotalSocial = pon8 + pon9 + pon10 + pon11 + pon12
+    this.TotalEconomico = pon13 + pon14 + pon15
+    this.CalGlob = (this.TotalRacionalidad ?? 0) + (this.TotalSocial ?? 0) + (this.TotalEconomico ?? 0)
     this.CalProm = this.CalGlob;
-    const ranges = [
-      { max: 50, color: '#f50707' },
-      { max: 70, color: '#ee9f05' },
-      { max: 80, color: '#368541' },
-      { max: 90, color: '#2e7d32' }
-    ];
-
-    // this.TotalRacionalidad = this.Pon1  
-    const range = ranges.find(r => this.TotalRacionalidad! <= r.max);
-    this.updateAppearance(range?.color ?? '#000');
-
-    const range_social = ranges.find(r => this.TotalSocial! <= r.max);
-    this.updateAppearance(range_social?.color ?? '#000');
+    this.updateAppearance(this.getColor(this.TotalRacionalidad ?? 0, 62));
+    this.updateAppearance2(this.getColor(this.TotalSocial ?? 0, 32.5));
+    this.updateAppearance3(this.getColor(this.TotalEconomico ?? 0, 5.5));
   }
+  private getColor(valor: number, maximo: number): string {
+    const porcentaje = (valor / maximo) * 100;
 
+    if (porcentaje <= 50) return '#f50707';
+    if (porcentaje <= 70) return '#ee9f05';
+    if (porcentaje <= 80) return '#368541';
+    return '#2e7d32';
+  }
   private updateAppearance(
     background: string
   ): void {
     this.progressStyles['background'] = background
-
   }
+
+
+  private updateAppearance2(
+    background: string
+  ): void {
+    this.progressStyles2['background'] = background
+  }
+
+  private updateAppearance3(
+    background: string
+  ): void {
+    this.progressStyles3['background'] = background
+  }
+
 
 
 }
