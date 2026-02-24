@@ -40,8 +40,10 @@ export class SimuladorComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   public form: FormGroup;
+  public formSimulacion: FormGroup;
   public icons = { paperclip: paperclipIcon, infoSolidIcon: infoSolidIcon, imageIcon: imageIcon, accessibilityIcon: accessibilityIcon, dollarIcon: dollarIcon, buildingsOutlineIcon: buildingsOutlineIcon, trashIcon: trashIcon };
   listItems: any[] = [];
+  listSim: any[] = [];
   fecha: Date = new Date()
   Pon1!: number | null;
   Pon2!: number | null;
@@ -246,12 +248,18 @@ export class SimuladorComponent implements OnInit {
   public charachtersCount: number;
   public counter: string
   public maxlength = 300;
-
+  previousStep = 0;
   constructor(private authService: AuthService, private pocketBaseService: PocketbaseService, private notificationService: NotificationService, private viewContainerRef: ViewContainerRef, private storageService: StorageService) {
     this.form = new FormGroup({
       clave: new FormControl("", [Validators.required, Validators.pattern(/^[A-Za-z]{2}\d{4}$/)]),
       nombre: new FormControl("", [Validators.required]),
       descripcion: new FormControl("", [Validators.required]),
+    });
+    this.formSimulacion = new FormGroup({
+      Proy: new FormControl("", [Validators.required]),
+      Res1: new FormControl("", [Validators.required]),
+      Res2: new FormControl("", [Validators.required]),
+      Res3: new FormControl("", [Validators.required]),
     });
     this.charachtersCount = this.form.value.justificacion ? this.form.value.justificacionlength : 0;
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
@@ -395,6 +403,7 @@ export class SimuladorComponent implements OnInit {
     // )
     // this.listItems = this.storageService.getSession<any[]>('proyectos') || [];
     this.listItems = this.storageService.getLocal<any[]>('proyectos') || [];
+
     const cantidad = this.listItems.length
     console.log(cantidad)
     if (cantidad === 0) {
@@ -413,15 +422,7 @@ export class SimuladorComponent implements OnInit {
 
   }
 
-  //   onStepChange(stepIndex: number) {
-  //   this.currentStep = stepIndex;
-  //   if (stepIndex === 3) {
-  //     localStorage.removeItem('proyectos');
-  //     this.LoadProy()
-  //   }
-  // }
 
-  previousStep = 0;
   //Logica de los estados del steper
   onStepChange(stepIndex: number) {
     const cantidad = this.storageService.getLocal<any[]>('proyectos')?.length ?? 0;
@@ -472,6 +473,8 @@ export class SimuladorComponent implements OnInit {
     else if (stepIndex == 3) {
       localStorage.removeItem('proyectos');
       this.LoadProy()
+      this.cantidadBol = true
+      this.currentStep = 0;
     }
     this.previousStep = stepIndex;
     this.currentStep = stepIndex;
@@ -505,49 +508,59 @@ export class SimuladorComponent implements OnInit {
     this.dataSaved2 = true;
     this.close2();
   }
+  public cancelar() {
+    console.log("vamos a cancelar la simulacion")
+  }
+  cargarSimulacion(clave: string) {
+
+  const registros = this.storageService.getLocal<any[]>('simulaciones') || [];
+
+  const simulacion = registros.find(r => r.clave === clave);
+
+ if (!simulacion) {
+    this.formSimulacion.reset(); // limpia si no hay datos
+    return;
+  }
+
+  this.formSimulacion.patchValue({
+    Res1: simulacion.resultados.res1,
+    Res2: simulacion.resultados.res2,
+    Res3: simulacion.resultados.res3
+  });
+  this.MethodTotal()
+}
+  public simular() {
+    console.log("Simualciones: ", this.itemSeleccionado);
+    const nuevoRegistro = {
+      clave: this.itemSeleccionado.clave,
+      resultados: {
+        res1: this.formSimulacion.get('Res1')?.value,
+        res2: this.formSimulacion.get('Res2')?.value,
+        res3: this.formSimulacion.get('Res3')?.value
+      },
+      fecha: new Date().toISOString()
+    }
+    // const nuevoRegistro = this.formSimulacion.value
+    const registros = this.storageService.getLocal<any[]>('simulaciones') || [];
+    const index = registros.findIndex(r => r.clave === nuevoRegistro.clave);
+    if (index !== -1) {
+      registros[index] = nuevoRegistro;
+    } else {
+      registros.push(nuevoRegistro);
+    }
+    // registros.push(nuevoRegistro);
+    this.storageService.setLocal('simulaciones', registros);
+    console.log('Registros guardados:', registros);
+  }
 
   onProyChange(item: any) {
     this.itemSeleccionado = item;
-    this.valorSeleccionado1 = null
-    this.valorSeleccionado2 = null
-    this.valorSeleccionado3 = null
-    this.valorSeleccionado4 = null
-    this.valorSeleccionado5 = null
-    this.valorSeleccionado6 = null
-    this.valorSeleccionado7 = null
-    this.valorSeleccionado8 = null
-    this.valorSeleccionado9 = null
-    this.valorSeleccionado10 = null
-    this.valorSeleccionado11 = null
-    this.valorSeleccionado12 = null
-    this.valorSeleccionado13 = null
-    this.valorSeleccionado14 = null
-    this.valorSeleccionado15 = null
-    this.Pon1 = 0
-    this.Pon2 = 0
-    this.Pon3 = 0
-    this.Pon4 = 0
-    this.Pon5 = 0
-    this.Pon6 = 0
-    this.Pon7 = 0
-    this.Pon8 = 0
-    this.Pon9 = 0
-    this.Pon10 = 0
-    this.Pon11 = 0
-    this.Pon12 = 0
-    this.Pon13 = 0
-    this.Pon14 = 0
-    this.Pon15 = 0
-    this.topBarraRacionalidad = 210
+    if (!item) return;
+    this.cargarSimulacion(item.clave);
+    this.MethodTotal()
+     this.topBarraRacionalidad = 210
     this.topBarraImpactoSocial = 230
-    this.RespuestaRP1(this.Pon1)
-    this.RespuestaRP2(this.Pon2)
-    this.RespuestaIS1(this.Pon8)
-    this.RespuestaIS2(this.Pon9)
-    this.RespuestaIS3(this.Pon10)
-    this.RespuestaIS4(this.Pon11)
-    this.RespuestaIS5(this.Pon12)
-    this.RespuestaISE1(this.Pon15)
+
   }
   public Respuesta1(value: any): void {
 

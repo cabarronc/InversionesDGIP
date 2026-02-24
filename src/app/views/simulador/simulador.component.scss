@@ -170,7 +170,18 @@
   z-index: 99; 
   background: #e0e0d5 /* importante para que no se vea transparente */
 }
+.k-valid {
+  border-color: #2e7d32 !important;
+   border: 2px solid #2e7d32 !important{
+    border-radius: 6px;
+   }
+}
 
+.form-success {
+  color: #2e7d32;
+  font-size: 9px;
+  margin-top: 2px;
+}
 .k-tooltip {
   z-index: 20000 !important;
 }
