@@ -1,5 +1,6 @@
 <section id="sectiondefault">
-  <div class="mt-1">
+    <!-- Instrucciones -->
+  <div class="row mt-1">
     <kendo-stepper [steps]="steps" stepType="full" [(currentStep)]="currentStep" [style.width.px]="770"
       (currentStepChange)="onStepChange($event)">
       <ng-template kendoStepperIndicatorTemplate let-step>
@@ -83,7 +84,6 @@
         </kendo-window>
         }
       </div>
-
       <!-- Simula -->
       <div class="col-md-3 mt-2 mb-2">
         <ng-template #tooltipProyecto>
@@ -160,19 +160,17 @@
           style="background-color:#dee4ec; border-radius: 15px; box-shadow: 5px 10px 18px #888888;">
           <kendo-card-header
             style="background-color:#0d6efd; color:rgb(255, 255, 255); border-top-left-radius: 15px; border-top-right-radius: 15px;">
-            <div class="row align-items-center">
-              <div class="col-12 col-md-9">
+            <div class="row ms-2">
+              <div class="col border-end">
                 @if (itemSeleccionado) {
                 <div class="texto"> Nombre: <strong>{{itemSeleccionado.nombre}}</strong></div>
                 <div class="texto">Descripcion: <strong>{{ itemSeleccionado.descripcion }}</strong> </div>
-                <!-- <div class="texto">Monto:<strong> $ {{ itemSeleccionado.montoAsignado | number:'1.2-2' }}</strong></div> -->
                 }
-
               </div>
-              <div class="col-md-1 pe-3">
+              <div class="col-2 d-flex align-items-center justify-content-center">
                 @if (itemSeleccionado){
                 <kendo-circulargauge [value]="CalProm  || 0 " [scale]="{ max: 100, rangePlaceholderColor: '#d9d9d9' }"
-                  [colors]="getGaugeColors()" style="width: 100px; height: 100px;">
+                  [colors]="getGaugeColors()" class="gauge-responsive">
                   <ng-template kendoCircularGaugeCenterTemplate let-value="CalProm">
                     <strong>
                       <span>
@@ -186,9 +184,6 @@
                   </ng-template>
                 </kendo-circulargauge>
                 }
-              </div>
-              <div class="col-md-1">
-
               </div>
             </div>
           </kendo-card-header>
@@ -282,7 +277,7 @@
                             </div>
                             <div class="col-9">
                               <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpRP1" textField="text" valueField="value"
+                                <kendo-dropdownlist [data]="OpRP1.slice(1)" textField="text" valueField="value"
                                   [value]="valorSeleccionado1" [valuePrimitive]="true"
                                   (valueChange)="valorSeleccionado1 = $event"
                                   [defaultItem]="{ text: 'Selecciona', value: null }"
@@ -367,7 +362,7 @@
                             </div>
                             <div class="col-9">
                               <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpRP2" textField="text" valueField="value"
+                                <kendo-dropdownlist [data]="OpRP2.slice(1)" textField="text" valueField="value"
                                   [valuePrimitive]="true" (selectionChange)="RespuestaRP2($event)"
                                   (valueChange)="valorSeleccionado2 = $event"
                                   [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado2"
@@ -527,18 +522,14 @@
 
                             </div>
                           </ng-template>
-
                           <div kendoTooltip [tooltipTemplate]="tooltipTemplate4" filter=".info-icon">
                             <kendo-label style="font-weight: bold;">
                               4.- Fuente financiamiento
                             </kendo-label>
-
                             <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                               <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                             </span>
                           </div>
-
-
                           <div class="row mt-2 mb-4">
                             <div class="col-1">
                               <kendo-badge-container>
@@ -546,12 +537,13 @@
                               </kendo-badge-container>
                             </div>
                             <div class="col-9">
-
+                            <kendo-formfield showHints="initial">
                               <kendo-dropdownlist #sizes [data]="OpRP4.slice(1)" textField="text" valueField="value"
                                 [valuePrimitive]="true" (selectionChange)="RespuestaRP4($event)"
-                                (valueChange)="valorSeleccionado4 = $event"
-                                [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado4">
-
+                                (valueChange)="valorSeleccionado4 = $event" formControlName="Res4"
+                                [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado4" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                  'k-valid': formSimulacion.get('Res4')?.valid && formSimulacion.get('Res4')?.dirty
+                                }">
                                 <ng-template kendoDropDownListItemTemplate let-dataItem>
                                   <span class="item-content">
                                     <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
@@ -570,9 +562,17 @@
                                     <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
                                   </span>
                                 </ng-template>
-
                               </kendo-dropdownlist>
-
+                              <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                              @if (formSimulacion.get('Res4')?.valid && formSimulacion.get('Res4')?.dirty) {
+                              <div class="form-success">
+                                ✔ Campo válido
+                              </div>
+                              }
+                              @else{
+                              <kendo-formhint>Seleccione una opción</kendo-formhint>
+                              }
+                            </kendo-formfield>
 
                             </div>
                             <div class="col-1">
@@ -613,7 +613,6 @@
                             <kendo-label style="font-weight: bold;">
                               5.- Proporcion Inversión Productiva
                             </kendo-label>
-
                             <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                               <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                             </span>
@@ -627,23 +626,36 @@
                               </span>
                             </div>
                             <div class="col-9">
-                              <kendo-dropdownlist [data]="OpRP5.slice(1)" textField="text" valueField="value"
-                                [value]="valorSeleccionado5" [valuePrimitive]="true"
-                                (valueChange)="valorSeleccionado5 = $event"
-                                [defaultItem]="{ text: 'Selecciona', value: null }"
-                                (selectionChange)="RespuestaRP5($event)">
-
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                              </kendo-dropdownlist>
+                              <kendo-formfield showHints="initial">
+                                <kendo-dropdownlist [data]="OpRP5.slice(1)" textField="text" valueField="value"
+                                  [value]="valorSeleccionado5" [valuePrimitive]="true"
+                                  (valueChange)="valorSeleccionado5 = $event"
+                                  [defaultItem]="{ text: 'Selecciona', value: null }"
+                                  (selectionChange)="RespuestaRP5($event)"  formControlName="Res5"
+                                [defaultItem]="{ text: 'Selecciona', value: null }"  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                  'k-valid': formSimulacion.get('Res5')?.valid && formSimulacion.get('Res5')?.dirty
+                                }">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                    @if (formSimulacion.get('Res5')?.valid && formSimulacion.get('Res5')?.dirty) {
+                                    <div class="form-success">
+                                      ✔ Campo válido
+                                    </div>
+                                    }
+                                    @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                              </kendo-formfield>
                             </div>
                             <div class="col-1">
                               <span>
@@ -675,18 +687,14 @@
                               Proporción de los beneficiarios directos respecto a la población onbjetivo
                             </div>
                           </ng-template>
-
                           <div kendoTooltip [tooltipTemplate]="tooltipTemplate6" filter=".info-icon">
                             <kendo-label style="font-weight: bold;">
                               6.- Proporcion de los beneficiarios directos
                             </kendo-label>
-
                             <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                               <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                             </span>
                           </div>
-
-
                           <div class="row mt-2 mb-4">
                             <div class="col-1">
                               <kendo-badge-container>
@@ -694,33 +702,42 @@
                               </kendo-badge-container>
                             </div>
                             <div class="col-9">
-
-                              <kendo-dropdownlist #sizes [data]="OpRP6" textField="text" valueField="value"
-                                [valuePrimitive]="true" (selectionChange)="RespuestaRP6($event)"
-                                (valueChange)="valorSeleccionado6 = $event" [value]="valorSeleccionado6">
-
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
-                                    }}</span>&nbsp;{{
-                                  dataItem?.text }}
-                                </span> -->
-                                    <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
-                                    }}</span>&nbsp;{{
-                                  dataItem?.text }}
-                                </span> -->
-                                    <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
-                                  </span>
-                                </ng-template>
-
-                              </kendo-dropdownlist>
-
-
+                              <kendo-formfield showHints="initial">
+                                <kendo-dropdownlist #sizes [data]="OpRP6.slice(1)" textField="text" valueField="value"
+                                  [valuePrimitive]="true" (selectionChange)="RespuestaRP6($event)"
+                                  (valueChange)="valorSeleccionado6 = $event" [value]="valorSeleccionado6" formControlName="Res6"
+                                [defaultItem]="{ text: 'Selecciona', value: null }"  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                  'k-valid': formSimulacion.get('Res6')?.valid && formSimulacion.get('Res6')?.dirty
+                                }">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                      }}</span>&nbsp;{{
+                                    dataItem?.text }}
+                                  </span> -->
+                                      <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                      }}</span>&nbsp;{{
+                                    dataItem?.text }}
+                                  </span> -->
+                                      <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                    </span>
+                                  </ng-template>                
+                                </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                    @if (formSimulacion.get('Res6')?.valid && formSimulacion.get('Res6')?.dirty) {
+                                    <div class="form-success">
+                                      ✔ Campo válido
+                                    </div>
+                                    }
+                                    @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                              </kendo-formfield>
                             </div>
                             <div class="col-1">
                               <span>
@@ -761,7 +778,7 @@
                           </ng-template>
                           <div kendoTooltip [tooltipTemplate]="tooltipTemplate7" filter=".info-icon">
                             <kendo-label style="font-weight: bold;">
-                              1.- Proporción concurrecia
+                              7.- Proporción concurrecia
                             </kendo-label>
 
                             <span class="info-icon" style="cursor: pointer; display: inline-flex;">
@@ -777,31 +794,45 @@
                               </span>
                             </div>
                             <div class="col-9">
-                              <kendo-dropdownlist [data]="OpRP7.slice(1)" textField="text" valueField="value"
-                                [value]="valorSeleccionado7" [valuePrimitive]="true"
-                                (valueChange)="valorSeleccionado7 = $event"
-                                [defaultItem]="{ text: 'Selecciona', value: null }"
-                                (selectionChange)="RespuestaRP7($event)">
+                              <kendo-formfield showHints="initial">
+                                <kendo-dropdownlist [data]="OpRP7.slice(1)" textField="text" valueField="value"
+                                  [value]="valorSeleccionado7" [valuePrimitive]="true"
+                                  (valueChange)="valorSeleccionado7 = $event"
+                                  [defaultItem]="{ text: 'Selecciona', value: null }"
+                                  (selectionChange)="RespuestaRP7($event)" formControlName="Res7"
+                                [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                  'k-valid': formSimulacion.get('Res7')?.valid && formSimulacion.get('Res7')?.dirty
+                                }">
 
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
-                                    }}</span>&nbsp;{{
-                                  dataItem?.text }}
-                                </span> -->
-                                    <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
-                                    }}</span>&nbsp;{{
-                                  dataItem?.text }}
-                                </span> -->
-                                    <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                              </kendo-dropdownlist>
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                      }}</span>&nbsp;{{
+                                    dataItem?.text }}
+                                  </span> -->
+                                      <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <!-- <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                      }}</span>&nbsp;{{
+                                    dataItem?.text }}
+                                  </span> -->
+                                      <span class="template">{{ dataItem?.value }}</span>&nbsp;{{ dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                                    <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                    @if (formSimulacion.get('Res7')?.valid && formSimulacion.get('Res7')?.dirty) {
+                                    <div class="form-success">
+                                      ✔ Campo válido
+                                    </div>
+                                    }
+                                    @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                              </kendo-formfield>
                             </div>
                             <div class="col-1">
                               <span>
@@ -826,7 +857,7 @@
       <br>
       <!-- Progress bar impacto social -->
       <div class="col-12 mt-3 mb-3 barra2" [style.top.px]="topBarraImpactoSocial">
-        <kendo-label text="Calificacion Impacto Social " style="font-weight: bold;">
+        <kendo-label text="Calificacion Impacto Social " style="font-weight: bold; font-size:16px !important;">
           &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles2" [label]="label" [animation]="animation"
             [max]="32.5" style="width: 83%;" [value]="TotalSocial||0">
           </kendo-progressbar>
@@ -883,31 +914,43 @@
                             <div class="col-1">
                               <span>
                                 <kendo-badge-container>
-                                  <kendo-badge themeColor="success">Bajo</kendo-badge>
+                                  <kendo-badge themeColor="success">Alto</kendo-badge>
                                 </kendo-badge-container>
                               </span>
                             </div>
                             <div class="col-9">
-
-                              <kendo-dropdownlist [data]="OpIS1.slice(1)" textField="text" valueField="value"
-                                [value]="valorSeleccionado8" [valuePrimitive]="true"
-                                (valueChange)="valorSeleccionado8 = $event"
-                                [defaultItem]="{ text: 'Selecciona', value: null }"
-                                (selectionChange)="RespuestaIS1($event)">
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{ dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{ dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                              </kendo-dropdownlist>
-
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist [data]="OpIS1.slice(1)" textField="text" valueField="value"
+                                    [value]="valorSeleccionado8" [valuePrimitive]="true"
+                                    (valueChange)="valorSeleccionado8 = $event"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    (selectionChange)="RespuestaIS1($event)" formControlName="Res8"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                      'k-valid': formSimulacion.get('Res8')?.valid && formSimulacion.get('Res8')?.dirty
+                                    }">
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                        @if (formSimulacion.get('Res8')?.valid && formSimulacion.get('Res8')?.dirty) {
+                                        <div class="form-success">
+                                          ✔ Campo válido
+                                        </div>
+                                        }
+                                        @else{
+                                      <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                      }
+                                  </kendo-formfield>
                             </div>
                             <div class="col-1">
                               <span>
@@ -954,29 +997,42 @@
                           <div class="row mt-2 mb-4">
                             <div class="col-1">
                               <kendo-badge-container>
-                                <kendo-badge themeColor="success">Alto</kendo-badge>
+                                <kendo-badge themeColor="warning">Medio</kendo-badge>
                               </kendo-badge-container>
                             </div>
                             <div class="col-9">
-
-                              <kendo-dropdownlist #sizes [data]="OpIS2" textField="text" valueField="value"
-                                [valuePrimitive]="true" (selectionChange)="RespuestaIS2($event)"
-                                (valueChange)="valorSeleccionado9 = $event" [value]="valorSeleccionado9">
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{
-                                    dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{
-                                    dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                              </kendo-dropdownlist>
+                              <kendo-formfield showHints="initial">
+                                <kendo-dropdownlist #sizes [data]="OpIS2.slice(1)" textField="text" valueField="value"
+                                  [valuePrimitive]="true" (selectionChange)="RespuestaIS2($event)"
+                                  (valueChange)="valorSeleccionado9 = $event" [value]="valorSeleccionado9" formControlName="Res9"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                      'k-valid': formSimulacion.get('Res9')?.valid && formSimulacion.get('Res9')?.dirty
+                                    }">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{
+                                      dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{
+                                      dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                      @if (formSimulacion.get('Res9')?.valid && formSimulacion.get('Res9')?.dirty) {
+                                      <div class="form-success">
+                                        ✔ Campo válido
+                                      </div>
+                                      }
+                                      @else{
+                                    <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                    }
+                              </kendo-formfield>
 
                             </div>
                             <div class="col-1">
@@ -1026,25 +1082,39 @@
                               </kendo-badge-container>
                             </div>
                             <div class="col-9">
-                              <kendo-dropdownlist #sizes [data]="OpIS3" textField="text" valueField="value"
-                                [valuePrimitive]="true" (selectionChange)="RespuestaIS3($event)"
-                                (valueChange)="valorSeleccionado10 = $event" [value]="valorSeleccionado10">
+                              <kendo-formfield showHints="initial">
+                                <kendo-dropdownlist #sizes [data]="OpIS3" textField="text" valueField="value"
+                                  [valuePrimitive]="true" (selectionChange)="RespuestaIS3($event)"
+                                  (valueChange)="valorSeleccionado10 = $event" [value]="valorSeleccionado10" formControlName="Res10"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                      'k-valid': formSimulacion.get('Res10')?.valid && formSimulacion.get('Res10')?.dirty
+                                    }">
 
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{
-                                    dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{
-                                    dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                              </kendo-dropdownlist>
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{
+                                      dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{
+                                      dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                    @if (formSimulacion.get('Res10')?.valid && formSimulacion.get('Res10')?.dirty) {
+                                    <div class="form-success">
+                                      ✔ Campo válido
+                                    </div>
+                                    }
+                                    @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                              </kendo-formfield>
                             </div>
                             <div class="col-1">
                               <span>
@@ -1096,28 +1166,39 @@
                               </kendo-badge-container>
                             </div>
                             <div class="col-9">
+                              <kendo-formfield showHints="initial">
+                                <kendo-dropdownlist #sizes [data]="OpIS4.slice(1)" textField="text" valueField="value"
+                                  [valuePrimitive]="true" (selectionChange)="RespuestaIS4($event)"
+                                  (valueChange)="valorSeleccionado11 = $event" [value]="valorSeleccionado11" formControlName="Res11"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                      'k-valid': formSimulacion.get('Res11')?.valid && formSimulacion.get('Res11')?.dirty
+                                    }">
 
-                              <kendo-dropdownlist #sizes [data]="OpIS4" textField="text" valueField="value"
-                                [valuePrimitive]="true" (selectionChange)="RespuestaIS4($event)"
-                                (valueChange)="valorSeleccionado11 = $event" [value]="valorSeleccionado11">
-
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{
-                                    dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{
-                                    dataItem?.text }}
-                                  </span>
-                                </ng-template>
-
-                              </kendo-dropdownlist>
-
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{
+                                      dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{
+                                      dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                    @if (formSimulacion.get('Res11')?.valid && formSimulacion.get('Res11')?.dirty) {
+                                    <div class="form-success">
+                                      ✔ Campo válido
+                                    </div>
+                                    }
+                                    @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                              </kendo-formfield>
 
                             </div>
                             <div class="col-1">
@@ -1170,10 +1251,13 @@
                               </kendo-badge-container>
                             </div>
                             <div class="col-9">
-
-                              <kendo-dropdownlist #sizes [data]="OpIS5" textField="text" valueField="value"
+                            <kendo-formfield showHints="initial">
+                              <kendo-dropdownlist #sizes [data]="OpIS5.slice(1)" textField="text" valueField="value"
                                 [valuePrimitive]="true" (selectionChange)="RespuestaIS5($event)"
-                                (valueChange)="valorSeleccionado12 = $event" [value]="valorSeleccionado12">
+                                (valueChange)="valorSeleccionado12 = $event" [value]="valorSeleccionado12" formControlName="Res12"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                      'k-valid': formSimulacion.get('Res12')?.valid && formSimulacion.get('Res12')?.dirty
+                                    }">
 
                                 <ng-template kendoDropDownListItemTemplate let-dataItem>
                                   <span class="item-content">
@@ -1189,8 +1273,17 @@
                                     dataItem?.text }}
                                   </span>
                                 </ng-template>
-
                               </kendo-dropdownlist>
+                              <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                    @if (formSimulacion.get('Res12')?.valid && formSimulacion.get('Res12')?.dirty) {
+                                    <div class="form-success">
+                                      ✔ Campo válido
+                                    </div>
+                                    }
+                                    @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                            </kendo-formfield>
 
 
                             </div>
@@ -1214,8 +1307,6 @@
                   </kendo-expansionpanel>
                 </div>
               </div>
-
-
             </kendo-card>
           </ng-template>
         </kendo-panelbar-item>
@@ -1225,7 +1316,7 @@
       <!-- ================================= Seccion 3  Impacto Economico 5.5 %        ======================== -->
       <!-- ============================================================================================================= -->
       <div class="col-12 mt-3 mb-3">
-        <kendo-label text="Calificacion Impacto Ecónomico " style="font-weight: bold;">
+        <kendo-label text="Calificacion Impacto Ecónomico " style="font-weight: bold;font-size:16px !important;">
           &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles3" [label]="label" [animation]="animation"
             [max]="5.5" style="width: 80%;" [value]="TotalEconomico||0">
           </kendo-progressbar>
@@ -1270,25 +1361,39 @@
                               </span>
                             </div>
                             <div class="col-9">
-                              <kendo-dropdownlist [data]="OpIE1" textField="text" valueField="value"
-                                [value]="valorSeleccionado13" [valuePrimitive]="true"
-                                (valueChange)="valorSeleccionado13 = $event"
-                                [defaultItem]="{ text: 'Selecciona', value: null }"
-                                (selectionChange)=" RespuestaISE1($event)">
+                              <kendo-formfield showHints="initial">
+                                <kendo-dropdownlist [data]="OpIE1.slice(1)" textField="text" valueField="value"
+                                  [value]="valorSeleccionado13" [valuePrimitive]="true"
+                                  (valueChange)="valorSeleccionado13 = $event"
+                                  [defaultItem]="{ text: 'Selecciona', value: null }"
+                                  (selectionChange)=" RespuestaISE1($event)" formControlName="Res13"
+                                      [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                        'k-valid': formSimulacion.get('Res13')?.valid && formSimulacion.get('Res13')?.dirty
+                                      }">
 
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{ dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{ dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                              </kendo-dropdownlist>
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{ dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{ dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                      @if (formSimulacion.get('Res13')?.valid && formSimulacion.get('Res13')?.dirty) {
+                                      <div class="form-success">
+                                        ✔ Campo válido
+                                      </div>
+                                      }
+                                      @else{
+                                    <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                    }
+                              </kendo-formfield>
                             </div>
                             <div class="col-1">
                               <span>
@@ -1335,25 +1440,38 @@
                               </kendo-badge-container>
                             </div>
                             <div class="col-9">
-                              <kendo-dropdownlist [data]="OpIE2" textField="text" valueField="value"
-                                (valueChange)="valorSeleccionado14 = $event" [valuePrimitive]="true"
-                                (selectionChange)="RespuestaISE2($event)" [value]="valorSeleccionado14">
-
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{
-                                    dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{
-                                    dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                              </kendo-dropdownlist>
+                              <kendo-formfield showHints="initial">
+                                <kendo-dropdownlist [data]="OpIE2.slice(1)" textField="text" valueField="value"
+                                  (valueChange)="valorSeleccionado14 = $event" [valuePrimitive]="true"
+                                  (selectionChange)="RespuestaISE2($event)" [value]="valorSeleccionado14" formControlName="Res14"
+                                        [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                          'k-valid': formSimulacion.get('Res14')?.valid && formSimulacion.get('Res14')?.dirty
+                                        }">
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{
+                                      dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{
+                                      dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res14')?.valid && formSimulacion.get('Res14')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                      }
+                              </kendo-formfield>
                             </div>
                             <div class="col-1">
                               <span>
@@ -1386,7 +1504,6 @@
 
                             </div>
                           </ng-template>
-
                           <div kendoTooltip [tooltipTemplate]="tooltipTemplate15" filter=".info-icon">
                             <kendo-label style="font-weight: bold;">
                               3.- Incidencia en empleos permanentes (2026)
@@ -1395,8 +1512,6 @@
                               <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                             </span>
                           </div>
-
-
                           <div class="row mt-2 mb-4">
                             <div class="col-1">
                               <kendo-badge-container>
@@ -1404,29 +1519,39 @@
                               </kendo-badge-container>
                             </div>
                             <div class="col-9">
+                              <kendo-formfield showHints="initial">
+                                <kendo-dropdownlist [data]="OpIE3" textField="text" valueField="value"
+                                  [valuePrimitive]="true" (selectionChange)="RespuestaISE3($event)"
+                                  (valueChange)="valorSeleccionado15 = $event" [value]="valorSeleccionado15" formControlName="Res15"
+                                        [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                          'k-valid': formSimulacion.get('Res15')?.valid && formSimulacion.get('Res15')?.dirty
+                                        }">
 
-                              <kendo-dropdownlist [data]="OpIE3" textField="text" valueField="value"
-                                [valuePrimitive]="true" (selectionChange)="RespuestaISE3($event)"
-                                (valueChange)="valorSeleccionado15 = $event" [value]="valorSeleccionado15">
-
-                                <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{
-                                    dataItem?.text }}
-                                  </span>
-                                </ng-template>
-                                <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                  <span class="item-content">
-                                    <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                      }}</span>&nbsp;{{
-                                    dataItem?.text }}
-                                  </span>
-                                </ng-template>
-
-                              </kendo-dropdownlist>
-
-
+                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{
+                                      dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                    <span class="item-content">
+                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        }}</span>&nbsp;{{
+                                      dataItem?.text }}
+                                    </span>
+                                  </ng-template>
+                                </kendo-dropdownlist>
+                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res15')?.valid && formSimulacion.get('Res15')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                      }
+                              </kendo-formfield>
                             </div>
                             <div class="col-1">
                               <span>
@@ -1455,9 +1580,10 @@
       </kendo-panelbar>
       <br>
     </div>
+    <!-- Botones del formulario -->
     <div class="k-actions k-actions-center">
       <button kendoButton type="button" (click)="cancelar()">Cancelar</button>
-      <button kendoButton themeColor="primary" type="button" (click)="simular()">
+      <button kendoButton themeColor="primary" type="submit" (click)="simular()">
         Simular Ya!
       </button>
     </div>

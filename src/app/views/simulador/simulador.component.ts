@@ -86,7 +86,7 @@ export class SimuladorComponent implements OnInit {
   ];
   itemSeleccionado: any = null;
 
-
+// Estilos de la barra de progreso
   public progressStyles: { [key: string]: string } = {
     color: "",
     background: ""
@@ -99,7 +99,7 @@ export class SimuladorComponent implements OnInit {
     color: "",
     background: ""
   };
-
+// Variables de Totales
   TotalRacionalidad!: number | null;
   TotalSocial!: number | null;
   TotalEconomico!: number | null;
@@ -123,14 +123,7 @@ export class SimuladorComponent implements OnInit {
   valorSeleccionado15: number | null = null;
 
 
-  public OpDp4: Array<{ text: string; value: number | null }> = [
-    { text: "Selecciona", value: null },
-    { text: "Muy alto", value: 0 },
-    { text: "Alto", value: 1 },
-    { text: "Medio", value: 2 },
-    { text: "Medio", value: 3 },
-    { text: "Bajo", value: 4 },
-  ];
+// Racionalidad Pública
   public OpRP1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Muy alto", value: 0 },
@@ -159,7 +152,6 @@ export class SimuladorComponent implements OnInit {
     { text: "Etiquetada parcial", value: 2 },
     { text: "Libre disposción", value: 3 },
   ];
-
   public OpRP5: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Total", value: 0 },
@@ -168,7 +160,6 @@ export class SimuladorComponent implements OnInit {
     { text: "Nula", value: 3 },
     { text: "Nula", value: 4 },
   ];
-
   public OpRP6: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Alta", value: 0 },
@@ -176,7 +167,6 @@ export class SimuladorComponent implements OnInit {
     { text: "Baja", value: 2 },
     { text: "Minima", value: 3 },
   ];
-
   public OpRP7: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Muy alta", value: 0 },
@@ -185,16 +175,13 @@ export class SimuladorComponent implements OnInit {
     { text: "Baja", value: 3 },
     { text: "Sin", value: 4 },
   ];
-
-
-
+// Impacto Social
   public OpIS1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Con rezago medio", value: 0 },
     { text: "Con rezago bajo", value: 1 },
     { text: "Otros", value: 2 },
   ];
-
   public OpIS2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Directa", value: 2 },
@@ -214,7 +201,7 @@ export class SimuladorComponent implements OnInit {
     { text: "Prioridad baja", value: 1 },
     { text: "Otros", value: 0 },
   ];
-
+// Impacto Ecónomico
   public OpIS5: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Prioridad alta", value: 3 },
@@ -222,8 +209,6 @@ export class SimuladorComponent implements OnInit {
     { text: "Prioridad baja", value: 1 },
     { text: "Otros", value: 0 },
   ];
-
-
   public OpIE1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Alta", value: 3 },
@@ -244,11 +229,12 @@ export class SimuladorComponent implements OnInit {
     { text: "Nula", value: 0 },
   ];
 
-
+//contador de letras
   public charachtersCount: number;
   public counter: string
   public maxlength = 300;
   previousStep = 0;
+
   constructor(private authService: AuthService, private pocketBaseService: PocketbaseService, private notificationService: NotificationService, private viewContainerRef: ViewContainerRef, private storageService: StorageService) {
     this.form = new FormGroup({
       clave: new FormControl("", [Validators.required, Validators.pattern(/^[A-Za-z]{2}\d{4}$/)]),
@@ -256,10 +242,21 @@ export class SimuladorComponent implements OnInit {
       descripcion: new FormControl("", [Validators.required]),
     });
     this.formSimulacion = new FormGroup({
-      Proy: new FormControl("", [Validators.required]),
       Res1: new FormControl("", [Validators.required]),
       Res2: new FormControl("", [Validators.required]),
       Res3: new FormControl("", [Validators.required]),
+      Res4: new FormControl("", [Validators.required]),
+      Res5: new FormControl("", [Validators.required]),
+      Res6: new FormControl("", [Validators.required]),
+      Res7: new FormControl("", [Validators.required]),
+      Res8: new FormControl("", [Validators.required]),
+      Res9: new FormControl("", [Validators.required]),
+      Res10: new FormControl("", [Validators.required]),
+      Res11: new FormControl("", [Validators.required]),
+      Res12: new FormControl("", [Validators.required]),
+      Res13: new FormControl("", [Validators.required]),
+      Res14: new FormControl("", [Validators.required]),
+      Res15: new FormControl("", [Validators.required]),
     });
     this.charachtersCount = this.form.value.justificacion ? this.form.value.justificacionlength : 0;
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
@@ -430,6 +427,14 @@ export class SimuladorComponent implements OnInit {
       setTimeout(() => {
         this.currentStep = this.previousStep + 1;
       });
+      this.notificationService.show({
+        content: "Debes crear primero tu proyecto",
+        appendTo: this.viewContainerRef,
+        hideAfter: 2500,
+        animation: { type: "slide", duration: 2500 },
+        type: { style: "warning", icon: true },
+        position: { horizontal: "center", vertical: "bottom" },
+      });
       return;
     }
     if (stepIndex === 0 && cantidad === 0) {
@@ -443,17 +448,41 @@ export class SimuladorComponent implements OnInit {
       setTimeout(() => {
         this.currentStep = this.previousStep;
       });
+      this.notificationService.show({
+        content: "Debes crear primero tu proyecto",
+        appendTo: this.viewContainerRef,
+        hideAfter: 2500,
+        animation: { type: "slide", duration: 2500 },
+        type: { style: "warning", icon: true },
+        position: { horizontal: "center", vertical: "top" },
+      });
       return;
     }
     if (stepIndex === 1 && cantidad < 3) {
       setTimeout(() => {
         this.currentStep = this.previousStep + 1;
       });
+        this.notificationService.show({
+        content: "Debes crear primero tu proyecto2",
+        appendTo: this.viewContainerRef,
+        hideAfter: 2500,
+        animation: { type: "slide", duration: 2500 },
+        type: { style: "warning", icon: true },
+        position: { horizontal: "center", vertical: "top" },
+      });
       return;
     }
     if (stepIndex === 1 && cantidad == 3) {
       setTimeout(() => {
         this.currentStep = this.previousStep + 2;
+      });
+      this.notificationService.show({
+        content: "Debes crear primero tu proyecto3",
+        appendTo: this.viewContainerRef,
+        hideAfter: 2500,
+        animation: { type: "slide", duration: 2500 },
+        type: { style: "warning", icon: true },
+        position: { horizontal: "center", vertical: "top" },
       });
       return;
     }
@@ -462,11 +491,27 @@ export class SimuladorComponent implements OnInit {
       setTimeout(() => {
         this.currentStep = this.previousStep + 1;
       });
+            this.notificationService.show({
+        content: "Debes crear y simualar al menos tres proyectos",
+        appendTo: this.viewContainerRef,
+        hideAfter: 2500,
+        animation: { type: "slide", duration: 2500 },
+        type: { style: "warning", icon: true },
+        position: { horizontal: "center", vertical: "top" },
+      });
       return;
     }
     if (stepIndex === 2 && cantidad < 3) {
       setTimeout(() => {
         this.currentStep = this.previousStep;
+      });
+       this.notificationService.show({
+        content: "Debes crear y simualar al menos tres proyectos2",
+        appendTo: this.viewContainerRef,
+        hideAfter: 2500,
+        animation: { type: "slide", duration: 2500 },
+        type: { style: "warning", icon: true },
+        position: { horizontal: "center", vertical: "top" },
       });
       return;
     }
@@ -479,7 +524,6 @@ export class SimuladorComponent implements OnInit {
     this.previousStep = stepIndex;
     this.currentStep = stepIndex;
   }
-
 
   public close(): void {
     this.opened = false;
@@ -511,32 +555,134 @@ export class SimuladorComponent implements OnInit {
   public cancelar() {
     console.log("vamos a cancelar la simulacion")
   }
-  cargarSimulacion(clave: string) {
+  public cargarSimulacion(clave: string) {
 
-  const registros = this.storageService.getLocal<any[]>('simulaciones') || [];
+    const registros = this.storageService.getLocal<any[]>('simulaciones') || [];
 
-  const simulacion = registros.find(r => r.clave === clave);
+    const simulacion = registros.find(r => r.clave === clave);
 
- if (!simulacion) {
-    this.formSimulacion.reset(); // limpia si no hay datos
-    return;
+    if (!simulacion) {
+      this.formSimulacion.reset(); // limpia si no hay datos
+      return;
+    }
+
+    this.formSimulacion.patchValue({
+      Res1: simulacion.resultados.res1,
+      Res2: simulacion.resultados.res2,
+      Res3: simulacion.resultados.res3,
+      Res4: simulacion.resultados.res4,
+      Res5: simulacion.resultados.res5,
+      Res6: simulacion.resultados.res6,
+      Res7: simulacion.resultados.res7,
+      Res8: simulacion.resultados.res8,
+      Res9: simulacion.resultados.res9,
+      Res10: simulacion.resultados.res10,
+      Res11: simulacion.resultados.res11,
+      Res12: simulacion.resultados.res12,
+      Res13: simulacion.resultados.res13,
+      Res14: simulacion.resultados.res14,
+      Res15: simulacion.resultados.res15,
+
+    });
+    this.Pon1 = simulacion.resultados.pon1
+    this.Pon2 = simulacion.resultados.pon2
+    this.Pon3 = simulacion.resultados.pon3
+    this.Pon4 = simulacion.resultados.pon4
+    this.Pon5 = simulacion.resultados.pon5
+    this.Pon6 = simulacion.resultados.pon6
+    this.Pon7 = simulacion.resultados.pon7
+    this.Pon8 = simulacion.resultados.pon8
+    this.Pon9 = simulacion.resultados.pon9
+    this.Pon10 = simulacion.resultados.pon10
+    this.Pon11 = simulacion.resultados.pon11
+    this.Pon12 = simulacion.resultados.pon12
+    this.Pon13 = simulacion.resultados.pon13
+    this.Pon14 = simulacion.resultados.pon14
+    this.Pon15 = simulacion.resultados.pon15                        
+    console.log("Ponderacion", this.Pon1)
+    this.MethodTotal()
   }
-
-  this.formSimulacion.patchValue({
-    Res1: simulacion.resultados.res1,
-    Res2: simulacion.resultados.res2,
-    Res3: simulacion.resultados.res3
-  });
-  this.MethodTotal()
-}
+  //Metodo para simular 
   public simular() {
+    // 🔴 Validar formulario antes de continuar
+    if (this.formSimulacion.invalid) {
+      this.formSimulacion.markAllAsTouched();
+    
+      const nombresCampos: any = {
+        Res1: 'Gasto de Adminsitración',
+        Res2: 'Preparacion Técnica',
+        Res3: 'Desempeño  Historico',
+        Res4: 'Fuente Financiamiento',
+        Res5: 'Inversión Productiva',
+        Res6: 'Cobertura de la Población Objetivo',
+        Res7: 'Concurrencia',
+        Res8: 'Atención Rezago Social',
+        Res9: 'Igualdad de Género',
+        Res10: 'Subsidios Sociales',
+        Res11: 'Incidencia en los ODS',
+        Res12: 'Incidencia en los Indicadores de Pobreza',
+        Res13: 'Incidencia Empleso Temporales',
+        Res14: 'Actividad Económica',
+        Res15: 'Incidencia en Empleos Permanentes',
+
+      };
+      const camposFaltantes: string[] = [];
+      Object.keys(this.formSimulacion.controls).forEach(campo => {
+        const control = this.formSimulacion.get(campo);
+
+        if (control?.invalid) {
+          camposFaltantes.push(nombresCampos[campo] || campo);
+        }
+      });
+
+      const mensaje = camposFaltantes.length === 1
+      ? `Falta la Variable: ${camposFaltantes[0]}`
+      : `Faltan los siguientes variables: ${camposFaltantes.join(', ')}`;
+
+      this.notificationService.show({
+        content: mensaje,
+        appendTo: this.viewContainerRef,
+        hideAfter: 2500,
+        animation: { type: "slide", duration: 2500 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "center", vertical: "bottom" },
+      });
+      return; // Detiene la ejecución
+    }
     console.log("Simualciones: ", this.itemSeleccionado);
     const nuevoRegistro = {
       clave: this.itemSeleccionado.clave,
       resultados: {
         res1: this.formSimulacion.get('Res1')?.value,
+        pon1: this.Pon1 ?? 0,
         res2: this.formSimulacion.get('Res2')?.value,
-        res3: this.formSimulacion.get('Res3')?.value
+        pon2: this.Pon2 ?? 0,
+        res3: this.formSimulacion.get('Res3')?.value,
+        pon3: this.Pon3 ?? 0,
+        res4: this.formSimulacion.get('Res4')?.value,
+        pon4: this.Pon4 ?? 0,
+        res5: this.formSimulacion.get('Res5')?.value,
+        pon5: this.Pon5 ?? 0,
+        res6: this.formSimulacion.get('Res6')?.value,
+        pon6: this.Pon6 ?? 0,
+        res7: this.formSimulacion.get('Res7')?.value,
+        pon7: this.Pon7 ?? 0,
+        res8: this.formSimulacion.get('Res8')?.value,
+        pon8: this.Pon8 ?? 0,
+        res9: this.formSimulacion.get('Res9')?.value,
+        pon9: this.Pon9 ?? 0,
+        res10: this.formSimulacion.get('Res10')?.value,
+        pon10: this.Pon10 ?? 0,
+        res11: this.formSimulacion.get('Res11')?.value,
+        pon11: this.Pon11 ?? 0,
+        res12: this.formSimulacion.get('Res12')?.value,
+        pon12: this.Pon12 ?? 0,
+        res13: this.formSimulacion.get('Res13')?.value,
+        pon13: this.Pon13 ?? 0,
+        res14: this.formSimulacion.get('Res14')?.value,
+        pon14: this.Pon14 ?? 0,
+        res15: this.formSimulacion.get('Res15')?.value,
+        pon15: this.Pon15 ?? 0,
       },
       fecha: new Date().toISOString()
     }
@@ -550,6 +696,16 @@ export class SimuladorComponent implements OnInit {
     }
     // registros.push(nuevoRegistro);
     this.storageService.setLocal('simulaciones', registros);
+    const proteyctoCreado = nuevoRegistro.clave
+    const finalMessage = `Se simulo el proyecto: ${proteyctoCreado}`;
+    this.notificationService.show({
+      content: finalMessage,
+      appendTo: this.viewContainerRef,
+      hideAfter: 2500,
+      animation: { type: "slide", duration: 2500 },
+      type: { style: "success", icon: true },
+      position: { horizontal: "center", vertical: "bottom" },
+    });
     console.log('Registros guardados:', registros);
   }
 
@@ -558,58 +714,11 @@ export class SimuladorComponent implements OnInit {
     if (!item) return;
     this.cargarSimulacion(item.clave);
     this.MethodTotal()
-     this.topBarraRacionalidad = 210
+    this.topBarraRacionalidad = 210
     this.topBarraImpactoSocial = 230
 
   }
-  public Respuesta1(value: any): void {
 
-    if (value.value == 0) {
-      this.Pon1 = 19;
-      this.MethodTotal()
-    }
-    else if (value.value == 1) {
-      this.Pon1 = 14.25;
-      this.MethodTotal()
-    }
-    else if (value.value == 2) {
-      this.Pon1 = 9.5;
-      this.MethodTotal()
-    }
-    else if (value.value == 3) {
-      this.Pon1 = 4.75;
-      this.MethodTotal()
-    }
-
-    else if (value.value == null) {
-      this.Pon1 = 0;
-      this.MethodTotal()
-    }
-  }
-  public Respuesta2(value: any): void {
-
-    if (value.value == 0) {
-      this.Pon1 = 19;
-      this.MethodTotal()
-    }
-    else if (value.value == 1) {
-      this.Pon1 = 14.25;
-      this.MethodTotal()
-    }
-    else if (value.value == 2) {
-      this.Pon1 = 9.5;
-      this.MethodTotal()
-    }
-    else if (value.value == 3) {
-      this.Pon1 = 4.75;
-      this.MethodTotal()
-    }
-
-    else if (value.value == null) {
-      this.Pon1 = 0;
-      this.MethodTotal()
-    }
-  }
   public RespuestaRP1(value: any): void {
 
     if (value.value == 0) {
@@ -972,20 +1081,14 @@ export class SimuladorComponent implements OnInit {
   ): void {
     this.progressStyles['background'] = background
   }
-
-
   private updateAppearance2(
     background: string
   ): void {
     this.progressStyles2['background'] = background
   }
-
   private updateAppearance3(
     background: string
   ): void {
     this.progressStyles3['background'] = background
   }
-
-
-
 }

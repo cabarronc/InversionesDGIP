@@ -176,11 +176,13 @@
     border-radius: 6px;
    }
 }
+.gauge-responsive {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
 
-.form-success {
-  color: #2e7d32;
-  font-size: 9px;
-  margin-top: 2px;
+.col-2{
+  min-width: 120px 
 }
 .k-tooltip {
   z-index: 20000 !important;
