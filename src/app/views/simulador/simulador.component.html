@@ -76,7 +76,7 @@
             </fieldset>
             <div class="k-actions k-actions-center">
               <button kendoButton type="button" (click)="close()">Cancelar</button>
-              <button kendoButton themeColor="primary" type="button" (click)="submit()">
+              <button kendoButton themeColor="primary" type="submit" (click)="submit()">
                 Crear
               </button>
             </div>
@@ -1520,7 +1520,7 @@
                             </div>
                             <div class="col-9">
                               <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpIE3" textField="text" valueField="value"
+                                <kendo-dropdownlist [data]="OpIE3.slice(1)" textField="text" valueField="value"
                                   [valuePrimitive]="true" (selectionChange)="RespuestaISE3($event)"
                                   (valueChange)="valorSeleccionado15 = $event" [value]="valorSeleccionado15" formControlName="Res15"
                                         [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
@@ -1582,7 +1582,7 @@
     </div>
     <!-- Botones del formulario -->
     <div class="k-actions k-actions-center">
-      <button kendoButton type="button" (click)="cancelar()">Cancelar</button>
+      <button kendoButton type="button" (click)="cancelar_simulacion()">Cancelar</button>
       <button kendoButton themeColor="primary" type="submit" (click)="simular()">
         Simular Ya!
       </button>

@@ -86,7 +86,7 @@ export class SimuladorComponent implements OnInit {
   ];
   itemSeleccionado: any = null;
 
-// Estilos de la barra de progreso
+  // Estilos de la barra de progreso
   public progressStyles: { [key: string]: string } = {
     color: "",
     background: ""
@@ -99,7 +99,7 @@ export class SimuladorComponent implements OnInit {
     color: "",
     background: ""
   };
-// Variables de Totales
+  // Variables de Totales
   TotalRacionalidad!: number | null;
   TotalSocial!: number | null;
   TotalEconomico!: number | null;
@@ -123,13 +123,13 @@ export class SimuladorComponent implements OnInit {
   valorSeleccionado15: number | null = null;
 
 
-// Racionalidad Pública
+  // Racionalidad Pública
   public OpRP1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Muy alto", value: 0 },
-    { text: "Alto", value: 1 },
-    { text: "Medio", value: 2 },
-    { text: "Bajo", value: 3 },
+    { text: "Muy alto", value: 3 },
+    { text: "Alto", value: 2 },
+    { text: "Medio", value: 1 },
+    { text: "Bajo", value: 0 },
   ];
   public OpRP2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
@@ -175,7 +175,7 @@ export class SimuladorComponent implements OnInit {
     { text: "Baja", value: 3 },
     { text: "Sin", value: 4 },
   ];
-// Impacto Social
+  // Impacto Social
   public OpIS1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Con rezago medio", value: 0 },
@@ -201,7 +201,7 @@ export class SimuladorComponent implements OnInit {
     { text: "Prioridad baja", value: 1 },
     { text: "Otros", value: 0 },
   ];
-// Impacto Ecónomico
+  // Impacto Ecónomico
   public OpIS5: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Prioridad alta", value: 3 },
@@ -229,7 +229,7 @@ export class SimuladorComponent implements OnInit {
     { text: "Nula", value: 0 },
   ];
 
-//contador de letras
+  //contador de letras
   public charachtersCount: number;
   public counter: string
   public maxlength = 300;
@@ -400,21 +400,21 @@ export class SimuladorComponent implements OnInit {
     // )
     // this.listItems = this.storageService.getSession<any[]>('proyectos') || [];
     this.listItems = this.storageService.getLocal<any[]>('proyectos') || [];
-
-    const cantidad = this.listItems.length
-    console.log(cantidad)
-    if (cantidad === 0) {
+    this.listSim = this.storageService.getLocal<any[]>('simulaciones') || [];
+    const cantidad_proy = this.listItems.length
+    const cantidad_simulacion = this.listSim.length
+    console.log(cantidad_proy)
+    console.log(cantidad_simulacion)
+    if (cantidad_proy === 0) {
       this.currentStep = 0;
 
-    } else if (cantidad <= 2) {
+    } else if (cantidad_proy <= 2) {
       this.currentStep = 1;
-    } else if (cantidad >= 3) {
+    } else if (cantidad_proy === 3 && cantidad_simulacion === 3) {
       this.currentStep = 2;
       this.cantidadBol = false
     } else {
-      this.currentStep = 3;
-
-
+      this.currentStep = 1;
     }
 
   }
@@ -422,7 +422,8 @@ export class SimuladorComponent implements OnInit {
 
   //Logica de los estados del steper
   onStepChange(stepIndex: number) {
-    const cantidad = this.storageService.getLocal<any[]>('proyectos')?.length ?? 0;
+    const cantidad_proyectos = this.storageService.getLocal<any[]>('proyectos')?.length ?? 0;
+    const cantidad_simulaciones = this.storageService.getLocal<any[]>('simulaciones')?.length ?? 0;
     if (stepIndex === 0) {
       setTimeout(() => {
         this.currentStep = this.previousStep + 1;
@@ -437,14 +438,14 @@ export class SimuladorComponent implements OnInit {
       });
       return;
     }
-    if (stepIndex === 0 && cantidad === 0) {
+    if (stepIndex === 0 && cantidad_proyectos === 0) {
       setTimeout(() => {
         this.currentStep = this.previousStep;
       });
       return;
     }
     //Simula
-    if (stepIndex === 1 && cantidad === 0) {
+    if (stepIndex === 1 && cantidad_proyectos === 0) {
       setTimeout(() => {
         this.currentStep = this.previousStep;
       });
@@ -458,11 +459,11 @@ export class SimuladorComponent implements OnInit {
       });
       return;
     }
-    if (stepIndex === 1 && cantidad < 3) {
+    if (stepIndex === 1 && cantidad_proyectos < 3) {
       setTimeout(() => {
         this.currentStep = this.previousStep + 1;
       });
-        this.notificationService.show({
+      this.notificationService.show({
         content: "Debes crear primero tu proyecto2",
         appendTo: this.viewContainerRef,
         hideAfter: 2500,
@@ -472,12 +473,12 @@ export class SimuladorComponent implements OnInit {
       });
       return;
     }
-    if (stepIndex === 1 && cantidad == 3) {
+    if (stepIndex === 1 && cantidad_proyectos === 3) {
       setTimeout(() => {
         this.currentStep = this.previousStep + 2;
       });
       this.notificationService.show({
-        content: "Debes crear primero tu proyecto3",
+        content: "No puedes regresar al paso anterior",
         appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
@@ -487,11 +488,11 @@ export class SimuladorComponent implements OnInit {
       return;
     }
     //Compara
-    if (stepIndex === 2 && cantidad >= 1) {
+    if (stepIndex === 2 && cantidad_proyectos >= 1) {
       setTimeout(() => {
         this.currentStep = this.previousStep + 1;
       });
-            this.notificationService.show({
+      this.notificationService.show({
         content: "Debes crear y simualar al menos tres proyectos",
         appendTo: this.viewContainerRef,
         hideAfter: 2500,
@@ -501,12 +502,13 @@ export class SimuladorComponent implements OnInit {
       });
       return;
     }
-    if (stepIndex === 2 && cantidad < 3) {
+
+    if (stepIndex === 2 && cantidad_proyectos < 3) {
       setTimeout(() => {
         this.currentStep = this.previousStep;
       });
-       this.notificationService.show({
-        content: "Debes crear y simualar al menos tres proyectos2",
+      this.notificationService.show({
+        content: "No puedes regresar al paso anterior",
         appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
@@ -515,9 +517,14 @@ export class SimuladorComponent implements OnInit {
       });
       return;
     }
-    else if (stepIndex == 3) {
+    else if (stepIndex === 3) {
       localStorage.removeItem('proyectos');
+      localStorage.removeItem('simulaciones');
       this.LoadProy()
+      for (let i = 1; i <= 15; i++) {
+        this[`Pon${i}` as keyof this] = null as any;
+      }
+      this.MethodTotal()
       this.cantidadBol = true
       this.currentStep = 0;
     }
@@ -534,6 +541,30 @@ export class SimuladorComponent implements OnInit {
   }
 
   public submit(): void {
+     if (this.form.invalid) {
+       this.form.markAllAsTouched();
+       const camposFaltantes: string[] = [];
+      Object.keys(this.form.controls).forEach(campo => {
+        const control = this.form.get(campo);
+
+        if (control?.invalid) {
+          camposFaltantes.push(campo);
+        }
+      });
+
+      const mensaje = camposFaltantes.length === 1
+        ? `Falta el campo: ${camposFaltantes[0]}`
+        : `Faltan los siguientes campos: ${camposFaltantes.join(', ')}`;
+        this.notificationService.show({
+        content: mensaje,
+        appendTo: this.viewContainerRef,
+        hideAfter: 2500,
+        animation: { type: "slide", duration: 2500 },
+        type: { style: "error", icon: true },
+        position: { horizontal: "center", vertical: "top" },
+      });
+      return;
+     }
     this.dataSaved = true;
     this.guardar()
     this.guardar_local()
@@ -563,6 +594,10 @@ export class SimuladorComponent implements OnInit {
 
     if (!simulacion) {
       this.formSimulacion.reset(); // limpia si no hay datos
+      for (let i = 1; i <= 15; i++) {
+        this[`Pon${i}` as keyof this] = null as any;
+      }
+      this.MethodTotal()
       return;
     }
 
@@ -598,7 +633,7 @@ export class SimuladorComponent implements OnInit {
     this.Pon12 = simulacion.resultados.pon12
     this.Pon13 = simulacion.resultados.pon13
     this.Pon14 = simulacion.resultados.pon14
-    this.Pon15 = simulacion.resultados.pon15                        
+    this.Pon15 = simulacion.resultados.pon15
     console.log("Ponderacion", this.Pon1)
     this.MethodTotal()
   }
@@ -607,7 +642,7 @@ export class SimuladorComponent implements OnInit {
     // 🔴 Validar formulario antes de continuar
     if (this.formSimulacion.invalid) {
       this.formSimulacion.markAllAsTouched();
-    
+
       const nombresCampos: any = {
         Res1: 'Gasto de Adminsitración',
         Res2: 'Preparacion Técnica',
@@ -636,8 +671,8 @@ export class SimuladorComponent implements OnInit {
       });
 
       const mensaje = camposFaltantes.length === 1
-      ? `Falta la Variable: ${camposFaltantes[0]}`
-      : `Faltan los siguientes variables: ${camposFaltantes.join(', ')}`;
+        ? `Falta la variable: ${camposFaltantes[0]}`
+        : `Faltan los siguientes variables: ${camposFaltantes.join(', ')}`;
 
       this.notificationService.show({
         content: mensaje,
@@ -707,11 +742,35 @@ export class SimuladorComponent implements OnInit {
       position: { horizontal: "center", vertical: "bottom" },
     });
     console.log('Registros guardados:', registros);
+    this.formSimulacion.reset()
+    this.itemSeleccionado = null
+    for (let i = 1; i <= 15; i++) {
+      this[`Pon${i}` as keyof this] = null as any;
+    }
+    this.LoadProy()
+    this.MethodTotal()
   }
 
+  cancelar_simulacion() {
+    this.formSimulacion.reset()
+    this.itemSeleccionado = null
+    for (let i = 1; i <= 15; i++) {
+      this[`Pon${i}` as keyof this] = null as any;
+    }
+    this.MethodTotal()
+
+  }
   onProyChange(item: any) {
     this.itemSeleccionado = item;
-    if (!item) return;
+    console.log("onProyChange item", this.itemSeleccionado)
+    if (!item) {
+      this.formSimulacion.reset()
+      for (let i = 1; i <= 15; i++) {
+        this[`Pon${i}` as keyof this] = null as any;
+      }
+      this.MethodTotal()
+      return;
+    }
     this.cargarSimulacion(item.clave);
     this.MethodTotal()
     this.topBarraRacionalidad = 210
