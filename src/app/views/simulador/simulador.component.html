@@ -1083,7 +1083,7 @@
                             </div>
                             <div class="col-9">
                               <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist #sizes [data]="OpIS3" textField="text" valueField="value"
+                                <kendo-dropdownlist #sizes [data]="OpIS3.slice(1)" textField="text" valueField="value"
                                   [valuePrimitive]="true" (selectionChange)="RespuestaIS3($event)"
                                   (valueChange)="valorSeleccionado10 = $event" [value]="valorSeleccionado10" formControlName="Res10"
                                     [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{

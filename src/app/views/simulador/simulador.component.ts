@@ -520,14 +520,16 @@ export class SimuladorComponent implements OnInit {
     else if (stepIndex === 3) {
       localStorage.removeItem('proyectos');
       localStorage.removeItem('simulaciones');
-      this.LoadProy()
+      
       for (let i = 1; i <= 15; i++) {
         this[`Pon${i}` as keyof this] = null as any;
       }
+      this.LoadProy()
       this.MethodTotal()
       this.cantidadBol = true
       this.currentStep = 0;
     }
+
     this.previousStep = stepIndex;
     this.currentStep = stepIndex;
   }
