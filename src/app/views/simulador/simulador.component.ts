@@ -767,6 +767,8 @@ export class SimuladorComponent implements OnInit {
     this.itemSeleccionado = item;
     console.log("onProyChange item", this.itemSeleccionado)
     if (!item) {
+      this.topBarraRacionalidad = 100
+      this.topBarraImpactoSocial = 123
       this.formSimulacion.reset()
       for (let i = 1; i <= 15; i++) {
         this[`Pon${i}` as keyof this] = null as any;
@@ -776,8 +778,8 @@ export class SimuladorComponent implements OnInit {
     }
     this.cargarSimulacion(item.clave);
     this.MethodTotal()
-    this.topBarraRacionalidad = 210
-    this.topBarraImpactoSocial = 230
+    this.topBarraRacionalidad = 205
+    this.topBarraImpactoSocial = 228
 
   }
 
