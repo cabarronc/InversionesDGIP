@@ -527,7 +527,8 @@ export class SimuladorComponent implements OnInit {
       this.LoadProy()
       this.MethodTotal()
       this.cantidadBol = true
-      this.currentStep = 0;
+      stepIndex = 0;
+     
     }
 
     this.previousStep = stepIndex;
