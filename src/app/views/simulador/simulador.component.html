@@ -142,6 +142,7 @@
                 <kendo-textbox placeholder="nombre"></kendo-textbox>
               </label>
             </fieldset>
+            <app-face (moodChange)="recibirEstado($event)"></app-face>
             <div class="k-actions k-actions-end">
               <button kendoButton type="button" (click)="close2()">Cancelar</button>
               <button kendoButton themeColor="primary" type="button" (click)="submit2()">

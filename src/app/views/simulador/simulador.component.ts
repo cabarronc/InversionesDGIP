@@ -25,16 +25,23 @@ import {
   KENDO_PROGRESSBARS,
   LabelSettings,
 } from "@progress/kendo-angular-progressbar";
+import { FaceComponent } from '../animaciones/face/face.component';
 
 
 @Component({
   selector: 'app-simulador',
   standalone: true,
-  imports: [KENDO_ICONS, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT, KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule, KENDO_DIALOGS],
+  imports: [KENDO_ICONS,FaceComponent, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT,
+     KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule, KENDO_DIALOGS],
   templateUrl: './simulador.component.html',
   styleUrl: './simulador.component.scss'
 })
 export class SimuladorComponent implements OnInit {
+  estadoActual: 'happy' | 'neutral' | 'sad' = 'neutral';
+
+recibirEstado(mood: string) {
+  console.log('Nuevo estado:', mood);
+}
 
   CalculoDp() {
     throw new Error('Method not implemented.');
