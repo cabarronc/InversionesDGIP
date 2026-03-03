@@ -88,3 +88,140 @@ export class FaceComponent {
     this.mood = newMood;
   }
 }
+// import {
+//   Component,
+//   ElementRef,
+//   ViewChild,
+//   Input,
+//   signal,
+//   effect,
+//   AfterViewInit
+// } from '@angular/core';
+// import { CommonModule } from '@angular/common';
+// import { gsap } from 'gsap';
+
+// @Component({
+//   selector: 'app-face',
+//   standalone: true,
+//   imports: [CommonModule],
+//   templateUrl: './face.component.html',
+//   styleUrls: ['./face.component.scss']
+// })
+// export class FaceComponent implements AfterViewInit {
+
+//   mood = signal<'happy' | 'neutral' | 'sad'>('happy');
+
+//   @Input()
+//   set state(value: 'happy' | 'neutral' | 'sad') {
+//     this.mood.set(value);
+//   }
+
+//   @ViewChild('face') face!: ElementRef;
+//   @ViewChild('mouth') mouth!: ElementRef<SVGPathElement>;
+//   @ViewChild('leftPupil') leftPupil!: ElementRef;
+//   @ViewChild('rightPupil') rightPupil!: ElementRef;
+//   @ViewChild('tear') tear!: ElementRef;
+
+//   ngAfterViewInit() {
+//     this.setupReactivity();
+//     this.blinkRandom();
+//     this.trackMouse();
+//   }
+
+//   setupReactivity() {
+//     effect(() => {
+//       this.animateMood(this.mood());
+//     });
+//   }
+
+//   animateMood(mood: 'happy' | 'neutral' | 'sad') {
+
+//     const mouthPaths = {
+//       happy: "M40 75 Q60 95 80 75",
+//       neutral: "M40 80 Q60 80 80 80",
+//       sad: "M40 90 Q60 65 80 90"
+//     };
+
+//     const gradients = {
+//       happy: "linear-gradient(135deg,#FFD93D,#FF9F1C)",
+//       neutral: "linear-gradient(135deg,#F4A261,#E76F51)",
+//       sad: "linear-gradient(135deg,#6C757D,#495057)"
+//     };
+
+//     const tl = gsap.timeline();
+
+//     // Boca morph
+//     tl.to(this.mouth.nativeElement, {
+//       duration: 0.7,
+//       attr: { d: mouthPaths[mood] },
+//       ease: "elastic.out(1,0.4)"
+//     });
+
+//     // Gradiente dinámico
+//     tl.to(this.face.nativeElement, {
+//       background: gradients[mood],
+//       duration: 0.5
+//     }, 0);
+
+//     // Rebote físico
+//     tl.fromTo(this.face.nativeElement,
+//       { scale: 1 },
+//       {
+//         scale: 1.08,
+//         duration: 0.2,
+//         yoyo: true,
+//         repeat: 1
+//       }, 0);
+
+//     // Mejillas felices
+//     if (mood === 'happy') {
+//       gsap.to(".cheek", { scale: 1.3, opacity: 0.6 });
+//     } else {
+//       gsap.to(".cheek", { scale: 1, opacity: 0 });
+//     }
+
+//     // Lágrima triste
+//     if (mood === 'sad') {
+//       gsap.to(this.tear.nativeElement, {
+//         y: 25,
+//         opacity: 1,
+//         repeat: -1,
+//         yoyo: true,
+//         duration: 1
+//       });
+//     } else {
+//       gsap.to(this.tear.nativeElement, {
+//         opacity: 0,
+//         y: 0
+//       });
+//     }
+//   }
+
+//   blinkRandom() {
+//     const blink = () => {
+//       gsap.to(".eye", {
+//         scaleY: 0.1,
+//         duration: 0.1,
+//         yoyo: true,
+//         repeat: 1,
+//         onComplete: () => {
+//           gsap.delayedCall(gsap.utils.random(2, 5), blink);
+//         }
+//       });
+//     };
+//     blink();
+//   }
+
+//   trackMouse() {
+//     window.addEventListener('mousemove', (e) => {
+//       const x = (e.clientX / window.innerWidth - 0.5) * 10;
+//       const y = (e.clientY / window.innerHeight - 0.5) * 10;
+
+//       gsap.to([this.leftPupil.nativeElement, this.rightPupil.nativeElement], {
+//         x,
+//         y,
+//         duration: 0.3
+//       });
+//     });
+//   }
+// }

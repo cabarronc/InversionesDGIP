@@ -4,11 +4,10 @@
 
     <svg width="100" height="100">
 
-      <!-- Ojos -->
+
       <circle cx="35" cy="40" r="5" fill="#333" />
       <circle cx="65" cy="40" r="5" fill="#333" />
 
-      <!-- Cejas -->
       <rect x="25" y="25" width="20" height="3"
         fill="#333"
         [@eyebrowState]="mood" />
@@ -17,7 +16,7 @@
         fill="#333"
         [@eyebrowState]="mood" />
 
-      <!-- Boca -->
+
       <path
         fill="transparent"
         stroke="#333"
@@ -36,3 +35,30 @@
   </div>
 
 </div>
+<!-- <div class="face" #face>
+
+  <svg width="140" height="140">
+
+    <circle class="cheek" cx="35" cy="85" r="10" fill="pink" opacity="0"/>
+    <circle class="cheek" cx="105" cy="85" r="10" fill="pink" opacity="0"/>
+
+
+    <circle class="eye" cx="50" cy="60" r="10" fill="white"/>
+    <circle class="eye" cx="90" cy="60" r="10" fill="white"/>
+
+  
+    <circle #leftPupil cx="50" cy="60" r="4" fill="#333"/>
+    <circle #rightPupil cx="90" cy="60" r="4" fill="#333"/>
+
+    <path #mouth
+      d="M40 75 Q60 95 80 75"
+      stroke="#333"
+      stroke-width="4"
+      fill="transparent"/>
+
+  
+    <circle #tear cx="100" cy="75" r="5" fill="#4dabf7" opacity="0"/>
+
+  </svg>
+
+</div> -->

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, ViewContainerRef,signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormArray, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { KENDO_GAUGES } from "@progress/kendo-angular-gauges";
@@ -42,6 +42,15 @@ export class SimuladorComponent implements OnInit {
 recibirEstado(mood: string) {
   console.log('Nuevo estado:', mood);
 }
+// estado = signal<'happy' | 'neutral' | 'sad'>('happy');
+
+// simularError() {
+//   this.estado.set('sad');
+// }
+
+// simularExito() {
+//   this.estado.set('happy');
+// }
 
   CalculoDp() {
     throw new Error('Method not implemented.');
@@ -51,6 +60,7 @@ recibirEstado(mood: string) {
   public icons = { paperclip: paperclipIcon, infoSolidIcon: infoSolidIcon, imageIcon: imageIcon, accessibilityIcon: accessibilityIcon, dollarIcon: dollarIcon, buildingsOutlineIcon: buildingsOutlineIcon, trashIcon: trashIcon };
   listItems: any[] = [];
   listSim: any[] = [];
+  clave:string=''
   fecha: Date = new Date()
   Pon1!: number | null;
   Pon2!: number | null;
@@ -85,6 +95,7 @@ recibirEstado(mood: string) {
   public crear = true;
   public simuala = false;
   public compara = false;
+  public continuidad = true
   public steps = [
     { label: "Crea Proyecto", isValid: this.crear, emoji: "⚙️" },
     { label: "Simula", isValid: true, emoji: "🖥️" },
@@ -130,110 +141,134 @@ recibirEstado(mood: string) {
   valorSeleccionado15: number | null = null;
 
 
-  // Racionalidad Pública
+  //------------------------------ Racionalidad Pública --------------------------
+  // Gasto de administración 
   public OpRP1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Muy alto", value: 3 },
-    { text: "Alto", value: 2 },
-    { text: "Medio", value: 1 },
-    { text: "Bajo", value: 0 },
+    { text: "Muy alto", value: 0 },
+    { text: "Alto", value: 1 },
+    { text: "Medio", value: 2 },
+    { text: "Bajo", value: 3 },
   ];
+  // Grado de preparación técnica
   public OpRP2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Alto", value: 0 },
-    { text: "Medio-alto", value: 1 },
+    { text: "Bajo", value: 1 },
     { text: "Medio", value: 2 },
-    { text: "Bajo", value: 3 },
+     { text: "Medio-alto", value: 3},
+    { text: "Alto", value: 4},
   ];
+  // Desempeño Historico
   public OpRP3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Adecuado", value: 0 },
-    { text: "Medio-alto", value: 1 },
+    { text: "Bajo", value: 1 },
     { text: "Medio", value: 2 },
-    { text: "Bajo", value: 3 },
+    { text: "Medio-alto", value: 3 },
+    { text: "Adecuado", value: 4 },
   ];
+  // Fuente Financiamiento
   public OpRP4: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Etiquetda total", value: 0 },
-    { text: "Etiquetada parcial alta", value: 1 },
-    { text: "Etiquetada parcial", value: 2 },
-    { text: "Libre disposción", value: 3 },
+    { text: "Libre disposción", value: 0 },
+    { text: "Etiquetada parcial", value: 1 },
+    { text: "Etiquetada parcial alta", value: 2 },
+    { text: "Etiquetda total", value: 3 },
+   
   ];
+  // Inversion Productiva
   public OpRP5: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Total", value: 0 },
-    { text: "Alta", value: 1 },
+    { text: "Nula", value: 0 },
+    { text: "Baja", value: 1 },
     { text: "Media", value: 2 },
-    { text: "Nula", value: 3 },
-    { text: "Nula", value: 4 },
+    { text: "Alta", value: 3 },
+    { text: "Total", value: 4 },
+    
   ];
+  // Cobertura de la poblacion objetivo
   public OpRP6: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Alta", value: 0 },
-    { text: "Media", value: 1 },
+    { text: "Minima", value: 1 },
     { text: "Baja", value: 2 },
-    { text: "Minima", value: 3 },
+    { text: "Media", value: 3 },
+    { text: "Alta", value: 4 },
+   
   ];
   public OpRP7: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Muy alta", value: 0 },
-    { text: "Alta", value: 1 },
+    { text: "Sin", value: 0 },
+    { text: "Baja", value: 1 },
     { text: "Media", value: 2 },
-    { text: "Baja", value: 3 },
-    { text: "Sin", value: 4 },
+    { text: "Alta", value: 3 },
+    { text: "Muy alta", value: 4 },
   ];
-  // Impacto Social
+  //----------------------------Impacto Social
+  // Igualdad de Genero * 
   public OpIS1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Con rezago medio", value: 0 },
-    { text: "Con rezago bajo", value: 1 },
-    { text: "Otros", value: 2 },
+    { text: "Ninguna", value: 0 },
+    { text: "Indirecta", value: 1 },
+    { text: "Directa", value: 2 },
   ];
+  // Atencion a municipios con rezago social
   public OpIS2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Directa", value: 2 },
-    { text: "Indirecta", value: 1 },
-    { text: "Ninguna", value: 0 },
+     { text: "Otros", value: 0 },
+     { text: "Con rezago bajo", value: 1 },
+    { text: "Con rezago medio", value: 2 },
   ];
+  // Subsidios Sociales *
   public OpIS3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
+     { text: "Ninguno", value: 0 },
+     { text: "Otros", value: 1 },
     { text: "Personales", value: 2 },
-    { text: "Otros", value: 1 },
-    { text: "Ninguno", value: 0 },
+    
+   
   ];
+    // Incidencia ODS
   public OpIS4: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Prioridad alta", value: 3 },
-    { text: "Prioridad media", value: 2 },
-    { text: "Prioridad baja", value: 1 },
     { text: "Otros", value: 0 },
+     { text: "Prioridad baja", value: 1 },
+     { text: "Prioridad media", value: 2 },
+    { text: "Prioridad alta", value: 3 },
+    
   ];
-  // Impacto Ecónomico
-  public OpIS5: Array<{ text: string; value: number | null }> = [
+  // Incidencia Pobreza
+    public OpIS5: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Prioridad alta", value: 3 },
-    { text: "Prioridad media", value: 2 },
+    { text: "Sin incidencia", value: 0 },
     { text: "Prioridad baja", value: 1 },
-    { text: "Otros", value: 0 },
+    { text: "Prioridad media", value: 2 },
+    { text: "Prioridad alta", value: 3 },
+   
   ];
+  // ------------------------------- Impacto Ecónomico
+  // Empleos temporales
   public OpIE1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Alta", value: 3 },
-    { text: "Media", value: 2 },
-    { text: "Baja", value: 1 },
     { text: "Nula", value: 0 },
+    { text: "Baja", value: 1 },
+    { text: "Media", value: 2 },
+    { text: "Alta", value: 3 },
   ];
+  // Actividad Economica
   public OpIE2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Más relevante", value: 2 },
+    { text: "Otras", value: 0 },
     { text: "Relevante", value: 1 },
-    { text: "Otros", value: 0 },
+    { text: "Más relevante", value: 2 },
+    
+    
   ];
+  //Empleos permanentes
   public OpIE3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Alta", value: 2 },
-    { text: "Baja", value: 1 },
     { text: "Nula", value: 0 },
+    { text: "Baja", value: 1 },
+    { text: "Alta", value: 2 },
+  
   ];
 
   //contador de letras
@@ -244,9 +279,10 @@ recibirEstado(mood: string) {
 
   constructor(private authService: AuthService, private pocketBaseService: PocketbaseService, private notificationService: NotificationService, private viewContainerRef: ViewContainerRef, private storageService: StorageService) {
     this.form = new FormGroup({
-      clave: new FormControl("", [Validators.required, Validators.pattern(/^[A-Za-z]{2}\d{4}$/)]),
+      // clave: new FormControl("", [Validators.required, Validators.pattern(/^[A-Za-z]{2}\d{4}$/)]),
       nombre: new FormControl("", [Validators.required]),
       descripcion: new FormControl("", [Validators.required]),
+      continuidad: new FormControl(this.continuidad),
     });
     this.formSimulacion = new FormGroup({
       Res1: new FormControl("", [Validators.required]),
@@ -265,9 +301,15 @@ recibirEstado(mood: string) {
       Res14: new FormControl("", [Validators.required]),
       Res15: new FormControl("", [Validators.required]),
     });
+    
     this.charachtersCount = this.form.value.justificacion ? this.form.value.justificacionlength : 0;
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
   }
+get textoContinuidad(): string {
+  return this.form.get('continuidad')?.value
+    ? 'Tu proyecto cuenta con etapas previas'
+    : 'Tu proyecto cuenta con etapas previas';
+}
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
@@ -303,34 +345,91 @@ recibirEstado(mood: string) {
       }
     ];
   }
-  getTemplateClass(value: number): string {
-    if (value == 0) return 'template9';
-    if (value == 1) return 'template8';
-    if (value == 2) return 'template7';
-    if (value == 3) return 'template6';
-    if (value == 4) return 'template3';
 
-    return 'template';
-  }
+  //Diseño con  3 variables con cero
   getTemplateClass_22(value: number): string {
     if (value == 0) return 'template3';
     if (value == 1) return 'template6';
     if (value == 2) return 'template9';
     return 'template';
   }
-
+    //Diseño con  3 variables sin cero
+  getTemplateClass_22_SinCero(value: number): string {
+    if (value == 1) return 'template3';
+    if (value == 2) return 'template6';
+    if (value == 3) return 'template9';
+    return 'template';
+  }
+//Diseño con  4 variables con cero
   getTemplateClass_33(value: number): string {
     if (value == 0) return 'template3';
     if (value == 1) return 'template6';
     if (value == 2) return 'template8';
     if (value == 3) return 'template9';
-
+    return 'template';
+  } 
+  //Diseño con  4 variables sin cero
+    getTemplateClass_33_SinCero(value: number): string {
+    if (value == 1) return 'template3';
+    if (value == 2) return 'template6';
+    if (value == 3) return 'template8';
+    if (value == 4) return 'template9';
+    return 'template';
+  } 
+    //Diseño con  5 variables con cero
+  getTemplateClass(value: number): string {
+    if (value == 0) return 'template3';
+    if (value == 1) return 'template6';
+    if (value == 2) return 'template7';
+    if (value == 3) return 'template8';
+    if (value == 4) return 'template9';
 
     return 'template';
   }
+    //Diseño con  5 variables sin cero
+  getTemplateClass_SinCero(value: number): string {
+    if (value == 1) return 'template3';
+    if (value == 2) return 'template6';
+    if (value == 3) return 'template7';
+    if (value == 4) return 'template8';
+    if (value == 5) return 'template9';
+
+    return 'template';
+  }
+generarClave(): string {
+  const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  
+  const letra1 = letras.charAt(Math.floor(Math.random() * letras.length));
+  const letra2 = letras.charAt(Math.floor(Math.random() * letras.length));
+  
+  const numeros = Math.floor(1000 + Math.random() * 9000); 
+  // garantiza 4 dígitos (1000–9999)
+
+  return `${letra1}${letra2}${numeros}`;
+}
+clavesGeneradas = new Set<string>();
+
+generarClaveUnica(): string {
+  let clave: string;
+
+  do {
+    clave = this.generarClave();
+  } while (this.clavesGeneradas.has(clave));
+
+  this.clavesGeneradas.add(clave);
+  return clave;
+}
   //Funciones Principales
   guardar_local() {
-    const nuevoRegistro = this.form.value;
+    // const nuevoRegistro = this.form.value;
+    this.clave = this.generarClaveUnica()
+    const nuevoRegistro = {
+      clave: this.clave,
+      nombre: this.form.get('nombre')?.value,
+      descripcion: this.form.get('descripcion')?.value,
+
+    }
+    
     const registros = this.storageService.getLocal<any[]>('proyectos') || [];
     registros.push(nuevoRegistro);
     this.storageService.setLocal('proyectos', registros);
@@ -793,19 +892,19 @@ recibirEstado(mood: string) {
   public RespuestaRP1(value: any): void {
 
     if (value.value == 0) {
-      this.Pon1 = 19;
+      this.Pon1 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon1 = 11.4;
+      this.Pon1 = 5;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon1 = 5.7;
+      this.Pon1 = 10;
       this.MethodTotal()
     }
     else if (value.value == 3) {
-      this.Pon1 = 1.9;
+      this.Pon1 = 15;
       this.MethodTotal()
     }
 
@@ -815,20 +914,20 @@ recibirEstado(mood: string) {
     }
   }
   public RespuestaRP2(value: any): void {
-    if (value.value == 0) {
-      this.Pon2 = 13;
-      this.MethodTotal()
-    }
-    else if (value.value == 1) {
-      this.Pon2 = 7.8;
+    if (value.value == 1) {
+      this.Pon2 = 3.75;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon2 = 3.9;
+      this.Pon2 = 7.5;
       this.MethodTotal()
     }
     else if (value.value == 3) {
-      this.Pon2 = 1.3;
+      this.Pon2 = 11.25;
+      this.MethodTotal()
+    }
+    else if (value.value == 4) {
+      this.Pon2 = 15;
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -837,20 +936,20 @@ recibirEstado(mood: string) {
     }
   }
   public RespuestaRP3(value: any): void {
-    if (value.value == 0) {
-      this.Pon3 = 10;
-      this.MethodTotal()
-    }
-    else if (value.value == 1) {
-      this.Pon3 = 6;
+    if (value.value == 1) {
+      this.Pon3 = 2.5;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon3 = 3;
+      this.Pon3 = 5;
       this.MethodTotal()
     }
-    else if (value.value == 3) {
-      this.Pon3 = 1;
+    else if (value.value == 3) { 
+      this.Pon3 = 7.5;
+      this.MethodTotal()
+    }
+    else if (value.value == 4) {
+      this.Pon3 = 10;
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -860,19 +959,19 @@ recibirEstado(mood: string) {
   }
   public RespuestaRP4(value: any): void {
     if (value.value == 0) {
-      this.Pon4 = 7;
+      this.Pon4 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon4 = 4.2;
+      this.Pon4 = 2.33;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon4 = 2.1;
+      this.Pon4 = 4.66;
       this.MethodTotal()
     }
     else if (value.value == 3) {
-      this.Pon4 = 0.7;
+      this.Pon4 = 7;
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -882,23 +981,23 @@ recibirEstado(mood: string) {
   }
   public RespuestaRP5(value: any): void {
     if (value.value == 0) {
-      this.Pon5 = 6;
+      this.Pon5 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon5 = 4;
+      this.Pon5 = 1.5;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon5 = 2.4;
+      this.Pon5 = 3;
       this.MethodTotal()
     }
     else if (value.value == 3) {
-      this.Pon5 = 1.2;
+      this.Pon5 = 4.5;
       this.MethodTotal()
     }
     else if (value.value == 4) {
-      this.Pon5 = 0.4;
+      this.Pon5 = 6;
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -906,21 +1005,22 @@ recibirEstado(mood: string) {
       this.MethodTotal()
     }
   }
+  //Cobertura
   public RespuestaRP6(value: any): void {
-    if (value.value == 0) {
-      this.Pon6 = 6;
-      this.MethodTotal()
-    }
-    else if (value.value == 1) {
-      this.Pon6 = 3.6;
+    if (value.value == 1) {
+      this.Pon6 = 1.25;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon6 = 1.8;
+      this.Pon6 = 2.5;
       this.MethodTotal()
     }
     else if (value.value == 3) {
-      this.Pon6 = 0.6;
+      this.Pon6 = 3.75;
+      this.MethodTotal()
+    }
+    else if (value.value == 4) {
+      this.Pon6 = 5;
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -928,25 +1028,26 @@ recibirEstado(mood: string) {
       this.MethodTotal()
     }
   }
+  //Concurrencia
   public RespuestaRP7(value: any): void {
     if (value.value == 0) {
-      this.Pon7 = 1;
+      this.Pon7 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon7 = 0.66;
+      this.Pon7 = 0.75;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon7 = 0.4;
+      this.Pon7 = 1.5;
       this.MethodTotal()
     }
     else if (value.value == 3) {
-      this.Pon7 = 0.2;
+      this.Pon7 = 2.25;
       this.MethodTotal()
     }
     else if (value.value == 4) {
-      this.Pon7 = 0.06;
+      this.Pon7 = 3;
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -954,18 +1055,19 @@ recibirEstado(mood: string) {
       this.MethodTotal()
     }
   }
-  ///////Impacto Social
+  // ---------------------Impacto Social
+// igualdad de Genero
   public RespuestaIS1(value: any): void {
     if (value.value == 0) {
-      this.Pon8 = 1.41;
+      this.Pon8 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon8 = 4.25;
+      this.Pon8 = 3.75;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon8 = 8.5;
+      this.Pon8 = 7.5;
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -973,17 +1075,18 @@ recibirEstado(mood: string) {
       this.MethodTotal()
     }
   }
+//Atencion a municipios con rezago social
   public RespuestaIS2(value: any): void {
     if (value.value == 0) {
-      this.Pon9 = 1.25;
+      this.Pon9 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon9 = 3.75;
+      this.Pon9 = 3.5;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon9 = 7.5;
+      this.Pon9 = 7;
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -991,9 +1094,10 @@ recibirEstado(mood: string) {
       this.MethodTotal()
     }
   }
+  //Subsidios Sociales
   public RespuestaIS3(value: any): void {
     if (value.value == 0) {
-      this.Pon10 = 1.08;
+      this.Pon10 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
@@ -1009,17 +1113,18 @@ recibirEstado(mood: string) {
       this.MethodTotal()
     }
   }
+  //Incidencia ODS
   public RespuestaIS4(value: any): void {
     if (value.value == 0) {
-      this.Pon11 = 0.6;
+      this.Pon11 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon11 = 1.8;
+      this.Pon11 = 2;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon11 = 3.6;
+      this.Pon11 = 4;
       this.MethodTotal()
     }
     else if (value.value == 3) {
@@ -1031,17 +1136,18 @@ recibirEstado(mood: string) {
       this.MethodTotal()
     }
   }
+  //Incidencia Pobreza
   public RespuestaIS5(value: any): void {
     if (value.value == 0) {
-      this.Pon12 = 0.4;
+      this.Pon12 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon12 = 1.2;
+      this.Pon12 = 1.33;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon12 = 2.4;
+      this.Pon12 = 2.66;
       this.MethodTotal()
     }
     else if (value.value == 3) {
@@ -1054,17 +1160,18 @@ recibirEstado(mood: string) {
     }
   }
   ///////Impacto Economico
+  // Empleo temporal
   public RespuestaISE1(value: any): void {
     if (value.value == 0) {
-      this.Pon13 = 0.3;
+      this.Pon13 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon13 = 0.9;
+      this.Pon13 = 1;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon13 = 1.8;
+      this.Pon13 = 2;
       this.MethodTotal()
     }
     else if (value.value == 3) {
@@ -1076,9 +1183,10 @@ recibirEstado(mood: string) {
       this.MethodTotal()
     }
   }
+  //Actividad Econimca
   public RespuestaISE2(value: any): void {
     if (value.value == 0) {
-      this.Pon14 = 0.33;
+      this.Pon14 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
@@ -1094,17 +1202,18 @@ recibirEstado(mood: string) {
       this.MethodTotal()
     }
   }
+    // Empleo permanente
   public RespuestaISE3(value: any): void {
     if (value.value == 0) {
-      this.Pon15 = 0.08;
+      this.Pon15 = 0;
       this.MethodTotal()
     }
     else if (value.value == 1) {
-      this.Pon15 = 0.25;
+      this.Pon15 = 1.5;
       this.MethodTotal()
     }
     else if (value.value == 2) {
-      this.Pon15 = 0.50;
+      this.Pon15 = 3;
       this.MethodTotal()
     }
     else if (value.value == null) {
