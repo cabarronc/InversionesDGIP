@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef,signal } from '@angular/core';
+import { Component, OnInit, ViewContainerRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormArray, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { KENDO_GAUGES } from "@progress/kendo-angular-gauges";
@@ -31,26 +31,26 @@ import { FaceComponent } from '../animaciones/face/face.component';
 @Component({
   selector: 'app-simulador',
   standalone: true,
-  imports: [KENDO_ICONS,FaceComponent, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT,
-     KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule, KENDO_DIALOGS],
+  imports: [KENDO_ICONS, FaceComponent, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT,
+    KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule, KENDO_DIALOGS],
   templateUrl: './simulador.component.html',
   styleUrl: './simulador.component.scss'
 })
 export class SimuladorComponent implements OnInit {
   estadoActual: 'happy' | 'neutral' | 'sad' = 'neutral';
 
-recibirEstado(mood: string) {
-  console.log('Nuevo estado:', mood);
-}
-// estado = signal<'happy' | 'neutral' | 'sad'>('happy');
+  recibirEstado(mood: string) {
+    console.log('Nuevo estado:', mood);
+  }
+  // estado = signal<'happy' | 'neutral' | 'sad'>('happy');
 
-// simularError() {
-//   this.estado.set('sad');
-// }
+  // simularError() {
+  //   this.estado.set('sad');
+  // }
 
-// simularExito() {
-//   this.estado.set('happy');
-// }
+  // simularExito() {
+  //   this.estado.set('happy');
+  // }
 
   CalculoDp() {
     throw new Error('Method not implemented.');
@@ -60,7 +60,7 @@ recibirEstado(mood: string) {
   public icons = { paperclip: paperclipIcon, infoSolidIcon: infoSolidIcon, imageIcon: imageIcon, accessibilityIcon: accessibilityIcon, dollarIcon: dollarIcon, buildingsOutlineIcon: buildingsOutlineIcon, trashIcon: trashIcon };
   listItems: any[] = [];
   listSim: any[] = [];
-  clave:string=''
+  clave: string = ''
   fecha: Date = new Date()
   Pon1!: number | null;
   Pon2!: number | null;
@@ -103,7 +103,7 @@ recibirEstado(mood: string) {
     { label: "Finaliza", isValid: true, emoji: "✅" },
   ];
   itemSeleccionado: any = null;
-
+  SinContinuidad = true
   // Estilos de la barra de progreso
   public progressStyles: { [key: string]: string } = {
     color: "",
@@ -140,7 +140,8 @@ recibirEstado(mood: string) {
   valorSeleccionado14: number | null = null;
   valorSeleccionado15: number | null = null;
 
-
+  cantidad_simulacion: number = 0
+  cantidad_proy: number = 0
   //------------------------------ Racionalidad Pública --------------------------
   // Gasto de administración 
   public OpRP1: Array<{ text: string; value: number | null }> = [
@@ -155,8 +156,8 @@ recibirEstado(mood: string) {
     { text: "Selecciona", value: null },
     { text: "Bajo", value: 1 },
     { text: "Medio", value: 2 },
-     { text: "Medio-alto", value: 3},
-    { text: "Alto", value: 4},
+    { text: "Medio-alto", value: 3 },
+    { text: "Alto", value: 4 },
   ];
   // Desempeño Historico
   public OpRP3: Array<{ text: string; value: number | null }> = [
@@ -173,7 +174,7 @@ recibirEstado(mood: string) {
     { text: "Etiquetada parcial", value: 1 },
     { text: "Etiquetada parcial alta", value: 2 },
     { text: "Etiquetda total", value: 3 },
-   
+
   ];
   // Inversion Productiva
   public OpRP5: Array<{ text: string; value: number | null }> = [
@@ -183,7 +184,7 @@ recibirEstado(mood: string) {
     { text: "Media", value: 2 },
     { text: "Alta", value: 3 },
     { text: "Total", value: 4 },
-    
+
   ];
   // Cobertura de la poblacion objetivo
   public OpRP6: Array<{ text: string; value: number | null }> = [
@@ -192,7 +193,7 @@ recibirEstado(mood: string) {
     { text: "Baja", value: 2 },
     { text: "Media", value: 3 },
     { text: "Alta", value: 4 },
-   
+
   ];
   public OpRP7: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
@@ -213,36 +214,36 @@ recibirEstado(mood: string) {
   // Atencion a municipios con rezago social
   public OpIS2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-     { text: "Otros", value: 0 },
-     { text: "Con rezago bajo", value: 1 },
+    { text: "Otros", value: 0 },
+    { text: "Con rezago bajo", value: 1 },
     { text: "Con rezago medio", value: 2 },
   ];
   // Subsidios Sociales *
   public OpIS3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-     { text: "Ninguno", value: 0 },
-     { text: "Otros", value: 1 },
+    { text: "Ninguno", value: 0 },
+    { text: "Otros", value: 1 },
     { text: "Personales", value: 2 },
-    
-   
+
+
   ];
-    // Incidencia ODS
+  // Incidencia ODS
   public OpIS4: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Otros", value: 0 },
-     { text: "Prioridad baja", value: 1 },
-     { text: "Prioridad media", value: 2 },
+    { text: "Prioridad baja", value: 1 },
+    { text: "Prioridad media", value: 2 },
     { text: "Prioridad alta", value: 3 },
-    
+
   ];
   // Incidencia Pobreza
-    public OpIS5: Array<{ text: string; value: number | null }> = [
+  public OpIS5: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Sin incidencia", value: 0 },
     { text: "Prioridad baja", value: 1 },
     { text: "Prioridad media", value: 2 },
     { text: "Prioridad alta", value: 3 },
-   
+
   ];
   // ------------------------------- Impacto Ecónomico
   // Empleos temporales
@@ -259,8 +260,8 @@ recibirEstado(mood: string) {
     { text: "Otras", value: 0 },
     { text: "Relevante", value: 1 },
     { text: "Más relevante", value: 2 },
-    
-    
+
+
   ];
   //Empleos permanentes
   public OpIE3: Array<{ text: string; value: number | null }> = [
@@ -268,7 +269,7 @@ recibirEstado(mood: string) {
     { text: "Nula", value: 0 },
     { text: "Baja", value: 1 },
     { text: "Alta", value: 2 },
-  
+
   ];
 
   //contador de letras
@@ -301,15 +302,28 @@ recibirEstado(mood: string) {
       Res14: new FormControl("", [Validators.required]),
       Res15: new FormControl("", [Validators.required]),
     });
-    
+
+
     this.charachtersCount = this.form.value.justificacion ? this.form.value.justificacionlength : 0;
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
   }
-get textoContinuidad(): string {
-  return this.form.get('continuidad')?.value
-    ? 'Tu proyecto cuenta con etapas previas'
-    : 'Tu proyecto cuenta con etapas previas';
-}
+  validarContinuidad() {
+    const res3 = this.formSimulacion.get('Res3');
+
+    if (this.itemSeleccionado?.continuidad) {
+      res3?.setValidators([Validators.required]);
+       
+    } else {
+      res3?.clearValidators();
+      res3?.setValue(''); // opcional: limpia el valor
+    }
+    res3?.updateValueAndValidity();
+  }
+  get textoContinuidad(): string {
+    return this.form.get('continuidad')?.value
+      ? 'Tu proyecto cuenta con etapas previas'
+      : 'Tu proyecto NO cuenta con etapas previas';
+  }
   ngOnInit(): void {
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
@@ -353,30 +367,30 @@ get textoContinuidad(): string {
     if (value == 2) return 'template9';
     return 'template';
   }
-    //Diseño con  3 variables sin cero
+  //Diseño con  3 variables sin cero
   getTemplateClass_22_SinCero(value: number): string {
     if (value == 1) return 'template3';
     if (value == 2) return 'template6';
     if (value == 3) return 'template9';
     return 'template';
   }
-//Diseño con  4 variables con cero
+  //Diseño con  4 variables con cero
   getTemplateClass_33(value: number): string {
     if (value == 0) return 'template3';
     if (value == 1) return 'template6';
     if (value == 2) return 'template8';
     if (value == 3) return 'template9';
     return 'template';
-  } 
+  }
   //Diseño con  4 variables sin cero
-    getTemplateClass_33_SinCero(value: number): string {
+  getTemplateClass_33_SinCero(value: number): string {
     if (value == 1) return 'template3';
     if (value == 2) return 'template6';
     if (value == 3) return 'template8';
     if (value == 4) return 'template9';
     return 'template';
-  } 
-    //Diseño con  5 variables con cero
+  }
+  //Diseño con  5 variables con cero
   getTemplateClass(value: number): string {
     if (value == 0) return 'template3';
     if (value == 1) return 'template6';
@@ -386,7 +400,7 @@ get textoContinuidad(): string {
 
     return 'template';
   }
-    //Diseño con  5 variables sin cero
+  //Diseño con  5 variables sin cero
   getTemplateClass_SinCero(value: number): string {
     if (value == 1) return 'template3';
     if (value == 2) return 'template6';
@@ -396,29 +410,29 @@ get textoContinuidad(): string {
 
     return 'template';
   }
-generarClave(): string {
-  const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  
-  const letra1 = letras.charAt(Math.floor(Math.random() * letras.length));
-  const letra2 = letras.charAt(Math.floor(Math.random() * letras.length));
-  
-  const numeros = Math.floor(1000 + Math.random() * 9000); 
-  // garantiza 4 dígitos (1000–9999)
+  generarClave(): string {
+    const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
-  return `${letra1}${letra2}${numeros}`;
-}
-clavesGeneradas = new Set<string>();
+    const letra1 = letras.charAt(Math.floor(Math.random() * letras.length));
+    const letra2 = letras.charAt(Math.floor(Math.random() * letras.length));
 
-generarClaveUnica(): string {
-  let clave: string;
+    const numeros = Math.floor(1000 + Math.random() * 9000);
+    // garantiza 4 dígitos (1000–9999)
 
-  do {
-    clave = this.generarClave();
-  } while (this.clavesGeneradas.has(clave));
+    return `${letra1}${letra2}${numeros}`;
+  }
+  clavesGeneradas = new Set<string>();
 
-  this.clavesGeneradas.add(clave);
-  return clave;
-}
+  generarClaveUnica(): string {
+    let clave: string;
+
+    do {
+      clave = this.generarClave();
+    } while (this.clavesGeneradas.has(clave));
+
+    this.clavesGeneradas.add(clave);
+    return clave;
+  }
   //Funciones Principales
   guardar_local() {
     // const nuevoRegistro = this.form.value;
@@ -426,14 +440,16 @@ generarClaveUnica(): string {
     const nuevoRegistro = {
       clave: this.clave,
       nombre: this.form.get('nombre')?.value,
+      continuidad: this.form.get('continuidad')?.value,
       descripcion: this.form.get('descripcion')?.value,
 
     }
-    
+
     const registros = this.storageService.getLocal<any[]>('proyectos') || [];
     registros.push(nuevoRegistro);
     this.storageService.setLocal('proyectos', registros);
     console.log('Registros guardados:', registros);
+    return nuevoRegistro
   }
   guardar_sesion() {
     const nuevoRegistro = this.form.value;
@@ -445,15 +461,16 @@ generarClaveUnica(): string {
 
   async guardar() {
     if (this.form.invalid) return;
-
+    const nuevoRegistro = this.guardar_local()
+    console.log(nuevoRegistro)
     try {
       const response = await this.pocketBaseService.crearProy(
-        'proyectoSimulador',   // nombre de tu colección en PocketBase
-        this.form.value
+        'proyectoSimulador',
+        nuevoRegistro
       );
 
       console.log('Registro guardado:', response);
-      const proteyctoCreado = response['clave']
+      const proteyctoCreado = response['nombre']
       const finalMessage = `Se creado Correctamente el Proyecto: ${proteyctoCreado}`;
       console.log('Registro guardado2:', finalMessage);
 
@@ -461,13 +478,17 @@ generarClaveUnica(): string {
         content: finalMessage,
         appendTo: this.viewContainerRef,
         hideAfter: 2500,
-        animation: { type: "slide", duration: 3500 },
+        animation: { type: "slide", duration: 2500 },
         type: { style: "success", icon: true },
         position: { horizontal: "center", vertical: "top" },
       });
-
+      this.clave = ''
       this.form.reset();
+      this.form.reset({
+        continuidad: true
+      });
       this.LoadProy();
+      console.log(this.continuidad)
 
     } catch (error: any) {
       const errorMessage =
@@ -507,6 +528,8 @@ generarClaveUnica(): string {
     // this.listItems = this.storageService.getSession<any[]>('proyectos') || [];
     this.listItems = this.storageService.getLocal<any[]>('proyectos') || [];
     this.listSim = this.storageService.getLocal<any[]>('simulaciones') || [];
+    this.cantidad_proy = this.listItems.length
+    this.cantidad_simulacion = this.listSim.length
     const cantidad_proy = this.listItems.length
     const cantidad_simulacion = this.listSim.length
     console.log(cantidad_proy)
@@ -626,7 +649,7 @@ generarClaveUnica(): string {
     else if (stepIndex === 3) {
       localStorage.removeItem('proyectos');
       localStorage.removeItem('simulaciones');
-      
+
       for (let i = 1; i <= 15; i++) {
         this[`Pon${i}` as keyof this] = null as any;
       }
@@ -634,7 +657,7 @@ generarClaveUnica(): string {
       this.MethodTotal()
       this.cantidadBol = true
       stepIndex = 0;
-     
+
     }
 
     this.previousStep = stepIndex;
@@ -650,9 +673,9 @@ generarClaveUnica(): string {
   }
 
   public submit(): void {
-     if (this.form.invalid) {
-       this.form.markAllAsTouched();
-       const camposFaltantes: string[] = [];
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      const camposFaltantes: string[] = [];
       Object.keys(this.form.controls).forEach(campo => {
         const control = this.form.get(campo);
 
@@ -664,7 +687,7 @@ generarClaveUnica(): string {
       const mensaje = camposFaltantes.length === 1
         ? `Falta el campo: ${camposFaltantes[0]}`
         : `Faltan los siguientes campos: ${camposFaltantes.join(', ')}`;
-        this.notificationService.show({
+      this.notificationService.show({
         content: mensaje,
         appendTo: this.viewContainerRef,
         hideAfter: 2500,
@@ -673,10 +696,9 @@ generarClaveUnica(): string {
         position: { horizontal: "center", vertical: "top" },
       });
       return;
-     }
+    }
     this.dataSaved = true;
     this.guardar()
-    this.guardar_local()
     this.close();
 
   }
@@ -869,10 +891,33 @@ generarClaveUnica(): string {
     this.MethodTotal()
 
   }
+  limpia_simulacion() {
+    this.formSimulacion.reset()
+    this.itemSeleccionado = null
+    for (let i = 1; i <= 15; i++) {
+      this[`Pon${i}` as keyof this] = null as any;
+    }
+    this.MethodTotal()
+    localStorage.removeItem('proyectos');
+    localStorage.removeItem('simulaciones');
+    this.LoadProy()
+    this.cantidadBol = true
+    this.currentStep = 0;
+
+  }
   onProyChange(item: any) {
     this.itemSeleccionado = item;
+    this.validarContinuidad()
+    if (!(this.itemSeleccionado?.continuidad ?? true)) {
+      this.formSimulacion.get('Res3')?.disable();
+    } else {
+      this.formSimulacion.get('Res3')?.enable();
+    }
     console.log("onProyChange item", this.itemSeleccionado)
+
     if (!item) {
+      this.formSimulacion.patchValue({Res3:null})
+      console.log("vacio", this.formSimulacion.get('Res3')?.value)
       this.topBarraRacionalidad = 100
       this.topBarraImpactoSocial = 123
       this.formSimulacion.reset()
@@ -880,6 +925,7 @@ generarClaveUnica(): string {
         this[`Pon${i}` as keyof this] = null as any;
       }
       this.MethodTotal()
+      this.validarContinuidad()
       return;
     }
     this.cargarSimulacion(item.clave);
@@ -888,7 +934,7 @@ generarClaveUnica(): string {
     this.topBarraImpactoSocial = 228
 
   }
-
+  //Gasto Adm
   public RespuestaRP1(value: any): void {
 
     if (value.value == 0) {
@@ -913,50 +959,103 @@ generarClaveUnica(): string {
       this.MethodTotal()
     }
   }
+  //Grado de Prepa
   public RespuestaRP2(value: any): void {
-    if (value.value == 1) {
-      this.Pon2 = 3.75;
-      this.MethodTotal()
+    if (this.itemSeleccionado.continuidad) {
+      if (value.value == 1) {
+        this.Pon2 = 3.75;
+        this.MethodTotal()
+      }
+      else if (value.value == 2) {
+        this.Pon2 = 7.5;
+        this.MethodTotal()
+      }
+      else if (value.value == 3) {
+        this.Pon2 = 11.25;
+        this.MethodTotal()
+      }
+      else if (value.value == 4) {
+        this.Pon2 = 15;
+        this.MethodTotal()
+      }
+      else if (value.value == null) {
+        this.Pon2 = 0;
+        this.MethodTotal()
+      }
     }
-    else if (value.value == 2) {
-      this.Pon2 = 7.5;
-      this.MethodTotal()
-    }
-    else if (value.value == 3) {
-      this.Pon2 = 11.25;
-      this.MethodTotal()
-    }
-    else if (value.value == 4) {
-      this.Pon2 = 15;
-      this.MethodTotal()
-    }
-    else if (value.value == null) {
-      this.Pon2 = 0;
-      this.MethodTotal()
+    else {
+      if (value.value == 1) {
+        this.Pon2 = 6.25;
+        this.MethodTotal()
+      }
+      else if (value.value == 2) {
+        this.Pon2 = 12.5;
+        this.MethodTotal()
+      }
+      else if (value.value == 3) {
+        this.Pon2 = 18.75;
+        this.MethodTotal()
+      }
+      else if (value.value == 4) {
+        this.Pon2 = 25;
+        this.MethodTotal()
+      }
+      else if (value.value == null) {
+        this.Pon2 = 0;
+        this.MethodTotal()
+      }
+
     }
   }
+  //Desempeño Historico
   public RespuestaRP3(value: any): void {
-    if (value.value == 1) {
-      this.Pon3 = 2.5;
-      this.MethodTotal()
+    if (this.itemSeleccionado.continuidad) {
+      if (value.value == 1) {
+        this.Pon3 = 2.5;
+        this.MethodTotal()
+      }
+      else if (value.value == 2) {
+        this.Pon3 = 5;
+        this.MethodTotal()
+      }
+      else if (value.value == 3) {
+        this.Pon3 = 7.5;
+        this.MethodTotal()
+      }
+      else if (value.value == 4) {
+        this.Pon3 = 10;
+        this.MethodTotal()
+      }
+      else if (value.value == null) {
+        this.Pon3 = 0;
+        this.MethodTotal()
+      }
     }
-    else if (value.value == 2) {
-      this.Pon3 = 5;
-      this.MethodTotal()
-    }
-    else if (value.value == 3) { 
-      this.Pon3 = 7.5;
-      this.MethodTotal()
-    }
-    else if (value.value == 4) {
-      this.Pon3 = 10;
-      this.MethodTotal()
-    }
-    else if (value.value == null) {
-      this.Pon3 = 0;
-      this.MethodTotal()
+    else {
+      if (value.value == 1) {
+        this.Pon3 = 0;
+        this.MethodTotal()
+      }
+      else if (value.value == 2) {
+        this.Pon3 = 0;
+        this.MethodTotal()
+      }
+      else if (value.value == 3) {
+        this.Pon3 = 0;
+        this.MethodTotal()
+      }
+      else if (value.value == 4) {
+        this.Pon3 = 0;
+        this.MethodTotal()
+      }
+      else if (value.value == null) {
+        this.Pon3 = 0;
+        this.MethodTotal()
+      }
+
     }
   }
+  //Fuente
   public RespuestaRP4(value: any): void {
     if (value.value == 0) {
       this.Pon4 = 0;
@@ -979,6 +1078,7 @@ generarClaveUnica(): string {
       this.MethodTotal()
     }
   }
+  //inversion Productiva
   public RespuestaRP5(value: any): void {
     if (value.value == 0) {
       this.Pon5 = 0;
@@ -1056,7 +1156,7 @@ generarClaveUnica(): string {
     }
   }
   // ---------------------Impacto Social
-// igualdad de Genero
+  // igualdad de Genero
   public RespuestaIS1(value: any): void {
     if (value.value == 0) {
       this.Pon8 = 0;
@@ -1075,7 +1175,7 @@ generarClaveUnica(): string {
       this.MethodTotal()
     }
   }
-//Atencion a municipios con rezago social
+  //Atencion a municipios con rezago social
   public RespuestaIS2(value: any): void {
     if (value.value == 0) {
       this.Pon9 = 0;
@@ -1202,7 +1302,7 @@ generarClaveUnica(): string {
       this.MethodTotal()
     }
   }
-    // Empleo permanente
+  // Empleo permanente
   public RespuestaISE3(value: any): void {
     if (value.value == 0) {
       this.Pon15 = 0;
