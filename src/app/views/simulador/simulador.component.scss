@@ -163,8 +163,14 @@
   z-index: 100; 
   background: #e0e0d5 /* importante para que no se vea transparente */
 }
-
 .barra3 {
+  position: sticky;
+  top: 150px; /* altura del navbar */
+  z-index: 100; 
+  background: #e0e0d5 /* importante para que no se vea transparente */
+}
+
+.barraGenerales {
   position: sticky;
   top: 60px; /* altura del navbar */
   z-index: 99; 
@@ -235,6 +241,23 @@
 .simulaciones_ok span{
   font-size: 0.8;
   color: #000000;
+}
+
+.simulaciones_rojo {
+  color: red;
+   font-size: 1rem;
+    display: inline-block;
+}
+
+.simulaciones_verde {
+   font-size: 1rem;
+  color: green;
+   display: inline-block;
+}
+.proyectos_texto {
+  font-size: 1rem;
+  color: black;
+   display: inline-block;
 }
 /*
 /* Animación máquina de escribir */

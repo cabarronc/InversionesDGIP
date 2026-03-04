@@ -1,25 +1,25 @@
 <section id="sectiondefault">
   <div class="row-center">
 
-        <h1 class="title2">Modelo<span> PRIORIZACIÓN</span></h1>
+    <h1 class="title2">Modelo<span> PRIORIZACIÓN</span></h1>
 
-    </div>
+  </div>
   <!-- Instrucciones -->
   <div class="row">
     <div class="col-12">
-    <kendo-stepper [steps]="steps" stepType="full" [(currentStep)]="currentStep" 
-      (currentStepChange)="onStepChange($event)">
-      <ng-template kendoStepperIndicatorTemplate let-step>
-        <span class="emoji">{{ step.emoji }}</span>
-      </ng-template>
-    </kendo-stepper>
+      <kendo-stepper [steps]="steps" stepType="full" [(currentStep)]="currentStep"
+        (currentStepChange)="onStepChange($event)">
+        <ng-template kendoStepperIndicatorTemplate let-step>
+          <span class="emoji">{{ step.emoji }}</span>
+        </ng-template>
+      </kendo-stepper>
     </div>
-    
-    
+
+
   </div>
 
   <!-- Instrucciones -->
-  <div class="row">
+  <div class="row" style="margin-left: 3.4%;">
     <!-- Creacion -->
     <div class="col-md-1 mt-2 mb-2">
       @if (!opened) {
@@ -84,8 +84,7 @@
               <kendo-formfield showHints="initial">
                 <div class="k-form-field-checkbox-wrap">
                   <kendo-checkbox #checkbox formControlName="continuidad"></kendo-checkbox>
-                  <kendo-label class="k-checkbox-label" [for]="checkbox"
-                  [text]="textoContinuidad"></kendo-label>
+                  <kendo-label class="k-checkbox-label" [for]="checkbox" [text]="textoContinuidad"></kendo-label>
                 </div>
               </kendo-formfield>
             </label>
@@ -133,7 +132,7 @@
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
-        </div>
+      </div>
       <button kendoButton class="mt-2" type="button" themeColor="error" (click)="limpia_simulacion()">Termina </button>
     </div>
     <!-- Compara -->
@@ -152,35 +151,38 @@
 
       </div>
       <!-- @if(listItems.length > 2){ -->
-      <button kendoButton (click)="open2()" [disabled]="cantidadBol" themeColor="tertiary"
+      <button kendoButton (click)="open2()" [disabled]="!cantidadBol" themeColor="tertiary"
         class="mt-2">Comparador</button>
       <!-- } -->
 
 
       } @if (dataSaved2) {
-      <p>Comparacion exitosa!!</p>
+
       } @if (opened2) {
-      <kendo-window title="Comparador perron" (close)="close2()" [minWidth]="450" [width]="750">
+      <kendo-window title="Comparador" (close)="close2()" [minWidth]="450" [width]="750">
         <form class="k-form">
-          <fieldset>
-            <legend>Selecciona al menos 2 proyectos</legend>
-            <label class="k-form-field">
-              <span>Primer proyecto</span>
-              <kendo-textbox placeholder="clave"></kendo-textbox>
-            </label>
-            <label class="k-form-field">
-              <span>Segundo proyecto</span>
-              <kendo-textbox placeholder="nombre"></kendo-textbox>
-            </label>
-          </fieldset>
+          <legend>Selecciona al menos 2 proyectos</legend>
+          <div class="row">
+            <div class="col-6">
+              <kendo-combobox class="mt-2" #sizes [data]="listSim" valueField="clave" [valuePrimitive]="false"
+                textField="nombre" [(value)]="SimulacionSeleccionada" (valueChange)="onSimChange($event)"
+                placeholder="Proyecto"></kendo-combobox>
+            </div>
+            <div class="col-6">
+              <kendo-combobox class="mt-2" [data]="listSim" valueField="clave" [valuePrimitive]="false"
+                textField="nombre" [(value)]="SimulacionSeleccionada" (valueChange)="onSimChange($event)"
+                placeholder="Proyecto"></kendo-combobox>
+            </div>
+
+
+          </div>
+
+
           <app-face (moodChange)="recibirEstado($event)"></app-face>
-          <!-- <app-face [state]="estado()"></app-face>
-          <button (click)="simularExito()">Éxito</button>
-          <button (click)="simularError()">Error</button> -->
           <div class="k-actions k-actions-end">
             <button kendoButton type="button" (click)="close2()">Cancelar</button>
-            <button kendoButton themeColor="primary" type="button" (click)="submit2()">
-              Crear
+            <button kendoButton themeColor="primary" type="button" (click)="comparar()">
+              Comparar
             </button>
           </div>
         </form>
@@ -189,8 +191,8 @@
     </div>
   </div>
   <!-- Datos Generales -->
-  <div class="row barra3">
-    <div class="col-md-5 mt-2 mb-2 ">
+  <div class="row barraGenerales " style="margin-left: 3.4%;">
+    <div class="col-md-6 mt-2 mb-2 ">
       <kendo-card width="100%" orientation="vertical"
         style="background-color:#dee4ec; border-radius: 15px; box-shadow: 5px 10px 18px #888888;">
         <kendo-card-header
@@ -200,13 +202,13 @@
               @if (itemSeleccionado) {
               <div class="texto"> Nombre: <strong>{{itemSeleccionado.nombre}}</strong></div>
               <div class="texto">Descripcion: <strong>{{ itemSeleccionado.descripcion }}</strong> </div>
-                  @if (itemSeleccionado.continuidad){
-                    <div class="texto">continuidad: <strong>✅</strong> </div>
-                  }
-                  @else{
-                    <div class="texto">continuidad: <strong>❌</strong> </div>
-                  }
-                  
+              @if (itemSeleccionado.continuidad){
+              <div class="texto">continuidad: <strong>✅</strong> </div>
+              }
+              @else{
+              <div class="texto">continuidad: <strong>❌</strong> </div>
+              }
+
               }
             </div>
             <div class="col-2 d-flex align-items-center justify-content-center">
@@ -248,1645 +250,1405 @@
     </div> -->
   </div>
   <!-- Simulador -->
-  <div class="row">
-    <div class="col- col-sm-12 col-md-6 mt-3">
+  <div class="row justify-content-center">
+    <div class="col-md-11 mt-3">
       <ng-template #tooltipProyecto>
         <div class="tooltip-justificado">
           Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
         </div>
       </ng-template>
       <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
-        <kendo-label text="2.- Simulador"></kendo-label> 
-        @if(cantidad_simulacion > 2){
-          <h1 class="simulaciones_ok"> &nbsp;{{cantidad_simulacion}} &nbsp; simulaciones<span> / {{cantidad_proy}} proyectos</span></h1>}
-        @else{
-          <h1 class="simulaciones"> &nbsp;{{cantidad_simulacion}} &nbsp;simulaciones<span> / {{cantidad_proy}} proyectos</span></h1>
-        }&nbsp;
+        <kendo-label text="2.- Simulador"></kendo-label>&nbsp;
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
+         &nbsp;
+        <h1 class="d-inline-block">
+          <!-- Simulaciones (dinámico rojo / verde) -->
+          <span [class.simulaciones_verde]="cantidad_simulacion === 3"
+            [class.simulaciones_rojo]="cantidad_simulacion !== 3">
+
+            {{ cantidad_simulacion }}
+            {{ cantidad_simulacion === 1 ? 'simulación ' : 'simulaciones' }}
+
+          </span>
+
+          <!-- Proyectos (siempre negro) -->
+          <span class="proyectos_texto">&nbsp;
+            / &nbsp;{{ cantidad_proy }}
+            {{ cantidad_proy === 1 ? 'proyecto' : 'proyectos' }}
+          </span>
+
+        </h1>
+        &nbsp;
       </div>
     </div>
   </div>
-  <!-- Progress bar racionalidad -->
-  <div class="col-12  mt-3 mb-3 barra" [style.top.px]="topBarraRacionalidad">
-    <kendo-label text="Calificacion Racionalidad Pública" style="font-weight: bold;">
-      &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles" [label]="label" [animation]="animation" [max]="61"
-        style="width: 80%;" [value]="TotalRacionalidad||0">
-      </kendo-progressbar>
-    </kendo-label>
-  </div>
+
   <form class="k-form" [formGroup]="formSimulacion">
-    <div class="col-md-12">
-      <!-- ============================================================================================================= -->
-      <!-- ================================= Seccion 1  Racionalodad Publica 61 % ======================== -->
-      <!-- ============================================================================================================= -->
-      <kendo-panelbar>
-        <kendo-panelbar-item class="k-item2" [svgIcon]="icons.buildingsOutlineIcon" title="Racionalidad Pública"
-          [expanded]="true">
-          <ng-template kendoPanelBarContent>
-            <kendo-card width="auto" style="padding: 1rem; align-content: center;">
-              <!-- Primer Linea -->
-               @if ((itemSeleccionado?.continuidad ?? true)) {
-              <div class="row mt-3 mb-2">
+    <div class="row justify-content-center">
+      <div class="col-md-11">
+        <!-- Progress bar racionalidad -->
+        <div class="col-12  mt-3 mb-3 barra" [style.top.px]="topBarraRacionalidad">
+          <kendo-label text="Calificacion Racionalidad Pública" style="font-weight: bold;font-size:16px !important">
+            &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles" [label]="label" [animation]="animation"
+              [max]="61" style="width: 80%;" [value]="TotalRacionalidad||0">
+            </kendo-progressbar>
+          </kendo-label>
+        </div>
+        <!-- ============================================================================================================= -->
+        <!-- ================================= Seccion 1  Racionalodad Publica 61 % ======================== -->
+        <!-- ============================================================================================================= -->
+        <kendo-panelbar>
+          <kendo-panelbar-item class="k-item2" [svgIcon]="icons.buildingsOutlineIcon" title="Racionalidad Pública"
+            [expanded]="true">
+            <ng-template kendoPanelBarContent>
+              <kendo-card width="auto" style="padding: 1rem; align-content: center;">
                 <!-- ============================================================================================================-->
                 <!--========================================== Variable 1.1 Gasto administracion 15% ================================-->
                 <!-- ============================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate>
-                            <div class="tooltip-justificado">
-                              Proporción del presupuesto de los proyectos que corresponde a partidas no sustantivas,
-                              según la naturaleza y propósito de sus entregables
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              1.- Proporción del presupuesto en
-                              partidas no sustantivas
-                            </kendo-label>
+                <div class="row mt-2 mb-2 justify-content-center">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
+                      [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2 justify-content-center">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate>
+                              <div class="tooltip-justificado">
+                                Proporción del presupuesto de los proyectos que corresponde a partidas no sustantivas,
+                                según la naturaleza y propósito de sus entregables
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                1.- Proporción del presupuesto en
+                                partidas no sustantivas
+                              </kendo-label>
 
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <span>
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="success">Alto</kendo-badge>
-                                </kendo-badge-container>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                               </span>
                             </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpRP1.slice(1)" textField="text" valueField="value"
-                                  [value]="valorSeleccionado1" [valuePrimitive]="true"
-                                  (valueChange)="valorSeleccionado1 = $event"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  (selectionChange)="RespuestaRP1($event)" formControlName="Res1"
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1  mt-2  justify-content-center">
+                                <span>
+                                  <kendo-badge-container>
+                                    <kendo-badge themeColor="success">Alto</kendo-badge>
+                                  </kendo-badge-container>
+                                </span>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist [data]="OpRP1.slice(1)" textField="text" valueField="value"
+                                    [value]="valorSeleccionado1" [valuePrimitive]="true"
+                                    (valueChange)="valorSeleccionado1 = $event"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    (selectionChange)="RespuestaRP1($event)" formControlName="Res1"
+                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res1')?.valid && formSimulacion.get('Res1')?.dirty
                                 }">
 
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res1')?.valid && formSimulacion.get('Res1')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res1')?.valid && formSimulacion.get('Res1')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
 
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon1){
-                                <kendo-chip label="{{ Pon1 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-                              </span>
+                                </kendo-formfield>
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon1){
+                                  <kendo-chip label="{{ Pon1 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
                 <!--==========================================================================================================-->
                 <!--========================================= Variable 1.2 Grado de preparación técnica 25 %  ================-->
                 <!--==========================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Grado de preparación técnica"
-                    subtitle="Cualidad: Racionalidad Pública(1.2)" [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate2>
-                            <div class="tooltip-justificado">
-                              Estado de los proyectos según los elementos conceptuales y técnicos de preparación
-                              con los que cuentan, en relación con los requeridos para su adecuada ejecución;
-                              se determina conforme al promedio de la calificación técnica de las iniciativas
-                              de inversión en el Banco Integrado de Proyectos.
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Grado de preparación técnica"
+                      subtitle="Cualidad: Racionalidad Pública(1.2)" [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2 justify-content-center ">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate2>
+                              <div class="tooltip-justificado">
+                                Estado de los proyectos según los elementos conceptuales y técnicos de preparación
+                                con los que cuentan, en relación con los requeridos para su adecuada ejecución;
+                                se determina conforme al promedio de la calificación técnica de las iniciativas
+                                de inversión en el Banco Integrado de Proyectos.
+                              </div>
+                            </ng-template>
+
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate2" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                2.- Estado de los proyectos según los elementos conceptuales y técnicos de preparación
+                              </kendo-label>
+
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                              </span>
                             </div>
-                          </ng-template>
-
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate2" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              2.- Estado de los proyectos según los elementos conceptuales y técnicos de preparación
-                            </kendo-label>
-
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-
-
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="success">Alto</kendo-badge>
-                              </kendo-badge-container>
-                            </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpRP2.slice(1)" textField="text" valueField="value"
-                                  [valuePrimitive]="true" (selectionChange)="RespuestaRP2($event)"
-                                  (valueChange)="valorSeleccionado2 = $event"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado2"
-                                  formControlName="Res2" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                            <div class="row mt-2 mb-2 justify-content-center ">
+                              <div class="col-1 mt-2 ">
+                                <kendo-badge-container>
+                                  <kendo-badge themeColor="success">Alto</kendo-badge>
+                                </kendo-badge-container>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist [data]="OpRP2.slice(1)" textField="text" valueField="value"
+                                    [valuePrimitive]="true" (selectionChange)="RespuestaRP2($event)"
+                                    (valueChange)="valorSeleccionado2 = $event"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado2"
+                                    formControlName="Res2" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res2')?.valid && formSimulacion.get('Res2')?.dirty
                                 }">
 
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{
+                                          dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{
+                                          dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
 
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res2')?.valid && formSimulacion.get('Res2')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res2')?.valid && formSimulacion.get('Res2')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
 
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon2){
+                                  <kendo-chip label="{{ Pon2 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+
+                                </span>
+                              </div>
                             </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon2){
-                                <kendo-chip label="{{ Pon2 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
 
-                              </span>
-                            </div>
+
                           </div>
 
-
-                        </div>
-
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
                 <!--====================================================================================================-->
                 <!--========================================= Variable 1.3 Desempeño historico" 10 %     ===============-->
                 <!--====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Desempeño histórico" subtitle="Cualidad: Racionalidad Pública(1.3)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate3>
-                            <div class="tooltip-justificado">
-                              Ponderacion Multianual del Avance financiero (pagado entre el modificado) y fisico
-                              (cumplimiento de metas) del proyecto
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate3" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              3.- Indicador de desempeño
-                            </kendo-label>
+                @if ((itemSeleccionado?.continuidad ?? true)) {
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Desempeño histórico" subtitle="Cualidad: Racionalidad Pública(1.3)"
+                      [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate3>
+                              <div class="tooltip-justificado">
+                                Ponderacion Multianual del Avance financiero (pagado entre el modificado) y fisico
+                                (cumplimiento de metas) del proyecto
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate3" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                3.- Indicador de desempeño
+                              </kendo-label>
 
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <span>
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="success">Alto</kendo-badge>
-                                </kendo-badge-container>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                               </span>
                             </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpRP3.slice(1)" textField="text" valueField="value"
-                                  [value]="valorSeleccionado3" (valueChange)="valorSeleccionado3 = $event"
-                                  [valuePrimitive]="true" [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  (selectionChange)="RespuestaRP3($event)" formControlName="Res3"
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <span>
+                                  <kendo-badge-container>
+                                    <kendo-badge themeColor="success">Alto</kendo-badge>
+                                  </kendo-badge-container>
+                                </span>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist [data]="OpRP3.slice(1)" textField="text" valueField="value"
+                                    [value]="valorSeleccionado3" (valueChange)="valorSeleccionado3 = $event"
+                                    [valuePrimitive]="true" [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    (selectionChange)="RespuestaRP3($event)" formControlName="Res3"
+                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res3')?.valid && formSimulacion.get('Res3')?.dirty
                                 }">
 
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res3')?.valid && formSimulacion.get('Res3')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon3){
-                                <kendo-chip label="{{ Pon3 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-                              </span>
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{
+                                          dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{
+                                          dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res3')?.valid && formSimulacion.get('Res3')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon3){
+                                  <kendo-chip label="{{ Pon3 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
-              
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+
+                  </div>
                 </div>
-              </div>
                 }
-              <!-- Primer Sin desemepeño historico -->
-               @else {
-              <div class="row mt-3 mb-2">
-                <!-- ============================================================================================================-->
-                <!--========================================== Variable 1.1 Gasto administracion 15% ================================-->
-                <!-- ============================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Gasto administración" subtitle="Cualidad: Racionalidad Pública(1.1)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate>
-                            <div class="tooltip-justificado">
-                              Proporción del presupuesto de los proyectos que corresponde a partidas no sustantivas,
-                              según la naturaleza y propósito de sus entregables
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              1.- Proporción del presupuesto en
-                              partidas no sustantivas
-                            </kendo-label>
-
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <span>
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="success">Alto</kendo-badge>
-                                </kendo-badge-container>
-                              </span>
-                            </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpRP1.slice(1)" textField="text" valueField="value"
-                                  [value]="valorSeleccionado1" [valuePrimitive]="true"
-                                  (valueChange)="valorSeleccionado1 = $event"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  (selectionChange)="RespuestaRP1($event)" formControlName="Res1"
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
-                                  'k-valid': formSimulacion.get('Res1')?.valid && formSimulacion.get('Res1')?.dirty
-                                }">
-
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res1')?.valid && formSimulacion.get('Res1')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon1){
-                                <kendo-chip label="{{ Pon1 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
-                </div>
-                <!--==========================================================================================================-->
-                <!--========================================= Variable 1.2 Grado de preparación técnica 15 %  ================-->
-                <!--==========================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Grado de preparación técnica"
-                    subtitle="Cualidad: Racionalidad Pública(1.2)" [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate2>
-                            <div class="tooltip-justificado">
-                              Estado de los proyectos según los elementos conceptuales y técnicos de preparación
-                              con los que cuentan, en relación con los requeridos para su adecuada ejecución;
-                              se determina conforme al promedio de la calificación técnica de las iniciativas
-                              de inversión en el Banco Integrado de Proyectos.
-                            </div>
-                          </ng-template>
-
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate2" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              2.- Estado de los proyectos según los elementos conceptuales y técnicos de preparación
-                            </kendo-label>
-
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-
-
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="success">Alto</kendo-badge>
-                              </kendo-badge-container>
-                            </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpRP2.slice(1)" textField="text" valueField="value"
-                                  [valuePrimitive]="true" (selectionChange)="RespuestaRP2($event)"
-                                  (valueChange)="valorSeleccionado2 = $event"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado2"
-                                  formControlName="Res2" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
-                                  'k-valid': formSimulacion.get('Res2')?.valid && formSimulacion.get('Res2')?.dirty
-                                }">
-
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res2')?.valid && formSimulacion.get('Res2')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon2){
-                                <kendo-chip label="{{ Pon2 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-
-                              </span>
-                            </div>
-                          </div>
-
-
-                        </div>
-
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
-                </div>
-                <!--====================================================================================================-->
-                <!--========================================= Variable 1.3 Desempeño historico" 0 %     ===============-->
-                <!--====================================================================================================-->
-                 <div class="col-md-4"> 
-                  <kendo-expansionpanel title="Desempeño histórico" subtitle="Cualidad: Racionalidad Pública(1.3)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate3>
-                            <div class="tooltip-justificado">
-                              Ponderacion Multianual del Avance financiero (pagado entre el modificado) y fisico
-                              (cumplimiento de metas) del proyecto
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate3" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              3.- Indicador de desempeño
-                            </kendo-label>
-
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <span>
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="success">Alto</kendo-badge>
-                                </kendo-badge-container>
-                              </span>
-                            </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpRP3.slice(1)" textField="text" valueField="value"
-                                  [value]="valorSeleccionado3" (valueChange)="valorSeleccionado3 = $event"
-                                  [valuePrimitive]="true" [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  (selectionChange)="RespuestaRP3($event)"   formControlName="Res3" 
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
-                                  'k-valid': formSimulacion.get('Res3')?.valid && formSimulacion.get('Res3')?.dirty
-                                }">
-
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res3')?.valid && formSimulacion.get('Res3')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon3){
-                                <kendo-chip label="{{ Pon3 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
-              
-                </div> 
-              </div>
-                }
-              <!-- Segunda Linea -->
-              <div class="row mt-3 mb-2">
-
+                @else {}
                 <!--====================================================================================================-->
                 <!--========================================= Variable 1.4 Fuente financiamiento" 7 %   ================-->
                 <!--====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Fuente de financiamiento" subtitle="Cualidad: Racionalidad Pública(1.4)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate4>
-                            <div class="tooltip-justificado">
-                              Proporcion del total del presupuesto corresponde a fuentes de financiamiento
-                              etiquetadas(destino específico) o libre disposición
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Fuente de financiamiento"
+                      subtitle="Cualidad: Racionalidad Pública(1.4)" [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate4>
+                              <div class="tooltip-justificado">
+                                Proporcion del total del presupuesto corresponde a fuentes de financiamiento
+                                etiquetadas(destino específico) o libre disposición
 
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate4" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              4.- Fuente financiamiento
-                            </kendo-label>
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="warning">Medio</kendo-badge>
-                              </kendo-badge-container>
-                            </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist #sizes [data]="OpRP4.slice(1)" textField="text" valueField="value"
-                                  [valuePrimitive]="true" (selectionChange)="RespuestaRP4($event)"
-                                  (valueChange)="valorSeleccionado4 = $event" formControlName="Res4"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado4"
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
-                                  'k-valid': formSimulacion.get('Res4')?.valid && formSimulacion.get('Res4')?.dirty
-                                }">
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res4')?.valid && formSimulacion.get('Res4')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon4){
-                                <kendo-chip label="{{ Pon4 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate4" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                4.- Fuente financiamiento
+                              </kendo-label>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                               </span>
                             </div>
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <kendo-badge-container>
+                                  <kendo-badge themeColor="warning">Medio</kendo-badge>
+                                </kendo-badge-container>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist #sizes [data]="OpRP4.slice(1)" textField="text" valueField="value"
+                                    [valuePrimitive]="true" (selectionChange)="RespuestaRP4($event)"
+                                    (valueChange)="valorSeleccionado4 = $event" formControlName="Res4"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado4"
+                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                  'k-valid': formSimulacion.get('Res4')?.valid && formSimulacion.get('Res4')?.dirty
+                                }">
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res4')?.valid && formSimulacion.get('Res4')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon4){
+                                  <kendo-chip label="{{ Pon4 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+
+                                </span>
+                              </div>
+                            </div>
+
+
                           </div>
 
-
-                        </div>
-
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
                 <!--====================================================================================================-->
                 <!--========================================= Variable 1.5 Inversion productiva 6 %   ================-->
                 <!--====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Inversión poroductiva" subtitle="Cualidad: Racionalidad Pública(1.5)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate5>
-                            <div class="tooltip-justificado">
-                              Proporción del presupuesto en inversión pública productiva
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate5" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              5.- Proporcion Inversión Productiva
-                            </kendo-label>
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <span>
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="warning">Medio</kendo-badge>
-                                </kendo-badge-container>
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Inversión poroductiva" subtitle="Cualidad: Racionalidad Pública(1.5)"
+                      [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate5>
+                              <div class="tooltip-justificado">
+                                Proporción del presupuesto en inversión pública productiva
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate5" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                5.- Proporcion Inversión Productiva
+                              </kendo-label>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                               </span>
                             </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpRP5.slice(1)" textField="text" valueField="value"
-                                  [value]="valorSeleccionado5" [valuePrimitive]="true"
-                                  (valueChange)="valorSeleccionado5 = $event"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  (selectionChange)="RespuestaRP5($event)" formControlName="Res5"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
-                                  showSuccessIcon="initial" [ngClass]="{
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <span>
+                                  <kendo-badge-container>
+                                    <kendo-badge themeColor="warning">Medio</kendo-badge>
+                                  </kendo-badge-container>
+                                </span>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist [data]="OpRP5.slice(1)" textField="text" valueField="value"
+                                    [value]="valorSeleccionado5" [valuePrimitive]="true"
+                                    (valueChange)="valorSeleccionado5 = $event"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    (selectionChange)="RespuestaRP5($event)" formControlName="Res5"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
+                                    showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res5')?.valid && formSimulacion.get('Res5')?.dirty
                                 }">
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res5')?.valid && formSimulacion.get('Res5')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon5){
-                                <kendo-chip label="{{ Pon5 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-                              </span>
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res5')?.valid && formSimulacion.get('Res5')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon5){
+                                  <kendo-chip label="{{ Pon5 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
                 <!--=====================================================================================================-->
                 <!--=================================== Variable 1.6 Cobertura de la población objetivo 5 % ============-->
                 <!--=====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title=" Cobertura de la población objetivo"
-                    subtitle="Cualidad: Racionalidad Pública(1.6)" [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate6>
-                            <div class="tooltip-justificado">
-                              Proporción de los beneficiarios directos respecto a la población onbjetivo
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate6" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              6.- Proporcion de los beneficiarios directos
-                            </kendo-label>
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="error">Bajo</kendo-badge>
-                              </kendo-badge-container>
-                            </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist #sizes [data]="OpRP6.slice(1)" textField="text" valueField="value"
-                                  [valuePrimitive]="true" (selectionChange)="RespuestaRP6($event)"
-                                  (valueChange)="valorSeleccionado6 = $event" [value]="valorSeleccionado6"
-                                  formControlName="Res6" [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
-                                  'k-valid': formSimulacion.get('Res6')?.valid && formSimulacion.get('Res6')?.dirty
-                                }">
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res6')?.valid && formSimulacion.get('Res6')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon6){
-                                <kendo-chip label="{{ Pon6 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title=" Cobertura de la población objetivo"
+                      subtitle="Cualidad: Racionalidad Pública(1.6)" [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate6>
+                              <div class="tooltip-justificado">
+                                Proporción de los beneficiarios directos respecto a la población onbjetivo
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate6" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                6.- Proporcion de los beneficiarios directos
+                              </kendo-label>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                               </span>
                             </div>
-                          </div>
-
-
-                        </div>
-
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
-                </div>
-              </div>
-              <!-- Tercera Linea -->
-              <div class="row mt-3 mb-2">
-                <!--=====================================================================================================-->
-                <!--=================================== Variable 1.7 Concurrencia 3 % ============-->
-                <!--=====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Concurrencia" subtitle="Cualidad: Racionalidad Pública(1.7)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate7>
-                            <div class="tooltip-justificado">
-                              Proporción de importe cocurrente respecto al importe estatal
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate7" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              7.- Proporción concurrecia
-                            </kendo-label>
-
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <span>
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
                                 <kendo-badge-container>
                                   <kendo-badge themeColor="error">Bajo</kendo-badge>
                                 </kendo-badge-container>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist #sizes [data]="OpRP6.slice(1)" textField="text" valueField="value"
+                                    [valuePrimitive]="true" (selectionChange)="RespuestaRP6($event)"
+                                    (valueChange)="valorSeleccionado6 = $event" [value]="valorSeleccionado6"
+                                    formControlName="Res6" [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                  'k-valid': formSimulacion.get('Res6')?.valid && formSimulacion.get('Res6')?.dirty
+                                }">
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{
+                                          dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33_SinCero(dataItem.value)">{{
+                                          dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res6')?.valid && formSimulacion.get('Res6')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon6){
+                                  <kendo-chip label="{{ Pon6 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+
+                                </span>
+                              </div>
+                            </div>
+
+
+                          </div>
+
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
+                </div>
+
+                <!--=====================================================================================================-->
+                <!--=================================== Variable 1.7 Concurrencia 3 % ============-->
+                <!--=====================================================================================================-->
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Concurrencia" subtitle="Cualidad: Racionalidad Pública(1.7)"
+                      [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate7>
+                              <div class="tooltip-justificado">
+                                Proporción de importe cocurrente respecto al importe estatal
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate7" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                7.- Proporción concurrecia
+                              </kendo-label>
+
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                               </span>
                             </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpRP7.slice(1)" textField="text" valueField="value"
-                                  [value]="valorSeleccionado7" [valuePrimitive]="true"
-                                  (valueChange)="valorSeleccionado7 = $event"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  (selectionChange)="RespuestaRP7($event)" formControlName="Res7"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
-                                  showSuccessIcon="initial" [ngClass]="{
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <span>
+                                  <kendo-badge-container>
+                                    <kendo-badge themeColor="error">Bajo</kendo-badge>
+                                  </kendo-badge-container>
+                                </span>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist [data]="OpRP7.slice(1)" textField="text" valueField="value"
+                                    [value]="valorSeleccionado7" [valuePrimitive]="true"
+                                    (valueChange)="valorSeleccionado7 = $event"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    (selectionChange)="RespuestaRP7($event)" formControlName="Res7"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
+                                    showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res7')?.valid && formSimulacion.get('Res7')?.dirty
                                 }">
 
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res7')?.valid && formSimulacion.get('Res7')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon7){
-                                <kendo-chip label="{{ Pon7 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-                              </span>
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res7')?.valid && formSimulacion.get('Res7')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon7){
+                                  <kendo-chip label="{{ Pon7 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
-              </div>
-            </kendo-card>
-          </ng-template>
-        </kendo-panelbar-item>
-      </kendo-panelbar>
-      <br>
-      <!-- Progress bar impacto social -->
-      <div class="col-12 mt-3 mb-3 barra2" [style.top.px]="topBarraImpactoSocial">
-        <kendo-label text="Calificacion Impacto Social " style="font-weight: bold; font-size:16px !important;">
-          &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles2" [label]="label" [animation]="animation"
-            [max]="31" style="width: 83%;" [value]="TotalSocial||0">
-          </kendo-progressbar>
-        </kendo-label>
-      </div>
-      <!-- ============================================================================================================= -->
-      <!-- ================================= Seccion 2  Impacto Social 31 % ========================================== -->
-      <!-- ============================================================================================================= -->
-      <kendo-panelbar>
-        <kendo-panelbar-item class="k-item2" [svgIcon]="icons.accessibilityIcon" title="Impacto Social"
-          [expanded]="true">
-          <ng-template kendoPanelBarContent>
-            <kendo-card width="auto" style="padding: 1rem; align-content: center;">
-              <!-- Primer linea -->
-              <div class="row mt-3 mb-2">
+
+              </kendo-card>
+            </ng-template>
+          </kendo-panelbar-item>
+        </kendo-panelbar>
+        <br>
+        <!-- Progress bar impacto social -->
+        <div class="col-12 mt-3 mb-3 barra2" [style.top.px]="topBarraImpactoSocial">
+          <kendo-label text="Calificacion Impacto Social " style="font-weight: bold; font-size:16px !important;">
+            &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles2" [label]="label" [animation]="animation"
+              [max]="31" style="width: 83%;" [value]="TotalSocial||0">
+            </kendo-progressbar>
+          </kendo-label>
+        </div>
+        <!-- ============================================================================================================= -->
+        <!-- ================================= Seccion 2  Impacto Social 31 % ========================================== -->
+        <!-- ============================================================================================================= -->
+        <kendo-panelbar>
+          <kendo-panelbar-item class="k-item2" [svgIcon]="icons.accessibilityIcon" title="Impacto Social"
+            [expanded]="true">
+            <ng-template kendoPanelBarContent>
+              <kendo-card width="auto" style="padding: 1rem; align-content: center;">
                 <!--=====================================================================================================-->
                 <!--=============== Variable 2.1 Igualdad de Genero 7.5 %   =============================================-->
                 <!--=====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Igualdad de género" subtitle="Cualidad: Impacto Social (1.2)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate8>
-                            <div class="tooltip-justificado">
-                              Los alcances del proyecto contribuyen de manera directa a la igualdad de oportunidades
-                              entre
-                              mujeres y hombres
-                            </div>
-                          </ng-template>
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Igualdad de género" subtitle="Cualidad: Impacto Social (1.2)"
+                      [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate8>
+                              <div class="tooltip-justificado">
+                                Los alcances del proyecto contribuyen de manera directa a la igualdad de oportunidades
+                                entre
+                                mujeres y hombres
+                              </div>
+                            </ng-template>
 
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate8" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              1.- Contribución a la igualdad de género
-                            </kendo-label>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate8" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                1.- Contribución a la igualdad de género
+                              </kendo-label>
 
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="success">Alto</kendo-badge>
-                              </kendo-badge-container>
-                            </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist #sizes [data]="OpIS1.slice(1)" textField="text" valueField="value"
-                                  [valuePrimitive]="true" (selectionChange)="RespuestaIS1($event)"
-                                  (valueChange)="valorSeleccionado8 = $event" [value]="valorSeleccionado8"
-                                  formControlName="Res8" [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
-                                      'k-valid': formSimulacion.get('Res8')?.valid && formSimulacion.get('Res8')?.dirty
-                                    }">
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res8')?.valid && formSimulacion.get('Res8')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon8){
-                                <kendo-chip label="{{ Pon8 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                               </span>
                             </div>
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <kendo-badge-container>
+                                  <kendo-badge themeColor="success">Alto</kendo-badge>
+                                </kendo-badge-container>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist #sizes [data]="OpIS1.slice(1)" textField="text" valueField="value"
+                                    [valuePrimitive]="true" (selectionChange)="RespuestaIS1($event)"
+                                    (valueChange)="valorSeleccionado8 = $event" [value]="valorSeleccionado8"
+                                    formControlName="Res8" [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                      'k-valid': formSimulacion.get('Res8')?.valid && formSimulacion.get('Res8')?.dirty
+                                    }">
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res8')?.valid && formSimulacion.get('Res8')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon8){
+                                  <kendo-chip label="{{ Pon8 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+                                </span>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
                 <!--=====================================================================================================-->
                 <!--=============== Variable 2.2 Atención Rezago Social 7 % ===========================================-->
                 <!--=====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Atención rezago social" subtitle="Cualidad: Impacto Social(2.2)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate9>
-                            <div class="tooltip-justificado">
-                              <ul>
-                                <li>La distribución territorial del presupuesto incluye de manera específica a uno
-                                  o más municipios con grado de rezago social medio (Atarjea, Tierra Blanca y Xichú)
-                                </li>
-                                <li>La distribución territorial del presupuesto incluye de manera específica a uno o
-                                  más municipios con grado de rezago social bajo (24 municipios) pero no con grado de
-                                  rezago social medio
-                                </li>
-                                <li>
-                                  La distribución territorial del presupuesto no incluye de manera específica a alguno
-                                  de
-                                  los municipios anteriores
-                                </li>
-                              </ul>
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate9" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              2.- Atención a municipios con rezago social
-                            </kendo-label>
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Atención rezago social" subtitle="Cualidad: Impacto Social(2.2)"
+                      [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate9>
+                              <div class="tooltip-justificado">
+                                <ul>
+                                  <li>La distribución territorial del presupuesto incluye de manera específica a uno
+                                    o más municipios con grado de rezago social medio (Atarjea, Tierra Blanca y Xichú)
+                                  </li>
+                                  <li>La distribución territorial del presupuesto incluye de manera específica a uno o
+                                    más municipios con grado de rezago social bajo (24 municipios) pero no con grado de
+                                    rezago social medio
+                                  </li>
+                                  <li>
+                                    La distribución territorial del presupuesto no incluye de manera específica a alguno
+                                    de
+                                    los municipios anteriores
+                                  </li>
+                                </ul>
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate9" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                2.- Atención a municipios con rezago social
+                              </kendo-label>
 
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <span>
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="warning">Medio</kendo-badge>
-                                </kendo-badge-container>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                               </span>
                             </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpIS2.slice(1)" textField="text" valueField="value"
-                                  [value]="valorSeleccionado9" [valuePrimitive]="true"
-                                  (valueChange)="valorSeleccionado9 = $event"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  (selectionChange)="RespuestaIS2($event)" formControlName="Res9"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
-                                  showSuccessIcon="initial" [ngClass]="{
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <span>
+                                  <kendo-badge-container>
+                                    <kendo-badge themeColor="warning">Medio</kendo-badge>
+                                  </kendo-badge-container>
+                                </span>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist [data]="OpIS2.slice(1)" textField="text" valueField="value"
+                                    [value]="valorSeleccionado9" [valuePrimitive]="true"
+                                    (valueChange)="valorSeleccionado9 = $event"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    (selectionChange)="RespuestaIS2($event)" formControlName="Res9"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
+                                    showSuccessIcon="initial" [ngClass]="{
                                       'k-valid': formSimulacion.get('Res9')?.valid && formSimulacion.get('Res9')?.dirty
                                     }">
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res9')?.valid && formSimulacion.get('Res9')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon9){
-                                <kendo-chip label="{{ Pon9 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-                              </span>
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res9')?.valid && formSimulacion.get('Res9')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon9){
+                                  <kendo-chip label="{{ Pon9 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
                 <!--=====================================================================================================-->
                 <!--=============== Variable 2.3 Subsidios sociales 6.5 %    ============-->
                 <!--=====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Subsidios sociales" subtitle="Cualidad: Impacto Social (2.3)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate10>
-                            <div class="tooltip-justificado">
-                              El proyecto tiene como alcance específico otorgar recursos con propósitos sociales a
-                              personas
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate10" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              3.- Subsidios Sociales
-                            </kendo-label>
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Subsidios sociales" subtitle="Cualidad: Impacto Social (2.3)"
+                      [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate10>
+                              <div class="tooltip-justificado">
+                                El proyecto tiene como alcance específico otorgar recursos con propósitos sociales a
+                                personas
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate10" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                3.- Subsidios Sociales
+                              </kendo-label>
 
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="warning">Medio</kendo-badge>
-                              </kendo-badge-container>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                              </span>
                             </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist #sizes [data]="OpIS3.slice(1)" textField="text" valueField="value"
-                                  [valuePrimitive]="true" (selectionChange)="RespuestaIS3($event)"
-                                  (valueChange)="valorSeleccionado10 = $event" [value]="valorSeleccionado10"
-                                  formControlName="Res10" [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <kendo-badge-container>
+                                  <kendo-badge themeColor="warning">Medio</kendo-badge>
+                                </kendo-badge-container>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist #sizes [data]="OpIS3.slice(1)" textField="text" valueField="value"
+                                    [valuePrimitive]="true" (selectionChange)="RespuestaIS3($event)"
+                                    (valueChange)="valorSeleccionado10 = $event" [value]="valorSeleccionado10"
+                                    formControlName="Res10" [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                       'k-valid': formSimulacion.get('Res10')?.valid && formSimulacion.get('Res10')?.dirty
                                     }">
 
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res10')?.valid && formSimulacion.get('Res10')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon10){
-                                <kendo-chip label="{{ Pon10 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-                              </span>
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res10')?.valid && formSimulacion.get('Res10')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon10){
+                                  <kendo-chip label="{{ Pon10 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
-              </div>
-              <!-- Segunda linea -->
-              <div class="row mt-3 mb-2">
+
                 <!--=====================================================================================================-->
                 <!--=============== Variable 2.4 Incidencia en los ODSs 6.0 %  ============-->
                 <!--=====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Incidencia en los ODS" subtitle="Cualidad: Impacto Social (2.4)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate11>
-                            <div class="tooltip-justificado">
-                              Los alcances del proyecto inciden en alguno de los 7 indicadores seleccionados con alta
-                              diferencia entre su valor a escala estatal y su valor a escala nacional
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Incidencia en los ODS" subtitle="Cualidad: Impacto Social (2.4)"
+                      [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate11>
+                              <div class="tooltip-justificado">
+                                Los alcances del proyecto inciden en alguno de los 7 indicadores seleccionados con alta
+                                diferencia entre su valor a escala estatal y su valor a escala nacional
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate11" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                4.- Incidencia en los Objetivos de Desarrollo Sostenible
+                                (2026)
+                              </kendo-label>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                              </span>
                             </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate11" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              4.- Incidencia en los Objetivos de Desarrollo Sostenible
-                              (2026)
-                            </kendo-label>
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="warning">Medio</kendo-badge>
-                              </kendo-badge-container>
-                            </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist #sizes [data]="OpIS4.slice(1)" textField="text" valueField="value"
-                                  [valuePrimitive]="true" (selectionChange)="RespuestaIS4($event)"
-                                  (valueChange)="valorSeleccionado11 = $event" [value]="valorSeleccionado11"
-                                  formControlName="Res11" [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <kendo-badge-container>
+                                  <kendo-badge themeColor="warning">Medio</kendo-badge>
+                                </kendo-badge-container>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist #sizes [data]="OpIS4.slice(1)" textField="text" valueField="value"
+                                    [valuePrimitive]="true" (selectionChange)="RespuestaIS4($event)"
+                                    (valueChange)="valorSeleccionado11 = $event" [value]="valorSeleccionado11"
+                                    formControlName="Res11" [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                       'k-valid': formSimulacion.get('Res11')?.valid && formSimulacion.get('Res11')?.dirty
                                     }">
 
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res11')?.valid && formSimulacion.get('Res11')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res11')?.valid && formSimulacion.get('Res11')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
 
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon11){
-                                <kendo-chip label="{{ Pon11 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon11){
+                                  <kendo-chip label="{{ Pon11 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
 
-                              </span>
+                                </span>
+                              </div>
                             </div>
+
+
                           </div>
 
-
-                        </div>
-
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
                 <!--=====================================================================================================-->
                 <!--=============== Variable 2.5 Incidencia en los indicadores de pobreza 4.0 %  ============-->
                 <!--=====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Incidencia en los indicadores de pobreza"
-                    subtitle="Cualidad: Impacto Social (2.5)" [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate12>
-                            <div class="tooltip-justificado">
-                              Los alcances del proyecto inciden en los indicadores de rezago educativo y de acceso a la
-                              alimentación
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate12" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              Incidencia en indicadores de pobreza (2026)
-                            </kendo-label>
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="error">Bajo</kendo-badge>
-                              </kendo-badge-container>
-                            </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist #sizes [data]="OpIS5.slice(1)" textField="text" valueField="value"
-                                  [valuePrimitive]="true" (selectionChange)="RespuestaIS5($event)"
-                                  (valueChange)="valorSeleccionado12 = $event" [value]="valorSeleccionado12"
-                                  formControlName="Res12" [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
-                                      'k-valid': formSimulacion.get('Res12')?.valid && formSimulacion.get('Res12')?.dirty
-                                    }">
-
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res12')?.valid && formSimulacion.get('Res12')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-
-
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon12){
-                                <kendo-chip label="{{ Pon12 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Incidencia en los indicadores de pobreza"
+                      subtitle="Cualidad: Impacto Social (2.5)" [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate12>
+                              <div class="tooltip-justificado">
+                                Los alcances del proyecto inciden en los indicadores de rezago educativo y de acceso a
+                                la
+                                alimentación
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate12" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                Incidencia en indicadores de pobreza (2026)
+                              </kendo-label>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                               </span>
                             </div>
-                          </div>
-
-
-                        </div>
-
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
-                </div>
-              </div>
-            </kendo-card>
-          </ng-template>
-        </kendo-panelbar-item>
-      </kendo-panelbar>
-
-      <!-- ============================================================================================================= -->
-      <!-- ================================= Seccion 3  Impacto Economico 8 %        ======================== -->
-      <!-- ============================================================================================================= -->
-      <div class="col-12 mt-3 mb-3">
-        <kendo-label text="Calificacion Impacto Ecónomico " style="font-weight: bold;font-size:16px !important;">
-          &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles3" [label]="label" [animation]="animation"
-            [max]="8" style="width: 80%;" [value]="TotalEconomico||0">
-          </kendo-progressbar>
-        </kendo-label>
-      </div>
-      <br>
-      <kendo-panelbar>
-        <kendo-panelbar-item class="k-item2" [svgIcon]="icons.dollarIcon" title="Impacto Economico" [expanded]="true">
-          <ng-template kendoPanelBarContent>
-            <kendo-card width="auto" style="padding: 1rem; align-content: center;">
-              <div class="row mt-3 mb-2">
-                <!--=====================================================================================================-->
-                <!--=============== Variable 3.1 Incidencia en empleos temporales 3 % "============-->
-                <!--=====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Incidencia en empleos temporales"
-                    subtitle="Cualidad: Impacto Economico(3.1)" [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate13>
-                            <div class="tooltip-justificado">
-                              Numero de empleos temporales generados
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate13" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              1.- Incidencia en empleos temporales (2026)
-                            </kendo-label>
-
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <span>
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
                                 <kendo-badge-container>
                                   <kendo-badge themeColor="error">Bajo</kendo-badge>
                                 </kendo-badge-container>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist #sizes [data]="OpIS5.slice(1)" textField="text" valueField="value"
+                                    [valuePrimitive]="true" (selectionChange)="RespuestaIS5($event)"
+                                    (valueChange)="valorSeleccionado12 = $event" [value]="valorSeleccionado12"
+                                    formControlName="Res12" [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                      'k-valid': formSimulacion.get('Res12')?.valid && formSimulacion.get('Res12')?.dirty
+                                    }">
+
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res12')?.valid && formSimulacion.get('Res12')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+
+
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon12){
+                                  <kendo-chip label="{{ Pon12 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+
+                                </span>
+                              </div>
+                            </div>
+
+
+                          </div>
+
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
+                </div>
+              </kendo-card>
+            </ng-template>
+          </kendo-panelbar-item>
+        </kendo-panelbar>
+        <!-- Progress bar impacto social -->
+        <div class="col-12 mt-3 mb-3 barra3" [style.top.px]="topBarraImpactoEconomico">
+          <kendo-label text="Calificacion Impacto Ecónomico " style="font-weight: bold;font-size:16px !important;">
+            &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles3" [label]="label" [animation]="animation"
+              [max]="8" style="width: 80%;" [value]="TotalEconomico||0">
+            </kendo-progressbar>
+          </kendo-label>
+        </div>
+        <!-- ============================================================================================================= -->
+        <!-- ================================= Seccion 3  Impacto Economico 8 %        ======================== -->
+        <!-- ============================================================================================================= -->
+        <br>
+        <kendo-panelbar>
+          <kendo-panelbar-item class="k-item2" [svgIcon]="icons.dollarIcon" title="Impacto Economico" [expanded]="true">
+            <ng-template kendoPanelBarContent>
+              <kendo-card width="auto" style="padding: 1rem; align-content: center;">
+
+                <!--=====================================================================================================-->
+                <!--=============== Variable 3.1 Incidencia en empleos temporales 3 % "============-->
+                <!--=====================================================================================================-->
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Incidencia en empleos temporales"
+                      subtitle="Cualidad: Impacto Economico(3.1)" [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate13>
+                              <div class="tooltip-justificado">
+                                Numero de empleos temporales generados
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate13" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                1.- Incidencia en empleos temporales (2026)
+                              </kendo-label>
+
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                               </span>
                             </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpIE1.slice(1)" textField="text" valueField="value"
-                                  [value]="valorSeleccionado13" [valuePrimitive]="true"
-                                  (valueChange)="valorSeleccionado13 = $event"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  (selectionChange)=" RespuestaISE1($event)" formControlName="Res13"
-                                  [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
-                                  showSuccessIcon="initial" [ngClass]="{
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <span>
+                                  <kendo-badge-container>
+                                    <kendo-badge themeColor="error">Bajo</kendo-badge>
+                                  </kendo-badge-container>
+                                </span>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist [data]="OpIE1.slice(1)" textField="text" valueField="value"
+                                    [value]="valorSeleccionado13" [valuePrimitive]="true"
+                                    (valueChange)="valorSeleccionado13 = $event"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    (selectionChange)=" RespuestaISE1($event)" formControlName="Res13"
+                                    [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
+                                    showSuccessIcon="initial" [ngClass]="{
                                         'k-valid': formSimulacion.get('Res13')?.valid && formSimulacion.get('Res13')?.dirty
                                       }">
 
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{ dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res13')?.valid && formSimulacion.get('Res13')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon13){
-                                <kendo-chip label="{{ Pon13 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
-                              </span>
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{ dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res13')?.valid && formSimulacion.get('Res13')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon13){
+                                  <kendo-chip label="{{ Pon13 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+                                </span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
                 <!--=====================================================================================================-->
                 <!--=============== Variable 3.2 Actividad económica 2 % ===========-->
                 <!--=====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Actividad económica" subtitle="Cualidad:Impacto Economico(3.2)"
-                    [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate14>
-                            <div class="tooltip-justificado">
-                              Los alcances del proyecto inciden en la actividad manufacturera
-                            </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate14" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              2.- Actividad económica (2026)
-                            </kendo-label>
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="error">Bajo</kendo-badge>
-                              </kendo-badge-container>
-                            </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpIE2.slice(1)" textField="text" valueField="value"
-                                  (valueChange)="valorSeleccionado14 = $event" [valuePrimitive]="true"
-                                  (selectionChange)="RespuestaISE2($event)" [value]="valorSeleccionado14"
-                                  formControlName="Res14" [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
-                                          'k-valid': formSimulacion.get('Res14')?.valid && formSimulacion.get('Res14')?.dirty
-                                        }">
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res14')?.valid && formSimulacion.get('Res14')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon14){
-                                <kendo-chip label="{{ Pon14 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Actividad económica" subtitle="Cualidad:Impacto Economico(3.2)"
+                      [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate14>
+                              <div class="tooltip-justificado">
+                                Los alcances del proyecto inciden en la actividad manufacturera
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate14" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                2.- Actividad económica (2026)
+                              </kendo-label>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                               </span>
                             </div>
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <kendo-badge-container>
+                                  <kendo-badge themeColor="error">Bajo</kendo-badge>
+                                </kendo-badge-container>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist [data]="OpIE2.slice(1)" textField="text" valueField="value"
+                                    (valueChange)="valorSeleccionado14 = $event" [valuePrimitive]="true"
+                                    (selectionChange)="RespuestaISE2($event)" [value]="valorSeleccionado14"
+                                    formControlName="Res14" [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                          'k-valid': formSimulacion.get('Res14')?.valid && formSimulacion.get('Res14')?.dirty
+                                        }">
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res14')?.valid && formSimulacion.get('Res14')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon14){
+                                  <kendo-chip label="{{ Pon14 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+                                </span>
+                              </div>
+                            </div>
                           </div>
-                        </div>
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
                 <!--=====================================================================================================-->
                 <!--=============== Variable 3.3 Incidencia en empleos permanentes 3 % ============-->
                 <!--=====================================================================================================-->
-                <div class="col-md-4">
-                  <kendo-expansionpanel title="Incidencia en empleos permanentes"
-                    subtitle="Cualidad:Impacto Economico(3.2)" [expanded]="true">
-                    <div class="container-fluid">
-                      <p> </p>
-                      <section class="row">
-                        <div class="col-md-12">
-                          <ng-template #tooltipTemplate15>
-                            <div class="tooltip-justificado">
-                              Incide en la generación de más de 1,050 empleos permanentes
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel title="Incidencia en empleos permanentes"
+                      subtitle="Cualidad:Impacto Economico(3.2)" [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row mt-2">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate15>
+                              <div class="tooltip-justificado">
+                                Incide en la generación de más de 1,050 empleos permanentes
 
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate15" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                3.- Incidencia en empleos permanentes (2026)
+                              </kendo-label>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                              </span>
                             </div>
-                          </ng-template>
-                          <div kendoTooltip [tooltipTemplate]="tooltipTemplate15" filter=".info-icon">
-                            <kendo-label style="font-weight: bold;">
-                              3.- Incidencia en empleos permanentes (2026)
-                            </kendo-label>
-                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                            </span>
-                          </div>
-                          <div class="row mt-2 mb-4">
-                            <div class="col-1">
-                              <kendo-badge-container>
-                                <kendo-badge themeColor="error">Bajo</kendo-badge>
-                              </kendo-badge-container>
-                            </div>
-                            <div class="col-9">
-                              <kendo-formfield showHints="initial">
-                                <kendo-dropdownlist [data]="OpIE3.slice(1)" textField="text" valueField="value"
-                                  [valuePrimitive]="true" (selectionChange)="RespuestaISE3($event)"
-                                  (valueChange)="valorSeleccionado15 = $event" [value]="valorSeleccionado15"
-                                  formControlName="Res15" [defaultItem]="{ text: 'Selecciona', value: null }"
-                                  showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <kendo-badge-container>
+                                  <kendo-badge themeColor="error">Bajo</kendo-badge>
+                                </kendo-badge-container>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist [data]="OpIE3.slice(1)" textField="text" valueField="value"
+                                    [valuePrimitive]="true" (selectionChange)="RespuestaISE3($event)"
+                                    (valueChange)="valorSeleccionado15 = $event" [value]="valorSeleccionado15"
+                                    formControlName="Res15" [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                           'k-valid': formSimulacion.get('Res15')?.valid && formSimulacion.get('Res15')?.dirty
                                         }">
 
-                                  <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                  <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                    <span class="item-content">
-                                      <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                        }}</span>&nbsp;{{
-                                      dataItem?.text }}
-                                    </span>
-                                  </ng-template>
-                                </kendo-dropdownlist>
-                                <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                @if (formSimulacion.get('Res15')?.valid && formSimulacion.get('Res15')?.dirty) {
-                                <div class="form-success">
-                                  ✔ Campo válido
-                                </div>
-                                }
-                                @else{
-                                <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                }
-                              </kendo-formfield>
-                            </div>
-                            <div class="col-1">
-                              <span>
-                                @if(Pon15){
-                                <kendo-chip label="{{ Pon15 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                  rounded="full">
-                                </kendo-chip>
-                                }
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res15')?.valid && formSimulacion.get('Res15')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon15){
+                                  <kendo-chip label="{{ Pon15 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
 
-                              </span>
+                                </span>
+                              </div>
                             </div>
+
+
                           </div>
 
-
-                        </div>
-
-                      </section>
-                    </div>
-                  </kendo-expansionpanel>
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
                 </div>
-              </div>
 
-            </kendo-card>
-          </ng-template>
-        </kendo-panelbar-item>
-      </kendo-panelbar>
-      <br>
+              </kendo-card>
+            </ng-template>
+          </kendo-panelbar-item>
+        </kendo-panelbar>
+        <br>
+      </div>
     </div>
     <!-- Botones del formulario -->
     <div class="k-actions k-actions-center">
@@ -1896,5 +1658,4 @@
       </button>
     </div>
   </form>
-
 </section>

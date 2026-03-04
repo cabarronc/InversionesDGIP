@@ -87,6 +87,7 @@ export class SimuladorComponent implements OnInit {
   currentUser: User | null = null;
   topBarraRacionalidad: number = 110;
   topBarraImpactoSocial: number = 130;
+  topBarraImpactoEconomico: number = 150;
   public opened = false;
   public dataSaved = false;
   public opened2 = false;
@@ -103,6 +104,7 @@ export class SimuladorComponent implements OnInit {
     { label: "Finaliza", isValid: true, emoji: "✅" },
   ];
   itemSeleccionado: any = null;
+  SimulacionSeleccionada: any = null;
   SinContinuidad = true
   // Estilos de la barra de progreso
   public progressStyles: { [key: string]: string } = {
@@ -710,7 +712,7 @@ export class SimuladorComponent implements OnInit {
     this.opened2 = true;
   }
 
-  public submit2(): void {
+  public comparar(): void {
     this.dataSaved2 = true;
     this.close2();
   }
@@ -768,120 +770,24 @@ export class SimuladorComponent implements OnInit {
     console.log("Ponderacion", this.Pon1)
     this.MethodTotal()
   }
+
+   public cargarSimulacionComparador(clave: string) {
+
+    const registros = this.storageService.getLocal<any[]>('simulaciones') || [];
+
+    const simulacion = registros.find(r => r.clave === clave);
+
+    if (!simulacion) {
+      this.formSimulacion.reset(); // limpia si no hay datos
+      for (let i = 1; i <= 15; i++) {
+        this[`Pon${i}` as keyof this] = null as any;
+      }
+      this.MethodTotal()
+      return;
+    }
+
+  }
   //Metodo para simular 
-  // public simular() {
-  //   console.log("itemselecciond",this.itemSeleccionado?.clave)
-  //   // 🔴 Validar formulario antes de continuar
-  //   if (this.formSimulacion.invalid) {
-  //     this.formSimulacion.markAllAsTouched();
-
-  //     const nombresCampos: any = {
-  //       Res1: 'Gasto de Adminsitración',
-  //       Res2: 'Preparacion Técnica',
-  //       Res3: 'Desempeño  Historico',
-  //       Res4: 'Fuente Financiamiento',
-  //       Res5: 'Inversión Productiva',
-  //       Res6: 'Cobertura de la Población Objetivo',
-  //       Res7: 'Concurrencia',
-  //       Res8: 'Atención Rezago Social',
-  //       Res9: 'Igualdad de Género',
-  //       Res10: 'Subsidios Sociales',
-  //       Res11: 'Incidencia en los ODS',
-  //       Res12: 'Incidencia en los Indicadores de Pobreza',
-  //       Res13: 'Incidencia Empleso Temporales',
-  //       Res14: 'Actividad Económica',
-  //       Res15: 'Incidencia en Empleos Permanentes',
-
-  //     };
-  //     const camposFaltantes: string[] = [];
-  //     Object.keys(this.formSimulacion.controls).forEach(campo => {
-  //       const control = this.formSimulacion.get(campo);
-
-  //       if (control?.invalid) {
-  //         camposFaltantes.push(nombresCampos[campo] || campo);
-  //       }
-  //     });
-
-  //     const mensaje = camposFaltantes.length === 1
-  //       ? `Falta la variable: ${camposFaltantes[0]}`
-  //       : `Faltan los siguientes variables: ${camposFaltantes.join(', ')}`;
-
-  //     this.notificationService.show({
-  //       content: mensaje,
-  //       appendTo: this.viewContainerRef,
-  //       hideAfter: 2500,
-  //       animation: { type: "slide", duration: 2500 },
-  //       type: { style: "error", icon: true },
-  //       position: { horizontal: "center", vertical: "bottom" },
-  //     });
-  //     return; // Detiene la ejecución
-  //   }
-  //   console.log("Simualciones: ", this.itemSeleccionado);
-  //   const nuevoRegistro = {
-  //     clave: this.itemSeleccionado.clave,
-  //     resultados: {
-  //       res1: this.formSimulacion.get('Res1')?.value,
-  //       pon1: this.Pon1 ?? 0,
-  //       res2: this.formSimulacion.get('Res2')?.value,
-  //       pon2: this.Pon2 ?? 0,
-  //       res3: this.formSimulacion.get('Res3')?.value,
-  //       pon3: this.Pon3 ?? 0,
-  //       res4: this.formSimulacion.get('Res4')?.value,
-  //       pon4: this.Pon4 ?? 0,
-  //       res5: this.formSimulacion.get('Res5')?.value,
-  //       pon5: this.Pon5 ?? 0,
-  //       res6: this.formSimulacion.get('Res6')?.value,
-  //       pon6: this.Pon6 ?? 0,
-  //       res7: this.formSimulacion.get('Res7')?.value,
-  //       pon7: this.Pon7 ?? 0,
-  //       res8: this.formSimulacion.get('Res8')?.value,
-  //       pon8: this.Pon8 ?? 0,
-  //       res9: this.formSimulacion.get('Res9')?.value,
-  //       pon9: this.Pon9 ?? 0,
-  //       res10: this.formSimulacion.get('Res10')?.value,
-  //       pon10: this.Pon10 ?? 0,
-  //       res11: this.formSimulacion.get('Res11')?.value,
-  //       pon11: this.Pon11 ?? 0,
-  //       res12: this.formSimulacion.get('Res12')?.value,
-  //       pon12: this.Pon12 ?? 0,
-  //       res13: this.formSimulacion.get('Res13')?.value,
-  //       pon13: this.Pon13 ?? 0,
-  //       res14: this.formSimulacion.get('Res14')?.value,
-  //       pon14: this.Pon14 ?? 0,
-  //       res15: this.formSimulacion.get('Res15')?.value,
-  //       pon15: this.Pon15 ?? 0,
-  //     },
-  //     fecha: new Date().toISOString()
-  //   }
-  //   // const nuevoRegistro = this.formSimulacion.value
-  //   const registros = this.storageService.getLocal<any[]>('simulaciones') || [];
-  //   const index = registros.findIndex(r => r.clave === nuevoRegistro.clave);
-  //   if (index !== -1) {
-  //     registros[index] = nuevoRegistro;
-  //   } else {
-  //     registros.push(nuevoRegistro);
-  //   }
-  //   // registros.push(nuevoRegistro);
-  //   this.storageService.setLocal('simulaciones', registros);
-  //   const proteyctoCreado = nuevoRegistro.clave
-  //   const finalMessage = `Se simulo el proyecto: ${proteyctoCreado}`;
-  //   this.notificationService.show({
-  //     content: finalMessage,
-  //     appendTo: this.viewContainerRef,
-  //     hideAfter: 2500,
-  //     animation: { type: "slide", duration: 2500 },
-  //     type: { style: "success", icon: true },
-  //     position: { horizontal: "center", vertical: "bottom" },
-  //   });
-  //   console.log('Registros guardados:', registros);
-  //   this.formSimulacion.reset()
-  //   this.itemSeleccionado = null
-  //   for (let i = 1; i <= 15; i++) {
-  //     this[`Pon${i}` as keyof this] = null as any;
-  //   }
-  //   this.LoadProy()
-  //   this.MethodTotal()
-  // }
   public simular() {
 
   console.log("itemseleccionado", this.itemSeleccionado?.clave);
@@ -1057,6 +963,7 @@ export class SimuladorComponent implements OnInit {
       console.log("vacio", this.formSimulacion.get('Res3')?.value)
       this.topBarraRacionalidad = 100
       this.topBarraImpactoSocial = 123
+        this.topBarraImpactoEconomico = 150
       this.formSimulacion.reset()
       for (let i = 1; i <= 15; i++) {
         this[`Pon${i}` as keyof this] = null as any;
@@ -1069,6 +976,20 @@ export class SimuladorComponent implements OnInit {
     this.MethodTotal()
     this.topBarraRacionalidad = 205
     this.topBarraImpactoSocial = 228
+    this.topBarraImpactoEconomico = 250
+
+  }
+  //Eleccion de Simulacion
+   onSimChange(item: any) {
+    this.SimulacionSeleccionada = item;
+   this.cargarSimulacionComparador(item.clave);
+    console.log("onProyChange item", this.SimulacionSeleccionada)
+
+    if (!item) {
+      
+      return;
+    }
+
 
   }
   //Gasto Adm
@@ -1481,9 +1402,9 @@ export class SimuladorComponent implements OnInit {
     this.TotalEconomico = pon13 + pon14 + pon15
     this.CalGlob = (this.TotalRacionalidad ?? 0) + (this.TotalSocial ?? 0) + (this.TotalEconomico ?? 0)
     this.CalProm = this.CalGlob;
-    this.updateAppearance(this.getColor(this.TotalRacionalidad ?? 0, 62));
-    this.updateAppearance2(this.getColor(this.TotalSocial ?? 0, 32.5));
-    this.updateAppearance3(this.getColor(this.TotalEconomico ?? 0, 5.5));
+    this.updateAppearance(this.getColor(this.TotalRacionalidad ?? 0, 61));
+    this.updateAppearance2(this.getColor(this.TotalSocial ?? 0, 31));
+    this.updateAppearance3(this.getColor(this.TotalEconomico ?? 0, 8));
   }
   private getColor(valor: number, maximo: number): string {
     const porcentaje = (valor / maximo) * 100;
