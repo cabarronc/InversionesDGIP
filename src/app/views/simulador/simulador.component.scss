@@ -26,6 +26,18 @@
    padding-top: 2.5px;
  }
 
+  .templateNeutro {
+   display: inline-flex;
+   background: #64686d;
+   font-weight: bold;
+   color: #fff;
+   border-radius: 50%;
+   width: 20px;
+   height: 20px;
+   justify-content: center;
+   align-items: center;
+ }
+
  .template {
    display: inline-flex;
    background: #5392e4;
@@ -63,7 +75,7 @@
  }
  .template7 {
    display: inline-flex;
-   background: #e26613;
+   background: #c4c706;
    color: #fff;
    font-weight: bold;
    border-radius: 50%;
@@ -76,7 +88,7 @@
 
  .template6 {
    display: inline-flex;
-   background: #c4c706;
+   background: #e26613;
    color: #fff;
    font-weight: bold;
    border-radius: 50%;
@@ -152,20 +164,20 @@
 }
 .barra {
   position: sticky;
-  top: 110px; /* altura del navbar */
+  top: 123; /* altura del navbar */
   z-index: 99; 
   background: #e0e0d5 /* importante para que no se vea transparente */
 }
 
 .barra2 {
   position: sticky;
-  top: 130px; /* altura del navbar */
+  top: 142px; /* altura del navbar */
   z-index: 100; 
   background: #e0e0d5 /* importante para que no se vea transparente */
 }
 .barra3 {
   position: sticky;
-  top: 150px; /* altura del navbar */
+  top: 164px; /* altura del navbar */
   z-index: 100; 
   background: #e0e0d5 /* importante para que no se vea transparente */
 }
@@ -259,6 +271,94 @@
   color: black;
    display: inline-block;
 }
+
+.rectangulo{
+  border: 2px solid #1e6bf1;
+  border-radius: 14px;
+  padding: 20px 30px;
+}
+.rectangulo2{
+  border: 2px solid #1e6bf1;
+  border-radius: 14px;
+  padding: 15px 15px;
+}
+
+.descripcion{
+  text-align: justify;
+  margin-bottom: 0;
+}
+
+.title2{
+  letter-spacing: 6px;
+}
+// Color de la ventana emergente
+::ng-deep .k-window-titlebar {
+  background: #0d6efd;
+  color: white;
+  font-weight: 600;
+  border-bottom: none;
+}
+//panel de variable
+:host ::ng-deep .panel-personalizado .k-expander-header {
+  background-color: #2c3e50;
+  color: white;
+}
+:host ::ng-deep .panel-personalizado .k-expander-title {
+  color: white;
+}
+//panel de cualidad de valor publico
+:host ::ng-deep .panel-personalizadoValorPublico .k-panelbar-item > .k-link {
+  background-color: #0d6efd;
+  color: white;
+}
+
+
+.toast-error{
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #dc3545;
+  color: white;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  z-index: 1000;
+}
+
+/* entrada */
+.slide-in{
+  animation: slideDown 0.35s ease forwards;
+}
+
+/* salida */
+.slide-out{
+  animation: slideUp 0.35s ease forwards;
+}
+
+
+@keyframes slideDown{
+  from{
+    opacity:0;
+    transform: translate(-50%,-20px);
+  }
+  to{
+    opacity:1;
+    transform: translate(-50%,0);
+  }
+}
+
+@keyframes slideUp{
+  from{
+    opacity:1;
+    transform: translate(-50%,0);
+  }
+  to{
+    opacity:0;
+    transform: translate(-50%,-20px);
+  }
+}
+
 /*
 /* Animación máquina de escribir */
 @keyframes typing {
@@ -270,6 +370,51 @@
   from, to { border-color: transparent }
   50% { border-color: rgb(223, 223, 212); }
 }
+
+
+.variables-grid{
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap:12px;
+  margin-top:15px;
+}
+
+.variable{
+  padding:8px;
+  border-bottom:1px solid #eee;
+  text-align:center;
+}
+
+.nombre{
+  font-size:12px;
+  color:#666;
+}
+
+.valor{
+  font-size:16px;
+  font-weight:600;
+  color:#0d6efd;
+}
+.color-circle{
+  width:20px;
+  height:20px;
+  border-radius:50%;
+  margin:auto;
+  border:1px solid #ccc;
+}
+
+.grupo1 td{
+  background-color:#e8f5e9;   /* verde suave */
+}
+
+.grupo2 td{
+  background-color:#fff8e1;   /* amarillo suave */
+}
+
+.grupo3 td{
+  background-color:#e3f2fd;   /* azul suave */
+}
+
 /* Tablet */
 @media (max-width: 992px) {
   .barra {

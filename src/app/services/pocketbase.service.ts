@@ -34,6 +34,20 @@ export class PocketbaseService {
     async crearProy(collection: string, data: any) {
     return await this.pb.collection(collection).create(data);
   }
+  //Crear simulacion
+     async crearSim(collection: string, data: any) {
+    return await this.pb.collection(collection).create(data);
+  }
+  //buscar
+  buscarPorClave(collection: string, clave: string) {
+  return this.pb.collection(collection)
+    .getFirstListItem(`clave="${clave}"`)
+    .catch(() => null);
+}
+  //Actualizar simulacion
+ async actualizarSim(collection: string, id: string, data: any) {
+  return await this.pb.collection(collection).update(id, data);
+}
 
   // Método para insertar un registro en una colección
   async addRecord(ampliaciones: string, data: any) {
