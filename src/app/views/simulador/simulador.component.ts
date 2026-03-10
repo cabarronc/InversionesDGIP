@@ -132,8 +132,8 @@ export class SimuladorComponent implements OnInit {
 
   currentUser: User | null = null;
   topBarraRacionalidad: number = 120;
-  topBarraImpactoSocial: number = 142;
-  topBarraImpactoEconomico: number = 164;
+  topBarraImpactoSocial: number = 230;
+  topBarraImpactoEconomico: number = 340;
   public opened = false;
   public dataSaved = false;
   public opened2 = false;
@@ -754,7 +754,7 @@ export class SimuladorComponent implements OnInit {
           existente.id,
           nuevoRegistro
         );
-
+        this.cargarSimulacionComparador()
         console.log("Registro actualizado");
 
       } else {
@@ -764,7 +764,7 @@ export class SimuladorComponent implements OnInit {
           'respuestaSimulador',
           nuevoRegistro
         );
-
+        this.cargarSimulacionComparador()
         console.log("Registro creado");
 
       }
@@ -782,10 +782,11 @@ export class SimuladorComponent implements OnInit {
       });
 
       this.topBarraRacionalidad = 120;
-      this.topBarraImpactoSocial = 142;
-      this.topBarraImpactoEconomico = 164;
+      this.topBarraImpactoSocial = 230;
+      this.topBarraImpactoEconomico =405 ;
 
       this.LoadProy();
+      this.cargarSimulacionComparador()
 
     } catch (error: any) {
 
@@ -1063,7 +1064,22 @@ export class SimuladorComponent implements OnInit {
     this.Pon13 = simulacion.resultados.pon13
     this.Pon14 = simulacion.resultados.pon14
     this.Pon15 = simulacion.resultados.pon15
-    console.log("Ponderacion", this.Pon1)
+    this.color1 = simulacion.resultados.color1
+    this.color2 = simulacion.resultados.color2
+    this.color3 = simulacion.resultados.color3
+    this.color4 = simulacion.resultados.color4
+    this.color5 = simulacion.resultados.color5
+    this.color6 = simulacion.resultados.color6
+    this.color7 = simulacion.resultados.color7
+    this.color8 = simulacion.resultados.colo8
+    this.color9 = simulacion.resultados.color9
+    this.color10 = simulacion.resultados.color10
+    this.color11= simulacion.resultados.color11
+    this.color12 = simulacion.resultados.color12
+    this.color13 = simulacion.resultados.color13
+    this.color14 = simulacion.resultados.color14
+    this.color15 = simulacion.resultados.color15
+    console.log("Ponderacion", this.color2)
     this.MethodTotal()
   }
 
@@ -1211,6 +1227,7 @@ export class SimuladorComponent implements OnInit {
 
     if (!item) {
       this.formSimulacion.patchValue({ Res3: null })
+      this.color3 = ''
       console.log("vacio", this.formSimulacion.get('Res3')?.value)
       this.topBarraRacionalidad = 120
       this.topBarraImpactoSocial = 142
@@ -1227,10 +1244,11 @@ export class SimuladorComponent implements OnInit {
       this.cargarSimulacion(item.clave);
       this.MethodTotal()
       this.topBarraRacionalidad = 220
-      this.topBarraImpactoSocial = 305
-      this.topBarraImpactoEconomico = 405
+      this.topBarraImpactoSocial = 325
+      this.topBarraImpactoEconomico = 435
       if (!(this.itemSeleccionado?.continuidad ?? true)) {
         this.formSimulacion.get('Res3')?.disable();
+        this.color3 = ''
       } else {
         this.formSimulacion.get('Res3')?.enable();
       }
@@ -1379,6 +1397,7 @@ export class SimuladorComponent implements OnInit {
       }
       else if (value.value == null) {
         this.Pon3 = 0;
+         this.color3 = ''
         this.MethodTotal()
       }
 

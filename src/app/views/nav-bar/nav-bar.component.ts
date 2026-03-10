@@ -1,4 +1,4 @@
-import { Component,HostListener,Input,OnInit,ViewEncapsulation } from '@angular/core';
+import { Component,HostListener,Input,OnInit,ViewEncapsulation,AfterViewInit,ElementRef, NgZone,ViewChild } from '@angular/core';
 import { KENDO_ICONS, SVGIcon } from "@progress/kendo-angular-icons";
 import { IconsModule } from "@progress/kendo-angular-icons";
 import { homeIcon, bellIcon,menuIcon, userIcon,infoSolidIcon} from "@progress/kendo-svg-icons";
@@ -17,14 +17,14 @@ import { PopupModule } from '@progress/kendo-angular-popup';
 import { interval,Subscription } from 'rxjs';
 import { DialogComponent, DialogTitleBarComponent } from "@progress/kendo-angular-dialog";
 import { NavbarAvatarComponent } from "../navbar-avatar/navbar-avatar.component";
-
-
+import { KENDO_INPUTS } from "@progress/kendo-angular-inputs";
+import { KENDO_POPUP } from "@progress/kendo-angular-popup";
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
   imports: [KENDO_ICONS, KENDO_NAVIGATION, KENDO_INDICATORS, KENDO_LAYOUT, CommonModule, RouterOutlet, RouterLink, RouterLinkActive, IconsModule,
-    RouterModule, KENDO_BUTTONS, PopupModule, NavbarAvatarComponent],
+    RouterModule, KENDO_BUTTONS, PopupModule, NavbarAvatarComponent,KENDO_INPUTS,KENDO_POPUP],
   templateUrl: './nav-bar.component.html',
   encapsulation: ViewEncapsulation.None,
   styleUrl: './nav-bar.component.scss'
@@ -38,7 +38,8 @@ export class NavBarComponent implements OnInit{
   showSessionWarning = false;
   private subscription?: Subscription;
   private warningShown = false;
-
+  public margin = { horizontal: -46, vertical: 7 };
+  public show = false;
   
   @HostListener('document:click', ['$event'])
 onClickOutside(event: Event) {
@@ -49,10 +50,22 @@ onClickOutside(event: Event) {
     this.showSessionModal = false;
   }
 }
-constructor(private route:ActivatedRoute, private authService: AuthService,private router: Router) {
+public onToggle(): void {
+    this.show = !this.show;
+  }
+constructor(private route:ActivatedRoute, private authService: AuthService,private router: Router,private zone: NgZone) {
 
   
 }
+public ngAfterViewInit(): void {
+    this.zone.runOutsideAngular(() => {
+      window.addEventListener("resize", () => {
+        if (this.show) {
+          this.zone.run(() => this.onToggle());
+        }
+      });
+    });
+  }
 ngOnInit(): void {
   this.route.paramMap.subscribe(paramMap=>{
     console.log(paramMap);

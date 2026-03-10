@@ -120,8 +120,9 @@
 /* Contenedor del carrusel */
 #slideshow {
   margin: 3rem auto;
-  width: 500px;
-  height: 300px;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 5 / 3;
   perspective: 1000px;
 }
 
@@ -278,5 +279,35 @@
   box-shadow: 0 2px 0 #2aa7b0;
 }
 
-/* --- Estilo del FAB de Kendo (global) --- */
 
+@media (max-width: 768px) {
+
+#slideshow{
+  width: 280px;
+  height: 200px;
+}
+
+.content-carrousel figure{
+  width: 180px;
+  height: 140px;
+  left: 50px;
+  top: 30px;
+}
+
+/* cilindro más pequeño */
+.content-carrousel figure:nth-child(1){ transform: rotateY(0deg) translateZ(200px); }
+.content-carrousel figure:nth-child(2){ transform: rotateY(60deg) translateZ(200px); }
+.content-carrousel figure:nth-child(3){ transform: rotateY(120deg) translateZ(200px); }
+.content-carrousel figure:nth-child(4){ transform: rotateY(180deg) translateZ(200px); }
+.content-carrousel figure:nth-child(5){ transform: rotateY(240deg) translateZ(200px); }
+.content-carrousel figure:nth-child(6){ transform: rotateY(300deg) translateZ(200px); }
+
+/* título más pequeño */
+.title{
+  font-size:1rem;
+}
+.subtitle{
+  font-size: 0.8rem;
+}
+
+}

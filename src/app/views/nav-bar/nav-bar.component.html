@@ -19,7 +19,7 @@
 
     <kendo-appbar-spacer width="32px"></kendo-appbar-spacer>
 
-    <kendo-appbar-section>
+    <kendo-appbar-section class="appbar-items">
         
         <ul class="appbar-menu">
             <li><a routerLink="/circular" routerLinkActive="router-link-active"
@@ -40,6 +40,38 @@
 
         </ul>
     </kendo-appbar-section>
+<!-- Resposivo -->
+     <kendo-appbar-section>
+        <button
+          kendoButton
+          fillMode="flat"
+          class="overflow-button"
+          #anchor
+          (click)="onToggle()"
+        >
+          <kendo-svgicon [icon]="menuIcon"></kendo-svgicon>
+        </button>
+        @if (show) {
+        <kendo-popup [anchor]="anchor.element" [margin]="margin">
+          <div class="content">
+            <ul>
+             <li><a routerLink="/circular" routerLinkActive="router-link-active"
+                    ariaCurrentWhenActive="page">Circular</a></li>
+            <!-- <li><a routerLink="/claude" routerLinkActive="router-link-active" ariaCurrentWhenActive="page"><span>Centro
+                        de Datos</span></a></li> -->
+            <li><a routerLink="/correos" routerLinkActive="router-link-active"
+                    ariaCurrentWhenActive="page"><span>Correos</span></a></li>
+            <li><a routerLink="/adecuaciones" routerLinkActive="router-link-active"
+                    ariaCurrentWhenActive="page"><span>Adecuaciones</span></a></li>
+            <li><a routerLink="/reportes" routerLinkActive="router-link-active"
+                    ariaCurrentWhenActive="page"><span>Cuenta Publica</span></a></li>
+            <li><a routerLink="/simulador" routerLinkActive="router-link-active"
+                    ariaCurrentWhenActive="page"><span>Simulador</span></a></li>
+            </ul>
+          </div>
+        </kendo-popup>
+        }
+      </kendo-appbar-section>
 
     <kendo-appbar-spacer></kendo-appbar-spacer>
     <kendo-appbar-section>

@@ -1,4 +1,4 @@
- #sectiondefault {
+ .sectiondefault {
    margin: 0 auto;
    height: auto;
    width: 100%;
@@ -418,13 +418,37 @@
 /* Tablet */
 @media (max-width: 992px) {
   .barra {
-    top: 60px;
+     position:static;
+    top: 330px;
+  }
+   .barra2 {
+     position:static;
+    top: 330px;
+  }
+   .barra3 {
+     position:static;
+    top: 330px;
+  }
+  .barraGenerales{
+    position:sticky;
+    top: 135px;
+  }
+  
+  .sectiondefault {
+    padding-top: 100px;
   }
 }
 
 /* Móvil */
 @media (max-width: 576px) {
   .barra {
-    top: 140px;
+    top: 440px;
+  }
+    .barraGenerales{
+    position:static;
+    top: 175px;
+  }
+   .sectiondefault {
+    padding-top: 120px;
   }
 }
