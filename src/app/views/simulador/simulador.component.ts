@@ -1221,9 +1221,6 @@ export class SimuladorComponent implements OnInit {
   onProyChange(item: any) {
     this.itemSeleccionado = item;
     this.validarContinuidad()
-    this.topBarraRacionalidad = 120
-    this.topBarraImpactoSocial = 145
-    this.topBarraImpactoEconomico = 170
 
     if (!item) {
       this.formSimulacion.patchValue({ Res3: null })
@@ -1250,9 +1247,9 @@ export class SimuladorComponent implements OnInit {
         this.topBarraImpactoSocial = 310
         this.topBarraImpactoEconomico = 335
       } else {
-        this.topBarraRacionalidad = 190
-        this.topBarraImpactoSocial = 290
-        this.topBarraImpactoEconomico = 315
+        this.topBarraRacionalidad = 210
+        this.topBarraImpactoSocial = 310
+        this.topBarraImpactoEconomico = 335
       }
 
       if (!(this.itemSeleccionado?.continuidad ?? true)) {

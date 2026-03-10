@@ -325,7 +325,7 @@
         <kendo-card-header
           style="background-color:transparent;  border: 2px solid #1e6bf1; border-radius: 14px; color:rgb(0, 0, 0);">
           <div class="row ms-2 align-items-stretch">
-            <div class="col border-end border-dark">
+            <div class="col-10  border-end border-dark">
               @if (itemSeleccionado) {
               <div class="texto"> <strong style="color:black;">Nombre del proyecto: </strong>{{itemSeleccionado.nombre}}
               </div>
@@ -348,7 +348,7 @@
               @if (itemSeleccionado){
               <kendo-circulargauge [value]="CalProm  || 0 " [scale]="{ max: 100, rangePlaceholderColor: '#a6a6a6' }"
                 [colors]="getGaugeColors()" style="width:100%; height:100%;">
-                <ng-template kendoCircularGaugeCenterTemplate let-value="CalProm">
+                <ng-template kendoCircularGaugeCenterTemplate let-value="value">
                   <span>
                     <font color="black">{{ CalProm || 0 |number:'1.2-2'}} % &nbsp;</font>
                   </span>
