@@ -132,8 +132,8 @@ export class SimuladorComponent implements OnInit {
 
   currentUser: User | null = null;
   topBarraRacionalidad: number = 120;
-  topBarraImpactoSocial: number = 230;
-  topBarraImpactoEconomico: number = 340;
+  topBarraImpactoSocial: number = 222;
+  topBarraImpactoEconomico: number = 244;
   public opened = false;
   public dataSaved = false;
   public opened2 = false;
@@ -783,7 +783,7 @@ export class SimuladorComponent implements OnInit {
 
       this.topBarraRacionalidad = 120;
       this.topBarraImpactoSocial = 230;
-      this.topBarraImpactoEconomico =405 ;
+      this.topBarraImpactoEconomico = 405;
 
       this.LoadProy();
       this.cargarSimulacionComparador()
@@ -1074,7 +1074,7 @@ export class SimuladorComponent implements OnInit {
     this.color8 = simulacion.resultados.colo8
     this.color9 = simulacion.resultados.color9
     this.color10 = simulacion.resultados.color10
-    this.color11= simulacion.resultados.color11
+    this.color11 = simulacion.resultados.color11
     this.color12 = simulacion.resultados.color12
     this.color13 = simulacion.resultados.color13
     this.color14 = simulacion.resultados.color14
@@ -1221,17 +1221,17 @@ export class SimuladorComponent implements OnInit {
   onProyChange(item: any) {
     this.itemSeleccionado = item;
     this.validarContinuidad()
-    this.topBarraRacionalidad = 220
-    this.topBarraImpactoSocial = 305
-    this.topBarraImpactoEconomico = 405
+    this.topBarraRacionalidad = 120
+    this.topBarraImpactoSocial = 145
+    this.topBarraImpactoEconomico = 170
 
     if (!item) {
       this.formSimulacion.patchValue({ Res3: null })
       this.color3 = ''
       console.log("vacio", this.formSimulacion.get('Res3')?.value)
       this.topBarraRacionalidad = 120
-      this.topBarraImpactoSocial = 142
-      this.topBarraImpactoEconomico = 164
+      this.topBarraImpactoSocial = 220
+      this.topBarraImpactoEconomico = 242
       this.formSimulacion.reset()
       for (let i = 1; i <= 15; i++) {
         this[`Pon${i}` as keyof this] = null as any;
@@ -1241,11 +1241,20 @@ export class SimuladorComponent implements OnInit {
       return;
     }
     else {
+      const longitudDescripcion = this.itemSeleccionado?.descripcion?.length || 0;
+      console.log("longitud de la descripcion",longitudDescripcion)
       this.cargarSimulacion(item.clave);
       this.MethodTotal()
-      this.topBarraRacionalidad = 220
-      this.topBarraImpactoSocial = 325
-      this.topBarraImpactoEconomico = 435
+      if (longitudDescripcion > 200) {
+        this.topBarraRacionalidad = 210
+        this.topBarraImpactoSocial = 310
+        this.topBarraImpactoEconomico = 335
+      } else {
+        this.topBarraRacionalidad = 190
+        this.topBarraImpactoSocial = 290
+        this.topBarraImpactoEconomico = 315
+      }
+
       if (!(this.itemSeleccionado?.continuidad ?? true)) {
         this.formSimulacion.get('Res3')?.disable();
         this.color3 = ''
@@ -1269,19 +1278,19 @@ export class SimuladorComponent implements OnInit {
     //Naranja
     else if (value.value == 1) {
       this.Pon1 = 5;
-       this.color1 = '#e26613'
+      this.color1 = '#e26613'
       this.MethodTotal()
     }
     //Amarillo
     else if (value.value == 2) {
       this.Pon1 = 10;
-       this.color1 ='#c4c706'
+      this.color1 = '#c4c706'
       this.MethodTotal()
     }
     //Verde
     else if (value.value == 3) {
       this.Pon1 = 15;
-       this.color1 = '#046b1e'
+      this.color1 = '#046b1e'
       this.MethodTotal()
     }
 
@@ -1295,7 +1304,7 @@ export class SimuladorComponent implements OnInit {
     if (this.itemSeleccionado?.continuidad) {
       if (value.value == 1) {
         this.Pon2 = 3.75;
-         this.color2 = '#f10808'
+        this.color2 = '#f10808'
         this.MethodTotal()
       }
       else if (value.value == 2) {
@@ -1304,7 +1313,7 @@ export class SimuladorComponent implements OnInit {
         this.MethodTotal()
       }
       else if (value.value == 3) {
-         this.color2 ='#c4c706'
+        this.color2 = '#c4c706'
         this.Pon2 = 11.25;
         this.MethodTotal()
       }
@@ -1331,7 +1340,7 @@ export class SimuladorComponent implements OnInit {
       }
       else if (value.value == 3) {
         this.Pon2 = 18.75;
-        this.color2 ='#c4c706'
+        this.color2 = '#c4c706'
         this.MethodTotal()
       }
       else if (value.value == 4) {
@@ -1350,7 +1359,7 @@ export class SimuladorComponent implements OnInit {
   public RespuestaRP3(value: any): void {
     if (this.itemSeleccionado?.continuidad) {
       if (value.value == 1) {
-         this.color3 = '#f10808'
+        this.color3 = '#f10808'
         this.Pon3 = 2.5;
         this.MethodTotal()
       }
@@ -1377,12 +1386,12 @@ export class SimuladorComponent implements OnInit {
     else {
       if (value.value == 1) {
         this.Pon3 = 0;
-         this.color3 = ''
+        this.color3 = ''
         this.MethodTotal()
       }
       else if (value.value == 2) {
         this.Pon3 = 0;
-         this.color3 = ''
+        this.color3 = ''
         this.MethodTotal()
       }
       else if (value.value == 3) {
@@ -1397,7 +1406,7 @@ export class SimuladorComponent implements OnInit {
       }
       else if (value.value == null) {
         this.Pon3 = 0;
-         this.color3 = ''
+        this.color3 = ''
         this.MethodTotal()
       }
 
@@ -1466,22 +1475,22 @@ export class SimuladorComponent implements OnInit {
   public RespuestaRP6(value: any): void {
     if (value.value == 1) {
       this.Pon6 = 1.25;
-      this.color6 ='#64686d'
+      this.color6 = '#64686d'
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon6 = 2.5;
-      this.color6 ='#c4c706'
+      this.color6 = '#c4c706'
       this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon6 = 3.75;
-      this.color6 ='#099b2e'
+      this.color6 = '#099b2e'
       this.MethodTotal()
     }
     else if (value.value == 4) {
       this.Pon6 = 5;
-      this.color6 ='#046b1e'
+      this.color6 = '#046b1e'
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1493,17 +1502,17 @@ export class SimuladorComponent implements OnInit {
   public RespuestaRP7(value: any): void {
     if (value.value == 0) {
       this.Pon7 = 0;
-      this.color7 ='#64686d'
+      this.color7 = '#64686d'
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon7 = 0.75;
-      this.color7 ='#e26613'
+      this.color7 = '#e26613'
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon7 = 1.5;
-      this.color7 ='#c4c706'
+      this.color7 = '#c4c706'
       this.MethodTotal()
     }
     else if (value.value == 3) {
@@ -1526,17 +1535,17 @@ export class SimuladorComponent implements OnInit {
   public RespuestaIS1(value: any): void {
     if (value.value == 0) {
       this.Pon8 = 0;
-      this.color8 =''
+      this.color8 = ''
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon8 = 3.75;
-      this.color8 =''
+      this.color8 = ''
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon8 = 7.5;
-      this.color8 =''
+      this.color8 = ''
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1548,17 +1557,17 @@ export class SimuladorComponent implements OnInit {
   public RespuestaIS2(value: any): void {
     if (value.value == 0) {
       this.Pon9 = 0;
-      this.color9 =''
+      this.color9 = ''
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon9 = 3.5;
-      this.color9 =''
+      this.color9 = ''
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon9 = 7;
-      this.color9 =''
+      this.color9 = ''
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1570,17 +1579,17 @@ export class SimuladorComponent implements OnInit {
   public RespuestaIS3(value: any): void {
     if (value.value == 0) {
       this.Pon10 = 0;
-      this.color10=''
+      this.color10 = ''
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon10 = 3.25;
-      this.color10=''
+      this.color10 = ''
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon10 = 6.5;
-      this.color10=''
+      this.color10 = ''
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1592,22 +1601,22 @@ export class SimuladorComponent implements OnInit {
   public RespuestaIS4(value: any): void {
     if (value.value == 0) {
       this.Pon11 = 0;
-      this.color11=''
+      this.color11 = ''
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon11 = 2;
-      this.color11=''
+      this.color11 = ''
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon11 = 4;
-      this.color11=''
+      this.color11 = ''
       this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon11 = 6;
-      this.color11=''
+      this.color11 = ''
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1619,22 +1628,22 @@ export class SimuladorComponent implements OnInit {
   public RespuestaIS5(value: any): void {
     if (value.value == 0) {
       this.Pon12 = 0;
-      this.color12=''
+      this.color12 = ''
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon12 = 1.33;
-      this.color12=''
+      this.color12 = ''
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon12 = 2.66;
-      this.color12=''
+      this.color12 = ''
       this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon12 = 4;
-      this.color12=''
+      this.color12 = ''
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1647,22 +1656,22 @@ export class SimuladorComponent implements OnInit {
   public RespuestaISE1(value: any): void {
     if (value.value == 0) {
       this.Pon13 = 0;
-      this.color13=''
+      this.color13 = ''
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon13 = 1;
-      this.color13=''
+      this.color13 = ''
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon13 = 2;
-      this.color13=''
+      this.color13 = ''
       this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon13 = 3;
-      this.color13=''
+      this.color13 = ''
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1674,17 +1683,17 @@ export class SimuladorComponent implements OnInit {
   public RespuestaISE2(value: any): void {
     if (value.value == 0) {
       this.Pon14 = 0;
-      this.color14=''
+      this.color14 = ''
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon14 = 1;
-      this.color14=''
+      this.color14 = ''
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon14 = 2;
-      this.color14=''
+      this.color14 = ''
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1696,17 +1705,17 @@ export class SimuladorComponent implements OnInit {
   public RespuestaISE3(value: any): void {
     if (value.value == 0) {
       this.Pon15 = 0;
-      this.color15=''
+      this.color15 = ''
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon15 = 1.5;
-       this.color15=''
+      this.color15 = ''
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon15 = 3;
-       this.color15=''
+      this.color15 = ''
       this.MethodTotal()
     }
     else if (value.value == null) {
