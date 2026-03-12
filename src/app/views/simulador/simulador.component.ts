@@ -79,7 +79,9 @@ export class SimuladorComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   mensajeError = '';
+  mensajeConfirmacionterminacion = '';
   mostrar = false;
+  mostrar_c = false;
   public resultadoFinal = ''
   public form: FormGroup;
   public formSimulacion: FormGroup;
@@ -131,9 +133,9 @@ export class SimuladorComponent implements OnInit {
   left2 = 0;
 
   currentUser: User | null = null;
-  topBarraRacionalidad: number = 120;
-  topBarraImpactoSocial: number = 222;
-  topBarraImpactoEconomico: number = 244;
+  topBarraRacionalidad: number = 113;
+  topBarraImpactoSocial: number = 139;
+  topBarraImpactoEconomico: number = 166;
   public opened = false;
   public dataSaved = false;
   public opened2 = false;
@@ -261,69 +263,66 @@ export class SimuladorComponent implements OnInit {
   // Igualdad de Genero * 
   public OpIS1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Ninguna", value: 0 },
-    { text: "Indirecta", value: 1 },
-    { text: "Directa", value: 2 },
+    { text: "Sí, mi proyecto incluye acciones específicas para mejorar directamente las oportunidades de las mujeres en alguno de esos aspectos", value: 2 },
+    { text: "Sí, mi proyecto incluye acciones para mejorar las oportunidades de las mujeres en alguno de esos aspectos, pero de manera indirecta", value: 1 },
+    { text: "Mi proyecto no incluye acciones específicas para mejorar las oportunidades de las mujeres en esos aspecto", value: 0 },
   ];
   // Atencion a municipios con rezago social
   public OpIS2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Otros", value: 0 },
-    { text: "Con rezago bajo", value: 1 },
-    { text: "Con rezago medio", value: 2 },
+    { text: "Realizaré mi proyecto en un municipio con rezago social medio", value: 2 },
+    { text: "Realizaré mi proyecto en un municipio con rezago social bajo", value: 1 },
+    { text: "Realizaré mi proyecto en un municipio con rezago social muy bajo", value: 0 },
   ];
   // Subsidios Sociales *
   public OpIS3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Ninguno", value: 0 },
-    { text: "Otros", value: 1 },
-    { text: "Personales", value: 2 },
-
+    { text: "Mi proyecto entregará ayudas sociales directamente a las personas", value: 2 },
+    { text: "Mi proyecto entregará ayudas sociales a asociaciones o instituciones que atienden a personas vulnerables", value: 1 },
+    { text: "Mi proyecto no consiste en entregar ayudas sociales", value: 0 },
 
   ];
   // Incidencia ODS
   public OpIS4: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Otros", value: 0 },
-    { text: "Prioridad baja", value: 1 },
-    { text: "Prioridad media", value: 2 },
-    { text: "Prioridad alta", value: 3 },
+    { text: "Mi proyecto incluye alguna de las siguientes acciones: promover la educación, capacitación y empleo de personas jóvenes; realizar obras en parques, plazas e instalaciones deportivas públicas; realizar obras de agua potable y drenaje para viviendas; incrementar el ingreso de las personas; promover la finalización del nivel preparatoria", value: 3 },
+    { text: "Mi proyecto incluye algunas de las siguientes acciones: capacitar a personas empleadas; crear empleos permanentes en cualquier actividad; incrementar la conectividad a internet", value: 2 },
+    { text: "Mi proyecto incluye alguna de las siguientes acciones: mejorar la alimentación de personas vulnerables; promover la finalización del nivel secundaria; disminuir las muertes por enfermedades crónicas; alfabetizar a personas 15 años o más; realizar obras de electrificación para viviendas", value: 1 },
+    { text: "Mi proyecto no incluye ninguna de las acciones anteriores", value: 0 },
 
   ];
   // Incidencia Pobreza
   public OpIS5: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Sin incidencia", value: 0 },
-    { text: "Prioridad baja", value: 1 },
-    { text: "Prioridad media", value: 2 },
-    { text: "Prioridad alta", value: 3 },
+    { text: "Mi proyecto incluye alguna de las siguientes acciones: promover el estudio del nivel educativo obligatorio, según la edad de las personas; mejorar la alimentación de personas vulnerables", value: 3 },
+    { text: "Mi proyecto incluye alguna de las siguientes acciones: incrementar el ingreso de las personas en pobreza; mejorar los materiales y el número de habitaciones de las viviendas", value: 2 },
+    { text: "Mi proyecto incluye alguna de las siguientes acciones: mejorar el acceso de las personas a servicios de salud; realizar obras de agua potable, drenaje y electrificación para viviendas", value: 1 },
+    { text: "Mi proyecto no incluye ninguna de las acciones anteriores", value: 0 },
 
   ];
   // ------------------------------- Impacto Ecónomico
   // Empleos temporales
   public OpIE1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Nula", value: 0 },
-    { text: "Baja", value: 1 },
-    { text: "Media", value: 2 },
-    { text: "Alta", value: 3 },
+    { text: "Mi proyecto tendrá efecto en la creación de más de 175 empleos temporales", value: 3 },
+    { text: "Mi proyecto tendrá efecto en la creación de 76 a 175 empleos temporales", value: 2 },
+    { text: "Mi proyecto tendrá efecto en la creación de hasta 75 empleos temporales", value: 1 },
+    { text: "Mi proyecto no tendrá efecto en la creación de empleos temporales", value: 0 },
+
   ];
   // Actividad Economica
   public OpIE2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Otras", value: 0 },
-    { text: "Relevante", value: 1 },
-    { text: "Más relevante", value: 2 },
-
-
+    { text: "Mi proyecto puede vincularse con la actividad manufacturera (fabricación o ensamble de productos)", value: 2 },
+    { text: "Mi proyecto puede vincularse con alguna de las siguientes actividades: comercio (compra y venta de bienes, materias primas y suministros); transporte de personas y de carga; hotelería, alojamiento y preparación de alimentos y bebidas", value: 1 },
+    { text: "Mi proyecto no puede vincularse con alguna de las actividades anteriores", value: 0 },
   ];
   //Empleos permanentes
   public OpIE3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Nula", value: 0 },
-    { text: "Baja", value: 1 },
-    { text: "Alta", value: 2 },
-
+    { text: "Mi proyecto tendrá efecto en la creación de más de 1,000 empleos permanentes", value: 2 },
+    { text: "Mi proyecto tendrá efecto en la creación de hasta 1,000 empleos permanentes", value: 1 },
+    { text: "Mi proyecto no tendrá efecto en la creación de empleos permanentes", value: 0 },
   ];
 
   //contador de letras
@@ -332,9 +331,14 @@ export class SimuladorComponent implements OnInit {
   public maxlength = 300;
   previousStep = 0;
 
+  windowInfoAbierto = false;
+
+  public image = "https://github.com/cabarronc/RecursosMultimedia/blob/main/Atenci%C3%B3n%20a%20municipios%20con%20rezago%20social.pdf?raw=true";
+
   constructor(private authService: AuthService, private numberFormatService: NumberFormatService,
     private pocketBaseService: PocketbaseService, private notificationService: NotificationService,
     private viewContainerRef: ViewContainerRef, private storageService: StorageService) {
+
     this.form = new FormGroup({
       // clave: new FormControl("", [Validators.required, Validators.pattern(/^[A-Za-z]{2}\d{4}$/)]),
       nombre: new FormControl("", [Validators.required]),
@@ -418,9 +422,9 @@ export class SimuladorComponent implements OnInit {
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
   }
   getColorByValue(value: number): string {
-    if (value < 50) return '#d61b1b';
-    if (value < 83) return '#FAFA02';
-    if (value > 83) return '#02FA27';
+    if (value < 38) return '#d61b1b';
+    if (value <= 46) return '#FAFA02';
+    if (value > 46) return '#02FA27';
     return '#02FA27';
   }
   getGaugeColors() {
@@ -434,11 +438,32 @@ export class SimuladorComponent implements OnInit {
       }
     ];
   }
+  abrirInfo() {
+    this.windowInfoAbierto = true;
+  }
+
+  cerrarInfo() {
+    this.windowInfoAbierto = false;
+  }
 
   //Diseño con  3 variables con cero
   getTemplateClass_22(value: number): string {
     if (value == 0) return 'template3';
     if (value == 1) return 'template6';
+    if (value == 2) return 'template9';
+    return 'template';
+  }
+    //Diseño Empleo permanentes
+  getTemplateClass_permanentes(value: number): string {
+    if (value == 0) return 'templateNeutro';
+    if (value == 1) return 'template8';
+    if (value == 2) return 'template9';
+    return 'template';
+  }
+  //Diseño Igualdad de Genero
+  getTemplateClassIgualdadGenero(value: number): string {
+    if (value == 0) return 'templateNeutro';
+    if (value == 1) return 'template8';
     if (value == 2) return 'template9';
     return 'template';
   }
@@ -454,6 +479,22 @@ export class SimuladorComponent implements OnInit {
     if (value == 0) return 'template3';
     if (value == 1) return 'template6';
     if (value == 2) return 'template7';
+    if (value == 3) return 'template9';
+    return 'template';
+  }
+  //Diseño Empleo temporal
+  getTemplateClass_Temporal(value: number): string {
+    if (value == 0) return 'templateNeutro';
+    if (value == 1) return 'template7';
+    if (value == 2) return 'template8';
+    if (value == 3) return 'template9';
+    return 'template';
+  }
+  //Diseño con  4 variables con cero
+  getTemplateClassODS(value: number): string {
+    if (value == 0) return 'templateNeutro';
+    if (value == 1) return 'template7';
+    if (value == 2) return 'template8';
     if (value == 3) return 'template9';
     return 'template';
   }
@@ -698,11 +739,11 @@ export class SimuladorComponent implements OnInit {
 
       this.notificationService.show({
         content: finalMessage,
-        appendTo: this.viewContainerRef,
+        // appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "success", icon: true },
-        position: { horizontal: "center", vertical: "top" },
+        position: { horizontal: "center", vertical: "bottom" },
       });
       this.clave = ''
       this.form.reset();
@@ -774,11 +815,11 @@ export class SimuladorComponent implements OnInit {
 
       this.notificationService.show({
         content: finalMessage,
-        appendTo: this.viewContainerRef,
+        // appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "success", icon: true },
-        position: { horizontal: "center", vertical: "top" },
+        position: { horizontal: "center", vertical: "bottom" },
       });
 
       this.topBarraRacionalidad = 120;
@@ -823,7 +864,7 @@ export class SimuladorComponent implements OnInit {
 
     } else if (cantidad_proy <= 2) {
       this.currentStep = 1;
-    } else if (cantidad_proy >= 3 && cantidad_simulacion === 3) {
+    } else if (cantidad_proy >= 3 && cantidad_simulacion >= 3) {
       this.currentStep = 2;
       this.cantidadBol = false
     } else {
@@ -843,7 +884,6 @@ export class SimuladorComponent implements OnInit {
       });
       this.notificationService.show({
         content: "Debes crear primero tu proyecto",
-        appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "warning", icon: true },
@@ -864,11 +904,10 @@ export class SimuladorComponent implements OnInit {
       });
       this.notificationService.show({
         content: "Debes crear primero tu proyecto",
-        appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "warning", icon: true },
-        position: { horizontal: "center", vertical: "top" },
+        position: { horizontal: "center", vertical: "bottom" },
       });
       return;
     }
@@ -878,11 +917,10 @@ export class SimuladorComponent implements OnInit {
       });
       this.notificationService.show({
         content: "Debes crear primero tu proyecto2",
-        appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "warning", icon: true },
-        position: { horizontal: "center", vertical: "top" },
+        position: { horizontal: "center", vertical: "bottom" },
       });
       return;
     }
@@ -892,11 +930,10 @@ export class SimuladorComponent implements OnInit {
       });
       this.notificationService.show({
         content: "No puedes regresar al paso anterior",
-        appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "warning", icon: true },
-        position: { horizontal: "center", vertical: "top" },
+        position: { horizontal: "center", vertical: "bottom" },
       });
       return;
     }
@@ -907,11 +944,11 @@ export class SimuladorComponent implements OnInit {
       });
       this.notificationService.show({
         content: "Debes crear y simualar al menos tres proyectos",
-        appendTo: this.viewContainerRef,
+        // appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "warning", icon: true },
-        position: { horizontal: "center", vertical: "top" },
+        position: { horizontal: "center", vertical: "bottom" },
       });
       return;
     }
@@ -922,11 +959,11 @@ export class SimuladorComponent implements OnInit {
       });
       this.notificationService.show({
         content: "No puedes regresar al paso anterior",
-        appendTo: this.viewContainerRef,
+        // appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "warning", icon: true },
-        position: { horizontal: "center", vertical: "top" },
+        position: { horizontal: "center", vertical: "bottom" },
       });
       return;
     }
@@ -971,6 +1008,20 @@ export class SimuladorComponent implements OnInit {
 
     setTimeout(() => {
       this.mensajeError = ''; // lo elimina del DOM
+    }, 3300);
+  }
+    mostrarCorrecto(mensaje: string) {
+
+    this.mensajeConfirmacionterminacion = mensaje;
+    console.log("que traemos",this.mensajeConfirmacionterminacion)
+    this.mostrar_c = true;
+
+    setTimeout(() => {
+      this.mostrar_c = false; // activa animación de salida
+    }, 3000);
+
+    setTimeout(() => {
+      this.mensajeConfirmacionterminacion = ''; // lo elimina del DOM
     }, 3300);
   }
   public submit(): void {
@@ -1216,6 +1267,8 @@ export class SimuladorComponent implements OnInit {
     this.LoadProy()
     this.cantidadBol = true
     this.currentStep = 0;
+    const mensaje ='Se libero el espacio de trabajo'
+    this.mostrarCorrecto(mensaje);
 
   }
   onProyChange(item: any) {
@@ -1226,9 +1279,9 @@ export class SimuladorComponent implements OnInit {
       this.formSimulacion.patchValue({ Res3: null })
       this.color3 = ''
       console.log("vacio", this.formSimulacion.get('Res3')?.value)
-      this.topBarraRacionalidad = 120
-      this.topBarraImpactoSocial = 220
-      this.topBarraImpactoEconomico = 242
+      this.topBarraRacionalidad = 113
+      this.topBarraImpactoSocial = 139
+      this.topBarraImpactoEconomico = 166
       this.formSimulacion.reset()
       for (let i = 1; i <= 15; i++) {
         this[`Pon${i}` as keyof this] = null as any;
@@ -1239,17 +1292,17 @@ export class SimuladorComponent implements OnInit {
     }
     else {
       const longitudDescripcion = this.itemSeleccionado?.descripcion?.length || 0;
-      console.log("longitud de la descripcion",longitudDescripcion)
+      console.log("longitud de la descripcion", longitudDescripcion)
       this.cargarSimulacion(item.clave);
       this.MethodTotal()
       if (longitudDescripcion > 200) {
-        this.topBarraRacionalidad = 210
-        this.topBarraImpactoSocial = 310
-        this.topBarraImpactoEconomico = 335
+        this.topBarraRacionalidad = 185
+        this.topBarraImpactoSocial = 212
+        this.topBarraImpactoEconomico = 239
       } else {
-        this.topBarraRacionalidad = 210
-        this.topBarraImpactoSocial = 310
-        this.topBarraImpactoEconomico = 335
+        this.topBarraRacionalidad = 185
+        this.topBarraImpactoSocial = 212
+        this.topBarraImpactoEconomico = 239
       }
 
       if (!(this.itemSeleccionado?.continuidad ?? true)) {
@@ -1532,17 +1585,17 @@ export class SimuladorComponent implements OnInit {
   public RespuestaIS1(value: any): void {
     if (value.value == 0) {
       this.Pon8 = 0;
-      this.color8 = ''
+      this.color8 = '#64686d'
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon8 = 3.75;
-      this.color8 = ''
+      this.color8 = '#099b2e'
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon8 = 7.5;
-      this.color8 = ''
+      this.color8 = '#046b1e'
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1554,17 +1607,17 @@ export class SimuladorComponent implements OnInit {
   public RespuestaIS2(value: any): void {
     if (value.value == 0) {
       this.Pon9 = 0;
-      this.color9 = ''
+      this.color9 = '#64686d'
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon9 = 3.5;
-      this.color9 = ''
+      this.color9 = '#099b2e'
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon9 = 7;
-      this.color9 = ''
+      this.color9 = '#046b1e'
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1576,17 +1629,17 @@ export class SimuladorComponent implements OnInit {
   public RespuestaIS3(value: any): void {
     if (value.value == 0) {
       this.Pon10 = 0;
-      this.color10 = ''
+      this.color10 = '#64686d'
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon10 = 3.25;
-      this.color10 = ''
+      this.color10 = '#099b2e'
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon10 = 6.5;
-      this.color10 = ''
+      this.color10 = '#046b1e'
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1598,22 +1651,22 @@ export class SimuladorComponent implements OnInit {
   public RespuestaIS4(value: any): void {
     if (value.value == 0) {
       this.Pon11 = 0;
-      this.color11 = ''
+      this.color11 = '#64686d'
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon11 = 2;
-      this.color11 = ''
+      this.color11 = '#c4c706'
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon11 = 4;
-      this.color11 = ''
+      this.color11 = '#099b2e'
       this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon11 = 6;
-      this.color11 = ''
+      this.color11 = '#046b1e'
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1625,22 +1678,22 @@ export class SimuladorComponent implements OnInit {
   public RespuestaIS5(value: any): void {
     if (value.value == 0) {
       this.Pon12 = 0;
-      this.color12 = ''
+      this.color12 = '#64686d'
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon12 = 1.33;
-      this.color12 = ''
+      this.color12 = '#c4c706'
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon12 = 2.66;
-      this.color12 = ''
+      this.color12 = '#099b2e'
       this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon12 = 4;
-      this.color12 = ''
+      this.color12 = '#046b1e'
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1653,22 +1706,22 @@ export class SimuladorComponent implements OnInit {
   public RespuestaISE1(value: any): void {
     if (value.value == 0) {
       this.Pon13 = 0;
-      this.color13 = ''
+      this.color13 = '#64686d'
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon13 = 1;
-      this.color13 = ''
+      this.color13 = '#c4c706'
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon13 = 2;
-      this.color13 = ''
+      this.color13 = '#099b2e'
       this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon13 = 3;
-      this.color13 = ''
+      this.color13 = '#046b1e'
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1680,17 +1733,17 @@ export class SimuladorComponent implements OnInit {
   public RespuestaISE2(value: any): void {
     if (value.value == 0) {
       this.Pon14 = 0;
-      this.color14 = ''
+      this.color14 = '#64686d'
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon14 = 1;
-      this.color14 = ''
+      this.color14 = '#099b2e'
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon14 = 2;
-      this.color14 = ''
+      this.color14 = '#046b1e'
       this.MethodTotal()
     }
     else if (value.value == null) {
@@ -1702,17 +1755,17 @@ export class SimuladorComponent implements OnInit {
   public RespuestaISE3(value: any): void {
     if (value.value == 0) {
       this.Pon15 = 0;
-      this.color15 = ''
+      this.color15 = '#64686d'
       this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon15 = 1.5;
-      this.color15 = ''
+      this.color15 = '#099b2e'
       this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon15 = 3;
-      this.color15 = ''
+      this.color15 = '#046b1e'
       this.MethodTotal()
     }
     else if (value.value == null) {

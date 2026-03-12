@@ -1,7 +1,13 @@
 <section class="sectiondefault">
+
   <!-- Intro -->
   <div class="row justify-content-center text-center">
     <div class="col-11">
+      @if (mensajeConfirmacionterminacion ) {
+      <div class="toast-correct" [ngClass]="{ 'slide-in': mostrar_c, 'slide-out': !mostrar_c }">
+        <span>{{ mensajeConfirmacionterminacion }}</span>
+      </div>
+      }
       <h1 class="title2 mb-3">
         Modelo <span class="d-block d-md-inline">PRIORIZACIÓN</span>
       </h1>
@@ -28,9 +34,9 @@
   </div>
 
   <!-- Instrucciones -->
-  <div class="row mt-3 justify-content-center" style="margin-left: 3.4%;">
+  <div class="row mt-3 d-flex justify-content-center" style="margin-left: 3.4%;">
     <!-- Creacion -->
-    <div class="col-md-2 col-lg-2 mt-2 mb-2">
+    <div class="col-md-2 col-lg-3 mt-2 mb-2 d-flex flex-column align-items-center justify-content-center text-center">
       @if (!opened) {
       <ng-template #tooltipProyecto>
         <div class="tooltip-justificado">
@@ -166,7 +172,7 @@
       }
     </div>
     <!-- Simula -->
-    <div class="col-md-3 mt-2 col-lg-3 mb-2">
+    <div class="col-md-3 col-lg-3 mt-2 mb-2 text-center">
       <ng-template #tooltipProyecto>
         <div class="tooltip-justificado">
           Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
@@ -186,23 +192,8 @@
       </div>
 
     </div>
-    <!-- Termina Simulacion -->
-    <div class="col-2 col-lg-2 col-md-3 mt-2 mb-2">
-      <ng-template #tooltipProyecto2>
-        <div class="tooltip-justificado">
-          Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
-        </div>
-      </ng-template>
-      <div kendoTooltip [tooltipTemplate]="tooltipProyecto2" filter=".info-icon" position="right">
-        <kendo-label [for]="sizes" text="Termina Simulación"></kendo-label>
-        <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-          <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-        </span>
-      </div>
-      <button kendoButton class="mt-2" type="button" themeColor="error" (click)="limpia_simulacion()">Termina </button>
-    </div>
     <!-- Compara -->
-    <div class="col-md-3 mt-2 mb-2">
+    <div class="col-md-3 col-lg-3 mt-2 mb-2 d-flex flex-column align-items-center justify-content-center">
       @if (!opened2) {
       <ng-template #tooltipProyecto>
         <div class="tooltip-justificado">
@@ -247,63 +238,66 @@
 
             <tbody>
 
-              <tr *ngFor="let i of variables" [ngClass]="{
-                'grupo1': i >= 1 && i <= 7,
-                'grupo2': i >= 8 && i <= 12,
-                'grupo3': i >= 13 && i <= 15
+              <ng-container *ngFor="let i of variables">
+
+                <!-- FILA DE VARIABLE -->
+                <tr [ngClass]="{
+                    'grupo1': i >= 1 && i <= 7,
+                    'grupo2': i >= 8 && i <= 12,
+                    'grupo3': i >= 13 && i <= 15
                   }">
 
-                <td>
-                  {{i}}
-                </td>
+                  <td>{{ i }}</td>
 
-                <td *ngFor="let sim of Getsimulaciones">
-                  <!-- <div class="d-flex align-items-center justify-content-center gap-2">
-                    <div class="color-circle" [style.background]="sim.resultados['color'+i]">
+                  <td *ngFor="let sim of Getsimulaciones">
+                    <div class="color-circle" [style.background]="sim.resultados['color'+i] ?? '#cccccc'">
                     </div>
-                    <span>
-                      {{ sim.resultados['pon'+i] }}
-                    </span>
-                  </div> -->
-                  <div class="color-circle" [style.background]="sim.resultados['color'+i] ?? '#cccccc'"></div>
-                </td>
+                  </td>
 
-              </tr>
-              <!-- valor Publico -->
-              <tr class="grupo1">
-                <td><b>Valor Publico</b></td>
-                <td *ngFor="let sim of Getsimulaciones">
-                  <b>{{sim.racionalidad|| 0 |number:'1.2-2'}}</b>
-                </td>
-              </tr>
+                </tr>
 
-              <tr class="grupo2">
-                <td><b>Social</b></td>
-                <td *ngFor="let sim of Getsimulaciones">
-                  <b>{{sim.social|| 0 |number:'1.2-2'}}</b>
-                </td>
-              </tr>
+                <!-- TOTAL VALOR PUBLICO -->
+                <tr *ngIf="i === 7" class="grupo1">
+                  <td><b>Valor Público</b></td>
+                  <td *ngFor="let sim of Getsimulaciones">
+                    <b>{{ sim.racionalidad || 0 | number:'1.2-2' }}</b>
+                  </td>
+                </tr>
 
-              <tr class="grupo3">
-                <td><b>Economico</b></td>
-                <td *ngFor="let sim of Getsimulaciones">
-                  <b>{{sim.economico|| 0 |number:'1.2-2'}}</b>
-                </td>
-              </tr>
+                <!-- TOTAL SOCIAL -->
+                <tr *ngIf="i === 12" class="grupo2">
+                  <td><b>Social</b></td>
+                  <td *ngFor="let sim of Getsimulaciones">
+                    <b>{{ sim.social || 0 | number:'1.2-2' }}</b>
+                  </td>
+                </tr>
 
+                <!-- TOTAL ECONOMICO -->
+                <tr *ngIf="i === 15" class="grupo3">
+                  <td><b>Económico</b></td>
+                  <td *ngFor="let sim of Getsimulaciones">
+                    <b>{{ sim.economico || 0 | number:'1.2-2' }}</b>
+                  </td>
+                </tr>
+
+              </ng-container>
+
+              <!-- TOTAL GENERAL -->
               <tr class="table-secondary">
                 <td><b>Total</b></td>
                 <td *ngFor="let sim of Getsimulaciones">
-                  <b>{{sim.total|| 0 |number:'1.2-2'}}</b>
+                  <b>{{ sim.total || 0 | number:'1.2-2' }}</b>
                 </td>
               </tr>
-              <!-- Dictamen -->
+
+              <!-- DICTAMINACION -->
               <tr class="table-info">
-                <td><b>Dictaminacion</b></td>
+                <td><b>Dictaminación</b></td>
                 <td *ngFor="let sim of Getsimulaciones">
-                  <b> <app-face (moodChange)="recibirEstado($event)"></app-face></b>
+                  <app-face (moodChange)="recibirEstado($event)"></app-face>
                 </td>
               </tr>
+
             </tbody>
           </table>
 
@@ -317,15 +311,31 @@
       </kendo-window>
       }
     </div>
+    <!-- Termina Simulacion -->
+    <div class="col-md-3 col-lg-3  mt-2 mb-2 d-flex flex-column align-items-center justify-content-center">
+      <ng-template #tooltipProyecto2>
+        <div class="tooltip-justificado">
+          Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
+        </div>
+      </ng-template>
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto2" filter=".info-icon" position="right">
+        <kendo-label [for]="sizes" text="Termina Simulación"></kendo-label>
+        <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+          <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+        </span>
+      </div>
+      <button kendoButton class="mt-2" type="button" themeColor="error" (click)="limpia_simulacion()">Termina </button>
+    </div>
+
   </div>
   <!-- Datos Generales -->
-  <div class="row barraGenerales " style="margin-left: 3.4%;">
-    <div class="col-md-10 mt-3 mb-2 ">
+  <div class="row barraGenerales d-flex justify-content-center">
+    <div class="col-md-11 col-lg-11 col-sm-12 mt-3 ">
       <kendo-card width="100%" orientation="vertical" style="background-color:transparent;">
         <kendo-card-header
           style="background-color:transparent;  border: 2px solid #1e6bf1; border-radius: 14px; color:rgb(0, 0, 0);">
           <div class="row ms-2 align-items-stretch">
-            <div class="col-10  border-end border-dark">
+            <div class="col  border-end border-dark">
               @if (itemSeleccionado) {
               <div class="texto"> <strong style="color:black;">Nombre del proyecto: </strong>{{itemSeleccionado.nombre}}
               </div>
@@ -344,15 +354,14 @@
 
               }
             </div>
-            <div class="col-2 d-flex align-items-stretch justify-content-center">
+            <div class="col-lg-2 col-md-3 col-12 d-flex align-items-start justify-content-center align-items-center ">
               @if (itemSeleccionado){
               <kendo-circulargauge [value]="CalProm  || 0 " [scale]="{ max: 100, rangePlaceholderColor: '#a6a6a6' }"
                 [colors]="getGaugeColors()" style="width:100%; height:100%;">
                 <ng-template kendoCircularGaugeCenterTemplate let-value="value">
-                  <span>
-                    <font color="black">{{ CalProm || 0 |number:'1.2-2'}} % &nbsp;</font>
+                  <span style="color: black;">
+                    {{ CalProm || 0 |number:'1.2-2'}} % &nbsp;
                   </span>
-                  <br>
                 </ng-template>
               </kendo-circulargauge>
               }
@@ -363,8 +372,8 @@
     </div>
   </div>
   <!-- Simulador -->
-  <div class="row justify-content-center">
-    <div class="col-md-11 mt-3">
+  <div class="row justify-content-center " style="margin-left: 3.4%;">
+    <div class="col-md-11 mt-2">
       <ng-template #tooltipProyecto>
         <div class="tooltip-justificado">
           Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
@@ -402,20 +411,21 @@
     <div class="row justify-content-center">
       <div class="col-md-11">
         <!-- Progress bar racionalidad -->
-        <div class="col-12  mt-3 mb-3 barra rectangulo2" [style.top.px]="topBarraRacionalidad">
-          <kendo-label
-            text="1 – El primer grupo de variables, al que llamaremos Valor Público, califica la capacidad de tu proyecto para lograr el efecto esperado sobre un problema o necesidad, usando el mínimo posible de recursos"
-            style="font-weight: bold;font-size:16px !important">
-          </kendo-label>
+        <div class="col-12  mt-3 mb-3 barra rectangulo2 d-flex flex-row align-items-center justify-content-center"
+          [style.top.px]="topBarraRacionalidad">
+          <kendo-label text="1 " style="font-weight: bold;font-size:16px !important">
+          </kendo-label>&nbsp;
           <kendo-progressbar [progressCssStyle]="progressStyles" [label]="label" [animation]="animation" [max]="61"
-            style="width: 100%;" [value]="TotalRacionalidad||0">
+            style="width: 95%;" [value]="TotalRacionalidad||0">
           </kendo-progressbar>
         </div>
         <!-- ============================================================================================================= -->
         <!-- ================================= Seccion 1  Racionalodad Publica 61 % ======================== -->
         <!-- ============================================================================================================= -->
         <kendo-panelbar class="panel-personalizadoValorPublico">
-          <kendo-panelbar-item [svgIcon]="icons.buildingsOutlineIcon" title="Valor Público" [expanded]="true">
+          <kendo-panelbar-item [svgIcon]="icons.buildingsOutlineIcon"
+            title="1 – El primer grupo de variables, al que llamaremos Valor Público, califica la capacidad de tu proyecto para lograr el efecto esperado sobre un problema o necesidad, usando el mínimo posible de recursos"
+            [expanded]="true">
             <ng-template kendoPanelBarContent>
               <kendo-card width="auto" style="padding: 1rem; align-content: center;">
                 <!-- ============================================================================================================-->
@@ -1080,18 +1090,20 @@
         </kendo-panelbar>
 
         <!-- Progress bar impacto social -->
-        <div class="col-12 mt-3 mb-3 barra2" [style.top.px]="topBarraImpactoSocial">
-          <kendo-label text="Calificacion Impacto Social " style="font-weight: bold; font-size:16px !important;">
-            &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles2" [label]="label" [animation]="animation"
-              [max]="31" style="width: 83%;" [value]="TotalSocial||0">
-            </kendo-progressbar>
-          </kendo-label>
+        <div class="col-12 mt-3 mb-3 barra2 rectangulo2 d-flex flex-row align-items-center justify-content-center"
+          [style.top.px]="topBarraImpactoSocial">
+          <kendo-label text="2 " style="font-weight: bold; font-size:16px !important;"></kendo-label> &nbsp;
+          <kendo-progressbar [progressCssStyle]="progressStyles2" [label]="label" [animation]="animation" [max]="31"
+            style="width: 95%;" [value]="TotalSocial||0">
+          </kendo-progressbar>
+
         </div>
         <!-- ============================================================================================================= -->
         <!-- ================================= Seccion 2  Impacto Social 31 % ========================================== -->
         <!-- ============================================================================================================= -->
-        <kendo-panelbar>
-          <kendo-panelbar-item class="k-item2" [svgIcon]="icons.accessibilityIcon" title="Impacto Social"
+        <kendo-panelbar class="panel-personalizadoSocial">
+          <kendo-panelbar-item class="k-item2" [svgIcon]="icons.accessibilityIcon"
+            title="2 – El segundo grupo de variables, al que llamaremos Impacto Social, valora la relación de tu proyecto con medidas estándar de las condiciones de vida e igualdad de oportunidades de la población "
             [expanded]="true">
             <ng-template kendoPanelBarContent>
               <kendo-card width="auto" style="padding: 1rem; align-content: center;">
@@ -1100,7 +1112,7 @@
                 <!--=====================================================================================================-->
                 <div class="row mt-3 mb-2">
                   <div class="col-md-12">
-                    <kendo-expansionpanel title="Igualdad de género" subtitle="2.1" [expanded]="true">
+                    <kendo-expansionpanel class="panel-personalizado" title="2.1" [expanded]="true">
                       <div class="container-fluid">
                         <section class="row mt-2">
                           <div class="col-md-12">
@@ -1114,7 +1126,12 @@
 
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate8" filter=".info-icon">
                               <kendo-label style="font-weight: bold;">
-                                1.- Contribución a la igualdad de género
+                                La igualdad de género significa que las mujeres y los hombres tienen los mismos derechos
+                                y el acceso a las mismas oportunidades. Cuando esto no es así, deben implementarse
+                                acciones y medidas efectivas que garanticen esta igualdad. Piensa en la descripción de
+                                tu proyecto y responde la siguiente pregunta: ¿Mi proyecto incluye acciones específicas
+                                para mejorar las oportunidades de las mujeres en la educación, en la cultura, en la
+                                salud, para el deporte, en el medio rural, en el trabajo, o en el trato que reciben?
                               </kendo-label>
 
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
@@ -1138,14 +1155,16 @@
                                     }">
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClassIgualdadGenero(dataItem.value)">{{
+                                          dataItem?.value
                                           }}</span>&nbsp;{{
                                         dataItem?.text }}
                                       </span>
                                     </ng-template>
                                     <ng-template kendoDropDownListValueTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClassIgualdadGenero(dataItem.value)">{{
+                                          dataItem?.value
                                           }}</span>&nbsp;{{
                                         dataItem?.text }}
                                       </span>
@@ -1184,37 +1203,30 @@
                 <!--=====================================================================================================-->
                 <div class="row mt-3 mb-2">
                   <div class="col-md-12">
-                    <kendo-expansionpanel title="Atención rezago social" subtitle="2.2" [expanded]="true">
+                    <kendo-expansionpanel class="panel-personalizado" title="2.2" [expanded]="true">
                       <div class="container-fluid">
                         <section class="row mt-2">
                           <div class="col-md-12">
-                            <ng-template #tooltipTemplate9>
-                              <div class="tooltip-justificado">
-                                <ul>
-                                  <li>La distribución territorial del presupuesto incluye de manera específica a uno
-                                    o más municipios con grado de rezago social medio (Atarjea, Tierra Blanca y Xichú)
-                                  </li>
-                                  <li>La distribución territorial del presupuesto incluye de manera específica a uno o
-                                    más municipios con grado de rezago social bajo (24 municipios) pero no con grado de
-                                    rezago social medio
-                                  </li>
-                                  <li>
-                                    La distribución territorial del presupuesto no incluye de manera específica a alguno
-                                    de
-                                    los municipios anteriores
-                                  </li>
-                                </ul>
-                              </div>
-                            </ng-template>
-                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate9" filter=".info-icon">
-                              <kendo-label style="font-weight: bold;">
-                                2.- Atención a municipios con rezago social
-                              </kendo-label>
-
-                              <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                              </span> -->
-                            </div>
+                            <kendo-label style="font-weight: bold;">
+                              El grado de rezago social es una medida general del acceso que tienen las personas a la
+                              educación, a la salud y a una vivienda digna, y permite identificar los municipios que
+                              necesitan mayor inversión en obras y acciones relacionadas con esos derechos sociales.
+                              Abre el mapa de la derecha, ubica el municipio en el que realizarás tu proyecto, y
+                              selecciona la opción que le corresponda.
+                            </kendo-label>
+                            <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                              <kendo-svg-icon [icon]="icons.infoSolidIcon" (click)="abrirInfo()"></kendo-svg-icon>
+                            </span>
+                            @if (windowInfoAbierto) {
+                            <kendo-window title="Mapa grado rezago" (close)="cerrarInfo()" [minWidth]="450"
+                              [width]="650" [top]="top2" [left]="left2" [height]="550">
+                              <!-- <img [src]="image" width="100%" style="cursor: pointer;" /> -->
+                              <object
+                                data="https://docs.google.com/gview?url=https://raw.githubusercontent.com/cabarronc/RecursosMultimedia/main/Atención%20a%20municipios%20con%20rezago%20social_3.pdf&embedded=true"
+                                type="application/pdf" width="100%" height="100%">
+                              </object>
+                            </kendo-window>
+                            }
                             <div class="row mt-2 mb-2 justify-content-center">
                               <div class="col-1 mt-2">
                                 <span>
@@ -1236,13 +1248,15 @@
                                     }">
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClassIgualdadGenero(dataItem.value)">{{
+                                          dataItem?.value
                                           }}</span>&nbsp;{{ dataItem?.text }}
                                       </span>
                                     </ng-template>
                                     <ng-template kendoDropDownListValueTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClassIgualdadGenero(dataItem.value)">{{
+                                          dataItem?.value
                                           }}</span>&nbsp;{{ dataItem?.text }}
                                       </span>
                                     </ng-template>
@@ -1279,7 +1293,7 @@
                 <!--=====================================================================================================-->
                 <div class="row mt-3 mb-2">
                   <div class="col-md-12">
-                    <kendo-expansionpanel title="Subsidios sociales" subtitle="2.3" [expanded]="true">
+                    <kendo-expansionpanel class="panel-personalizado" title="2.3" [expanded]="true">
                       <div class="container-fluid">
                         <section class="row mt-2">
                           <div class="col-md-12">
@@ -1291,12 +1305,15 @@
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate10" filter=".info-icon">
                               <kendo-label style="font-weight: bold;">
-                                3.- Subsidios Sociales
+                                Los subsidios sociales son ayudas económicas o en especie que se dan a las personas con
+                                el objetivo de ayudarles a mejorar sus condiciones de vida, y pueden ser una manera
+                                efectiva de atender un problema o necesidad de la población. Tomando en cuenta la
+                                descripción de tu proyecto ¿entregarás este tipo de ayudas?
                               </kendo-label>
 
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                              </span> -->
+                              <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                            </span> -->
                             </div>
                             <div class="row mt-2 mb-2 justify-content-center">
                               <div class="col-1 mt-2">
@@ -1311,19 +1328,21 @@
                                     (valueChange)="valorSeleccionado10 = $event" [value]="valorSeleccionado10"
                                     formControlName="Res10" [defaultItem]="{ text: 'Selecciona', value: null }"
                                     showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
-                                      'k-valid': formSimulacion.get('Res10')?.valid && formSimulacion.get('Res10')?.dirty
-                                    }">
+                                    'k-valid': formSimulacion.get('Res10')?.valid && formSimulacion.get('Res10')?.dirty
+                                  }">
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClassIgualdadGenero(dataItem.value)">{{
+                                          dataItem?.value
                                           }}</span>&nbsp;{{
                                         dataItem?.text }}
                                       </span>
                                     </ng-template>
                                     <ng-template kendoDropDownListValueTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClassIgualdadGenero(dataItem.value)">{{
+                                          dataItem?.value
                                           }}</span>&nbsp;{{
                                         dataItem?.text }}
                                       </span>
@@ -1362,7 +1381,7 @@
                 <!--=====================================================================================================-->
                 <div class="row mt-3 mb-2">
                   <div class="col-md-12">
-                    <kendo-expansionpanel title="Incidencia en los ODS" subtitle="2.4" [expanded]="true">
+                    <kendo-expansionpanel class="panel-personalizado" title="2.4" [expanded]="true">
                       <div class="container-fluid">
                         <section class="row mt-2">
                           <div class="col-md-12">
@@ -1374,8 +1393,14 @@
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate11" filter=".info-icon">
                               <kendo-label style="font-weight: bold;">
-                                4.- Incidencia en los Objetivos de Desarrollo Sostenible
-                                (2026)
+                                Los Objetivos de Desarrollo Sostenible (ODS) y sus metas representan un compromiso
+                                mundial para eliminar la pobreza en todas sus formas y dimensiones, combatir las
+                                desigualdades, construir sociedades pacíficas, proteger los derechos humanos, garantizar
+                                la protección del planeta y sus recursos, y crear las condiciones para un crecimiento
+                                económico sostenido. El cumplimiento de sus metas se mide con indicadores específicos
+                                que permiten identificar, por ejemplo, en qué áreas se requiere mayor inversión para
+                                avanzar hacia el resultado deseado. Selecciona la opción que mejor se ajuste a tu
+                                proyecto, tomando en cuenta su descripción
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -1399,14 +1424,14 @@
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClassODS(dataItem.value)">{{ dataItem?.value
                                           }}</span>&nbsp;{{
                                         dataItem?.text }}
                                       </span>
                                     </ng-template>
                                     <ng-template kendoDropDownListValueTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClassODS(dataItem.value)">{{ dataItem?.value
                                           }}</span>&nbsp;{{
                                         dataItem?.text }}
                                       </span>
@@ -1449,8 +1474,7 @@
                 <!--=====================================================================================================-->
                 <div class="row mt-3 mb-2">
                   <div class="col-md-12">
-                    <kendo-expansionpanel title="Incidencia en los indicadores de pobreza" subtitle="2.5"
-                      [expanded]="true">
+                    <kendo-expansionpanel class="panel-personalizado" title="2.5" [expanded]="true">
                       <div class="container-fluid">
                         <section class="row mt-2">
                           <div class="col-md-12">
@@ -1463,7 +1487,12 @@
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate12" filter=".info-icon">
                               <kendo-label style="font-weight: bold;">
-                                Incidencia en indicadores de pobreza (2026)
+                                En México, la medición de la pobreza toma en cuenta la capacidad económica que tienen
+                                las personas para comprar artículos y servicios indispensables, y su acceso a los
+                                derechos sociales establecidos en la constitución. Los indicadores definidos para la
+                                medición de la pobreza, permiten identificar los proyectos de inversión más necesarios
+                                para incrementar el bienestar económico y social de las personas. Selecciona la opción
+                                que corresponda a tu proyecto, tomando en cuenta su descripción
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -1487,14 +1516,14 @@
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClassODS(dataItem.value)">{{ dataItem?.value
                                           }}</span>&nbsp;{{
                                         dataItem?.text }}
                                       </span>
                                     </ng-template>
                                     <ng-template kendoDropDownListValueTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClassODS(dataItem.value)">{{ dataItem?.value
                                           }}</span>&nbsp;{{
                                         dataItem?.text }}
                                       </span>
@@ -1538,19 +1567,23 @@
           </kendo-panelbar-item>
         </kendo-panelbar>
         <!-- Progress bar impacto social -->
-        <div class="col-12 mt-3  barra3" [style.top.px]="topBarraImpactoEconomico">
-          <kendo-label text="Calificacion Impacto Ecónomico " style="font-weight: bold;font-size:16px !important;">
-            &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles3" [label]="label" [animation]="animation"
-              [max]="8" style="width: 80%;" [value]="TotalEconomico||0">
-            </kendo-progressbar>
+        <div class="col-12 mt-3  barra3 rectangulo2 d-flex flex-row align-items-center justify-content-center"
+          [style.top.px]="topBarraImpactoEconomico">
+          <kendo-label text="3" style="font-weight: bold;font-size:16px !important;">
           </kendo-label>
+          &nbsp;<kendo-progressbar [progressCssStyle]="progressStyles3" [label]="label" [animation]="animation"
+            [max]="8" style="width: 95%;" [value]="TotalEconomico||0">
+          </kendo-progressbar>
+
         </div>
         <!-- ============================================================================================================= -->
         <!-- ================================= Seccion 3  Impacto Economico 8 %        ======================== -->
         <!-- ============================================================================================================= -->
         <br>
-        <kendo-panelbar>
-          <kendo-panelbar-item class="k-item2" [svgIcon]="icons.dollarIcon" title="Impacto Economico" [expanded]="true">
+        <kendo-panelbar class="panel-personalizadoEconomico">
+          <kendo-panelbar-item class="k-item2" [svgIcon]="icons.dollarIcon"
+            title="3 – El tercer grupo de variables, al que llamaremos Impacto Económico, evalúa tu proyecto tomando en cuenta su relación con las actividades económicas más importantes en nuestro estado, y el efecto que tiene su realización en la creación de empleos."
+            [expanded]="true">
             <ng-template kendoPanelBarContent>
               <kendo-card width="auto" style="padding: 1rem; align-content: center;">
 
@@ -1559,7 +1592,7 @@
                 <!--=====================================================================================================-->
                 <div class="row mt-3 mb-2">
                   <div class="col-md-12">
-                    <kendo-expansionpanel title="Incidencia en empleos temporales" subtitle="3.1" [expanded]="true">
+                    <kendo-expansionpanel class="panel-personalizado" title="3.1" [expanded]="true">
                       <div class="container-fluid">
                         <section class="row mt-2">
                           <div class="col-md-12">
@@ -1570,7 +1603,19 @@
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate13" filter=".info-icon">
                               <kendo-label style="font-weight: bold;">
-                                1.- Incidencia en empleos temporales (2026)
+                                ¿Se crearán empleos de duración temporal al realizar tu proyecto? Teniendo en cuenta la
+                                descripción de tu proyecto, considera únicamente los siguientes tipos de empleos al
+                                seleccionar la opción que le aplique:
+                                <ol type="a">
+                                  <li>
+                                    Empleos temporales vinculados a la realización de obras de cualquier tipo
+                                  </li>
+                                  <li>
+                                    Pago de jornales a personas por la realización de actividades de tu proyecto (por
+                                    ejemplo, por la plantación de árboles para reforestación, por el cercado de terrenos
+                                    agrícolas o ganaderos, por la limpieza y pinta de escuelas, etc.)
+                                  </li>
+                                </ol>
                               </kendo-label>
 
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
@@ -1599,13 +1644,13 @@
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClass_Temporal(dataItem.value)">{{ dataItem?.value
                                           }}</span>&nbsp;{{ dataItem?.text }}
                                       </span>
                                     </ng-template>
                                     <ng-template kendoDropDownListValueTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_33(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClass_Temporal(dataItem.value)">{{ dataItem?.value
                                           }}</span>&nbsp;{{ dataItem?.text }}
                                       </span>
                                     </ng-template>
@@ -1637,91 +1682,13 @@
                     </kendo-expansionpanel>
                   </div>
                 </div>
+
                 <!--=====================================================================================================-->
-                <!--=============== Variable 3.2 Actividad económica 2 % ===========-->
-                <!--=====================================================================================================-->
-                <div class="row mt-3 mb-2">
-                  <div class="col-md-12">
-                    <kendo-expansionpanel title="Actividad económica" subtitle="3.2" [expanded]="true">
-                      <div class="container-fluid">
-                        <section class="row">
-                          <div class="col-md-12">
-                            <ng-template #tooltipTemplate14>
-                              <div class="tooltip-justificado">
-                                Los alcances del proyecto inciden en la actividad manufacturera
-                              </div>
-                            </ng-template>
-                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate14" filter=".info-icon">
-                              <kendo-label style="font-weight: bold;">
-                                2.- Actividad económica (2026)
-                              </kendo-label>
-                              <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                              </span> -->
-                            </div>
-                            <div class="row mt-2 mb-2 justify-content-center">
-                              <div class="col-1 mt-2">
-                                <kendo-badge-container>
-                                  <kendo-badge themeColor="error">Bajo</kendo-badge>
-                                </kendo-badge-container>
-                              </div>
-                              <div class="col-9">
-                                <kendo-formfield showHints="initial">
-                                  <kendo-dropdownlist [data]="OpIE2.slice(1)" textField="text" valueField="value"
-                                    (valueChange)="valorSeleccionado14 = $event" [valuePrimitive]="true"
-                                    (selectionChange)="RespuestaISE2($event)" [value]="valorSeleccionado14"
-                                    formControlName="Res14" [defaultItem]="{ text: 'Selecciona', value: null }"
-                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
-                                          'k-valid': formSimulacion.get('Res14')?.valid && formSimulacion.get('Res14')?.dirty
-                                        }">
-                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
-                                      <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                          }}</span>&nbsp;{{
-                                        dataItem?.text }}
-                                      </span>
-                                    </ng-template>
-                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
-                                      <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
-                                          }}</span>&nbsp;{{
-                                        dataItem?.text }}
-                                      </span>
-                                    </ng-template>
-                                  </kendo-dropdownlist>
-                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
-                                  @if (formSimulacion.get('Res14')?.valid && formSimulacion.get('Res14')?.dirty) {
-                                  <div class="form-success">
-                                    ✔ Campo válido
-                                  </div>
-                                  }
-                                  @else{
-                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
-                                  }
-                                </kendo-formfield>
-                              </div>
-                              <div class="col-1">
-                                <span>
-                                  @if(Pon14){
-                                  <kendo-chip label="{{ Pon14 | number:'1.2-2'  }}" themeColor="info" size="medium"
-                                    rounded="full">
-                                  </kendo-chip>
-                                  }
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        </section>
-                      </div>
-                    </kendo-expansionpanel>
-                  </div>
-                </div>
-                <!--=====================================================================================================-->
-                <!--=============== Variable 3.3 Incidencia en empleos permanentes 3 % ============-->
+                <!--=============== Variable 3.2 Incidencia en empleos permanentes 3 % ============-->
                 <!--=====================================================================================================-->
                 <div class="row mt-3 mb-2">
                   <div class="col-md-12">
-                    <kendo-expansionpanel title="Incidencia en empleos permanentes" subtitle="3.3" [expanded]="true">
+                    <kendo-expansionpanel class="panel-personalizado" title="3.2" [expanded]="true">
                       <div class="container-fluid">
                         <section class="row mt-2">
                           <div class="col-md-12">
@@ -1733,7 +1700,11 @@
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate15" filter=".info-icon">
                               <kendo-label style="font-weight: bold;">
-                                3.- Incidencia en empleos permanentes (2026)
+                                Algunos proyectos de inversión tienen como objetivo promover la creación de empleos de
+                                duración permanente, por ejemplo, apoyando a las empresas para nuevas instalaciones o
+                                para ampliar las que ya tienen, o capacitando a las personas para mejorar la posibilidad
+                                de que sean contratadas. Tomando en cuenta este contexto y la descripción de tu
+                                proyecto, selecciona la opción que le aplique
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -1757,14 +1728,16 @@
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClass_permanentes(dataItem.value)">{{
+                                          dataItem?.value
                                           }}</span>&nbsp;{{
                                         dataItem?.text }}
                                       </span>
                                     </ng-template>
                                     <ng-template kendoDropDownListValueTemplate let-dataItem>
                                       <span class="item-content">
-                                        <span [ngClass]="getTemplateClass_22(dataItem.value)">{{ dataItem?.value
+                                        <span [ngClass]="getTemplateClass_permanentes(dataItem.value)">{{
+                                          dataItem?.value
                                           }}</span>&nbsp;{{
                                         dataItem?.text }}
                                       </span>
@@ -1796,6 +1769,91 @@
 
                           </div>
 
+                        </section>
+                      </div>
+                    </kendo-expansionpanel>
+                  </div>
+                </div>
+                <!--=====================================================================================================-->
+                <!--=============== Variable 3.3 Actividad económica 2 % ===========-->
+                <!--=====================================================================================================-->
+                <div class="row mt-3 mb-2">
+                  <div class="col-md-12">
+                    <kendo-expansionpanel class="panel-personalizado" title="3.3" [expanded]="true">
+                      <div class="container-fluid">
+                        <section class="row">
+                          <div class="col-md-12">
+                            <ng-template #tooltipTemplate14>
+                              <div class="tooltip-justificado">
+                                Los alcances del proyecto inciden en la actividad manufacturera
+                              </div>
+                            </ng-template>
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate14" filter=".info-icon">
+                              <kendo-label style="font-weight: bold;">
+                                Si bien todas las actividades económicas son importantes para el desarrollo de nuestro
+                                estado, algunas son más relevantes de acuerdo con los recursos económicos que generan, y
+                                la cantidad de personas a las que emplean. Tomando en cuenta la descripción de tu
+                                proyecto ¿podrías vincularlo con alguna de las actividades económicas que se indican en
+                                las opciones?
+                              </kendo-label>
+                              <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                              </span> -->
+                            </div>
+                            <div class="row mt-2 mb-2 justify-content-center">
+                              <div class="col-1 mt-2">
+                                <kendo-badge-container>
+                                  <kendo-badge themeColor="error">Bajo</kendo-badge>
+                                </kendo-badge-container>
+                              </div>
+                              <div class="col-9">
+                                <kendo-formfield showHints="initial">
+                                  <kendo-dropdownlist [data]="OpIE2.slice(1)" textField="text" valueField="value"
+                                    (valueChange)="valorSeleccionado14 = $event" [valuePrimitive]="true"
+                                    (selectionChange)="RespuestaISE2($event)" [value]="valorSeleccionado14"
+                                    formControlName="Res14" [defaultItem]="{ text: 'Selecciona', value: null }"
+                                    showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                          'k-valid': formSimulacion.get('Res14')?.valid && formSimulacion.get('Res14')?.dirty
+                                        }">
+                                    <ng-template kendoDropDownListItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_permanentes(dataItem.value)">{{
+                                          dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoDropDownListValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClass_permanentes(dataItem.value)">{{
+                                          dataItem?.value
+                                          }}</span>&nbsp;{{
+                                        dataItem?.text }}
+                                      </span>
+                                    </ng-template>
+                                  </kendo-dropdownlist>
+                                  <kendo-formerror>Error: Seleccione una opción </kendo-formerror>
+                                  @if (formSimulacion.get('Res14')?.valid && formSimulacion.get('Res14')?.dirty) {
+                                  <div class="form-success">
+                                    ✔ Campo válido
+                                  </div>
+                                  }
+                                  @else{
+                                  <kendo-formhint>Seleccione una opción</kendo-formhint>
+                                  }
+                                </kendo-formfield>
+                              </div>
+                              <div class="col-1">
+                                <span>
+                                  @if(Pon14){
+                                  <kendo-chip label="{{ Pon14 | number:'1.2-2'  }}" themeColor="info" size="medium"
+                                    rounded="full">
+                                  </kendo-chip>
+                                  }
+                                </span>
+                              </div>
+                            </div>
+                          </div>
                         </section>
                       </div>
                     </kendo-expansionpanel>
