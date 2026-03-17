@@ -1,33 +1,5 @@
 <section class="sectiondefault">
-<div class="modal fade" id="nivelModal" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center p-4">
 
-      <h4 class="mb-3">Resultado del proyecto</h4>
-
-      <!-- Animaciones -->
-      <div *ngIf="dictaminacion === 'Bajo'" class="animacion bajo">
-        😟
-        <p>Nivel Bajo</p>
-      </div>
-
-      <div *ngIf="dictaminacion === 'Medio'" class="animacion medio">
-        🙂 
-        <p>Nivel Medio</p>
-      </div>
-
-      <div *ngIf="dictaminacion === 'Alto'" class="animacion alto">
-        🎉
-        <p>Nivel Alto</p>
-      </div>
-
-      <button class="btn btn-secondary mt-3" data-bs-dismiss="modal">
-        Cerrar
-      </button>
-
-    </div>
-  </div>
-</div>
   <!-- Intro -->
   <div class="row justify-content-center text-center">
     <div class="col-11">
@@ -79,9 +51,11 @@
 
       </div>
       <button kendoButton (click)="open()" themeColor="success" class="mt-2">Crear Proyecto</button>
+      }
 
-      } @if (dataSaved) {
+      @if (dataSaved) {
       } @if (opened) {
+
       <kendo-window title="Crea tu proyecto 🚀" (close)="close()" [minWidth]="250" [width]="450" [top]="top"
         [left]="left">
         @if (mensajeError ) {
@@ -89,114 +63,128 @@
           <span>{{ mensajeError }}</span>
         </div>
         }
-        <form class="k-form" [formGroup]="form">
-          <fieldset>
-            <legend>Capturando algunos datos básicos</legend>
-            <!-- Nombre -->
-            <ng-template #tooltipNombreProyecto>
-              <div class="tooltip-justificado">
-                <p> Ejemplo 1: Pavimentación de la Calle Oro en la Colonia Las Minas, en Celaya</p>
-                <p>Ejemplo 2: Camino Los Huizaches - El Encinal en Dolores Hidalgo</p>
-                <p> Ejemplo 3: Construcción de Plaza Pública en la Localidad Peña Grande, en Salamanca</p>
-              </div>
-            </ng-template>
-            <div kendoTooltip [tooltipTemplate]="tooltipNombreProyecto" filter=".info-icon" position="right">
-              <span>Define un nombre corto para tu proyecto, con referencias de su ubicación.</span>
-              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-              </span>
-              <kendo-formfield showHints="initial">
-                <kendo-textbox placeholder="Nombre del Proyecto" formControlName="nombre" showErrorIcon="initial"
-                  showSuccessIcon="initial" [clearButton]="true"></kendo-textbox>
-                <kendo-formerror>Error: Ingrese un nombre </kendo-formerror>
-                @if (form.get('nombre')?.valid && form.get('nombre')?.dirty) {
-                <div class="form-success">
-                  ✔ Campo válido
+        <div class="col-12 col-lg-12 mt-2 mb-2 align-items-start justify-content-start text-start">
+          <form class="k-form" [formGroup]="form">
+
+            <fieldset>
+              <legend>Capturando algunos datos básicos</legend>
+              <!-- Nombre -->
+              <ng-template #tooltipNombreProyecto>
+                <div class="tooltip-justificado">
+                  <p> Ejemplo 1: Pavimentación de la Calle Oro en la Colonia Las Minas, en Celaya</p>
+                  <p>Ejemplo 2: Camino Los Huizaches - El Encinal en Dolores Hidalgo</p>
+                  <p> Ejemplo 3: Construcción de Plaza Pública en la Localidad Peña Grande, en Salamanca</p>
                 </div>
-                }
-                @else{
-                <kendo-formhint> Ingrese un nombre</kendo-formhint>
-                }
-              </kendo-formfield>
-            </div>
-            <br>
-            <!-- Descripcion -->
-            <ng-template #tooltipDescripcion>
-              <div class="tooltip-justificado">
-                <p>Ejemplo 1: Construcción de calle, guarniciones y banquetas con concreto, en un tramo de 400 metros,
-                  de la calle Plata a la calle Cobre, para beneficio de 150 habitantes </p>
-                <p>Ejemplo 2: Pavimentación del camino que va de la localidad Los Huizaches hacia la localidad El
-                  Encinal, con dos carriles de circulación a base de empedrado y huellas de concreto, en una longitud de
-                  1.5 km, beneficiando a las personas que usan el camino (350 personas aprox.).</p>
-                <p> Ejemplo 3: Construcción de quiosco, andadores, áreas verdes y cerca perimetral, e instalación de
-                  alumbrado y mobiliario (bancas, basureros), en un área de 1,200 metros cuadrados, para beneficio de
-                  las 1,200 personas que habitan en la localidad.</p>
+              </ng-template>
+              <div kendoTooltip [tooltipTemplate]="tooltipNombreProyecto" filter=".info-icon" position="right">
+                <span>Define un nombre corto para tu proyecto, con referencias de su ubicación.</span>
+                <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                  <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                </span>
+                <kendo-formfield showHints="initial">
+                  <!-- <kendo-textbox placeholder="Nombre del Proyecto" formControlName="nombre" showErrorIcon="initial"
+                  showSuccessIcon="initial" [clearButton]="true"></kendo-textbox> -->
+                  <kendo-textarea placeholder="Nombre del Proyecto" formControlName="nombre" showErrorIcon="initial"
+                    showSuccessIcon="initial" resizable="both" [maxlength]="maxlength"
+                    (valueChange)="onValueChangeNombre($event)">
+                    <kendo-textarea-suffix class="custom-styling">
+                      <span class="counter">{{ counterNom }}</span>
+                      <button kendoButton look="clear" (click)="limpiarNombre()">
+                        <kendo-svgicon [icon]="icons.trashIcon" style="color: rgb(230, 26, 11);"></kendo-svgicon>
+                      </button>
+                    </kendo-textarea-suffix>
+                  </kendo-textarea>
+                  <kendo-formerror>Error: Ingrese un nombre </kendo-formerror>
+                  @if (form.get('nombre')?.valid && form.get('nombre')?.dirty) {
+                  <div class="form-success">
+                    ✔ Campo válido
+                  </div>
+                  }
+                  @else{
+                  <kendo-formhint> Ingrese un nombre</kendo-formhint>
+                  }
+                </kendo-formfield>
               </div>
-            </ng-template>
-            <div kendoTooltip [tooltipTemplate]="tooltipDescripcion" filter=".info-icon" position="right">
-              <span>Describe brevemente lo que realizarás en tu proyecto, incluyendo la cantidad de personas que se
-                beneficiarán al realizarlo</span>
-              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-              </span>
-              <kendo-formfield showHints="initial">
-                <kendo-textarea placeholder="Descripción del proyecto" formControlName="descripcion"
-                  showErrorIcon="initial" showSuccessIcon="initial" resizable="both" [maxlength]="maxlength"
-                  (valueChange)="onValueChangeDesc($event)">
-                  <kendo-textarea-suffix class="custom-styling">
-                    <span class="counter">{{ counter }}</span>
-                    <button kendoButton look="clear" (click)="limpiarDescripcion()">
+              <br>
+              <!-- Descripcion -->
+              <ng-template #tooltipDescripcion>
+                <div class="tooltip-justificado">
+                  <p>Ejemplo 1: Construcción de calle, guarniciones y banquetas con concreto, en un tramo de 400 metros,
+                    de la calle Plata a la calle Cobre, para beneficio de 150 habitantes </p>
+                  <p>Ejemplo 2: Pavimentación del camino que va de la localidad Los Huizaches hacia la localidad El
+                    Encinal, con dos carriles de circulación a base de empedrado y huellas de concreto, en una longitud
+                    de
+                    1.5 km, beneficiando a las personas que usan el camino (350 personas aprox.).</p>
+                  <p> Ejemplo 3: Construcción de quiosco, andadores, áreas verdes y cerca perimetral, e instalación de
+                    alumbrado y mobiliario (bancas, basureros), en un área de 1,200 metros cuadrados, para beneficio de
+                    las 1,200 personas que habitan en la localidad.</p>
+                </div>
+              </ng-template>
+              <div kendoTooltip [tooltipTemplate]="tooltipDescripcion" filter=".info-icon" position="right">
+                <span>Describe brevemente lo que realizarás en tu proyecto, incluyendo la cantidad de personas que se
+                  beneficiarán al realizarlo</span>
+                <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                  <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                </span>
+                <kendo-formfield showHints="initial">
+                  <kendo-textarea placeholder="Descripción del proyecto" formControlName="descripcion"
+                    showErrorIcon="initial" showSuccessIcon="initial" resizable="both" [maxlength]="maxlength"
+                    (valueChange)="onValueChangeDesc($event)">
+                    <kendo-textarea-suffix class="custom-styling">
+                      <span class="counter">{{ counter }}</span>
+                      <button kendoButton look="clear" (click)="limpiarDescripcion()">
+                        <kendo-svgicon [icon]="icons.trashIcon" style="color: rgb(230, 26, 11);"></kendo-svgicon>
+                      </button>
+                    </kendo-textarea-suffix>
+                  </kendo-textarea>
+                  <kendo-formhint>Ingrese una descripción para el proyecto</kendo-formhint>
+                </kendo-formfield>
+              </div>
+              <br>
+              <!-- Monto -->
+              <ng-template #tooltipMonto>
+                <div class="tooltip-justificado">
+                  <p> Captura un importe mayor o igual a $50,000.00</p>
+                </div>
+              </ng-template>
+              <div kendoTooltip [tooltipTemplate]="tooltipMonto" filter=".info-icon" position="right">
+                <span>¿Cuál es el presupuesto total que necesitarás para realizar tu proyecto?</span>
+                <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                  <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
+                </span>
+                <kendo-maskedtextbox name="masked" [maskOnFocus]="true" [mask]="mask_monto" (input)="onInput($event)"
+                  [size]="'small'" [maskValidation]="false" formControlName="monto">
+                  <ng-template kendoPrefixTemplate>
+                    <kendo-svgicon [icon]="icons.dollarIcon"></kendo-svgicon>
+                  </ng-template>
+                  <ng-template kendoSuffixTemplate>
+                    <button kendoButton look="clear" (click)="limpiarMascaraMonto()">
                       <kendo-svgicon [icon]="icons.trashIcon" style="color: rgb(230, 26, 11);"></kendo-svgicon>
                     </button>
-                  </kendo-textarea-suffix>
-                </kendo-textarea>
-                <kendo-formhint>Ingrese una descripción para el proyecto</kendo-formhint>
+                  </ng-template>
+                </kendo-maskedtextbox>
+              </div>
+              <!-- Continuidad -->
+              <div class="row mb-1 mt-3">
+                <span>Si tu proyecto ha tenido otras etapas que ya fueron realizadas
+                  (por ejemplo, la pavimentación de otro tramo de la misma calle, o la construcción de drenaje en otra
+                  zona de la misma colonia), selecciona la casilla.</span>
+              </div>
+              <kendo-formfield showHints="initial">
+                <div class="k-form-field-checkbox-wrap">
+                  <kendo-checkbox formControlName="continuidad"></kendo-checkbox>
+                  <kendo-label class="k-checkbox-label" [text]="textoContinuidad"></kendo-label>
+                </div>
               </kendo-formfield>
+            </fieldset>
+            <div class="k-actions k-actions-center">
+              <button kendoButton type="button" (click)="close()">Cancelar</button>
+              <button kendoButton themeColor="primary" type="submit" (click)="submit()">
+                Crear
+              </button>
             </div>
-            <br>
-            <!-- Monto -->
-            <ng-template #tooltipMonto>
-              <div class="tooltip-justificado">
-                <p> Captura un importe mayor o igual a $50,000.00</p>
-              </div>
-            </ng-template>
-            <div kendoTooltip [tooltipTemplate]="tooltipMonto" filter=".info-icon" position="right">
-              <span>¿Cuál es el presupuesto total que necesitarás para realizar tu proyecto?</span>
-              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-              </span>
-              <kendo-maskedtextbox name="masked" [maskOnFocus]="true" [mask]="mask_monto" (input)="onInput($event)"
-                [size]="'small'" [maskValidation]="false" formControlName="monto">
-                <ng-template kendoPrefixTemplate>
-                  <kendo-svgicon [icon]="icons.dollarIcon"></kendo-svgicon>
-                </ng-template>
-                <ng-template kendoSuffixTemplate>
-                  <button kendoButton look="clear" (click)="limpiarMascaraMonto()">
-                    <kendo-svgicon [icon]="icons.trashIcon" style="color: rgb(230, 26, 11);"></kendo-svgicon>
-                  </button>
-                </ng-template>
-              </kendo-maskedtextbox>
-            </div>
-            <!-- Continuidad -->
-            <div class="row mb-1 mt-3">
-              <span>Si tu proyecto ha tenido otras etapas que ya fueron realizadas
-                (por ejemplo, la pavimentación de otro tramo de la misma calle, o la construcción de drenaje en otra
-                zona de la misma colonia), selecciona la casilla.</span>
-            </div>
-            <kendo-formfield showHints="initial">
-              <div class="k-form-field-checkbox-wrap">
-                <kendo-checkbox formControlName="continuidad"></kendo-checkbox>
-                <kendo-label class="k-checkbox-label" [text]="textoContinuidad"></kendo-label>
-              </div>
-            </kendo-formfield>
-          </fieldset>
-          <div class="k-actions k-actions-center">
-            <button kendoButton type="button" (click)="close()">Cancelar</button>
-            <button kendoButton themeColor="primary" type="submit" (click)="submit()">
-              Crear
-            </button>
-          </div>
-        </form>
+          </form>
+        </div>
       </kendo-window>
       }
     </div>
@@ -216,7 +204,6 @@
         <kendo-combobox class="mt-2" #sizes [data]="listItems" valueField="clave" [valuePrimitive]="false"
           textField="nombre" [(value)]="itemSeleccionado" (valueChange)="onProyChange($event)"
           placeholder="Proyecto"></kendo-combobox>
-
 
       </div>
 
@@ -250,7 +237,13 @@
 
             <thead class="table-light">
               <tr>
-                <th># Variable</th>
+                <th>
+                  <div class="row d-flex justify-content-center">
+                    <div class="col-12 d-flex flex-column align-items-center justify-content-center">
+                      <p># Variable</p>
+                    </div>
+                  </div>
+                </th>
                 @for (sim of Getsimulaciones; track sim.clave) {
                 <th>
                   <div class="row d-flex justify-content-center">
@@ -295,10 +288,10 @@
 
                   <td>{{ i }}</td>
                   @for (sim of Getsimulaciones; track $index; let colIndex = $index) {
-                  <td >
+                  <td>
                     <div class="color-circle" [style.background]="sim.resultados['color'+ (rowIndex+1)] ?? '#cccccc'">
                     </div>
-                    
+
                   </td>
                   }
 
@@ -364,7 +357,7 @@
     <div class="col-md-3 col-lg-3  mt-2 mb-2 d-flex flex-column align-items-center justify-content-center">
       <ng-template #tooltipProyecto2>
         <div class="tooltip-justificado">
-          Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
+          Esta acción eliminará todos proyectos creados, asi como las simulaciónes
         </div>
       </ng-template>
       <div kendoTooltip [tooltipTemplate]="tooltipProyecto2" filter=".info-icon" position="right">
@@ -373,8 +366,24 @@
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
       </div>
-      <button kendoButton class="mt-2" type="button" themeColor="error" (click)="limpia_simulacion()">Termina </button>
+      <button kendoButton class="mt-2" type="button" themeColor="error" (click)="limpia_simulacion_confirm()">Termina
+      </button>
     </div>
+    <kendo-dialog *ngIf="mostrarConfirmacion" (close)="cerrarDialogo()">
+      <kendo-dialog-titlebar>
+        Confirmación
+      </kendo-dialog-titlebar>
+
+      <p>¿Estás seguro de que deseas terminar?</p>
+      <p class="text-danger">
+        ⚠️ Esta acción eliminará toda la simulación y no se puede deshacer.
+      </p>
+
+      <kendo-dialog-actions>
+        <button kendoButton (click)="cerrarDialogo()">Cancelar</button>
+        <button kendoButton themeColor="error" (click)="confirmarAccion()">Sí, terminar</button>
+      </kendo-dialog-actions>
+    </kendo-dialog>
 
   </div>
   <!-- Datos Generales -->
@@ -393,7 +402,7 @@
               </div>
               <div class="texto"><strong style="color: black;">Presupuesto total del proyecto: </strong> {{
                 itemSeleccionado.monto_f }}</div>
-               
+
               @if (itemSeleccionado.continuidad){
               <div class="texto"><strong style="color: black;">Proyecto nuevo o de continuidad: </strong> 🔄 Continuidad
               </div>
@@ -405,13 +414,15 @@
               }
             </div>
             <div class="col-lg-2 col-md-3 col-12 d-flex align-items-start justify-content-center align-items-center ">
-               @if (dictaminacion) {
-                <div class="texto"><strong style="color: black;">Dictaminacion: </strong> La probabilidad de que tu proyecto pueda obtener recursos del presupuesto público es:
-                </div>
-                }
+
               @if (itemSeleccionado){
+              @if (dictaminacion) {
+              <div class="texto"><strong style="color: black;">Dictaminacion: </strong> La probabilidad de que tu
+                proyecto pueda obtener recursos del presupuesto público es:
+              </div>
+              }
               <div class="gauge-container">
-                
+
                 <kendo-circulargauge [value]="CalProm  || 0 "
                   [scale]="{ max: 100, rangePlaceholderColor: '#a6a6a6' ,rangeSize: 10,}" [colors]="getGaugeColors()"
                   style="width:100%; height:100%;">
@@ -429,6 +440,7 @@
               </div>
               }
             </div>
+
           </div>
         </kendo-card-header>
       </kendo-card>
@@ -596,7 +608,8 @@
                             </ng-template>
 
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate2" filter=".info-icon">
-                              <kendo-label class="label-justificado">Para que un proyecto pueda realizarse de manera adecuada necesita estar preparado. Por
+                              <kendo-label class="label-justificado">Para que un proyecto pueda realizarse de manera
+                                adecuada necesita estar preparado. Por
                                 ejemplo, para realizar una obra se deben tener estudios técnicos, ciertos permisos de
                                 las autoridades, y el terreno donde se va a construir. Otro ejemplo: para otorgar apoyos
                                 a la población mediante un programa, se deben tener reglas de operación donde se
@@ -689,7 +702,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate3" filter=".info-icon">
-                              <kendo-label class="label-justificado">En los proyectos de inversión, un resultado ideal implica:
+                              <kendo-label class="label-justificado">En los proyectos de inversión, un resultado ideal
+                                implica:
                                 <ol type="a">
                                   <li>Cumplir las metas tal como se plantearon (por ejemplo, 100 metros de calle
                                     pavimentados de 100 que se plantearon)
@@ -790,7 +804,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate4" filter=".info-icon">
-                              <kendo-label class="label-justificado">Los proyectos de inversión se financian con recursos públicos que provienen de
+                              <kendo-label class="label-justificado">Los proyectos de inversión se financian con
+                                recursos públicos que provienen de
                                 diferentes fuentes. La mayor parte de los recursos se derivan de acuerdos de
                                 coordinación con el gobierno federal, y están limitados o “etiquetados” en cuanto a lo
                                 que puede pagarse con ellos: obras y acciones en zonas con pobreza o rezago social;
@@ -880,7 +895,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate5" filter=".info-icon">
-                              <kendo-label class="label-justificado">Si bien todos los proyectos de inversión pública tienen un beneficio para la población,
+                              <kendo-label class="label-justificado">Si bien todos los proyectos de inversión pública
+                                tienen un beneficio para la población,
                                 no todos los proyectos pueden considerarse como “productivos”. La inversión pública
                                 productiva es la que consiste en:
                                 <ol type="a" style="margin-bottom:5px;">
@@ -976,7 +992,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate6" filter=".info-icon">
-                              <kendo-label class="label-justificado">En los proyectos de inversión, lo ideal sería atender a toda la población afectada por
+                              <kendo-label class="label-justificado">En los proyectos de inversión, lo ideal sería
+                                atender a toda la población afectada por
                                 la problemática o necesidad que se pretende solucionar (“población objetivo”), pero eso
                                 no siempre es posible, y en ocasiones, las personas que se benefician de manera directa
                                 con el proyecto es menor, ya sea por la falta de recursos para atender a toda la
@@ -1067,7 +1084,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate7" filter=".info-icon">
-                              <kendo-label class="label-justificado">Pensando en el presupuesto de tu proyecto ¿planeas que una parte sea aportada por las
+                              <kendo-label class="label-justificado">Pensando en el presupuesto de tu proyecto ¿planeas
+                                que una parte sea aportada por las
                                 personas beneficiarias directas (como en las obras por cooperación), por el gobierno de
                                 tu municipio, y/o por el gobierno federal? Selecciona la opción que mejor se ajuste a tu
                                 proyecto, según los recursos que esperas que aporten cualquiera de esas fuentes
@@ -1180,7 +1198,8 @@
                             </ng-template>
 
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate8" filter=".info-icon">
-                              <kendo-label class="label-justificado">La igualdad de género significa que las mujeres y los hombres tienen los mismos derechos
+                              <kendo-label class="label-justificado">La igualdad de género significa que las mujeres y
+                                los hombres tienen los mismos derechos
                                 y el acceso a las mismas oportunidades. Cuando esto no es así, deben implementarse
                                 acciones y medidas efectivas que garanticen esta igualdad. Piensa en la descripción de
                                 tu proyecto y responde la siguiente pregunta: ¿Mi proyecto incluye acciones específicas
@@ -1261,17 +1280,18 @@
                       <div class="container-fluid">
                         <section class="row mt-2">
                           <div class="col-md-12">
-                            <kendo-label class="label-justificado">El grado de rezago social es una medida general del acceso que tienen las personas a la
+                            <kendo-label class="label-justificado">El grado de rezago social es una medida general del
+                              acceso que tienen las personas a la
                               educación, a la salud y a una vivienda digna, y permite identificar los municipios que
                               necesitan mayor inversión en obras y acciones relacionadas con esos derechos sociales.
                               Abre el mapa de la derecha, ubica el municipio en el que realizarás tu proyecto, y
                               selecciona la opción que le corresponda.
-                               <span class="info-icon" style="cursor: pointer; display: inline-flex;">
-                              <kendo-svg-icon [icon]="icons.mapMarkerIcon" (click)="abrirInfo()"
-                                class="colorMapa"></kendo-svg-icon>
-                            </span>
+                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                                <kendo-svg-icon [icon]="icons.mapMarkerIcon" (click)="abrirInfo()"
+                                  class="colorMapa"></kendo-svg-icon>
+                              </span>
                             </kendo-label>
-                           
+
                             @if (windowInfoAbierto) {
                             <kendo-window title="Grado de rezago social" (close)="cerrarInfo()" [minWidth]="450"
                               [width]="650" [top]="top2" [left]="left2" [height]="550">
@@ -1361,7 +1381,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate10" filter=".info-icon">
-                              <kendo-label class="label-justificado">Los subsidios sociales son ayudas económicas o en especie que se dan a las personas con
+                              <kendo-label class="label-justificado">Los subsidios sociales son ayudas económicas o en
+                                especie que se dan a las personas con
                                 el objetivo de ayudarles a mejorar sus condiciones de vida, y pueden ser una manera
                                 efectiva de atender un problema o necesidad de la población. Tomando en cuenta la
                                 descripción de tu proyecto ¿entregarás este tipo de ayudas?
@@ -1447,7 +1468,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate11" filter=".info-icon">
-                              <kendo-label class="label-justificado">Los Objetivos de Desarrollo Sostenible (ODS) y sus metas representan un compromiso
+                              <kendo-label class="label-justificado">Los Objetivos de Desarrollo Sostenible (ODS) y sus
+                                metas representan un compromiso
                                 mundial para eliminar la pobreza en todas sus formas y dimensiones, combatir las
                                 desigualdades, construir sociedades pacíficas, proteger los derechos humanos, garantizar
                                 la protección del planeta y sus recursos, y crear las condiciones para un crecimiento
@@ -1535,7 +1557,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate12" filter=".info-icon">
-                              <kendo-label class="label-justificado">En México, la medición de la pobreza toma en cuenta la capacidad económica que tienen
+                              <kendo-label class="label-justificado">En México, la medición de la pobreza toma en cuenta
+                                la capacidad económica que tienen
                                 las personas para comprar artículos y servicios indispensables, y su acceso a los
                                 derechos sociales establecidos en la constitución. Los indicadores definidos para la
                                 medición de la pobreza, permiten identificar los proyectos de inversión más necesarios
@@ -1643,7 +1666,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate13" filter=".info-icon">
-                              <kendo-label class="label-justificado">¿Se crearán empleos de duración temporal al realizar tu proyecto? Teniendo en cuenta la
+                              <kendo-label class="label-justificado">¿Se crearán empleos de duración temporal al
+                                realizar tu proyecto? Teniendo en cuenta la
                                 descripción de tu proyecto, considera únicamente los siguientes tipos de empleos al
                                 seleccionar la opción que le aplique:
                                 <ol type="a">
@@ -1738,7 +1762,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate15" filter=".info-icon">
-                              <kendo-label class="label-justificado">Algunos proyectos de inversión tienen como objetivo promover la creación de empleos de
+                              <kendo-label class="label-justificado">Algunos proyectos de inversión tienen como objetivo
+                                promover la creación de empleos de
                                 duración permanente, por ejemplo, apoyando a las empresas para nuevas instalaciones o
                                 para ampliar las que ya tienen, o capacitando a las personas para mejorar la posibilidad
                                 de que sean contratadas. Tomando en cuenta este contexto y la descripción de tu
@@ -1823,7 +1848,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate14" filter=".info-icon">
-                              <kendo-label class="label-justificado">Si bien todas las actividades económicas son importantes para el desarrollo de nuestro
+                              <kendo-label class="label-justificado">Si bien todas las actividades económicas son
+                                importantes para el desarrollo de nuestro
                                 estado, algunas son más relevantes de acuerdo con los recursos económicos que generan, y
                                 la cantidad de personas a las que emplean. Tomando en cuenta la descripción de tu
                                 proyecto ¿podrías vincularlo con alguna de las actividades económicas que se indican en
@@ -1903,9 +1929,39 @@
     <!-- Botones del formulario -->
     <div class="k-actions k-actions-center">
       <button kendoButton type="button" (click)="cancelar_simulacion()">Cancelar</button>
-      <button kendoButton themeColor="primary" type="submit"  data-bs-toggle="modal" data-bs-target="#nivelModal"(click)="simular()">
-        Simular Ya!
+      <button kendoButton themeColor="primary" type="button" (click)="simular()">
+        Simular
       </button>
     </div>
   </form>
 </section>
+<div class="modal fade" id="nivelModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4">
+
+      <h4 class="mb-3">La probabilidad de que tu proyecto pueda obtener recursos del presupuesto público es:</h4>
+
+      <!-- Animaciones -->
+
+      <div *ngIf="dictaminacion === 'Baja'" class="animacion bajo">
+        😟
+        <p>Baja</p>
+      </div>
+
+      <div *ngIf="dictaminacion === 'Media'" class="animacion medio">
+        🙂
+        <p>Media</p>
+      </div>
+
+      <div *ngIf="dictaminacion === 'Alta'" class="animacion alto">
+        🎉
+        <p>Alta</p>
+      </div>
+
+      <button class="btn btn-secondary mt-3" data-bs-dismiss="modal">
+        Cerrar
+      </button>
+
+    </div>
+  </div>
+</div>

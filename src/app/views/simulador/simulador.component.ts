@@ -10,8 +10,7 @@ import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
 import { KENDO_INPUTS } from "@progress/kendo-angular-inputs";
 import { KENDO_INDICATORS } from "@progress/kendo-angular-indicators";
 import { KENDO_DIALOGS } from "@progress/kendo-angular-dialog";
-
-
+declare var window: any;
 import { KENDO_DROPDOWNS } from "@progress/kendo-angular-dropdowns";
 import { FormsModule } from '@angular/forms';
 import { KENDO_ICONS } from "@progress/kendo-angular-icons";
@@ -78,6 +77,7 @@ export class SimuladorComponent implements OnInit {
   CalculoDp() {
     throw new Error('Method not implemented.');
   }
+  mostrarConfirmacion = false;
   dictaminacion = ''
   mensajeError = '';
   mensajeConfirmacionterminacion = '';
@@ -337,6 +337,9 @@ export class SimuladorComponent implements OnInit {
   public charachtersCount: number;
   public counter: string
   public maxlength = 1200;
+  public charachtersCountNom: number;
+  public counterNom: string
+  public maxlengthNom = 150;
   previousStep = 0;
 
   windowInfoAbierto = false;
@@ -372,9 +375,12 @@ export class SimuladorComponent implements OnInit {
       Res15: new FormControl("", [Validators.required]),
     });
 
-
+//descripcion
     this.charachtersCount = this.form.value.justificacion ? this.form.value.justificacionlength : 0;
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
+//nombre
+        this.charachtersCountNom = this.form.value.justificacion ? this.form.value.justificacionlength : 0;
+    this.counterNom = `${this.charachtersCountNom}/${this.maxlengthNom}`;
   }
 
   validarContinuidad() {
@@ -412,7 +418,7 @@ export class SimuladorComponent implements OnInit {
     this.top = (window.innerHeight - height) / 2 + window.scrollY;
     this.left2 = (window.innerWidth - width2) / 2;
     this.top2 = (window.innerHeight - height2) / 2 + window.scrollY;
-    const estructura = [7,5,3];
+    const estructura = [7, 5, 3];
     this.variables = estructura.flatMap((cantidad, grupo) =>
       Array.from({ length: cantidad }, (_, i) => (grupo + 1) + (i + 1) / 10)
     );
@@ -423,24 +429,38 @@ export class SimuladorComponent implements OnInit {
     const height = navbar?.clientHeight || 0;
 
     document.documentElement.style.setProperty('--navbar-height', height + 'px');
+    const modal = document.getElementById('nivelModal');
+
+    modal?.addEventListener('hidden.bs.modal', () => {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+    });
+
   }
   //Funciones Auxiliares
   limpiarDescripcion() {
     this.form.get("descripcion")?.setValue('');
     this.counter = ""
   }
+    limpiarNombre() {
+    this.form.get("nombre")?.setValue('');
+    this.counterNom = ""
+  }
   public onValueChangeDesc(ev: string): void {
     this.charachtersCount = ev.length;
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
+  }
+    public onValueChangeNombre(ev: string): void {
+    this.charachtersCountNom = ev.length;
+    this.counterNom = `${this.charachtersCountNom}/${this.maxlengthNom}`;
   }
 
   abrirInfo() {
     this.abrirPdf()
     this.windowInfoAbierto = true;
   }
-  abrirModal(nivel:string){
-  this.dictaminacion = nivel;
-}
+  abrirModal(nivel: string) {
+    this.dictaminacion = nivel;
+  }
 
   cerrarInfo() {
     this.windowInfoAbierto = false;
@@ -692,16 +712,16 @@ export class SimuladorComponent implements OnInit {
 
     this.storageService.setLocal('simulaciones', registros);
 
-    const finalMessage = `Se simuló el proyecto: ${nuevoRegistro.nombre}`;
+    // const finalMessage = `Se simuló el proyecto: ${nuevoRegistro.nombre}`;
 
-    this.notificationService.show({
-      content: finalMessage,
-      appendTo: this.viewContainerRef,
-      hideAfter: 2500,
-      animation: { type: "slide", duration: 2500 },
-      type: { style: "success", icon: true },
-      position: { horizontal: "center", vertical: "bottom" },
-    });
+    // this.notificationService.show({
+    //   content: finalMessage,
+    //   appendTo: this.viewContainerRef,
+    //   hideAfter: 2500,
+    //   animation: { type: "slide", duration: 2500 },
+    //   type: { style: "success", icon: true },
+    //   position: { horizontal: "center", vertical: "bottom" },
+    // });
 
     console.log('Registros guardados:', registros);
 
@@ -814,17 +834,17 @@ export class SimuladorComponent implements OnInit {
 
       }
 
-      const protyectoCreado = response['nombre'];
-      const finalMessage = `Se guardó correctamente el Proyecto: ${protyectoCreado}`;
+      // const protyectoCreado = response['nombre'];
+      // const finalMessage = `Se guardó correctamente el Proyecto: ${protyectoCreado}`;
 
-      this.notificationService.show({
-        content: finalMessage,
-        appendTo: this.viewContainerRef,
-        hideAfter: 2500,
-        animation: { type: "slide", duration: 2500 },
-        type: { style: "success", icon: true },
-        position: { horizontal: "center", vertical: "bottom" },
-      });
+      // this.notificationService.show({
+      //   content: finalMessage,
+      //   appendTo: this.viewContainerRef,
+      //   hideAfter: 2500,
+      //   animation: { type: "slide", duration: 2500 },
+      //   type: { style: "success", icon: true },
+      //   position: { horizontal: "center", vertical: "top" },
+      // });
 
       this.topBarraRacionalidad = 120;
       this.topBarraImpactoSocial = 230;
@@ -1185,6 +1205,7 @@ export class SimuladorComponent implements OnInit {
     }
 
   }
+
   //Metodo para simular 
   public simular() {
 
@@ -1238,23 +1259,12 @@ export class SimuladorComponent implements OnInit {
         ? `Falta la variable: ${camposFaltantes[0]}`
         : `Faltan las siguientes variables: ${camposFaltantes.join(', ')}`;
 
-      // this.notificationService.show({
-      //   content: mensaje,
-      //   appendTo: this.viewContainerRef,
-      //   hideAfter: 2500,
-      //   animation: { type: "slide", duration: 2500 },
-      //   type: { style: "error", icon: true },
-      //   position: { horizontal: "center", vertical: "top" },
-      // });
-      // esperar que Angular renderice errores
-
       this.notificationService.show({
         content: mensaje,
-        appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "error", icon: true },
-        position: { horizontal: "center", vertical: "bottom" },
+        position: { horizontal: "center", vertical: "top" },
       });
       setTimeout(() => {
         this.irAlPrimerError();
@@ -1265,12 +1275,19 @@ export class SimuladorComponent implements OnInit {
 
     this.guardar_simulacion()
     this.cargarSimulacionComparador()
-    console.log("dictaminacion",this.dictaminacion)
-    this.abrirModal(this.dictaminacion)
+    console.log("dictaminacion", this.dictaminacion)
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
     });
+    
+      const modalElement = document.getElementById('nivelModal');
+
+      if (modalElement) {
+        const modal = new window.bootstrap.Modal(modalElement);
+        modal.show();
+      }
+    
   }
   cancelar_simulacion() {
     this.formSimulacion.reset()
@@ -1909,4 +1926,25 @@ export class SimuladorComponent implements OnInit {
     this.resultadoFinal = '';
     this.form.get("monto")?.setValue('');
   }
+//   limpia_simulacion_confirm() {
+//   const confirmacion = confirm('¿Estás seguro de que deseas terminar la simulación? Se perderán los datos.');
+
+//   if (confirmacion) {
+//     this.limpia_simulacion();
+//   }
+// }
+
+
+limpia_simulacion_confirm() {
+  this.mostrarConfirmacion = true;
+}
+
+cerrarDialogo() {
+  this.mostrarConfirmacion = false;
+}
+
+confirmarAccion() {
+  this.mostrarConfirmacion = false;
+  this.limpia_simulacion();
+}
 }
