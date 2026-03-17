@@ -880,11 +880,11 @@ export class SimuladorComponent implements OnInit {
       this.currentStep = 0;
        this.steps[0].label ='Creando...' 
 
-    } if (cantidad_proy >= 1) {
+    } else if (cantidad_proy > 1) {
       this.currentStep = 1;
       this.steps[0].label ='Creado' 
       this.steps[1].label ='Simulando...'
-    } if (cantidad_proy >= 3 && cantidad_simulacion >= 3) {
+    } else if (cantidad_proy >= 3 && cantidad_simulacion >= 3) {
       this.currentStep = 2;
       this.cantidadBol = false
       this.steps[0].label ='Creando' 
