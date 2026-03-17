@@ -369,21 +369,6 @@
       <button kendoButton class="mt-2" type="button" themeColor="error" (click)="limpia_simulacion_confirm()">Termina
       </button>
     </div>
-    <kendo-dialog *ngIf="mostrarConfirmacion" (close)="cerrarDialogo()">
-      <kendo-dialog-titlebar>
-        Confirmación
-      </kendo-dialog-titlebar>
-
-      <p>¿Estás seguro de que deseas terminar?</p>
-      <p class="text-danger">
-        ⚠️ Esta acción eliminará toda la simulación y no se puede deshacer.
-      </p>
-
-      <kendo-dialog-actions>
-        <button kendoButton (click)="cerrarDialogo()">Cancelar</button>
-        <button kendoButton themeColor="error" (click)="confirmarAccion()">Sí, terminar</button>
-      </kendo-dialog-actions>
-    </kendo-dialog>
 
   </div>
   <!-- Datos Generales -->
@@ -1935,6 +1920,7 @@
     </div>
   </form>
 </section>
+<!-- Modal de Dictaminacion -->
 <div class="modal fade" id="nivelModal" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content text-center p-4">
@@ -1965,3 +1951,21 @@
     </div>
   </div>
 </div>
+<!-- Dialogo de confirmacion "Termina" -->
+@if(mostrarConfirmacion){
+<kendo-dialog (close)="cerrarDialogo()">
+  <kendo-dialog-titlebar>
+    Confirmación
+  </kendo-dialog-titlebar>
+
+  <p>¿Estás seguro de que deseas terminar?</p>
+  <p class="text-danger">
+    ⚠️ Esta acción eliminará toda la simulación y no se puede deshacer.
+  </p>
+
+  <kendo-dialog-actions>
+    <button kendoButton (click)="cerrarDialogo()">Cancelar</button>
+    <button kendoButton themeColor="error" (click)="confirmarAccion()">Sí, terminar</button>
+  </kendo-dialog-actions>
+</kendo-dialog>
+}

@@ -51,7 +51,7 @@ export function noCeroValidator(control: AbstractControl): ValidationErrors | nu
 @Component({
   selector: 'app-simulador',
   standalone: true,
-  imports: [KENDO_ICONS, FaceComponent, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT,
+  imports: [KENDO_ICONS, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT,
     KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule, KENDO_DIALOGS, NotificationModule],
   templateUrl: './simulador.component.html',
   styleUrl: './simulador.component.scss'
@@ -64,16 +64,7 @@ export class SimuladorComponent implements OnInit {
   }
   @ViewChild('notification', { read: ViewContainerRef })
   public notificationContainer!: ViewContainerRef;
-  // estado = signal<'happy' | 'neutral' | 'sad'>('happy');
-
-  // simularError() {
-  //   this.estado.set('sad');
-  // }
-
-  // simularExito() {
-  //   this.estado.set('happy');
-  // }
-
+ 
   CalculoDp() {
     throw new Error('Method not implemented.');
   }
@@ -137,8 +128,6 @@ export class SimuladorComponent implements OnInit {
   left = 0;
   top2 = 0;
   left2 = 0;
-
-
   currentUser: User | null = null;
   topBarraRacionalidad: number = 113;
   topBarraImpactoSocial: number = 139;
@@ -152,11 +141,15 @@ export class SimuladorComponent implements OnInit {
   public simuala = false;
   public compara = false;
   public continuidad = false
+  public label1 ='Crear'
+  public label2 ='Simular'
+  public label3 ='Comparar'
+  public label4 ='Terminar'
   public steps = [
-    { label: "Creando...", isValid: this.crear, emoji: "⚙️" },
-    { label: "Simulando...", isValid: true, emoji: "🖥️" },
-    { label: "Comparando...", isValid: true, emoji: "🆚" },
-    { label: "Terminar", isValid: true, emoji: "✅" },
+    { label: this.label1, isValid: true, emoji: "⚙️" },
+    { label: this.label2, isValid: true, emoji: "🖥️" },
+    { label: this.label3, isValid: true, emoji: "🆚" },
+    { label: this.label4, isValid: true, emoji: "✅" },
   ];
   itemSeleccionado: any = null;
   SimulacionSeleccionada: any = null;
@@ -441,7 +434,7 @@ export class SimuladorComponent implements OnInit {
     this.form.get("descripcion")?.setValue('');
     this.counter = ""
   }
-    limpiarNombre() {
+  limpiarNombre() {
     this.form.get("nombre")?.setValue('');
     this.counterNom = ""
   }
@@ -449,7 +442,7 @@ export class SimuladorComponent implements OnInit {
     this.charachtersCount = ev.length;
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
   }
-    public onValueChangeNombre(ev: string): void {
+  public onValueChangeNombre(ev: string): void {
     this.charachtersCountNom = ev.length;
     this.counterNom = `${this.charachtersCountNom}/${this.maxlengthNom}`;
   }
@@ -885,12 +878,18 @@ export class SimuladorComponent implements OnInit {
     console.log(cantidad_simulacion)
     if (cantidad_proy === 0) {
       this.currentStep = 0;
+       this.steps[0].label ='Creando...' 
 
-    } else if (cantidad_proy <= 2) {
+    } if (cantidad_proy >= 1) {
       this.currentStep = 1;
-    } else if (cantidad_proy >= 3 && cantidad_simulacion >= 3) {
+      this.steps[0].label ='Creado' 
+      this.steps[1].label ='Simulando...'
+    } if (cantidad_proy >= 3 && cantidad_simulacion >= 3) {
       this.currentStep = 2;
       this.cantidadBol = false
+      this.steps[0].label ='Creando' 
+      this.steps[1].label ='Simulado'
+      this.steps[2].label ='Comparando...'
     } else {
       this.currentStep = 1;
     }
@@ -907,17 +906,19 @@ export class SimuladorComponent implements OnInit {
         this.currentStep = this.previousStep + 1;
       });
       this.notificationService.show({
-        content: "Debes crear primero tu proyecto",
+        content: "No puedes regresar al paso anterior",
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "warning", icon: true },
         position: { horizontal: "center", vertical: "bottom" },
       });
+ 
       return;
     }
     if (stepIndex === 0 && cantidad_proyectos === 0) {
       setTimeout(() => {
         this.currentStep = this.previousStep;
+     
       });
       return;
     }
@@ -967,7 +968,7 @@ export class SimuladorComponent implements OnInit {
         this.currentStep = this.previousStep + 1;
       });
       this.notificationService.show({
-        content: "Debes crear y simualar al menos tres proyectos",
+        content: "Debes crear y simular al menos tres proyectos",
         // appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
@@ -1310,6 +1311,10 @@ export class SimuladorComponent implements OnInit {
     this.LoadProy()
     this.cantidadBol = true
     this.currentStep = 0;
+    this.steps[0].label ='Creando...' 
+    this.steps[1].label ='Simular' 
+    this.steps[2].label ='Comparar' 
+    this.steps[3].label ='Terminar' 
     const mensaje = 'Se libero el espacio de trabajo'
     this.mostrarCorrecto(mensaje);
 
@@ -1926,13 +1931,7 @@ export class SimuladorComponent implements OnInit {
     this.resultadoFinal = '';
     this.form.get("monto")?.setValue('');
   }
-//   limpia_simulacion_confirm() {
-//   const confirmacion = confirm('¿Estás seguro de que deseas terminar la simulación? Se perderán los datos.');
 
-//   if (confirmacion) {
-//     this.limpia_simulacion();
-//   }
-// }
 
 
 limpia_simulacion_confirm() {
