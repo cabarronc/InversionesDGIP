@@ -15,7 +15,7 @@ import { KENDO_DIALOGS } from "@progress/kendo-angular-dialog";
 import { KENDO_DROPDOWNS } from "@progress/kendo-angular-dropdowns";
 import { FormsModule } from '@angular/forms';
 import { KENDO_ICONS } from "@progress/kendo-angular-icons";
-import { paperclipIcon, infoSolidIcon, imageIcon, accessibilityIcon, dollarIcon, buildingsOutlineIcon, trashIcon } from "@progress/kendo-svg-icons";
+import { paperclipIcon, infoSolidIcon, imageIcon, accessibilityIcon, dollarIcon, buildingsOutlineIcon, trashIcon, mapMarkerIcon } from "@progress/kendo-svg-icons";
 import { TooltipModule } from '@progress/kendo-angular-tooltip';
 import { DecimalPipe } from '@angular/common';
 import { PocketbaseService } from '../../services/pocketbase.service';
@@ -78,14 +78,20 @@ export class SimuladorComponent implements OnInit {
   CalculoDp() {
     throw new Error('Method not implemented.');
   }
+  dictaminacion = ''
   mensajeError = '';
   mensajeConfirmacionterminacion = '';
   mostrar = false;
   mostrar_c = false;
+  pdfUrl: string = '';
+  mostrarPdf = false;
   public resultadoFinal = ''
   public form: FormGroup;
   public formSimulacion: FormGroup;
-  public icons = { paperclip: paperclipIcon, infoSolidIcon: infoSolidIcon, imageIcon: imageIcon, accessibilityIcon: accessibilityIcon, dollarIcon: dollarIcon, buildingsOutlineIcon: buildingsOutlineIcon, trashIcon: trashIcon };
+  public icons = {
+    paperclip: paperclipIcon, infoSolidIcon: infoSolidIcon, imageIcon: imageIcon, accessibilityIcon: accessibilityIcon, dollarIcon: dollarIcon,
+    buildingsOutlineIcon: buildingsOutlineIcon, trashIcon: trashIcon, mapMarkerIcon: mapMarkerIcon
+  };
   listItems: any[] = [];
   listSim: any[] = [];
   clave: string = ''
@@ -132,6 +138,7 @@ export class SimuladorComponent implements OnInit {
   top2 = 0;
   left2 = 0;
 
+
   currentUser: User | null = null;
   topBarraRacionalidad: number = 113;
   topBarraImpactoSocial: number = 139;
@@ -146,16 +153,17 @@ export class SimuladorComponent implements OnInit {
   public compara = false;
   public continuidad = false
   public steps = [
-    { label: "Crea Proyecto", isValid: this.crear, emoji: "⚙️" },
-    { label: "Simula", isValid: true, emoji: "🖥️" },
-    { label: "Compara", isValid: true, emoji: "🆚" },
-    { label: "Finaliza", isValid: true, emoji: "✅" },
+    { label: "Creando...", isValid: this.crear, emoji: "⚙️" },
+    { label: "Simulando...", isValid: true, emoji: "🖥️" },
+    { label: "Comparando...", isValid: true, emoji: "🆚" },
+    { label: "Terminar", isValid: true, emoji: "✅" },
   ];
   itemSeleccionado: any = null;
   SimulacionSeleccionada: any = null;
   SinContinuidad = true
   Getsimulaciones: any[] = []
   variables: number[] = [];
+  ids: number[] = [];
   // Estilos de la barra de progreso
   public progressStyles: { [key: string]: string } = {
     color: "",
@@ -328,7 +336,7 @@ export class SimuladorComponent implements OnInit {
   //contador de letras
   public charachtersCount: number;
   public counter: string
-  public maxlength = 300;
+  public maxlength = 1200;
   previousStep = 0;
 
   windowInfoAbierto = false;
@@ -404,7 +412,11 @@ export class SimuladorComponent implements OnInit {
     this.top = (window.innerHeight - height) / 2 + window.scrollY;
     this.left2 = (window.innerWidth - width2) / 2;
     this.top2 = (window.innerHeight - height2) / 2 + window.scrollY;
-    this.variables = Array.from({ length: 15 }, (_, i) => i + 1);
+    const estructura = [7,5,3];
+    this.variables = estructura.flatMap((cantidad, grupo) =>
+      Array.from({ length: cantidad }, (_, i) => (grupo + 1) + (i + 1) / 10)
+    );
+    this.ids = Array.from({ length: 15 }, (_, i) => i + 1);
   }
   ngAfterViewInit() {
     const navbar = document.querySelector('.navbar');
@@ -421,26 +433,14 @@ export class SimuladorComponent implements OnInit {
     this.charachtersCount = ev.length;
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
   }
-  getColorByValue(value: number): string {
-    if (value < 38) return '#d61b1b';
-    if (value <= 46) return '#FAFA02';
-    if (value > 46) return '#02FA27';
-    return '#02FA27';
-  }
-  getGaugeColors() {
-    const value = this.CalProm ?? 0;
 
-    return [
-      {
-        from: 0,
-        to: value,
-        color: this.getColorByValue(value),
-      }
-    ];
-  }
   abrirInfo() {
+    this.abrirPdf()
     this.windowInfoAbierto = true;
   }
+  abrirModal(nivel:string){
+  this.dictaminacion = nivel;
+}
 
   cerrarInfo() {
     this.windowInfoAbierto = false;
@@ -453,7 +453,7 @@ export class SimuladorComponent implements OnInit {
     if (value == 2) return 'template9';
     return 'template';
   }
-    //Diseño Empleo permanentes
+  //Diseño Empleo permanentes
   getTemplateClass_permanentes(value: number): string {
     if (value == 0) return 'templateNeutro';
     if (value == 1) return 'template8';
@@ -616,13 +616,16 @@ export class SimuladorComponent implements OnInit {
     return nuevoRegistro
   }
   guardar_local_simulacion() {
-
+    this.MethodTotal()
+    this.dictaminacion = this.getTextByValue(this.CalProm)
+    console.log("dictaminacion:", this.dictaminacion)
     // 🟢 4️⃣ Si todo está válido, crear registro
     const nuevoRegistro = {
       nombre: this.itemSeleccionado!.nombre,
       clave: this.itemSeleccionado!.clave,
       descripcion: this.itemSeleccionado!.descripcion,
       continuidad: this.itemSeleccionado!.continuidad,
+      dictaminacion: this.dictaminacion,
       resultados: {
         res1: this.formSimulacion.get('Res1')?.value,
         pon1: this.Pon1 ?? 0,
@@ -702,16 +705,17 @@ export class SimuladorComponent implements OnInit {
 
     console.log('Registros guardados:', registros);
 
+
     // 🔄 Reset
-    this.formSimulacion.reset();
-    this.itemSeleccionado = null;
+    // this.formSimulacion.reset();
+    // this.itemSeleccionado = null;
 
-    for (let i = 1; i <= 15; i++) {
-      this[`Pon${i}` as keyof this] = null as any;
-    }
+    // for (let i = 1; i <= 15; i++) {
+    //   this[`Pon${i}` as keyof this] = null as any;
+    // }
 
-    this.LoadProy();
-    this.MethodTotal();
+    // this.LoadProy();
+    // this.MethodTotal();
     return nuevoRegistro
   }
   guardar_sesion() {
@@ -815,7 +819,7 @@ export class SimuladorComponent implements OnInit {
 
       this.notificationService.show({
         content: finalMessage,
-        // appendTo: this.viewContainerRef,
+        appendTo: this.viewContainerRef,
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "success", icon: true },
@@ -1010,10 +1014,10 @@ export class SimuladorComponent implements OnInit {
       this.mensajeError = ''; // lo elimina del DOM
     }, 3300);
   }
-    mostrarCorrecto(mensaje: string) {
+  mostrarCorrecto(mensaje: string) {
 
     this.mensajeConfirmacionterminacion = mensaje;
-    console.log("que traemos",this.mensajeConfirmacionterminacion)
+    console.log("que traemos", this.mensajeConfirmacionterminacion)
     this.mostrar_c = true;
 
     setTimeout(() => {
@@ -1079,6 +1083,7 @@ export class SimuladorComponent implements OnInit {
         this[`Pon${i}` as keyof this] = null as any;
       }
       this.MethodTotal()
+
       return;
     }
 
@@ -1122,7 +1127,7 @@ export class SimuladorComponent implements OnInit {
     this.color5 = simulacion.resultados.color5
     this.color6 = simulacion.resultados.color6
     this.color7 = simulacion.resultados.color7
-    this.color8 = simulacion.resultados.colo8
+    this.color8 = simulacion.resultados.color8
     this.color9 = simulacion.resultados.color9
     this.color10 = simulacion.resultados.color10
     this.color11 = simulacion.resultados.color11
@@ -1130,8 +1135,10 @@ export class SimuladorComponent implements OnInit {
     this.color13 = simulacion.resultados.color13
     this.color14 = simulacion.resultados.color14
     this.color15 = simulacion.resultados.color15
+    this.dictaminacion = simulacion.dictaminacion
     console.log("Ponderacion", this.color2)
     this.MethodTotal()
+
   }
 
   public cargarSimulacionComparador() {
@@ -1140,6 +1147,22 @@ export class SimuladorComponent implements OnInit {
     this.Getsimulaciones = registros;
 
 
+  }
+
+
+  abrirPdf() {
+    this.mostrarPdf = false;
+
+    setTimeout(() => {
+      this.pdfUrl = this.getPdfUrl();
+      this.mostrarPdf = true;
+    });
+  }
+
+  getPdfUrl(): string {
+    const pdf = 'https://raw.githubusercontent.com/cabarronc/RecursosMultimedia/main/Atención%20a%20municipios%20con%20rezago%20social_4.pdf';
+
+    return `https://docs.google.com/gview?url=${encodeURIComponent(pdf)}&embedded=true&v=${Date.now()}`;
   }
   //Sroll Virtual
   irAlPrimerError() {
@@ -1241,6 +1264,9 @@ export class SimuladorComponent implements OnInit {
     }
 
     this.guardar_simulacion()
+    this.cargarSimulacionComparador()
+    console.log("dictaminacion",this.dictaminacion)
+    this.abrirModal(this.dictaminacion)
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
@@ -1267,13 +1293,14 @@ export class SimuladorComponent implements OnInit {
     this.LoadProy()
     this.cantidadBol = true
     this.currentStep = 0;
-    const mensaje ='Se libero el espacio de trabajo'
+    const mensaje = 'Se libero el espacio de trabajo'
     this.mostrarCorrecto(mensaje);
 
   }
   onProyChange(item: any) {
     this.itemSeleccionado = item;
     this.validarContinuidad()
+    this.dictaminacion = ''
 
     if (!item) {
       this.formSimulacion.patchValue({ Res3: null })
@@ -1288,6 +1315,7 @@ export class SimuladorComponent implements OnInit {
       }
       this.MethodTotal()
       this.validarContinuidad()
+      this.dictaminacion = ''
       return;
     }
     else {
@@ -1313,6 +1341,9 @@ export class SimuladorComponent implements OnInit {
       }
       console.log("onProyChange item", this.itemSeleccionado)
     }
+    //   setTimeout(()=>{
+    //   window.dispatchEvent(new Event('resize'));
+    // });
 
 
   }
@@ -1323,30 +1354,30 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.Pon1 = 0;
       this.color1 = '#f10808'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     //Naranja
     else if (value.value == 1) {
       this.Pon1 = 5;
       this.color1 = '#e26613'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     //Amarillo
     else if (value.value == 2) {
       this.Pon1 = 10;
       this.color1 = '#c4c706'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     //Verde
     else if (value.value == 3) {
       this.Pon1 = 15;
       this.color1 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
 
     else if (value.value == null) {
       this.Pon1 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   //Grado de Prepa
@@ -1355,52 +1386,52 @@ export class SimuladorComponent implements OnInit {
       if (value.value == 1) {
         this.Pon2 = 3.75;
         this.color2 = '#f10808'
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 2) {
         this.Pon2 = 7.5;
         this.color2 = '#e26613'
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 3) {
         this.color2 = '#c4c706'
         this.Pon2 = 11.25;
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 4) {
         this.Pon2 = 15;
         this.color2 = '#046b1e'
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == null) {
         this.Pon2 = 0;
-        this.MethodTotal()
+        // this.MethodTotal()
       }
     }
     else {
       if (value.value == 1) {
         this.Pon2 = 6.25;
         this.color2 = '#f10808'
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 2) {
         this.Pon2 = 12.5;
         this.color2 = '#e26613'
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 3) {
         this.Pon2 = 18.75;
         this.color2 = '#c4c706'
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 4) {
         this.Pon2 = 25;
         this.color2 = '#046b1e'
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == null) {
         this.Pon2 = 0;
-        this.MethodTotal()
+        // this.MethodTotal()
       }
 
     }
@@ -1411,53 +1442,53 @@ export class SimuladorComponent implements OnInit {
       if (value.value == 1) {
         this.color3 = '#f10808'
         this.Pon3 = 2.5;
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 2) {
         this.Pon3 = 5;
         this.color3 = '#c4c706'
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 3) {
-        this.color3 = '#099b2e'
+        this.color3 = '#3ecf6d'
         this.Pon3 = 7.5;
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 4) {
         this.Pon3 = 10;
         this.color3 = '#046b1e'
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == null) {
         this.Pon3 = 0;
-        this.MethodTotal()
+        // this.MethodTotal()
       }
     }
     else {
       if (value.value == 1) {
         this.Pon3 = 0;
         this.color3 = ''
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 2) {
         this.Pon3 = 0;
         this.color3 = ''
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 3) {
         this.Pon3 = 0;
         this.color3 = ''
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == 4) {
         this.Pon3 = 0;
         this.color3 = ''
-        this.MethodTotal()
+        // this.MethodTotal()
       }
       else if (value.value == null) {
         this.Pon3 = 0;
         this.color3 = ''
-        this.MethodTotal()
+        // this.MethodTotal()
       }
 
     }
@@ -1467,26 +1498,26 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.color4 = '#64686d'
       this.Pon4 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon4 = 2.33;
       this.color4 = '#c4c706'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon4 = 4.66;
-      this.color4 = '#099b2e'
-      this.MethodTotal()
+      this.color4 = '#3ecf6d'
+      // this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon4 = 7;
       this.color4 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == null) {
       this.Pon4 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   //inversion Productiva
@@ -1494,31 +1525,31 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.Pon5 = 0;
       this.color5 = '#64686d'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon5 = 1.5;
       this.color5 = '#e26613'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon5 = 3;
       this.color5 = '#c4c706'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon5 = 4.5;
-      this.color5 = '#099b2e'
-      this.MethodTotal()
+      this.color5 = '#3ecf6d'
+      // this.MethodTotal()
     }
     else if (value.value == 4) {
       this.Pon5 = 6;
       this.color5 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == null) {
       this.Pon5 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   //Cobertura
@@ -1526,26 +1557,26 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 1) {
       this.Pon6 = 1.25;
       this.color6 = '#64686d'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon6 = 2.5;
       this.color6 = '#c4c706'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon6 = 3.75;
-      this.color6 = '#099b2e'
-      this.MethodTotal()
+      this.color6 = '#3ecf6d'
+      // this.MethodTotal()
     }
     else if (value.value == 4) {
       this.Pon6 = 5;
       this.color6 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == null) {
       this.Pon6 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   //Concurrencia
@@ -1553,31 +1584,31 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.Pon7 = 0;
       this.color7 = '#64686d'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon7 = 0.75;
       this.color7 = '#e26613'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon7 = 1.5;
       this.color7 = '#c4c706'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon7 = 2.25;
-      this.MethodTotal()
-      this.color7 = '#099b2e'
+      // this.MethodTotal()
+      this.color7 = '#3ecf6d'
     }
     else if (value.value == 4) {
       this.Pon7 = 3;
-      this.MethodTotal()
+      // this.MethodTotal()
       this.color7 = '#046b1e'
     }
     else if (value.value == null) {
       this.Pon7 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   // ---------------------Impacto Social
@@ -1586,21 +1617,21 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.Pon8 = 0;
       this.color8 = '#64686d'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon8 = 3.75;
-      this.color8 = '#099b2e'
-      this.MethodTotal()
+      this.color8 = '#3ecf6d'
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon8 = 7.5;
       this.color8 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == null) {
       this.Pon8 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   //Atencion a municipios con rezago social
@@ -1608,21 +1639,21 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.Pon9 = 0;
       this.color9 = '#64686d'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon9 = 3.5;
-      this.color9 = '#099b2e'
-      this.MethodTotal()
+      this.color9 = '#3ecf6d'
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon9 = 7;
       this.color9 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == null) {
       this.Pon9 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   //Subsidios Sociales
@@ -1630,21 +1661,21 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.Pon10 = 0;
       this.color10 = '#64686d'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon10 = 3.25;
-      this.color10 = '#099b2e'
-      this.MethodTotal()
+      this.color10 = '#3ecf6d'
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon10 = 6.5;
       this.color10 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == null) {
       this.Pon10 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   //Incidencia ODS
@@ -1652,26 +1683,26 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.Pon11 = 0;
       this.color11 = '#64686d'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon11 = 2;
       this.color11 = '#c4c706'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon11 = 4;
-      this.color11 = '#099b2e'
-      this.MethodTotal()
+      this.color11 = '#3ecf6d'
+      // this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon11 = 6;
       this.color11 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == null) {
       this.Pon11 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   //Incidencia Pobreza
@@ -1679,26 +1710,26 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.Pon12 = 0;
       this.color12 = '#64686d'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon12 = 1.33;
       this.color12 = '#c4c706'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon12 = 2.66;
-      this.color12 = '#099b2e'
-      this.MethodTotal()
+      this.color12 = '#3ecf6d'
+      // this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon12 = 4;
       this.color12 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == null) {
       this.Pon12 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   ///////Impacto Economico
@@ -1707,26 +1738,26 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.Pon13 = 0;
       this.color13 = '#64686d'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon13 = 1;
       this.color13 = '#c4c706'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon13 = 2;
-      this.color13 = '#099b2e'
-      this.MethodTotal()
+      this.color13 = '#3ecf6d'
+      // this.MethodTotal()
     }
     else if (value.value == 3) {
       this.Pon13 = 3;
       this.color13 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == null) {
       this.Pon13 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   //Actividad Econimca
@@ -1734,21 +1765,21 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.Pon14 = 0;
       this.color14 = '#64686d'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon14 = 1;
-      this.color14 = '#099b2e'
-      this.MethodTotal()
+      this.color14 = '#3ecf6d'
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon14 = 2;
       this.color14 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == null) {
       this.Pon14 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   // Empleo permanente
@@ -1756,21 +1787,21 @@ export class SimuladorComponent implements OnInit {
     if (value.value == 0) {
       this.Pon15 = 0;
       this.color15 = '#64686d'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == 1) {
       this.Pon15 = 1.5;
-      this.color15 = '#099b2e'
-      this.MethodTotal()
+      this.color15 = '#3ecf6d'
+      // this.MethodTotal()
     }
     else if (value.value == 2) {
       this.Pon15 = 3;
       this.color15 = '#046b1e'
-      this.MethodTotal()
+      // this.MethodTotal()
     }
     else if (value.value == null) {
       this.Pon15 = 0;
-      this.MethodTotal()
+      // this.MethodTotal()
     }
   }
   public MethodTotal(): any {
@@ -1799,6 +1830,7 @@ export class SimuladorComponent implements OnInit {
     this.updateAppearance(this.getColor(this.TotalRacionalidad ?? 0, 61));
     this.updateAppearance2(this.getColor(this.TotalSocial ?? 0, 31));
     this.updateAppearance3(this.getColor(this.TotalEconomico ?? 0, 8));
+
   }
   private getColor(valor: number, maximo: number): string {
     const porcentaje = (valor / maximo) * 100;
@@ -1807,6 +1839,42 @@ export class SimuladorComponent implements OnInit {
     if (porcentaje <= 70) return '#ee9f05';
     if (porcentaje <= 80) return '#368541';
     return '#2e7d32';
+  }
+
+  getTextByValue(value: number): string {
+    if (value < 38) return 'Baja';
+    if (value <= 46) return 'Media';
+    if (value > 46) return 'Alta';
+    return '#02FA27';
+  }
+
+  getColorByValue(value: number): string {
+    if (value < 38) return '#a6d4fa';
+    if (value <= 46) return '#4da3ff';
+    if (value > 46) return '#0d6efd';
+    return '#0d6efd7';
+  }
+  getGaugeColors() {
+    const value = this.CalProm ?? 0;
+
+    return [
+      {
+        from: 0,
+        to: value,
+        color: this.getColorByValue(value),
+      }
+    ];
+  }
+  getGaugeColorsComparador(value: number) {
+    const val = value ?? 0;
+
+    return [
+      {
+        from: 0,
+        to: val,
+        color: this.getColorByValue(val),
+      }
+    ];
   }
   private updateAppearance(
     background: string

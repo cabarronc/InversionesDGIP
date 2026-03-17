@@ -313,7 +313,7 @@
 :host ::ng-deep .panel-personalizadoValorPublico .k-panelbar-item > .k-link {
   background-color: #0d6efd;
   color: white;
-   height: 50px;
+ 
   display: flex;
   align-items: center;
 }
@@ -321,7 +321,6 @@
 :host ::ng-deep .panel-personalizadoSocial .k-panelbar-item > .k-link {
   background-color: #0d6efd;
   color: white;
-   height: 50px;
   display: flex;
   align-items: center;
 }
@@ -329,7 +328,6 @@
 :host ::ng-deep .panel-personalizadoEconomico .k-panelbar-item > .k-link {
   background-color: #0d6efd;
   color: white;
-   height: 60px;
   display: flex;
   align-items: center;
 }
@@ -432,13 +430,62 @@
   height:20px;
   border-radius:50%;
   margin:auto;
-  border:1px solid #ccc;
+  // border:1px solid #ccc;
+  border:1px solid #000000;
+}
+.label-justificado{
+  font-weight: bold;
+  text-align: justify;
+  display: block;
 }
 
 .grupo1 td{
   background-color:#e8f5e9;   /* verde suave */
 }
+.linea7 td{
+  border-bottom: 1px solid black; 
+}
+.linea12 td{
+  border-bottom: 1.5px solid black; 
+}
+.animacion{
+  font-size:60px;
+  font-weight:bold;
+}
 
+.bajo{
+  color:#f10808;
+  animation: shake 0.6s infinite alternate;
+}
+
+.medio{
+  color:#ffcc00;
+  animation: pulse 1s infinite;
+}
+
+.alto{
+  color:#3ecf6d;
+  animation: bounce 0.8s infinite;
+}
+
+/* Animaciones */
+
+@keyframes shake{
+  from{ transform: translateX(-5px); }
+  to{ transform: translateX(5px); }
+}
+
+@keyframes pulse{
+  0%{ transform: scale(1); }
+  50%{ transform: scale(1.1); }
+  100%{ transform: scale(1); }
+}
+
+@keyframes bounce{
+  0%{ transform: translateY(0); }
+  50%{ transform: translateY(-10px); }
+  100%{ transform: translateY(0); }
+}
 .grupo2 td{
   background-color:#fff8e1;   /* amarillo suave */
 }
@@ -446,7 +493,20 @@
 .grupo3 td{
   background-color:#e3f2fd;   /* azul suave */
 }
+.gauge-container{
+  width: 100%;
+  max-width: 100px;
+  aspect-ratio: 1 / 1;
+}
+.gauge-container-comparador{
+  width: 100%;
+  max-width: 70px;
+  aspect-ratio: 1 / 1;
+}
 
+.colorMapa {
+        color: #ff1100;
+      }
 /* Tablet */
 @media (max-width: 992px) {
   .barra {
