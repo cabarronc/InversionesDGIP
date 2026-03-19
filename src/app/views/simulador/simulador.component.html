@@ -38,19 +38,19 @@
     <!-- Creacion -->
     <div class="col-md-2 col-lg-3 mt-2 mb-2 d-flex flex-column align-items-center justify-content-center text-center">
       @if (!opened) {
-      <ng-template #tooltipProyecto>
+      <ng-template #tooltipProyecto1>
         <div class="tooltip-justificado">
           Primero, configura tu proyecto de inversión capturando algunos datos básicos.
         </div>
       </ng-template>
-      <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto1" filter=".info-icon" position="right">
         <kendo-label text="1. Crea tu proyecto"></kendo-label>
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
 
       </div>
-      <button kendoButton (click)="open()" themeColor="success" class="mt-2">Crea</button>
+      <button kendoButton (click)="open()" [disabled]="cantidadProyMax" themeColor="success" class="mt-2">Crea</button>
       }
 
       @if (dataSaved) {
@@ -67,7 +67,7 @@
           <form class="k-form" [formGroup]="form">
 
             <fieldset>
-             
+
               <!-- Nombre -->
               <ng-template #tooltipNombreProyecto>
                 <div class="tooltip-justificado">
@@ -190,12 +190,12 @@
     </div>
     <!-- Simula -->
     <div class="col-md-3 col-lg-3 mt-2 mb-2 text-center">
-      <ng-template #tooltipProyecto>
+      <ng-template #tooltipProyecto2>
         <div class="tooltip-justificado">
-         Después de crear tu proyecto, selecciónalo aquí y completa la simulación capturando todas las variables.
+          Después de crear tu proyecto, selecciónalo aquí y completa la simulación capturando todas las variables.
         </div>
       </ng-template>
-      <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto2" filter=".info-icon" position="right">
         <kendo-label [for]="sizes" text="2. Simula tu proyecto"></kendo-label>
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -211,12 +211,12 @@
     <!-- Compara -->
     <div class="col-md-3 col-lg-3 mt-2 mb-2 d-flex flex-column align-items-center justify-content-center">
       @if (!opened2) {
-      <ng-template #tooltipProyecto>
+      <ng-template #tooltipProyecto3>
         <div class="tooltip-justificado">
           Crea y completa la simulación de al menos tres proyectos, y compara aquí los resultados.
         </div>
       </ng-template>
-      <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto3" filter=".info-icon" position="right">
         <kendo-label [for]="sizes" text="3. Compara entre proyectos"></kendo-label>
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -224,8 +224,7 @@
 
       </div>
       <!-- @if(listItems.length > 2){ -->
-      <button kendoButton (click)="open2()" [disabled]="cantidadBol" themeColor="tertiary"
-        class="mt-2">Compara</button>
+      <button kendoButton (click)="open2()" [disabled]="cantidadBol" themeColor="tertiary" class="mt-2">Compara</button>
       <!-- } -->
       } @if (dataSaved2) {
       } @if (opened2) {
@@ -249,6 +248,11 @@
                   <div class="row d-flex justify-content-center">
                     <div class="col-12 d-flex flex-column align-items-center justify-content-center">
                       {{sim.nombre}}
+                    </div>
+
+                  </div>
+                  <div class="row d-flex justify-content-center">
+                    <div class="col-12 d-flex flex-column align-items-center justify-content-center">
                       <div class="gauge-container-comparador">
                         <kendo-circulargauge [value]="sim.total"
                           [scale]="{min: 0, max: 100, rangePlaceholderColor: '#a6a6a6' ,rangeSize: 7,}"
@@ -278,13 +282,17 @@
               <ng-container>
 
                 <!-- FILA DE VARIABLE -->
-                <tr [ngClass]="{
+                <!-- <tr [ngClass]="{
                     'grupo1': i >= 1.1 && i <= 1.7,
                     'linea7':i ==1.7,
                     'grupo2': i >= 2.1 && i <= 2.5,
                     'linea12':i == 2.5,
                     'grupo3': i >= 3.1 && i <= 3.3
-                  }">
+                  }"> -->
+                <tr [ngClass]="{
+                    'linea7':i ==1.7,
+                    'linea12':i == 2.5,
+                  }" >
 
                   <td>{{ i }}</td>
                   @for (sim of Getsimulaciones; track $index; let colIndex = $index) {
@@ -355,12 +363,13 @@
     </div>
     <!-- Termina Simulacion -->
     <div class="col-md-3 col-lg-3  mt-2 mb-2 d-flex flex-column align-items-center justify-content-center">
-      <ng-template #tooltipProyecto2>
+      <ng-template #tooltipProyecto4>
         <div class="tooltip-justificado">
-          Si deseas realizar una nueva simulación, selecciona esta opción; se eliminarán todos los proyectos creados y sus resultados.
+          Si deseas realizar una nueva simulación, selecciona esta opción; se eliminarán todos los proyectos creados y
+          sus resultados.
         </div>
       </ng-template>
-      <div kendoTooltip [tooltipTemplate]="tooltipProyecto2" filter=".info-icon" position="top">
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto4" filter=".info-icon" position="top">
         <kendo-label [for]="sizes" text="Termina tu simulación"></kendo-label>
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -410,7 +419,7 @@
               }
               @else{
               <div class="fw-bold text-danger"><strong style="color: rgb(0, 0, 0);"></strong>Para ver el
-                resultado primero simula un proyecto
+                resultado primero simula un proyecto.
               </div>
               }
             </div>
@@ -444,12 +453,12 @@
   <!-- Simulador -->
   <div class="row justify-content-center ">
     <div class="col-md-11 mt-2">
-      <ng-template #tooltipProyecto>
+      <ng-template #tooltipProyecto5>
         <div class="tooltip-justificado">
-          Un proyecto de inversion son obras o acciones orientas a atacar una problematica social
+          Completa la simulación capturando todas las variables.
         </div>
       </ng-template>
-      <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto5" filter=".info-icon" position="right">
         <kendo-label text="2.- Simulador"></kendo-label>&nbsp;
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -518,7 +527,7 @@
                                 es ¿qué tanto del presupuesto de tu proyecto destinarás a
                                 gastos necesarios para administrarlo? Por ejemplo: contratación de personal y de
                                 servicios, compra de materiales de oficina, pago de gasolina y viáticos, etc. Selecciona
-                                la opción que mejor se ajuste a tu proyecto
+                                la opción que mejor se ajuste a tu proyecto.
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -806,7 +815,7 @@
                                 impuestos estatales, y se conocen como “de libre disposición” porque pueden destinarse a
                                 cualquier proyecto de inversión, pero generalmente estos recursos son menores que los
                                 “etiquetados”. Teniendo en cuenta este contexto y la descripción de tu proyecto ¿cuánto
-                                del presupuesto de tu proyecto podría pagarse con recursos “etiquetados”
+                                del presupuesto de tu proyecto podría pagarse con recursos “etiquetados”?
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -1077,7 +1086,7 @@
                                 que una parte sea aportada por las
                                 personas beneficiarias directas (como en las obras por cooperación), por el gobierno de
                                 tu municipio, y/o por el gobierno federal? Selecciona la opción que mejor se ajuste a tu
-                                proyecto, según los recursos que esperas que aporten cualquiera de esas fuentes
+                                proyecto, según los recursos que esperas que aporten cualquiera de esas fuentes.
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -1453,7 +1462,7 @@
                                 económico sostenido. El cumplimiento de sus metas se mide con indicadores específicos
                                 que permiten identificar, por ejemplo, en qué áreas se requiere mayor inversión para
                                 avanzar hacia el resultado deseado. Selecciona la opción que mejor se ajuste a tu
-                                proyecto, tomando en cuenta su descripción
+                                proyecto, tomando en cuenta su descripción.
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -1538,7 +1547,7 @@
                                 derechos sociales establecidos en la constitución. Los indicadores definidos para la
                                 medición de la pobreza, permiten identificar los proyectos de inversión más necesarios
                                 para incrementar el bienestar económico y social de las personas. Selecciona la opción
-                                que corresponda a tu proyecto, tomando en cuenta su descripción
+                                que corresponda a tu proyecto, tomando en cuenta su descripción.
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -1740,7 +1749,7 @@
                                 duración permanente, por ejemplo, apoyando a las empresas para nuevas instalaciones o
                                 para ampliar las que ya tienen, o capacitando a las personas para mejorar la posibilidad
                                 de que sean contratadas. Tomando en cuenta este contexto y la descripción de tu
-                                proyecto, selecciona la opción que le aplique
+                                proyecto, selecciona la opción que le aplique.
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -1908,22 +1917,21 @@
       <h4 class="mb-3">La probabilidad de que tu proyecto pueda obtener recursos del presupuesto público es:</h4>
 
       <!-- Animaciones -->
-
-      <div *ngIf="dictaminacion === 'Baja'" class="animacion bajo">
-        
+      @if (dictaminacion === 'Baja') {
+      <div class="animacion bajo">
         <p>Baja</p>
       </div>
-
-      <div *ngIf="dictaminacion === 'Media'" class="animacion medio">
-        
+      }
+      @if (dictaminacion === 'Media') {
+      <div class="animacion medio">
         <p>Media</p>
       </div>
-
-      <div *ngIf="dictaminacion === 'Alta'" class="animacion alto">
-        
+      }
+      @if (dictaminacion === 'Alta') {
+      <div class="animacion alto">
         <p>Alta</p>
       </div>
-
+      }
       <button class="btn btn-secondary mt-3" data-bs-dismiss="modal">
         Cerrar
       </button>

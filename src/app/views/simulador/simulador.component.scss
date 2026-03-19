@@ -489,8 +489,8 @@
  }
 
  .color-circle {
-   width: 20px;
-   height: 20px;
+   width: 30px;
+   height: 30px;
    border-radius: 50%;
    margin: auto;
    // border:1px solid #ccc;
@@ -503,10 +503,7 @@
    display: block;
  }
 
- .grupo1 td {
-   background-color: #e8f5e9;
-   /* verde suave */
- }
+
 
  .linea7 td {
    border-bottom: 1px solid black;
@@ -522,17 +519,17 @@
  }
 
  .bajo {
-   color: #f10808;
+   color: #a6d4fa;
    animation: shake 0.6s infinite alternate;
  }
 
  .medio {
-   color: #ffcc00;
+   color: #4da3ff;
    animation: pulse 1s infinite;
  }
 
  .alto {
-   color: #3ecf6d;
+   color: #0d6efd;
    animation: bounce 0.8s infinite;
  }
 
@@ -575,7 +572,10 @@
      transform: translateY(0);
    }
  }
-
+ .grupo1 td {
+   background-color: #e8f5e9;
+   /* verde suave */
+ }
  .grupo2 td {
    background-color: #fff8e1;
    /* amarillo suave */

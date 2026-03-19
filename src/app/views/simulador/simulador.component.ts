@@ -118,6 +118,7 @@ export class SimuladorComponent implements OnInit {
   color14!: string | null;
   color15!: string | null;
   cantidadBol = true
+  cantidadProyMax = false
   public CalProm!: number;
   public label: LabelSettings = {
     visible: true,
@@ -876,7 +877,10 @@ export class SimuladorComponent implements OnInit {
     const cantidad_simulacion = this.listSim.length
     console.log(cantidad_proy)
     console.log(cantidad_simulacion)
-    if (cantidad_proy >= 3 && cantidad_simulacion >= 3) {
+    if (cantidad_proy >= 5){
+      this.cantidadProyMax = true;
+    }
+    else if (cantidad_proy >= 3 && cantidad_simulacion >= 3){
       this.currentStep = 2;
       this.cantidadBol = false;
       this.steps[0].label = 'Creado';
@@ -1319,6 +1323,7 @@ export class SimuladorComponent implements OnInit {
     localStorage.removeItem('simulaciones');
     this.LoadProy()
     this.cantidadBol = true
+    this.cantidadProyMax = false;
     this.currentStep = 0;
     this.steps[0].label = 'Creando...'
     this.steps[1].label = 'Simular'
@@ -1883,7 +1888,7 @@ export class SimuladorComponent implements OnInit {
     if (value < 38) return '#a6d4fa';
     if (value <= 46) return '#4da3ff';
     if (value > 46) return '#0d6efd';
-    return '#0d6efd7';
+    return '#0d6efd';
   }
   getGaugeColors() {
     const value = this.CalProm ?? 0;
