@@ -64,7 +64,7 @@ export class SimuladorComponent implements OnInit {
   }
   @ViewChild('notification', { read: ViewContainerRef })
   public notificationContainer!: ViewContainerRef;
- 
+
   CalculoDp() {
     throw new Error('Method not implemented.');
   }
@@ -141,10 +141,10 @@ export class SimuladorComponent implements OnInit {
   public simuala = false;
   public compara = false;
   public continuidad = false
-  public label1 ='Crear'
-  public label2 ='Simular'
-  public label3 ='Comparar'
-  public label4 ='Terminar'
+  public label1 = 'Crear'
+  public label2 = 'Simular'
+  public label3 = 'Comparar'
+  public label4 = 'Terminar'
   public steps = [
     { label: this.label1, isValid: true, emoji: "⚙️" },
     { label: this.label2, isValid: true, emoji: "🖥️" },
@@ -368,11 +368,11 @@ export class SimuladorComponent implements OnInit {
       Res15: new FormControl("", [Validators.required]),
     });
 
-//descripcion
+    //descripcion
     this.charachtersCount = this.form.value.justificacion ? this.form.value.justificacionlength : 0;
     this.counter = `${this.charachtersCount}/${this.maxlength}`;
-//nombre
-        this.charachtersCountNom = this.form.value.justificacion ? this.form.value.justificacionlength : 0;
+    //nombre
+    this.charachtersCountNom = this.form.value.nombre ? this.form.value.nombre : 0;
     this.counterNom = `${this.charachtersCountNom}/${this.maxlengthNom}`;
   }
 
@@ -876,20 +876,22 @@ export class SimuladorComponent implements OnInit {
     const cantidad_simulacion = this.listSim.length
     console.log(cantidad_proy)
     console.log(cantidad_simulacion)
-    if (cantidad_proy === 0) {
-      this.currentStep = 0;
-       this.steps[0].label ='Creando...' 
-
-    } else if (cantidad_proy > 1) {
-      this.currentStep = 1;
-      this.steps[0].label ='Creado' 
-      this.steps[1].label ='Simulando...'
-    } else if (cantidad_proy >= 3 && cantidad_simulacion >= 3) {
+    if (cantidad_proy >= 3 && cantidad_simulacion >= 3) {
       this.currentStep = 2;
-      this.cantidadBol = false
-      this.steps[0].label ='Creando' 
-      this.steps[1].label ='Simulado'
-      this.steps[2].label ='Comparando...'
+      this.cantidadBol = false;
+      this.steps[0].label = 'Creado';
+      this.steps[1].label = 'Simulado';
+      this.steps[2].label = 'Comparando...';
+
+    } else if (cantidad_proy >= 1) {
+      this.currentStep = 1;
+      this.steps[0].label = 'Creado';
+      this.steps[1].label = 'Simulando...';
+
+    } else if (cantidad_proy === 0) {
+      this.currentStep = 0;
+      this.steps[0].label = 'Creando...';
+
     } else {
       this.currentStep = 1;
     }
@@ -912,13 +914,13 @@ export class SimuladorComponent implements OnInit {
         type: { style: "warning", icon: true },
         position: { horizontal: "center", vertical: "bottom" },
       });
- 
+
       return;
     }
     if (stepIndex === 0 && cantidad_proyectos === 0) {
       setTimeout(() => {
         this.currentStep = this.previousStep;
-     
+
       });
       return;
     }
@@ -993,16 +995,15 @@ export class SimuladorComponent implements OnInit {
       return;
     }
     else if (stepIndex === 3) {
-      localStorage.removeItem('proyectos');
-      localStorage.removeItem('simulaciones');
-
-      for (let i = 1; i <= 15; i++) {
-        this[`Pon${i}` as keyof this] = null as any;
-      }
+      
+      // this.formSimulacion.reset()
+      // for (let i = 1; i <= 15; i++) {
+      //   this[`Pon${i}` as keyof this] = null as any;
+      // }
       this.LoadProy()
       this.MethodTotal()
-      this.cantidadBol = true
-      stepIndex = 0;
+      this.cantidadBol = false
+      stepIndex = 3;
 
     }
 
@@ -1281,14 +1282,14 @@ export class SimuladorComponent implements OnInit {
       top: 0,
       behavior: 'smooth'
     });
-    
-      const modalElement = document.getElementById('nivelModal');
 
-      if (modalElement) {
-        const modal = new window.bootstrap.Modal(modalElement);
-        modal.show();
-      }
-    
+    const modalElement = document.getElementById('nivelModal');
+
+    if (modalElement) {
+      const modal = new window.bootstrap.Modal(modalElement);
+      modal.show();
+    }
+
   }
   cancelar_simulacion() {
     this.formSimulacion.reset()
@@ -1311,10 +1312,10 @@ export class SimuladorComponent implements OnInit {
     this.LoadProy()
     this.cantidadBol = true
     this.currentStep = 0;
-    this.steps[0].label ='Creando...' 
-    this.steps[1].label ='Simular' 
-    this.steps[2].label ='Comparar' 
-    this.steps[3].label ='Terminar' 
+    this.steps[0].label = 'Creando...'
+    this.steps[1].label = 'Simular'
+    this.steps[2].label = 'Comparar'
+    this.steps[3].label = 'Terminar'
     const mensaje = 'Se libero el espacio de trabajo'
     this.mostrarCorrecto(mensaje);
 
@@ -1934,16 +1935,16 @@ export class SimuladorComponent implements OnInit {
 
 
 
-limpia_simulacion_confirm() {
-  this.mostrarConfirmacion = true;
-}
+  limpia_simulacion_confirm() {
+    this.mostrarConfirmacion = true;
+  }
 
-cerrarDialogo() {
-  this.mostrarConfirmacion = false;
-}
+  cerrarDialogo() {
+    this.mostrarConfirmacion = false;
+  }
 
-confirmarAccion() {
-  this.mostrarConfirmacion = false;
-  this.limpia_simulacion();
-}
+  confirmarAccion() {
+    this.mostrarConfirmacion = false;
+    this.limpia_simulacion();
+  }
 }
