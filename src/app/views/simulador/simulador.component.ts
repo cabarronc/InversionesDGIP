@@ -751,7 +751,7 @@ export class SimuladorComponent implements OnInit {
 
       console.log('Registro guardado:', response);
       const proteyctoCreado = response['nombre']
-      const finalMessage = `Se creado Correctamente el Proyecto: ${proteyctoCreado}`;
+      const finalMessage = `Se creo correctamente el proyecto: ${proteyctoCreado}`;
       console.log('Registro guardado2:', finalMessage);
 
       this.notificationService.show({
@@ -1051,6 +1051,14 @@ export class SimuladorComponent implements OnInit {
     }, 3300);
   }
   public submit(): void {
+
+    const nombresCampos: any = {
+      nombre: 'Nombre',
+      descripcion: 'Descripción',
+      continuidad: 'Continuidad',
+      monto:'Monto'
+    };
+
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       const camposFaltantes: string[] = [];
@@ -1058,7 +1066,7 @@ export class SimuladorComponent implements OnInit {
         const control = this.form.get(campo);
 
         if (control?.invalid) {
-          camposFaltantes.push(campo);
+          camposFaltantes.push(nombresCampos[campo] || campo);
         }
       });
 

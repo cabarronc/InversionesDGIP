@@ -44,7 +44,7 @@
         </div>
       </ng-template>
       <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
-        <kendo-label text="1- Crea tu proyecto"></kendo-label>
+        <kendo-label text="1. Crea tu proyecto"></kendo-label>
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
@@ -94,10 +94,10 @@
                       </button>
                     </kendo-textarea-suffix>
                   </kendo-textarea>
-                  <kendo-formerror>Error: Ingresa un nombre </kendo-formerror>
+                  <kendo-formerror></kendo-formerror>
                   @if (form.get('nombre')?.valid && form.get('nombre')?.dirty) {
                   <div class="form-success">
-                    ✔ Campo válido
+                    <!-- ✔ Campo válido -->
                   </div>
                   }
                   @else{
@@ -196,7 +196,7 @@
         </div>
       </ng-template>
       <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
-        <kendo-label [for]="sizes" text="2.- Simula tu proyecto"></kendo-label>
+        <kendo-label [for]="sizes" text="2. Simula tu proyecto"></kendo-label>
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
@@ -217,7 +217,7 @@
         </div>
       </ng-template>
       <div kendoTooltip [tooltipTemplate]="tooltipProyecto" filter=".info-icon" position="right">
-        <kendo-label [for]="sizes" text="3.- Compara entre proyectos"></kendo-label>
+        <kendo-label [for]="sizes" text="3. Compara entre proyectos"></kendo-label>
         <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
