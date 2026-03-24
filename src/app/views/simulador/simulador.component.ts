@@ -150,7 +150,7 @@ export class SimuladorComponent implements OnInit {
     { label: this.label1, isValid: true, emoji: "⚙️" },
     { label: this.label2, isValid: true, emoji: "🖥️" },
     { label: this.label3, isValid: true, emoji: "🆚" },
-    { label: this.label4, isValid: true, emoji: "✅" },
+    { label: this.label4, isValid: false, emoji: "✅" },
   ];
   itemSeleccionado: any = null;
   SimulacionSeleccionada: any = null;
@@ -201,7 +201,7 @@ export class SimuladorComponent implements OnInit {
   public OpRP1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Gastaré hasta un 5% del presupuesto en esos conceptos", value: 3 },
-    { text: "Gastaré de un 11 a un 15% en esos conceptos", value: 2 },
+    { text: "Gastaré de un 6 a un 10% en esos conceptos", value: 2 },
     { text: "Gastaré de un 11 a un 15% en esos conceptos", value: 1 },
     { text: "Gastaré más del 15% en esos conceptos", value: 0 },
 
@@ -752,7 +752,7 @@ export class SimuladorComponent implements OnInit {
 
       console.log('Registro guardado:', response);
       const proteyctoCreado = response['nombre']
-      const finalMessage = `Se creo correctamente el proyecto: ${proteyctoCreado}`;
+      const finalMessage = `Se creó correctamente el proyecto: ${proteyctoCreado}`;
       console.log('Registro guardado2:', finalMessage);
 
       this.notificationService.show({
@@ -879,7 +879,9 @@ export class SimuladorComponent implements OnInit {
     console.log(cantidad_simulacion)
     if (cantidad_proy >= 5){
       this.cantidadProyMax = true;
+      this.cantidadBol = false;
     }
+
     else if (cantidad_proy >= 3 && cantidad_simulacion >= 3){
       this.currentStep = 2;
       this.cantidadBol = false;
@@ -911,14 +913,6 @@ export class SimuladorComponent implements OnInit {
       setTimeout(() => {
         this.currentStep = this.previousStep + 1;
       });
-      this.notificationService.show({
-        content: "No puedes regresar al paso anterior",
-        hideAfter: 2500,
-        animation: { type: "slide", duration: 2500 },
-        type: { style: "warning", icon: true },
-        position: { horizontal: "center", vertical: "bottom" },
-      });
-
       return;
     }
     if (stepIndex === 0 && cantidad_proyectos === 0) {
@@ -946,25 +940,12 @@ export class SimuladorComponent implements OnInit {
       setTimeout(() => {
         this.currentStep = this.previousStep + 1;
       });
-      this.notificationService.show({
-        content: "Debes crear primero tu proyecto2",
-        hideAfter: 2500,
-        animation: { type: "slide", duration: 2500 },
-        type: { style: "warning", icon: true },
-        position: { horizontal: "center", vertical: "bottom" },
-      });
+     
       return;
     }
     if (stepIndex === 1 && cantidad_proyectos >= 3) {
       setTimeout(() => {
         this.currentStep = this.previousStep + 2;
-      });
-      this.notificationService.show({
-        content: "No puedes regresar al paso anterior",
-        hideAfter: 2500,
-        animation: { type: "slide", duration: 2500 },
-        type: { style: "warning", icon: true },
-        position: { horizontal: "center", vertical: "bottom" },
       });
       return;
     }
@@ -983,19 +964,13 @@ export class SimuladorComponent implements OnInit {
       });
       return;
     }
+   
 
     if (stepIndex === 2 && cantidad_proyectos < 3) {
       setTimeout(() => {
         this.currentStep = this.previousStep;
       });
-      this.notificationService.show({
-        content: "No puedes regresar al paso anterior",
-        // appendTo: this.viewContainerRef,
-        hideAfter: 2500,
-        animation: { type: "slide", duration: 2500 },
-        type: { style: "warning", icon: true },
-        position: { horizontal: "center", vertical: "bottom" },
-      });
+    
       return;
     }
     else if (stepIndex === 3) {

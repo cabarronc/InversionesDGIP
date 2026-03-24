@@ -504,9 +504,19 @@
  }
 
 
-
+.texto-truncado {
+  max-width: 100px; /* ajusta a tu diseño */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  
+}
+.mediana{
+  font-size: 1rem;
+}
  .linea7 td {
-   border-bottom: 1px solid black;
+   border-bottom: 1.5px solid black;
  }
 
  .linea12 td {
@@ -594,12 +604,34 @@
 
  .gauge-container-comparador {
    width: 100%;
-   max-width: 70px;
+   max-width: 90px;
    aspect-ratio: 1 / 1;
  }
+ .dictaminacion{
+   color: black; 
+   font-size:1rem;
+ display: inline-block;
+  animation: latido 2s infinite;
+ }
+@keyframes latido {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
 
  .colorMapa {
    color: #ff1100;
+ }
+ .font_dict{
+  color: black; 
+  font-size: 1rem;
+
  }
 
 
@@ -640,6 +672,11 @@
      position: static;
      top: 175px;
    }
+    .font_dict{
+  color: black; 
+  font-size: 0.5rem;
+
+ }
 
    .sectiondefault {
      padding-top: 120px;

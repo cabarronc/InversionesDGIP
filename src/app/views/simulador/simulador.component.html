@@ -78,9 +78,9 @@
               </ng-template>
               <div kendoTooltip [tooltipTemplate]="tooltipNombreProyecto" filter=".info-icon" position="right">
                 <span>Define un nombre corto para tu proyecto, con referencias de su ubicación.</span>
-                <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                   <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                </span> -->
+                </span>
                 <kendo-formfield showHints="initial">
                   <!-- <kendo-textbox placeholder="Nombre del Proyecto" formControlName="nombre" showErrorIcon="initial"
                   showSuccessIcon="initial" [clearButton]="true"></kendo-textbox> -->
@@ -123,9 +123,9 @@
               <div kendoTooltip [tooltipTemplate]="tooltipDescripcion" filter=".info-icon" position="right">
                 <span>Describe brevemente lo que realizarás en tu proyecto, incluyendo la cantidad de personas que se
                   beneficiarán al realizarlo</span>
-                <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                   <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                </span> -->
+                </span>
                 <kendo-formfield showHints="initial">
                   <kendo-textarea placeholder="Descripción del proyecto" formControlName="descripcion"
                     showErrorIcon="initial" showSuccessIcon="initial" resizable="both" [maxlength]="maxlength"
@@ -149,9 +149,9 @@
               </ng-template>
               <div kendoTooltip [tooltipTemplate]="tooltipMonto" filter=".info-icon" position="right">
                 <span>¿Cuál es el presupuesto total que necesitarás para realizar tu proyecto?</span>
-                <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                   <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-                </span> -->
+                </span>
                 <kendo-maskedtextbox name="masked" [maskOnFocus]="true" [mask]="mask_monto" (input)="onInput($event)"
                   [size]="'small'" [maskValidation]="false" formControlName="monto">
                   <ng-template kendoPrefixTemplate>
@@ -202,7 +202,7 @@
         </span>
 
         <kendo-combobox class="mt-2" #sizes [data]="listItems" valueField="clave" [valuePrimitive]="false"
-          textField="nombre" [(value)]="itemSeleccionado" (valueChange)="onProyChange($event)"
+          textField="nombre" [(value)]="itemSeleccionado" (valueChange)="onProyChange($event)" [clearButton]="false"
           placeholder="Proyecto"></kendo-combobox>
 
       </div>
@@ -239,15 +239,20 @@
                 <th>
                   <div class="row d-flex justify-content-center">
                     <div class="col-12 d-flex flex-column align-items-center justify-content-center">
-                      <p># Variable</p>
+                      <p class="mediana"># Variable</p>
                     </div>
                   </div>
                 </th>
-                @for (sim of Getsimulaciones; track sim.clave) {
+                @for (sim of Getsimulaciones; track sim.clave; let i = $index) {
+
+
                 <th>
                   <div class="row d-flex justify-content-center">
                     <div class="col-12 d-flex flex-column align-items-center justify-content-center">
-                      {{sim.nombre}}
+                      <!-- {{sim.nombre}} -->
+                      <span class="text-muted d-block texto-truncado fs-6" [title]="sim.nombre">
+                        {{ sim.nombre }}
+                      </span>
                     </div>
 
                   </div>
@@ -255,11 +260,11 @@
                     <div class="col-12 d-flex flex-column align-items-center justify-content-center">
                       <div class="gauge-container-comparador">
                         <kendo-circulargauge [value]="sim.total"
-                          [scale]="{min: 0, max: 100, rangePlaceholderColor: '#a6a6a6' ,rangeSize: 7,}"
+                          [scale]="{min: 0, max: 100, rangePlaceholderColor: '#a6a6a6' ,rangeSize: 10,}"
                           [colors]="getGaugeColorsComparador(sim.total)" style="width:100%; height:100%;">
                           <ng-template kendoCircularGaugeCenterTemplate let-value="value">
                             @if (sim.dictaminacion) {
-                            <span style="color: black;">
+                            <span class="dictaminacion">
                               {{ sim.dictaminacion }}
                             </span>
                             }
@@ -292,9 +297,9 @@
                 <tr [ngClass]="{
                     'linea7':i ==1.7,
                     'linea12':i == 2.5,
-                  }" >
+                  }">
 
-                  <td>{{ i }}</td>
+                  <td class="mediana">{{ i }}</td>
                   @for (sim of Getsimulaciones; track $index; let colIndex = $index) {
                   <td>
                     <div class="color-circle" [style.background]="sim.resultados['color'+ (rowIndex+1)] ?? '#cccccc'">
@@ -431,8 +436,8 @@
                   style="width:100%; height:100%;">
                   <ng-template kendoCircularGaugeCenterTemplate let-value="value">
                     @if (dictaminacion) {
-                    <span style="color: black;">
-                      {{ dictaminacion }} &nbsp;
+                    <span class="font_dict">
+                      {{ dictaminacion }}
                     </span>
                     }
                     <!-- <span style="color: black;">
@@ -455,14 +460,14 @@
     <div class="col-md-11 mt-2">
       <ng-template #tooltipProyecto5>
         <div class="tooltip-justificado">
-          Completa la simulación capturando todas las variables.
+          Debes
         </div>
       </ng-template>
       <div kendoTooltip [tooltipTemplate]="tooltipProyecto5" filter=".info-icon" position="right">
-        <kendo-label text="2.- Simulador"></kendo-label>&nbsp;
-        <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+        <kendo-label text="2. Simulador"></kendo-label>&nbsp;
+        <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
-        </span>
+        </span> -->
         &nbsp;
         <h1 class="d-inline-block">
           <!-- Simulaciones (dinámico rojo / verde) -->
@@ -485,7 +490,7 @@
       </div>
     </div>
   </div>
-
+  @if (itemSeleccionado) {
   <form class="k-form" [formGroup]="formSimulacion">
     <div class="row justify-content-center">
       <div class="col-md-11">
@@ -1908,6 +1913,7 @@
       </button>
     </div>
   </form>
+  }
 </section>
 <!-- Modal de Dictaminacion -->
 <div class="modal fade" id="nivelModal" tabindex="-1">
