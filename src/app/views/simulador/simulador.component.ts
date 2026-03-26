@@ -254,7 +254,7 @@ export class SimuladorComponent implements OnInit {
   ];
   public OpRP7: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Más del 50% del presupuesto será aportado por esas fuentes", value: 4 },
+    { text: "Más del 100% del presupuesto será aportado por esas fuentes", value: 4 },
     { text: "Entre un 91 y un 50% del presupuesto será aportado por esas fuentes", value: 3 },
     { text: "Entre un 66 y 90 % del presupuesto será aportado por esas fuentes", value: 2 },
     { text: "Hasta 65% del presupuesto será aportado por esas fuentes", value: 1 },
@@ -267,7 +267,7 @@ export class SimuladorComponent implements OnInit {
     { text: "Selecciona", value: null },
     { text: "Sí, mi proyecto incluye acciones específicas para mejorar directamente las oportunidades de las mujeres en alguno de esos aspectos", value: 2 },
     { text: "Sí, mi proyecto incluye acciones para mejorar las oportunidades de las mujeres en alguno de esos aspectos, pero de manera indirecta", value: 1 },
-    { text: "Mi proyecto no incluye acciones específicas para mejorar las oportunidades de las mujeres en esos aspecto", value: 0 },
+    { text: "Mi proyecto no incluye acciones específicas para mejorar las oportunidades de las mujeres en esos aspectos", value: 0 },
   ];
   // Atencion a municipios con rezago social
   public OpIS2: Array<{ text: string; value: number | null }> = [
