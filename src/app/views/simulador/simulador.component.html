@@ -232,16 +232,12 @@
         <div class="container mt-4">
 
 
-          <table class="table table-bordered text-center">
+          <table class="table table-bordered text-center table-primary table-striped table-hover ">
 
             <thead class="table-light">
               <tr>
-                <th>
-                  <div class="row d-flex justify-content-center">
-                    <div class="col-12 d-flex flex-column align-items-center justify-content-center">
-                      <p class="mediana"># Variable</p>
-                    </div>
-                  </div>
+                <th class="align-middle text-center">
+                  <p class="mediana  mb-0"># Variable</p>
                 </th>
                 @for (sim of Getsimulaciones; track sim.clave; let i = $index) {
 
@@ -356,6 +352,7 @@
             </tbody>
           </table>
 
+
         </div>
         <!-- <div class="k-actions k-actions-end">
             <button kendoButton type="button" (click)="close2()">Cancelar</button>
@@ -390,7 +387,7 @@
     <div class="col-md-11 col-lg-11 col-sm-12 mt-3 ">
       <kendo-card width="100%" orientation="vertical" style="background-color:transparent;">
         <kendo-card-header
-          style="background-color:transparent;  border: 2px solid #1e6bf1; border-radius: 14px; color:rgb(0, 0, 0);">
+          style="background-color:transparent;  border: 2px solid #004b87; border-radius: 14px; color:rgb(0, 0, 0);">
           <div class="row ms-2">
             <div class="col-lg-9 col-md-9 border-end border-dark d-flex flex-column ">
               @if (itemSeleccionado) {
@@ -1162,7 +1159,7 @@
             </ng-template>
           </kendo-panelbar-item>
         </kendo-panelbar>
-
+        <br>
         <!-- Progress bar impacto social -->
         <!-- <div class="col-12 mt-3 mb-3 barra2 rectangulo2 d-flex flex-row align-items-center justify-content-center"
           [style.top.px]="topBarraImpactoSocial">

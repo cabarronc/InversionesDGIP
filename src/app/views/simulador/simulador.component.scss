@@ -260,10 +260,11 @@
    animation:
      typing 6.0s steps(40, end),
      blink-caret .75s step-end infinite;
+    color: #004b87;
  }
 
  .title2 span {
-   color: #0d6efd;
+   color: #004b87;
  }
 
  .row-center {
@@ -312,13 +313,13 @@
  }
 
  .rectangulo {
-   border: 2px solid #1e6bf1;
+   border: 2px solid #004b87;
    border-radius: 14px;
    padding: 20px 30px;
  }
 
  .rectangulo2 {
-   border: 1.5px solid #1e6bf1;
+   border: 1.5px solid #004b87;
    border-radius: 14px;
    // padding: 0 2px 7px 15px ;
  }
@@ -334,7 +335,7 @@
 
  // Color de la ventana emergente
  ::ng-deep .k-window-titlebar {
-   background: #0d6efd;
+   background: #49bed8;
    color: white;
    font-weight: 600;
    border-bottom: none;
@@ -342,20 +343,39 @@
 
  //panel de variable
  :host ::ng-deep .panel-personalizado .k-expander-header {
-   background-color: #2c3e50;
-   color: white;
+   background-color: #49bed8;
+   color: rgb(0, 0, 0);
    height: 30px;
    display: flex;
    align-items: center;
  }
+//steeper
+::ng-deep .k-stepper .k-step.k-step-current .k-step-indicator {
+    background-color: #004b87 !important;
+    border-color: #004b87 !important;
 
+}
+/* color de la dona del stepeer */
+::ng-deep .k-stepper .k-step.k-step-done .k-step-indicator{
+    background-color: #004b87 !important;
+    border-color: #004b87 !important;
+}
+/* color de avance */
+::ng-deep .k-stepper .k-progressbar-value {
+    background-color: #004b87 !important; /* color de avance */
+}
+/* color de fondo de la línea */
+::ng-deep .k-stepper .k-progressbar {
+    background-color: #e0e0e0 !important; 
+}
  :host ::ng-deep .panel-personalizado .k-expander-title {
    color: white;
  }
 
+
  //panel de cualidad de valor publico
  :host ::ng-deep .panel-personalizadoValorPublico .k-panelbar-item>.k-link {
-   background-color: #0d6efd;
+   background-color: #004b87;
    color: white;
 
    display: flex;
@@ -364,7 +384,7 @@
 
  //panel de cualidad de impacto social
  :host ::ng-deep .panel-personalizadoSocial .k-panelbar-item>.k-link {
-   background-color: #0d6efd;
+   background-color: #004b87;
    color: white;
    display: flex;
    align-items: center;
@@ -372,7 +392,7 @@
 
  //panel de cualidad de impacto economico
  :host ::ng-deep .panel-personalizadoEconomico .k-panelbar-item>.k-link {
-   background-color: #0d6efd;
+   background-color: #004b87;
    color: white;
    display: flex;
    align-items: center;
@@ -489,12 +509,12 @@
  }
 
  .color-circle {
-   width: 30px;
-   height: 30px;
+   width: 27px;
+   height: 27px;
    border-radius: 50%;
    margin: auto;
-   // border:1px solid #ccc;
-   border: 1px solid #000000;
+   border:1px solid #8b8a8a;
+   //border: 1px solid #000000;
  }
 
  .label-justificado {
@@ -515,6 +535,22 @@
 .mediana{
   font-size: 1rem;
 }
+.table th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.table th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.table tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+.table tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
  .linea7 td {
    border-bottom: 1.5px solid black;
  }

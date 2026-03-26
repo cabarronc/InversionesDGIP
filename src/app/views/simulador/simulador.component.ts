@@ -983,6 +983,7 @@ export class SimuladorComponent implements OnInit {
       this.MethodTotal()
       this.cantidadBol = false
       stepIndex = 3;
+      this.itemSeleccionado = null
 
     }
 
