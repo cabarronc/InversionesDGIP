@@ -31,9 +31,10 @@ $kendo-font-size: 0.75rem,
   float: none !important;
 }
 
-
+* { box-sizing: border-box; } html,
 body {
     background-color: rgb(223, 223, 212)!important;
+    margin: 0; height: 100%;
 }
 a {
     text-decoration: none !important;
