@@ -19,7 +19,7 @@
           <p class="mt-2 text-sm space-y-12  text-gray-600">
             Accede a tu cuenta para continuar
           </p>
-          <form sclass="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             <kendo-formfield>
               <kendo-label for="email">Correo electrónico</kendo-label>
               <input kendoTextBox id="email" type="email" formControlName="email" placeholder="Correo electrónico" />

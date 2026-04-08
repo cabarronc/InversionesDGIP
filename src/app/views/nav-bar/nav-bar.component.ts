@@ -40,6 +40,11 @@ export class NavBarComponent implements OnInit{
   private warningShown = false;
   public margin = { horizontal: -46, vertical: 7 };
   public show = false;
+  isMobile = window.innerWidth <= 768;
+  @HostListener('window:resize', [])
+onResize() {
+  this.isMobile = window.innerWidth <= 768;
+}
   
   @HostListener('document:click', ['$event'])
 onClickOutside(event: Event) {

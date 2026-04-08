@@ -673,24 +673,11 @@
 
  /* Tablet */
  @media (max-width: 992px) {
-   .barra {
-     position: sticky;
-
-   }
-
-   .barra2 {
-     position: sticky;
-
-   }
-
-   .barra3 {
-     position: sticky;
-
-   }
+ 
 
    .barraGenerales {
-     position: static;
-     top: 135px;
+     position: sticky;
+     top: 130px;
    }
 
    .sectiondefault {
@@ -705,12 +692,16 @@
    }
 
    .barraGenerales {
-     position: static;
-     top: 175px;
+     position: sticky;
+     top: 125px;
    }
     .font_dict{
   color: black; 
-  font-size: 0.5rem;
+  font-size: 1.2rem;
+
+ }
+ .title2{
+  font-size: 1rem;
 
  }
 

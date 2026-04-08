@@ -11,6 +11,11 @@
       <h1 class="title2 mb-3">
         Simulador de <span class="d-block d-md-inline">priorización de proyectos</span>
       </h1>
+
+    </div>
+  </div>
+  <div class="row justify-content-center text-center">
+    <div class="col-11">
       <div class="rectangulo">
         <p class="descripcion">
           Usando esta herramienta conocerás las variables utilizadas en la priorización de los
@@ -20,6 +25,7 @@
         </p>
       </div>
     </div>
+
   </div>
   <!-- Steeper -->
   <div class="row mt-3">
@@ -384,12 +390,12 @@
   </div>
   <!-- Datos Generales -->
   <div class="row barraGenerales d-flex justify-content-center">
-    <div class="col-md-11 col-lg-11 col-sm-12 mt-3 ">
+    <div class="col-md-12 col-lg-11 col-sm-12 col-12 mt-3 ">
       <kendo-card width="100%" orientation="vertical" style="background-color:transparent;">
         <kendo-card-header
           style="background-color:transparent;  border: 2px solid #004b87; border-radius: 14px; color:rgb(0, 0, 0);">
           <div class="row ms-2">
-            <div class="col-lg-9 col-md-9 border-end border-dark d-flex flex-column ">
+            <div class="col-lg-8 col-md-8 col-sm-6 border-end border-dark d-flex flex-column ">
               @if (itemSeleccionado) {
               <div class="texto"><strong style="color: black;">Nombre del proyecto: </strong>{{
                 itemSeleccionado.nombre }}
@@ -412,7 +418,7 @@
             </div>
             @if (itemSeleccionado){
 
-            <div class="col-lg-2 col-md-2 col-12 d-flex align-items-start justify-content-center align-items-center ">
+            <div class="col-lg-2 col-md-2 col-sm-3 d-flex align-items-start justify-content-center align-items-center ">
               @if (dictaminacion) {
               <div class="fw-bold"><strong style="color: rgb(245, 2, 2);"></strong> La probabilidad de
                 que tu
@@ -425,7 +431,7 @@
               </div>
               }
             </div>
-            <div class="col-lg-1 col-md-3 col-12 d-flex align-items-start justify-content-center align-items-center ">
+            <div class="col-lg-2 col-md-2 col-sm-3 d-flex align-items-start justify-content-center align-items-center ">
               <div class="gauge-container">
 
                 <kendo-circulargauge [value]="CalProm  || 0 "

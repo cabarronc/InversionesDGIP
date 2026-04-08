@@ -159,18 +159,18 @@ export class SimuladorComponent implements OnInit {
   variables: number[] = [];
   ids: number[] = [];
   // Estilos de la barra de progreso
-  public progressStyles: { [key: string]: string } = {
-    color: "",
-    background: ""
-  };
-  public progressStyles2: { [key: string]: string } = {
-    color: "",
-    background: ""
-  };
-  public progressStyles3: { [key: string]: string } = {
-    color: "",
-    background: ""
-  };
+  // public progressStyles: { [key: string]: string } = {
+  //   color: "",
+  //   background: ""
+  // };
+  // public progressStyles2: { [key: string]: string } = {
+  //   color: "",
+  //   background: ""
+  // };
+  // public progressStyles3: { [key: string]: string } = {
+  //   color: "",
+  //   background: ""
+  // };
   // Variables de Totales
   TotalRacionalidad!: number | null;
   TotalSocial!: number | null;
@@ -335,9 +335,7 @@ export class SimuladorComponent implements OnInit {
   public counterNom: string
   public maxlengthNom = 150;
   previousStep = 0;
-
   windowInfoAbierto = false;
-
   public image = "https://github.com/cabarronc/RecursosMultimedia/blob/main/Atenci%C3%B3n%20a%20municipios%20con%20rezago%20social.pdf?raw=true";
 
   constructor(private authService: AuthService, private numberFormatService: NumberFormatService,
@@ -574,7 +572,6 @@ export class SimuladorComponent implements OnInit {
 
     return 'template';
   }
-
 
   //Diseño con  5 variables sin cero
   getTemplateClass_SinCero(value: number): string {
@@ -904,7 +901,6 @@ export class SimuladorComponent implements OnInit {
 
   }
 
-
   //Logica de los estados del steper
   onStepChange(stepIndex: number) {
     const cantidad_proyectos = this.storageService.getLocal<any[]>('proyectos')?.length ?? 0;
@@ -1158,7 +1154,6 @@ export class SimuladorComponent implements OnInit {
 
 
   }
-
 
   abrirPdf() {
     this.mostrarPdf = false;
@@ -1839,9 +1834,9 @@ export class SimuladorComponent implements OnInit {
     this.TotalEconomico = pon13 + pon14 + pon15
     this.CalGlob = (this.TotalRacionalidad ?? 0) + (this.TotalSocial ?? 0) + (this.TotalEconomico ?? 0)
     this.CalProm = this.CalGlob;
-    this.updateAppearance(this.getColor(this.TotalRacionalidad ?? 0, 61));
-    this.updateAppearance2(this.getColor(this.TotalSocial ?? 0, 31));
-    this.updateAppearance3(this.getColor(this.TotalEconomico ?? 0, 8));
+    // this.updateAppearance(this.getColor(this.TotalRacionalidad ?? 0, 61));
+    // this.updateAppearance2(this.getColor(this.TotalSocial ?? 0, 31));
+    // this.updateAppearance3(this.getColor(this.TotalEconomico ?? 0, 8));
 
   }
   private getColor(valor: number, maximo: number): string {
@@ -1888,21 +1883,21 @@ export class SimuladorComponent implements OnInit {
       }
     ];
   }
-  private updateAppearance(
-    background: string
-  ): void {
-    this.progressStyles['background'] = background
-  }
-  private updateAppearance2(
-    background: string
-  ): void {
-    this.progressStyles2['background'] = background
-  }
-  private updateAppearance3(
-    background: string
-  ): void {
-    this.progressStyles3['background'] = background
-  }
+  // private updateAppearance(
+  //   background: string
+  // ): void {
+  //   this.progressStyles['background'] = background
+  // }
+  // private updateAppearance2(
+  //   background: string
+  // ): void {
+  //   this.progressStyles2['background'] = background
+  // }
+  // private updateAppearance3(
+  //   background: string
+  // ): void {
+  //   this.progressStyles3['background'] = background
+  // }
   onInput(event: any) {
     let valor = event.target.value.replace(/[^0-9]/g, ''); // 🔵 Permitir números y punto decimal
     console.log(valor)

@@ -94,6 +94,7 @@ public questionCircleIcon: SVGIcon = questionCircleIcon;
 
       try {
         const { email } = this.forgotPasswordForm.value;
+        console.log("correo:",email)
         await this.authService.requestPasswordReset(email);
         
         alert('Se ha enviado un email con instrucciones para restablecer tu contraseña');

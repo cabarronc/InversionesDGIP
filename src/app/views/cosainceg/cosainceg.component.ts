@@ -324,8 +324,8 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-            this.isDisabled = false;
-            this.isDisabledG = false;
+            this.isDisabled_deuda = false;
+            this.isDisabledG_deuda = false;
           },
           (error) => {
             this.notificationService.show({

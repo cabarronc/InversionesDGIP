@@ -583,4 +583,12 @@ body {
   0%,100% { opacity: 1;   filter: brightness(1); }
   50%     { opacity: .55; filter: brightness(1.8); }
 }
-
+@media (max-width: 768px) {
+  .hide-mobile {
+    display: none;
+  }
+  .k-popup {
+  z-index: 99999 !important;
+  position: fixed !important;
+}
+}

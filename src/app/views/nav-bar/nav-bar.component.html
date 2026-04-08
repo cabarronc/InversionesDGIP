@@ -74,9 +74,12 @@
       </kendo-appbar-section>
 
     <kendo-appbar-spacer></kendo-appbar-spacer>
-    <kendo-appbar-section>
+    @if (!isMobile) {
+    <kendo-appbar-section >
         <img src="/navigation/appbar/SF.jpg" class="appbar-logo">
     </kendo-appbar-section>
+    }
+
     <kendo-appbar-section class="actions">
 
         <kendo-icon name="file-config" size="large"></kendo-icon>
@@ -103,7 +106,7 @@
                         </button>
                     </app-navbar-avatar>
 
-                    <kendo-popup [anchor]="infoButton" [popupAlign]="{ horizontal: 'left', vertical: 'bottom' }"
+                    <kendo-popup [anchor]="infoButton"  [popupAlign]="{ horizontal: 'left', vertical: 'bottom' }"
                         [anchorAlign]="{ horizontal: 'right', vertical: 'top' }" [animate]="true"
                         *ngIf="showSessionModal" (close)="showSessionModal  = false">
                         <div *ngIf="sessionInfo">
@@ -137,8 +140,6 @@
                 <!-- </div> -->
             </div>
         </div>&nbsp;
-
-
     </kendo-appbar-section>
 
 </kendo-appbar>
