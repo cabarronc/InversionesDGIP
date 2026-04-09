@@ -13,8 +13,8 @@
       </div>
 
       <p class=" gradient-text subtitle">Enlaces Principales</p>
-      <div class="cta">
-        <!--  <div class="stats">
+
+      <!--  <div class="stats">
      <div class="stat">
         <span class="stat-num">40k+</span>
         <span class="stat-label">Equipos activos</span>
@@ -30,7 +30,7 @@
         <span class="stat-label">Latencia</span>
       </div>
     </div> -->
-        <section id="slideshow">
+      <!-- <section id="slideshow">
           <div class="entire-content">
             <div class="content-carrousel">
               <figure class="shadow"><a href="https://sites.google.com/guanajuato.gob.mx/dgip/inicio"
@@ -54,10 +54,32 @@
 
             </div>
           </div>
-        </section>
+        </section> -->
+      <div class="universe" #universe (mouseenter)="pause()"
+     (mouseleave)="resume()">
+        <canvas class="stars"></canvas>
+        <div class="track" (mouseenter)="pause()"
+     (mouseleave)="resume()">
+          @for (planet of planets; track $index; let i = $index;) {
+          <div class="planet-wrap" #planetEl (click)="onPlanetClick(i)">
+            <div class="planet" [ngStyle]="planetBoxStyle(planet)">
+              <img [src]="planet.img" [alt]="planet.label" />
+              <div *ngIf="planet.ring" class="planet-ring" [ngStyle]="ringStyle(planet)"></div>
+            </div>
+            <div class="planet-label">{{ planet.label }}</div>
+          </div>
+          }
+        </div>
 
+        <!-- Arrows -->
+        <button class="btn-nav btn-prev" (click)="prev()">&#8249;</button>
+        <button class="btn-nav btn-next" (click)="next()">&#8250;</button>
+
+        <!-- Dots -->
+        <div class="nav-dots">
+          <span *ngFor="let planet of planets; let i = index" class="dot" (click)="goTo(i)"></span>
+        </div>
       </div>
-
     </div>
-
   </div>
+</div>

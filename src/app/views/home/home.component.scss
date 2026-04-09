@@ -464,3 +464,125 @@
   height: 32px;
   background: rgba(255, 255, 255, 0.1);
 }
+
+/* planet-carousel.component.scss */
+
+
+
+
+/* ── 3D track ───────────────────────────────── */
+.track {
+  position: relative;
+ width: 100%;
+  height: 100%;
+  inset: 0;
+  perspective: 900px;
+  perspective-origin: 50% 48%;
+  // animation: rotar 16s infinite linear;
+}
+
+.planet-wrap {
+  position: absolute;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transform-origin: center center;
+  transition: opacity .35s, transform .35s;
+}
+
+/* ── Planet sphere ──────────────────────────── */
+.planet {
+  border-radius: 50%;
+  position:absolute;
+  overflow: hidden;
+  transition: box-shadow .3s;
+
+  img {
+    width: 100%;
+    height: 100%;
+
+    border-radius: 50%;
+    display: block;
+      object-fit:contain ;
+    transition: transform .4s;
+  }
+}
+
+.planet-wrap:hover .planet img { transform: scale(1.07); }
+.planet-wrap:hover .planet     { box-shadow: 0 0 32px 8px rgba(180,160,255,.45) !important; }
+
+/* ── Saturn ring ────────────────────────────── */
+.planet-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
+  border: 2px solid; /* color via ngStyle */
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotateX(75deg);
+}
+
+/* ── Label ──────────────────────────────────── */
+.planet-label {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  font-size: 3rem;
+  transform: translateX(-50%);
+  font-size: 16px;
+  color: rgba(255, 255, 255, .6);
+  white-space: nowrap;
+  letter-spacing: .04em;
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  text-align: center;
+}
+
+/* ── Navigation arrows ──────────────────────── */
+.btn-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 9999;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(122, 94, 223, 0.9);
+  border: 1px solid rgba(255, 255, 255, .14);
+  color: rgba(255, 255, 255, .75);
+  cursor: pointer;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s;
+
+  &:hover { background: rgba(255, 255, 255, .16); }
+}
+
+.btn-prev { left: 14px; }
+.btn-next { right: 14px; }
+
+/* ── Dot indicators ─────────────────────────── */
+.nav-dots {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 200;
+  pointer-events: auto;
+}
+
+.dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(86, 51, 212, 0.9);;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: background .2s, transform .2s;
+
+  &.active {
+    background: rgba(86, 51, 212, 0.9);
+    transform: scale(1.35);
+  }
+}
