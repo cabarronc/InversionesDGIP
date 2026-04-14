@@ -318,7 +318,6 @@ export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     const host = this.universeRef.nativeElement;
-
     const W = host.offsetWidth;
     const H = host.offsetHeight;
     const rx = W * 0.34;

@@ -91,8 +91,10 @@
                   <!-- <kendo-textbox placeholder="Nombre del Proyecto" formControlName="nombre" showErrorIcon="initial"
                   showSuccessIcon="initial" [clearButton]="true"></kendo-textbox> -->
                   <kendo-textarea placeholder="Nombre del Proyecto" formControlName="nombre" showErrorIcon="initial"
-                    showSuccessIcon="initial" resizable="both" [maxlength]="maxlengthNom"
-                    (valueChange)="onValueChangeNombre($event)">
+                    showSuccessIcon="initial" resizable="both" [maxlength]="maxlengthNom" minlength="10"
+                    (valueChange)="onValueChangeNombre($event)" [ngClass]="{
+                                  'k-valid': form.get('nombre')?.valid && form.get('nombre')?.dirty
+                                }">
                     <kendo-textarea-suffix class="custom-styling">
                       <span class="counter">{{ counterNom }}</span>
                       <button kendoButton look="clear" (click)="limpiarNombre()">
@@ -100,14 +102,14 @@
                       </button>
                     </kendo-textarea-suffix>
                   </kendo-textarea>
-                  <kendo-formerror></kendo-formerror>
+                 <kendo-formhint> </kendo-formhint>
                   @if (form.get('nombre')?.valid && form.get('nombre')?.dirty) {
                   <div class="form-success">
-                    <!-- ✔ Campo válido -->
+                    ✔ Campo válido
                   </div>
                   }
                   @else{
-                  <kendo-formhint> </kendo-formhint>
+                     <kendo-formerror>mínimo 10 caracteres</kendo-formerror>                
                   }
                 </kendo-formfield>
               </div>
@@ -135,7 +137,9 @@
                 <kendo-formfield showHints="initial">
                   <kendo-textarea placeholder="Descripción del proyecto" formControlName="descripcion"
                     showErrorIcon="initial" showSuccessIcon="initial" resizable="both" [maxlength]="maxlength"
-                    (valueChange)="onValueChangeDesc($event)">
+                    minlength="10" (valueChange)="onValueChangeDesc($event)" [ngClass]="{
+                                  'k-valid': form.get('descripcion')?.valid && form.get('descripcion')?.dirty
+                                }">
                     <kendo-textarea-suffix class="custom-styling">
                       <span class="counter">{{ counter }}</span>
                       <button kendoButton look="clear" (click)="limpiarDescripcion()">
@@ -143,7 +147,16 @@
                       </button>
                     </kendo-textarea-suffix>
                   </kendo-textarea>
-                  <kendo-formhint></kendo-formhint>
+                   <kendo-formhint></kendo-formhint>
+                  @if (form.get('descripcion')?.valid && form.get('descripcion')?.dirty) {
+                  <div class="form-success">
+                    ✔ Válido
+                  </div>
+                  }
+                  @else{
+                     <kendo-formerror>mínimo 10 caracteres</kendo-formerror>
+                 
+                  }
                 </kendo-formfield>
               </div>
               <br>
@@ -714,7 +727,7 @@
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate3" filter=".info-icon">
                               <kendo-label class="label-justificado">En los proyectos de inversión, un resultado ideal
                                 implica:
-                                <ol type="a">
+                                <ol type="a" style="margin-bottom:5px;">
                                   <li>Cumplir las metas tal como se plantearon (por ejemplo, 100 metros de calle
                                     pavimentados de 100 que se plantearon)
                                   </li>
@@ -723,11 +736,14 @@
                                   </li>
                                   <li>
                                     Respetar el presupuesto planeado, sin excederse
-                                    Teniendo en cuenta las etapas anteriores de tu proyecto ¿Cómo fueron sus resultados
-                                    en
-                                    general?
+
                                   </li>
                                 </ol>
+                                <p>
+                                  Teniendo en cuenta las etapas anteriores de tu proyecto ¿Cómo fueron sus resultados
+                                  en
+                                  general?
+                                </p>
                               </kendo-label>
 
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
@@ -1286,13 +1302,13 @@
                               necesitan mayor inversión en obras y acciones relacionadas con esos derechos sociales.
                               Abre el mapa de la derecha, ubica el municipio en el que realizarás tu proyecto, y
                               selecciona la opción que le corresponda.
-                              <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                              <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.mapMarkerIcon" (click)="abrirInfo()"
                                   class="colorMapa"></kendo-svg-icon>
-                              </span>
+                              </span> -->
                             </kendo-label>
 
-                            @if (windowInfoAbierto) {
+                            <!-- @if (windowInfoAbierto) {
                             <kendo-window title="Grado de rezago social" (close)="cerrarInfo()" [minWidth]="450"
                               [width]="650" [top]="top2" [left]="left2" [height]="550">
                               @if (mostrarPdf) {
@@ -1303,7 +1319,7 @@
                               }
 
                             </kendo-window>
-                            }
+                            } -->
                             <div class="row mt-2 mb-2 justify-content-center">
                               <!-- <div class="col-1 mt-2">
                                 <span>
@@ -1314,7 +1330,7 @@
                               </div> -->
                               <div class="col-lg-10 col-md-12 col-sm-12">
                                 <kendo-formfield showHints="initial">
-                                  <kendo-dropdownlist [data]="OpIS2.slice(1)" textField="text" valueField="value"
+                                  <kendo-dropdownlist [data]="OpIS2.slice(1)" textField="text" valueField="id"
                                     [value]="valorSeleccionado9" [valuePrimitive]="true"
                                     (valueChange)="valorSeleccionado9 = $event"
                                     [defaultItem]="{ text: 'Selecciona', value: null }"

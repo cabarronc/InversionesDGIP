@@ -270,12 +270,62 @@ export class SimuladorComponent implements OnInit {
     { text: "Mi proyecto no incluye acciones específicas para mejorar las oportunidades de las mujeres en esos aspectos", value: 0 },
   ];
   // Atencion a municipios con rezago social
-  public OpIS2: Array<{ text: string; value: number | null }> = [
-    { text: "Selecciona", value: null },
-    { text: "Realizaré mi proyecto en un municipio con rezago social medio", value: 2 },
-    { text: "Realizaré mi proyecto en un municipio con rezago social bajo", value: 1 },
-    { text: "Realizaré mi proyecto en un municipio con rezago social muy bajo", value: 0 },
-  ];
+  // public OpIS2: Array<{ text: string; value: number | null }> = [
+  //   { text: "Selecciona", value: null },
+  //   { text: "Realizaré mi proyecto en un municipio con rezago social medio", value: 2 },
+  //   { text: "Realizaré mi proyecto en un municipio con rezago social bajo", value: 1 },
+  //   { text: "Realizaré mi proyecto en un municipio con rezago social muy bajo", value: 0 },
+  // ];
+ public OpIS2: Array<{ id: number; text: string; value: number | null }> = [
+  { id: 0, text: "Selecciona", value: null },
+
+  { id: 1, text: "Abasolo", value: 1 },
+  { id: 2, text: "Acámbaro", value: 0 },
+  { id: 3, text: "San Miguel de Allende", value: 1 },
+  { id: 4, text: "Apaseo el Alto", value: 1 },
+  { id: 5, text: "Apaseo el Grande", value: 0 },
+  { id: 6, text: "Atarjea", value: 2 },
+  { id: 7, text: "Celaya", value: 0 },
+  { id: 8, text: "Manuel Doblado", value: 1 },
+  { id: 9, text: "Comonfort", value: 1 },
+  { id: 10, text: "Coroneo", value: 1 },
+  { id: 11, text: "Cortazar", value: 0 },
+  { id: 12, text: "Cuerámaro", value: 1 },
+  { id: 13, text: "Doctor Mora", value: 1 },
+  { id: 14, text: "Dolores Hidalgo Cuna de la Independencia Nacional", value: 1 },
+  { id: 15, text: "Guanajuato", value: 0 },
+  { id: 16, text: "Huanímaro", value: 1 },
+  { id: 17, text: "Irapuato", value: 0 },
+  { id: 18, text: "Jaral del Progreso", value: 0 },
+  { id: 19, text: "Jerécuaro", value: 1 },
+  { id: 20, text: "León", value: 0 },
+  { id: 21, text: "Moroleón", value: 0 },
+  { id: 22, text: "Ocampo", value: 1 },
+  { id: 23, text: "Pénjamo", value: 1 },
+  { id: 24, text: "Pueblo Nuevo", value: 1 },
+  { id: 25, text: "Purísima del Rincón", value: 0 },
+  { id: 26, text: "Romita", value: 1 },
+  { id: 27, text: "Salamanca", value: 0 },
+  { id: 28, text: "Salvatierra", value: 0 },
+  { id: 29, text: "San Diego de la Unión", value: 1 },
+  { id: 30, text: "San Felipe", value: 1 },
+  { id: 31, text: "San Francisco del Rincón", value: 0 },
+  { id: 32, text: "San José Iturbide", value: 0 },
+  { id: 33, text: "San Luis de la Paz", value: 1 },
+  { id: 34, text: "Santa Catarina", value: 1 },
+  { id: 35, text: "Santa Cruz de Juventino Rosas", value: 1 },
+  { id: 36, text: "Santiago Maravatío", value: 0 },
+  { id: 37, text: "Silao de la Victoria", value: 0 },
+  { id: 38, text: "Tarandacuao", value: 0 },
+  { id: 39, text: "Tarimoro", value: 1 },
+  { id: 40, text: "Tierra Blanca", value: 2 },
+  { id: 41, text: "Uriangato", value: 0 },
+  { id: 42, text: "Valle de Santiago", value: 1 },
+  { id: 43, text: "Victoria", value: 1 },
+  { id: 44, text: "Villagrán", value: 0 },
+  { id: 45, text: "Xichú", value: 2 },
+  { id: 46, text: "Yuriria", value: 1 },
+];
   // Subsidios Sociales *
   public OpIS3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
@@ -344,7 +394,7 @@ export class SimuladorComponent implements OnInit {
 
     this.form = new FormGroup({
       // clave: new FormControl("", [Validators.required, Validators.pattern(/^[A-Za-z]{2}\d{4}$/)]),
-      nombre: new FormControl("", [Validators.required]),
+      nombre: new FormControl("", [Validators.required,]),
       descripcion: new FormControl("", [Validators.required]),
       continuidad: new FormControl(this.continuidad),
       monto: new FormControl("", [Validators.required, noCeroValidator])
@@ -1662,6 +1712,7 @@ export class SimuladorComponent implements OnInit {
       this.Pon9 = 0;
       // this.MethodTotal()
     }
+    console.log("Respuesta2.2",value)
   }
   //Subsidios Sociales
   public RespuestaIS3(value: any): void {
