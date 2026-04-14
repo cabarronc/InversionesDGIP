@@ -171,8 +171,11 @@
                 <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                   <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                 </span>
+                <kendo-formfield showHints="initial">
                 <kendo-maskedtextbox name="masked" [maskOnFocus]="true" [mask]="mask_monto" (input)="onInput($event)"
-                  [size]="'small'" [maskValidation]="false" formControlName="monto">
+                  [size]="'small'" [maskValidation]="false" formControlName="monto" [ngClass]="{
+                                  'k-valid': form.get('monto')?.valid && form.get('monto')?.dirty
+                                }">
                   <ng-template kendoPrefixTemplate>
                     <kendo-svgicon [icon]="icons.dollarIcon"></kendo-svgicon>
                   </ng-template>
@@ -182,6 +185,17 @@
                     </button>
                   </ng-template>
                 </kendo-maskedtextbox>
+                 <kendo-formhint></kendo-formhint>
+                 @if (form.get('monto')?.valid && form.get('monto')?.dirty) {
+                  <div class="form-success">
+                    ✔ Campo válido
+                  </div>
+                  }
+                  @else{
+                     <kendo-formerror></kendo-formerror>
+                 
+                  }
+                  </kendo-formfield>
               </div>
               <!-- Continuidad -->
               <div class="row mb-1 mt-3">
