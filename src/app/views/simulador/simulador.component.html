@@ -1,5 +1,6 @@
 <section class="sectiondefault">
-
+  <app-disclaimer (accepted)="onCookiesAccepted()" (rejected)="onCookiesRejected()" (configured)="openCookieSettings()">
+  </app-disclaimer>
   <!-- Intro -->
   <div class="row justify-content-center text-center">
     <div class="col-11">
@@ -102,14 +103,14 @@
                       </button>
                     </kendo-textarea-suffix>
                   </kendo-textarea>
-                 <kendo-formhint> </kendo-formhint>
+                  <kendo-formhint> </kendo-formhint>
                   @if (form.get('nombre')?.valid && form.get('nombre')?.dirty) {
                   <div class="form-success">
                     ✔ Campo válido
                   </div>
                   }
                   @else{
-                     <kendo-formerror>Mínimo 10 caracteres</kendo-formerror>                
+                  <kendo-formerror>Mínimo 10 caracteres</kendo-formerror>
                   }
                 </kendo-formfield>
               </div>
@@ -117,7 +118,7 @@
               <!-- Descripcion -->
               <ng-template #tooltipDescripcion>
                 <div class="tooltip-justificado">
-                  <p>Ejemplo 1: Construcción de calle, guarniciones y banquetas con concreto, en un tramo de 400 metros,
+                  <p>Ejemplo 1: Construcción de calle y banquetas con concreto, en un tramo de 400 metros,
                     de la calle Plata a la calle Cobre, para beneficio de 150 habitantes </p>
                   <p>Ejemplo 2: Pavimentación del camino que va de la localidad Los Huizaches hacia la localidad El
                     Encinal, con dos carriles de circulación a base de empedrado y huellas de concreto, en una longitud
@@ -147,15 +148,15 @@
                       </button>
                     </kendo-textarea-suffix>
                   </kendo-textarea>
-                   <kendo-formhint></kendo-formhint>
+                  <kendo-formhint></kendo-formhint>
                   @if (form.get('descripcion')?.valid && form.get('descripcion')?.dirty) {
                   <div class="form-success">
                     ✔ Campo válido
                   </div>
                   }
                   @else{
-                     <kendo-formerror>Mínimo 10 caracteres</kendo-formerror>
-                 
+                  <kendo-formerror>Mínimo 10 caracteres</kendo-formerror>
+
                   }
                 </kendo-formfield>
               </div>
@@ -172,30 +173,30 @@
                   <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                 </span>
                 <kendo-formfield showHints="initial">
-                <kendo-maskedtextbox name="masked" [maskOnFocus]="true" [mask]="mask_monto" (input)="onInput($event)"
-                  [size]="'small'" [maskValidation]="false" formControlName="monto" [ngClass]="{
+                  <kendo-maskedtextbox name="masked" [maskOnFocus]="true" [mask]="mask_monto" (input)="onInput($event)"
+                    [size]="'small'" [maskValidation]="false" formControlName="monto" [ngClass]="{
                                   'k-valid': form.get('monto')?.valid && form.get('monto')?.dirty
                                 }">
-                  <ng-template kendoPrefixTemplate>
-                    <kendo-svgicon [icon]="icons.dollarIcon"></kendo-svgicon>
-                  </ng-template>
-                  <ng-template kendoSuffixTemplate>
-                    <button kendoButton look="clear" (click)="limpiarMascaraMonto()">
-                      <kendo-svgicon [icon]="icons.trashIcon" style="color: rgb(230, 26, 11);"></kendo-svgicon>
-                    </button>
-                  </ng-template>
-                </kendo-maskedtextbox>
-                 <kendo-formhint></kendo-formhint>
-                 @if (form.get('monto')?.valid && form.get('monto')?.dirty) {
+                    <ng-template kendoPrefixTemplate>
+                      <kendo-svgicon [icon]="icons.dollarIcon"></kendo-svgicon>
+                    </ng-template>
+                    <ng-template kendoSuffixTemplate>
+                      <button kendoButton look="clear" (click)="limpiarMascaraMonto()">
+                        <kendo-svgicon [icon]="icons.trashIcon" style="color: rgb(230, 26, 11);"></kendo-svgicon>
+                      </button>
+                    </ng-template>
+                  </kendo-maskedtextbox>
+                  <kendo-formhint></kendo-formhint>
+                  @if (form.get('monto')?.valid && form.get('monto')?.dirty) {
                   <div class="form-success">
                     ✔ Campo válido
                   </div>
                   }
                   @else{
-                     <kendo-formerror></kendo-formerror>
-                 
+                  <kendo-formerror></kendo-formerror>
+
                   }
-                  </kendo-formfield>
+                </kendo-formfield>
               </div>
               <!-- Continuidad -->
               <div class="row mb-1 mt-3">
@@ -648,13 +649,14 @@
 
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate2" filter=".info-icon">
                               <kendo-label class="label-justificado">Para que un proyecto pueda realizarse de manera
-                                adecuada necesita estar preparado. Por
-                                ejemplo, para realizar una obra se deben tener estudios técnicos, ciertos permisos de
-                                las autoridades, y el terreno donde se va a construir. Otro ejemplo: para otorgar apoyos
-                                a la población mediante un programa, se deben tener reglas de operación donde se
-                                especifique el apoyo a otorgar, y los requisitos y el procedimiento para poder
-                                obtenerlo. Tomando en cuenta la descripción de tu proyecto ¿se tienen todos los
-                                elementos de preparación necesarios para realizarlo ahora mismo?
+                                adecuada necesita estar preparado. Por ejemplo, en los proyectos que consisten en
+                                realizar obras, “preparado” significa tener los estudios técnicos necesarios, ciertos
+                                permisos de las autoridades, y los terrenos donde se va a construir. Para otros
+                                proyectos, como los que otorgan apoyos a la población, “preparado” significa tener
+                                ciertos documentos como las reglas de operación, que es donde se especifica el apoyo a
+                                otorgar, y los requisitos y el procedimiento para poder obtener los apoyos. Tomando en
+                                cuenta la descripción de tu proyecto ¿se tienen todos los elementos de preparación
+                                necesarios para realizarlo ahora mismo?
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -742,8 +744,8 @@
                               <kendo-label class="label-justificado">En los proyectos de inversión, un resultado ideal
                                 implica:
                                 <ol type="a" style="margin-bottom:5px;">
-                                  <li>Cumplir las metas tal como se plantearon (por ejemplo, 100 metros de calle
-                                    pavimentados de 100 que se plantearon)
+                                  <li>Cumplir las metas tal como se plantearon (por ejemplo, se pavimentaron 100 metros
+                                    de calle de 100 que se planearon)
                                   </li>
                                   <li>
                                     Concluir el proyecto en el tiempo previsto, sin excederse
@@ -844,16 +846,14 @@
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate4" filter=".info-icon">
                               <kendo-label class="label-justificado">Los proyectos de inversión se financian con
                                 recursos públicos que provienen de
-                                diferentes fuentes. La mayor parte de los recursos se derivan de acuerdos de
-                                coordinación con el gobierno federal, y están limitados o “etiquetados” en cuanto a lo
-                                que puede pagarse con ellos: obras y acciones en zonas con pobreza o rezago social;
+                                diferentes fuentes. Una parte de los recursos están restringidos o “etiquetados” en
+                                cuanto a lo que puede pagarse con ellos: obras en zonas con pobreza o rezago social;
                                 alimentación de personas vulnerables; construcción y equipamiento de escuelas;
                                 equipamiento y capacitación de policías; y obras de calles, carreteras, agua potable y
-                                drenaje. En segundo lugar están los recursos derivados de la recaudación de algunos
-                                impuestos estatales, y se conocen como “de libre disposición” porque pueden destinarse a
-                                cualquier proyecto de inversión, pero generalmente estos recursos son menores que los
-                                “etiquetados”. Teniendo en cuenta este contexto y la descripción de tu proyecto ¿cuánto
-                                del presupuesto de tu proyecto podría pagarse con recursos “etiquetados”?
+                                drenaje. Otra parte de los recursos se conocen como “de libre disposición”, porque
+                                pueden destinarse a cualquier proyecto de inversión. Teniendo en cuenta la descripción
+                                de tu proyecto y los apartados en los que se pueden gastar los recursos etiquetados
+                                ¿cuánto del presupuesto de tu proyecto podría pagarse con recursos “etiquetados”?
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -933,10 +933,8 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate5" filter=".info-icon">
-                              <kendo-label class="label-justificado">Si bien todos los proyectos de inversión pública
-                                tienen un beneficio para la población,
-                                no todos los proyectos pueden considerarse como “productivos”. La inversión pública
-                                productiva es la que consiste en:
+                              <kendo-label class="label-justificado">La inversión pública productiva es la que consiste
+                                en:
                                 <ol type="a" style="margin-bottom:5px;">
                                   <li>
                                     Realizar obras públicas.
@@ -1284,6 +1282,7 @@
                                   }
                                 </kendo-formfield>
 
+
                               </div>
                               <!-- <div class="col-1">
                                 <span>
@@ -1314,8 +1313,9 @@
                               acceso que tienen las personas a la
                               educación, a la salud y a una vivienda digna, y permite identificar los municipios que
                               necesitan mayor inversión en obras y acciones relacionadas con esos derechos sociales.
-                              Abre el mapa de la derecha, ubica el municipio en el que realizarás tu proyecto, y
-                              selecciona la opción que le corresponda.
+                              . Busca debajo el nombre del municipio en el que realizarás tu proyecto, y selecciónalo.
+                              Si tu proyecto abarca más de un municipio, busca y selecciona el más importante o busca y
+                              selecciona “Varios”.
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.mapMarkerIcon" (click)="abrirInfo()"
                                   class="colorMapa"></kendo-svg-icon>
@@ -1376,6 +1376,29 @@
                                   <kendo-formhint>Selecciona una opción</kendo-formhint>
                                   }
                                 </kendo-formfield>
+                                <kendo-formfield>
+                                  <!-- Autocomplate -->
+                                  <kendo-autocomplete [data]="OpIS2_text" (valueChange)="RespuestaIS2_aux($event)"
+                                    [kendoDropDownFilter]="{ operator: 'contains' }" formControlName="Res9"
+                                    [value]="municipio" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
+                                      'k-valid': formSimulacion.get('Res9')?.valid && formSimulacion.get('Res9')?.dirty
+                                    }">
+                                    <ng-template kendoAutoCompleteItemTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClassIgualdadGeneroText(dataItem)"></span>&nbsp;{{
+                                        dataItem }}
+                                      </span>
+                                    </ng-template>
+                                    <ng-template kendoAutoCompleteValueTemplate let-dataItem>
+                                      <span class="item-content">
+                                        <span [ngClass]="getTemplateClassIgualdadGeneroText(dataItem)"></span>&nbsp;{{
+                                        dataItem }}
+                                      </span>
+                                    </ng-template>
+
+
+                                  </kendo-autocomplete>
+                                </kendo-formfield>
                               </div>
                               <!-- <div class="col-1">
                                 <span>
@@ -1409,11 +1432,10 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate10" filter=".info-icon">
-                              <kendo-label class="label-justificado">Los subsidios sociales son ayudas económicas o en
-                                especie que se dan a las personas con
-                                el objetivo de ayudarles a mejorar sus condiciones de vida, y pueden ser una manera
-                                efectiva de atender un problema o necesidad de la población. Tomando en cuenta la
-                                descripción de tu proyecto ¿entregarás este tipo de ayudas?
+                              <kendo-label class="label-justificado">Los apoyos económicos o en especie pueden ser una
+                                manera efectiva de atender un problema o necesidad de la población, para mejorar sus
+                                condiciones de vida. Tomando en cuenta la descripción de tu proyecto ¿entregarás este
+                                tipo de apoyos?
                               </kendo-label>
 
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
@@ -1582,9 +1604,9 @@
                               <kendo-label class="label-justificado">En México, la medición de la pobreza toma en cuenta
                                 la capacidad económica que tienen
                                 las personas para comprar artículos y servicios indispensables, y su acceso a los
-                                derechos sociales establecidos en la constitución. Los indicadores definidos para la
+                                derechos sociales establecidos en la Constitución. Los indicadores definidos para la
                                 medición de la pobreza, permiten identificar los proyectos de inversión más necesarios
-                                para incrementar el bienestar económico y social de las personas. Selecciona la opción
+                                para incrementar la calidad de vida de las personas. Selecciona la opción
                                 que corresponda a tu proyecto, tomando en cuenta su descripción.
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
@@ -1686,16 +1708,16 @@
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate13" filter=".info-icon">
-                              <kendo-label class="label-justificado">¿Se crearán empleos de duración temporal al
-                                realizar tu proyecto? Teniendo en cuenta la
-                                descripción de tu proyecto, considera únicamente los siguientes tipos de empleos al
-                                seleccionar la opción que le aplique:
+                              <kendo-label class="label-justificado">Teniendo en cuenta la descripción de tu proyecto y
+                                los siguientes tipos de empleos temporales que pueden crearse al realizarlo,
+                                selecciona la opción que le aplique:
                                 <ol type="a">
                                   <li>
-                                    Empleos temporales vinculados a la realización de obras de cualquier tipo
+                                    Empleos de duración temporal vinculados a la realización de obras de cualquier tipo
                                   </li>
                                   <li>
-                                    Pago de jornales a personas por la realización de actividades de tu proyecto (por
+                                    Pago de jornales a personas por la realización de actividades temporales de tu
+                                    proyecto (por
                                     ejemplo, por la plantación de árboles para reforestación, por el cercado de terrenos
                                     agrícolas o ganaderos, por la limpieza y pinta de escuelas, etc.)
                                   </li>
@@ -1860,16 +1882,41 @@
                           <div class="col-md-12">
                             <ng-template #tooltipTemplate14>
                               <div class="tooltip-justificado">
-                                Los alcances del proyecto inciden en la actividad manufacturera
+
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate14" filter=".info-icon">
-                              <kendo-label class="label-justificado">Si bien todas las actividades económicas son
-                                importantes para el desarrollo de nuestro
-                                estado, algunas son más relevantes de acuerdo con los recursos económicos que generan, y
-                                la cantidad de personas a las que emplean. Tomando en cuenta la descripción de tu
-                                proyecto ¿podrías vincularlo con alguna de las actividades económicas que se indican en
-                                las opciones?
+                              <kendo-label class="label-justificado">Las actividades económicas son importantes para el
+                                desarrollo de nuestro estado por los
+                                recursos económicos que generan y la cantidad de personas a las que emplean. Tomando en
+                                cuenta la descripción de tu proyecto ¿podrías vincularlo directa o indirectamente con
+                                alguna de las actividades económicas que se indican a continuación?
+                                <ol type="i">
+                                  <li>
+                                    Agricultura, ganadería, aprovechamiento forestal y pesca
+                                  </li>
+                                  <li>
+                                    Servicios de salud y de asistencia social
+                                  </li>
+                                  <li>
+                                    Servicios educativos y de capacitación
+                                  </li>
+                                  <li>
+                                  	Construcción
+                                  </li>
+                                  <li>
+                                    Hotelería, alojamiento y preparación de alimentos y bebidas
+                                  </li>
+                                  <li>
+                                    Transporte de personas y de carga
+                                  </li>
+                                  <li>
+                                    Compra y venta de bienes, materias primas y consumibles
+                                  </li>
+                                  <li>
+                                    Fabricación o ensamble de productos
+                                  </li>
+                                </ol>
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -1995,4 +2042,5 @@
     <button kendoButton themeColor="error" (click)="confirmarAccion()">Sí, terminar</button>
   </kendo-dialog-actions>
 </kendo-dialog>
+
 }

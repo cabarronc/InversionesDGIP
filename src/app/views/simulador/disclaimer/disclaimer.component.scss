@@ -1,0 +1,118 @@
+.disc-wrap {
+  position: fixed;
+  bottom: 24px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 16px;
+  z-index: 1000;
+}
+
+.disc-card {
+  /* 🔥 efecto vidrio */
+  background: rgba(168, 168, 223, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border: 0.5px solid #e0e0e0;
+  border-radius: 20px;
+  padding: 1rem 1rem 1.5rem;
+  max-width: 800px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.disc-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: #F1EFE8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.disc-title {
+  font-size: 17px;
+  font-weight: 500;
+  color: #e20d0d;
+  margin: 0 0 8px;
+}
+
+.disc-body {
+  font-size: 13px;
+  color: #1b1b1b;
+  line-height: 1.65;
+  margin: 0 0 1.5rem;
+}
+
+.disc-pills {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 1.25rem;
+}
+
+.pill {
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 0.5px solid #ddd;
+  color: #666;
+  background: #f7f7f7;
+}
+
+.disc-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-ghost {
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: 0.5px solid #ccc;
+  background: transparent;
+  color: #666;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-reject {
+  padding: 9px 18px;
+  border-radius: 10px;
+  border: 0.5px solid #ccc;
+  background: #f5f5f5;
+  color: #1a1a1a;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-accept {
+  padding: 9px 22px;
+  border-radius: 10px;
+  border: none;
+  background: #2C2C2A;
+  color: #F1EFE8;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.disc-footer {
+  margin-top: 1rem;
+  font-size: 11px;
+  color: #999;
+
+  a {
+    color: #666;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

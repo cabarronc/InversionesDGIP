@@ -25,8 +25,10 @@ import {
   KENDO_PROGRESSBARS,
   LabelSettings,
 } from "@progress/kendo-angular-progressbar";
+import { AutoCompleteModule } from '@progress/kendo-angular-dropdowns';
 import { FaceComponent } from '../animaciones/face/face.component';
 import { NumberFormatService } from '../../helpers/number-format.service';
+import { DisclaimerComponent } from "./disclaimer/disclaimer.component";
 // Validacion de No cero y menor a 50mil
 export function noCeroValidator(control: AbstractControl): ValidationErrors | null {
   const value = control.value?.toString().trim();
@@ -52,7 +54,7 @@ export function noCeroValidator(control: AbstractControl): ValidationErrors | nu
   selector: 'app-simulador',
   standalone: true,
   imports: [KENDO_ICONS, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT,
-    KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule, KENDO_DIALOGS, NotificationModule],
+    KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule, KENDO_DIALOGS, NotificationModule, AutoCompleteModule, DisclaimerComponent],
   templateUrl: './simulador.component.html',
   styleUrl: './simulador.component.scss'
 })
@@ -200,9 +202,9 @@ export class SimuladorComponent implements OnInit {
   // Gasto de administración 
   public OpRP1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Gastaré hasta un 5% del presupuesto en esos conceptos", value: 3 },
-    { text: "Gastaré de un 6 a un 10% en esos conceptos", value: 2 },
-    { text: "Gastaré de un 11 a un 15% en esos conceptos", value: 1 },
+    { text: "No gastaré nada del presupuesto en esos conceptos", value: 3 },
+    { text: "Gastaré hasta un 10% del presupuesto en esos conceptos", value: 2 },
+    { text: "Gastaré de un 11% a un 15% en esos conceptos", value: 1 },
     { text: "Gastaré más del 15% en esos conceptos", value: 0 },
 
   ];
@@ -246,18 +248,18 @@ export class SimuladorComponent implements OnInit {
   // Cobertura de la poblacion objetivo
   public OpRP6: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Más del 80% de la población objetivo será beneficiada directamente", value: 4 },
-    { text: "Entre un 56 y un 80% de la población objetivo será beneficiada directamente", value: 3 },
-    { text: "Entre un 31 y un 55% de la población objetivo será beneficiada directamente", value: 2 },
+    { text: "El 100% de la población objetivo será beneficiada directamente", value: 4 },
+    { text: "Entre un 56%  y hasta un 99% de la población objetivo será beneficiada directamente", value: 3 },
+    { text: "Entre un 31% y un 55% de la población objetivo será beneficiada directamente", value: 2 },
     { text: "Menos del 31% de la población objetivo será beneficiada directamente", value: 1 },
 
   ];
   public OpRP7: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Más del 100% del presupuesto será aportado por esas fuentes", value: 4 },
-    { text: "Entre un 91 y un 50% del presupuesto será aportado por esas fuentes", value: 3 },
-    { text: "Entre un 66 y 90 % del presupuesto será aportado por esas fuentes", value: 2 },
-    { text: "Hasta 65% del presupuesto será aportado por esas fuentes", value: 1 },
+    { text: "Más del 50% del presupuesto será aportado por esas fuentes", value: 4 },
+    { text: "Entre un 46% y un 50% del presupuesto será aportado por esas fuentes", value: 3 },
+    { text: "Entre un 36% y un  45% del presupuesto será aportado por esas fuentes", value: 2 },
+    { text: "Hasta un 35% del presupuesto será aportado por esas fuentes", value: 1 },
     { text: "No se tiene planeada la aportación de recursos de esas fuentes, sólo del presupuesto estatal", value: 0 },
 
   ];
@@ -276,62 +278,113 @@ export class SimuladorComponent implements OnInit {
   //   { text: "Realizaré mi proyecto en un municipio con rezago social bajo", value: 1 },
   //   { text: "Realizaré mi proyecto en un municipio con rezago social muy bajo", value: 0 },
   // ];
- public OpIS2: Array<{ id: number; text: string; value: number | null }> = [
-  { id: 0, text: "Selecciona", value: null },
+  public OpIS2: Array<{ id: number; text: string; value: number | null }> = [
+    { id: 0, text: "Selecciona", value: null },
+    { id: 1, text: "Abasolo (bajo)", value: 1 },
+    { id: 2, text: "Acámbaro (muy bajo)", value: 0 },
+    { id: 3, text: "San Miguel de Allende (bajo)", value: 1 },
+    { id: 4, text: "Apaseo el Alto (bajo)", value: 1 },
+    { id: 5, text: "Apaseo el Grande (muy bajo)", value: 0 },
+    { id: 6, text: "Atarjea (medio)", value: 2 },
+    { id: 7, text: "Celaya (muy bajo)", value: 0 },
+    { id: 8, text: "Manuel Doblado (bajo)", value: 1 },
+    { id: 9, text: "Comonfort (bajo)", value: 1 },
+    { id: 10, text: "Coroneo (bajo)", value: 1 },
+    { id: 11, text: "Cortazar (muy bajo)", value: 0 },
+    { id: 12, text: "Cuerámaro (bajo)", value: 1 },
+    { id: 13, text: "Doctor Mora (bajo)", value: 1 },
+    { id: 14, text: "Dolores Hidalgo Cuna de la Independencia Nacional (bajo)", value: 1 },
+    { id: 15, text: "Guanajuato (muy bajo)", value: 0 },
+    { id: 16, text: "Huanímaro (bajo)", value: 1 },
+    { id: 17, text: "Irapuato (muy bajo)", value: 0 },
+    { id: 18, text: "Jaral del Progreso (muy bajo)", value: 0 },
+    { id: 19, text: "Jerécuaro (bajo)", value: 1 },
+    { id: 20, text: "León (muy bajo)", value: 0 },
+    { id: 21, text: "Moroleón (muy bajo)", value: 0 },
+    { id: 22, text: "Ocampo (bajo)", value: 1 },
+    { id: 23, text: "Pénjamo (bajo)", value: 1 },
+    { id: 24, text: "Pueblo Nuevo (bajo)", value: 1 },
+    { id: 25, text: "Purísima del Rincón (muy bajo)", value: 0 },
+    { id: 26, text: "Romita (bajo)", value: 1 },
+    { id: 27, text: "Salamanca (muy bajo)", value: 0 },
+    { id: 28, text: "Salvatierra (muy bajo)", value: 0 },
+    { id: 29, text: "San Diego de la Unión (bajo)", value: 1 },
+    { id: 30, text: "San Felipe (bajo)", value: 1 },
+    { id: 31, text: "San Francisco del Rincón (muy bajo)", value: 0 },
+    { id: 32, text: "San José Iturbide (muy bajo)", value: 0 },
+    { id: 33, text: "San Luis de la Paz (bajo)", value: 1 },
+    { id: 34, text: "Santa Catarina (bajo)", value: 1 },
+    { id: 35, text: "Santa Cruz de Juventino Rosas (bajo)", value: 1 },
+    { id: 36, text: "Santiago Maravatío (muy bajo)", value: 0 },
+    { id: 37, text: "Silao de la Victoria (muy bajo)", value: 0 },
+    { id: 38, text: "Tarandacuao (muy bajo)", value: 0 },
+    { id: 39, text: "Tarimoro (bajo)", value: 1 },
+    { id: 40, text: "Tierra Blanca (medio)", value: 2 },
+    { id: 41, text: "Uriangato (muy bajo)", value: 0 },
+    { id: 42, text: "Valle de Santiago (bajo)", value: 1 },
+    { id: 43, text: "Victoria (bajo)", value: 1 },
+    { id: 44, text: "Villagrán (muy bajo)", value: 0 },
+    { id: 45, text: "Xichú (medio)", value: 2 },
+    { id: 46, text: "Yuriria (bajo)", value: 1 },
+    { id: 47, text: "Varios municipios(muy bajo)", value: 0 }
+  ];
+  public OpIS2_text: string[] = [
+    "Selecciona",
+    "Abasolo (bajo)",
+    "Acámbaro (muy bajo)",
+    "San Miguel de Allende (bajo)",
+    "Apaseo el Alto (bajo)",
+    "Apaseo el Grande (muy bajo)",
+    "Atarjea (medio)",
+    "Celaya (muy bajo)",
+    "Manuel Doblado (bajo)",
+    "Comonfort (bajo)",
+    "Coroneo (bajo)",
+    "Cortazar (muy bajo)",
+    "Cuerámaro (bajo)",
+    "Doctor Mora (bajo)",
+    "Dolores Hidalgo Cuna de la Independencia Nacional (bajo)",
+    "Guanajuato (muy bajo)",
+    "Huanímaro (bajo)",
+    "Irapuato (muy bajo)",
+    "Jaral del Progreso (muy bajo)",
+    "Jerécuaro (bajo)",
+    "León (muy bajo)",
+    "Moroleón (muy bajo)",
+    "Ocampo (bajo)",
+    "Pénjamo (bajo)",
+    "Pueblo Nuevo (bajo)",
+    "Purísima del Rincón (muy bajo)",
+    "Romita (bajo)",
+    "Salamanca (muy bajo)",
+    "Salvatierra (muy bajo)",
+    "San Diego de la Unión (bajo)",
+    "San Felipe (bajo)",
+    "San Francisco del Rincón (muy bajo)",
+    "San José Iturbide (muy bajo)",
+    "San Luis de la Paz (bajo)",
+    "Santa Catarina (bajo)",
+    "Santa Cruz de Juventino Rosas (bajo)",
+    "Santiago Maravatío (muy bajo)",
+    "Silao de la Victoria (muy bajo)",
+    "Tarandacuao (muy bajo)",
+    "Tarimoro (bajo)",
+    "Tierra Blanca (medio)",
+    "Uriangato (muy bajo)",
+    "Valle de Santiago (bajo)",
+    "Victoria (bajo)",
+    "Villagrán (muy bajo)",
+    "Xichú (medio)",
+    "Yuriria (bajo)",
+    "Varios municipios (muy bajo)"
+  ];
 
-  { id: 1, text: "Abasolo", value: 1 },
-  { id: 2, text: "Acámbaro", value: 0 },
-  { id: 3, text: "San Miguel de Allende", value: 1 },
-  { id: 4, text: "Apaseo el Alto", value: 1 },
-  { id: 5, text: "Apaseo el Grande", value: 0 },
-  { id: 6, text: "Atarjea", value: 2 },
-  { id: 7, text: "Celaya", value: 0 },
-  { id: 8, text: "Manuel Doblado", value: 1 },
-  { id: 9, text: "Comonfort", value: 1 },
-  { id: 10, text: "Coroneo", value: 1 },
-  { id: 11, text: "Cortazar", value: 0 },
-  { id: 12, text: "Cuerámaro", value: 1 },
-  { id: 13, text: "Doctor Mora", value: 1 },
-  { id: 14, text: "Dolores Hidalgo Cuna de la Independencia Nacional", value: 1 },
-  { id: 15, text: "Guanajuato", value: 0 },
-  { id: 16, text: "Huanímaro", value: 1 },
-  { id: 17, text: "Irapuato", value: 0 },
-  { id: 18, text: "Jaral del Progreso", value: 0 },
-  { id: 19, text: "Jerécuaro", value: 1 },
-  { id: 20, text: "León", value: 0 },
-  { id: 21, text: "Moroleón", value: 0 },
-  { id: 22, text: "Ocampo", value: 1 },
-  { id: 23, text: "Pénjamo", value: 1 },
-  { id: 24, text: "Pueblo Nuevo", value: 1 },
-  { id: 25, text: "Purísima del Rincón", value: 0 },
-  { id: 26, text: "Romita", value: 1 },
-  { id: 27, text: "Salamanca", value: 0 },
-  { id: 28, text: "Salvatierra", value: 0 },
-  { id: 29, text: "San Diego de la Unión", value: 1 },
-  { id: 30, text: "San Felipe", value: 1 },
-  { id: 31, text: "San Francisco del Rincón", value: 0 },
-  { id: 32, text: "San José Iturbide", value: 0 },
-  { id: 33, text: "San Luis de la Paz", value: 1 },
-  { id: 34, text: "Santa Catarina", value: 1 },
-  { id: 35, text: "Santa Cruz de Juventino Rosas", value: 1 },
-  { id: 36, text: "Santiago Maravatío", value: 0 },
-  { id: 37, text: "Silao de la Victoria", value: 0 },
-  { id: 38, text: "Tarandacuao", value: 0 },
-  { id: 39, text: "Tarimoro", value: 1 },
-  { id: 40, text: "Tierra Blanca", value: 2 },
-  { id: 41, text: "Uriangato", value: 0 },
-  { id: 42, text: "Valle de Santiago", value: 1 },
-  { id: 43, text: "Victoria", value: 1 },
-  { id: 44, text: "Villagrán", value: 0 },
-  { id: 45, text: "Xichú", value: 2 },
-  { id: 46, text: "Yuriria", value: 1 },
-];
   // Subsidios Sociales *
   public OpIS3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Mi proyecto entregará ayudas sociales directamente a las personas", value: 2 },
-    { text: "Mi proyecto entregará ayudas sociales a asociaciones o instituciones que atienden a personas vulnerables", value: 1 },
-    { text: "Mi proyecto no consiste en entregar ayudas sociales", value: 0 },
+    { text: "Mi proyecto entregará apoyos sociales directamente a las personas", value: 2 },
+    { text: "Mi proyecto entregará apoyos sociales a asociaciones o instituciones que atienden a personas vulnerables", value: 1 },
+    { text: "Mi proyecto no consiste en entregar apoyos", value: 0 },
 
   ];
   // Incidencia ODS
@@ -365,8 +418,8 @@ export class SimuladorComponent implements OnInit {
   // Actividad Economica
   public OpIE2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Mi proyecto puede vincularse con la actividad manufacturera (fabricación o ensamble de productos)", value: 2 },
-    { text: "Mi proyecto puede vincularse con alguna de las siguientes actividades: comercio (compra y venta de bienes, materias primas y suministros); transporte de personas y de carga; hotelería, alojamiento y preparación de alimentos y bebidas", value: 1 },
+    { text: "Mi proyecto puede vincularse directamente con alguna de esas actividades", value: 2 },
+    { text: "Mi proyecto puede vincularse indirectamente con alguna de esas actividades", value: 1 },
     { text: "Mi proyecto no puede vincularse con alguna de las actividades anteriores", value: 0 },
   ];
   //Empleos permanentes
@@ -376,7 +429,7 @@ export class SimuladorComponent implements OnInit {
     { text: "Mi proyecto tendrá efecto en la creación de hasta 1,000 empleos permanentes", value: 1 },
     { text: "Mi proyecto no tendrá efecto en la creación de empleos permanentes", value: 0 },
   ];
-
+ public municipio = "";
   //contador de letras
   public charachtersCount: number;
   public counter: string
@@ -443,6 +496,7 @@ export class SimuladorComponent implements OnInit {
       : '';
   }
   ngOnInit(): void {
+    
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
       console.log("Usuario:", this.currentUser)
@@ -529,6 +583,18 @@ export class SimuladorComponent implements OnInit {
     if (value == 2) return 'template9';
     return 'template';
   }
+   getTemplateClassIgualdadGeneroText(text: string): string {
+    if (!text) return 'template';
+
+    const t = text.toLowerCase();
+
+    if (t.includes('(muy bajo)')) return 'templateNeutro';
+    if (t.includes('(bajo)'))     return 'template8';
+    if (t.includes('(medio)'))    return 'template9';
+
+  return 'template';
+  }
+
   //Diseño con  3 variables sin cero
   getTemplateClass_22_SinCero(value: number): string {
     if (value == 1) return 'template3';
@@ -687,6 +753,7 @@ export class SimuladorComponent implements OnInit {
       descripcion: this.itemSeleccionado!.descripcion,
       continuidad: this.itemSeleccionado!.continuidad,
       dictaminacion: this.dictaminacion,
+      
       resultados: {
         res1: this.formSimulacion.get('Res1')?.value,
         pon1: this.Pon1 ?? 0,
@@ -733,6 +800,7 @@ export class SimuladorComponent implements OnInit {
         res15: this.formSimulacion.get('Res15')?.value,
         pon15: this.Pon15 ?? 0,
         color15: this.color15 ?? '',
+        municipio: this.municipio,
       },
       fecha: new Date().toISOString(),
       racionalidad: this.TotalRacionalidad,
@@ -924,12 +992,12 @@ export class SimuladorComponent implements OnInit {
     const cantidad_simulacion = this.listSim.length
     console.log(cantidad_proy)
     console.log(cantidad_simulacion)
-    if (cantidad_proy >= 5){
+    if (cantidad_proy >= 5) {
       this.cantidadProyMax = true;
       this.cantidadBol = false;
     }
 
-    else if (cantidad_proy >= 3 && cantidad_simulacion >= 3){
+    else if (cantidad_proy >= 3 && cantidad_simulacion >= 3) {
       this.currentStep = 2;
       this.cantidadBol = false;
       this.steps[0].label = 'Creado';
@@ -986,7 +1054,7 @@ export class SimuladorComponent implements OnInit {
       setTimeout(() => {
         this.currentStep = this.previousStep + 1;
       });
-     
+
       return;
     }
     if (stepIndex === 1 && cantidad_proyectos >= 3) {
@@ -1010,17 +1078,17 @@ export class SimuladorComponent implements OnInit {
       });
       return;
     }
-   
+
 
     if (stepIndex === 2 && cantidad_proyectos < 3) {
       setTimeout(() => {
         this.currentStep = this.previousStep;
       });
-    
+
       return;
     }
     else if (stepIndex === 3) {
-      
+
       // this.formSimulacion.reset()
       // for (let i = 1; i <= 15; i++) {
       //   this[`Pon${i}` as keyof this] = null as any;
@@ -1082,7 +1150,7 @@ export class SimuladorComponent implements OnInit {
       nombre: 'Nombre',
       descripcion: 'Descripción',
       continuidad: 'Continuidad',
-      monto:'Monto'
+      monto: 'Monto'
     };
 
     if (this.form.invalid) {
@@ -1161,6 +1229,7 @@ export class SimuladorComponent implements OnInit {
       Res15: simulacion.resultados.res15,
 
     });
+    this.municipio =  simulacion.resultados.municipio
     this.Pon1 = simulacion.resultados.pon1
     this.Pon2 = simulacion.resultados.pon2
     this.Pon3 = simulacion.resultados.pon3
@@ -1256,8 +1325,8 @@ export class SimuladorComponent implements OnInit {
       Res5: 'Inversión Productiva',
       Res6: 'Cobertura de la Población Objetivo',
       Res7: 'Concurrencia',
-      Res8: 'Atención Rezago Social',
-      Res9: 'Igualdad de Género',
+      Res8: 'Igualdad de Género',
+      Res9: 'Atención Rezago Social',
       Res10: 'Subsidios Sociales',
       Res11: 'Incidencia en los ODS',
       Res12: 'Incidencia en los Indicadores de Pobreza',
@@ -1712,7 +1781,39 @@ export class SimuladorComponent implements OnInit {
       this.Pon9 = 0;
       // this.MethodTotal()
     }
-    console.log("Respuesta2.2",value)
+    console.log("Respuesta2.2", value)
+  }
+  public RespuestaIS2_aux(text: string): void {
+    if (!text) {
+      this.Pon9 = 0;
+      this.color9 = '#64686d';
+      return;
+    }
+    const t = text.toLowerCase();
+
+    if (t.includes('(muy bajo)')) {
+      this.Pon9 = 0;
+      this.color9 = '#64686d';
+      this.municipio = text
+    }
+    else if (t.includes('(bajo)')) {
+      this.Pon9 = 3.5;
+      this.color9 = '#3ecf6d';
+       this.municipio = text
+    }
+    else if (t.includes('(medio)')) {
+      this.Pon9 = 7;
+      this.color9 = '#046b1e';
+       this.municipio = text
+    }
+    else {
+      this.Pon9 = 0;
+      this.color9 = '#64686d';
+       this.municipio = text
+    }
+     console.log("Respuesta Ponderacion", this.Pon9)
+    console.log("Respuesta2.2", text)
+
   }
   //Subsidios Sociales
   public RespuestaIS3(value: any): void {
@@ -1982,4 +2083,11 @@ export class SimuladorComponent implements OnInit {
     this.mostrarConfirmacion = false;
     this.limpia_simulacion();
   }
+  public onCookiesAccepted(){
+
+  }
+  onCookiesRejected(){}
+
+  openCookieSettings(){}
+
 }

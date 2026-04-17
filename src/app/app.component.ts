@@ -7,12 +7,13 @@ import { DialogModule} from '@progress/kendo-angular-dialog';
 import { ClaudeComponent } from './views/claude/claude.component';
 import { KENDO_LAYOUT } from '@progress/kendo-angular-layout';
 import { FabGlobalComponent } from "./views/home/fab-global/fab-global.component";
+import { DisclaimerComponent } from "./views/simulador/disclaimer/disclaimer.component";
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, WindowModule, TooltipModule, DialogModule, KENDO_LAYOUT, FabGlobalComponent],
+  imports: [RouterOutlet, WindowModule, TooltipModule, DialogModule, KENDO_LAYOUT, FabGlobalComponent, DisclaimerComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -55,4 +56,11 @@ toggleNavidad(estado: boolean) {
         height: 600
       });
     }
+
+      public onCookiesAccepted(){
+
+  }
+  onCookiesRejected(){}
+
+  openCookieSettings(){}
 }
