@@ -8,15 +8,16 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './disclaimer.component.scss'
 })
 export class DisclaimerComponent {
-  @Output() accepted = new EventEmitter<void>();
+  @Output() accepted = new EventEmitter<boolean>();
     @Output() rejected = new EventEmitter<void>();
   @Output() configured = new EventEmitter<void>();
 
   visible = true;
 
+
   accept(): void {
     this.visible = false;
-    this.accepted.emit();
+    this.accepted.emit(false);
   }
 
   reject(): void {

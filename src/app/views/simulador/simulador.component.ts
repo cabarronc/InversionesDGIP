@@ -76,6 +76,9 @@ export class SimuladorComponent implements OnInit {
   mensajeConfirmacionterminacion = '';
   mostrar = false;
   mostrar_c = false;
+  flag_acept = true;
+  flag_acept_lista = true;
+  flag_acept_terminar = true;
   pdfUrl: string = '';
   mostrarPdf = false;
   public resultadoFinal = ''
@@ -229,10 +232,10 @@ export class SimuladorComponent implements OnInit {
   // Fuente Financiamiento
   public OpRP4: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "El total de mi proyecto puede pagarse con recursos “etiquetados”", value: 3 },
-    { text: "Más del 90% del presupuesto de mi proyecto puede pagarse con recursos “etiquetados”", value: 2 },
-    { text: "Hasta un 90% del presupuesto de mi proyecto puede pagarse con recursos “etiquetados”", value: 1 },
-    { text: "El total de mi proyecto debe pagarse con recursos “de libre disposición”", value: 0 },
+    { text: 'El total de mi proyecto puede pagarse con recursos "etiquetados"', value: 3 },
+    { text: 'Más del 90% del presupuesto de mi proyecto puede pagarse con recursos "etiquetados"', value: 2 },
+    { text: 'Hasta un 90% del presupuesto de mi proyecto puede pagarse con recursos "etiquetados"', value: 1 },
+    { text: 'El total de mi proyecto debe pagarse con recursos "de libre disposición"', value: 0 },
 
   ];
   // Inversion Productiva
@@ -383,7 +386,7 @@ export class SimuladorComponent implements OnInit {
   public OpIS3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: "Mi proyecto entregará apoyos directamente a las personas", value: 2 },
-    { text: "Mi proyecto entregará ayudas a asociaciones o instituciones que atienden a personas vulnerables", value: 1 },
+    { text: "Mi proyecto entregará apoyos a asociaciones o instituciones que atienden a personas vulnerables", value: 1 },
     { text: "Mi proyecto no consiste en entregar apoyos", value: 0 },
 
   ];
@@ -2083,7 +2086,11 @@ export class SimuladorComponent implements OnInit {
     this.mostrarConfirmacion = false;
     this.limpia_simulacion();
   }
-  public onCookiesAccepted(){
+  public onAccepted(value:boolean){
+    this.flag_acept = value
+    this.flag_acept_lista = value
+    this.flag_acept_terminar =value
+    console.log(value)
 
   }
   onCookiesRejected(){}

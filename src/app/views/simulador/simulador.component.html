@@ -1,6 +1,5 @@
 <section class="sectiondefault">
-  <app-disclaimer (accepted)="onCookiesAccepted()" (rejected)="onCookiesRejected()" (configured)="openCookieSettings()">
-  </app-disclaimer>
+
   <!-- Intro -->
   <div class="row justify-content-center text-center">
     <div class="col-11">
@@ -57,7 +56,7 @@
         </span>
 
       </div>
-      <button kendoButton (click)="open()" [disabled]="cantidadProyMax" themeColor="success" class="mt-2">Crea</button>
+      <button kendoButton (click)="open()" [disabled]="cantidadProyMax || flag_acept" themeColor="success" class="mt-2">Crea</button>
       }
 
       @if (dataSaved) {
@@ -119,7 +118,7 @@
               <ng-template #tooltipDescripcion>
                 <div class="tooltip-justificado">
                   <p>Ejemplo 1: Construcción de calle y banquetas con concreto, en un tramo de 400 metros,
-                    de la calle Plata a la calle Cobre, para beneficio de 150 habitantes </p>
+                    de la calle Plata a la calle Cobre, para beneficio de 150 habitantes.</p>
                   <p>Ejemplo 2: Pavimentación del camino que va de la localidad Los Huizaches hacia la localidad El
                     Encinal, con dos carriles de circulación a base de empedrado y huellas de concreto, en una longitud
                     de
@@ -131,7 +130,7 @@
               </ng-template>
               <div kendoTooltip [tooltipTemplate]="tooltipDescripcion" filter=".info-icon" position="right">
                 <span>Describe brevemente lo que realizarás en tu proyecto, incluyendo la cantidad de personas que se
-                  beneficiarán al realizarlo</span>
+                  beneficiarán al realizarlo.</span>
                 <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                   <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                 </span>
@@ -236,7 +235,7 @@
         </span>
 
         <kendo-combobox class="mt-2" #sizes [data]="listItems" valueField="clave" [valuePrimitive]="false"
-          textField="nombre" [(value)]="itemSeleccionado" (valueChange)="onProyChange($event)" [clearButton]="false"
+          textField="nombre" [(value)]="itemSeleccionado" [disabled]="flag_acept_lista" (valueChange)="onProyChange($event)" [clearButton]="false"
           placeholder="Proyecto"></kendo-combobox>
 
       </div>
@@ -411,7 +410,7 @@
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
       </div>
-      <button kendoButton class="mt-2" type="button" themeColor="error" (click)="limpia_simulacion_confirm()">Termina
+      <button kendoButton class="mt-2" type="button" themeColor="error" [disabled]="flag_acept_terminar" (click)="limpia_simulacion_confirm()">Termina
       </button>
     </div>
 
@@ -521,6 +520,8 @@
       </div>
     </div>
   </div>
+    <app-disclaimer (accepted)="onAccepted($event)" >
+  </app-disclaimer>
   @if (itemSeleccionado) {
   <form class="k-form" [formGroup]="formSimulacion">
     <div class="row justify-content-center">
@@ -650,9 +651,9 @@
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate2" filter=".info-icon">
                               <kendo-label class="label-justificado">Para que un proyecto pueda realizarse de manera
                                 adecuada necesita estar preparado. Por ejemplo, en los proyectos que consisten en
-                                realizar obras, “preparado” significa tener los estudios técnicos necesarios, ciertos
+                                realizar obras, "preparado" significa tener los estudios técnicos necesarios, ciertos
                                 permisos de las autoridades, y los terrenos donde se va a construir. Para otros
-                                proyectos, como los que otorgan apoyos a la población, “preparado” significa tener
+                                proyectos, como los que otorgan apoyos a la población, "preparado" significa tener
                                 ciertos documentos como las reglas de operación, que es donde se especifica el apoyo a
                                 otorgar, y los requisitos y el procedimiento para poder obtener los apoyos. Tomando en
                                 cuenta la descripción de tu proyecto ¿se tienen todos los elementos de preparación
@@ -838,14 +839,14 @@
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate4" filter=".info-icon">
                               <kendo-label class="label-justificado">Los proyectos de inversión se financian con
                                 recursos públicos que provienen de
-                                diferentes fuentes. Una parte de los recursos están restringidos o “etiquetados” en
+                                diferentes fuentes. Una parte de los recursos están restringidos o "etiquetados" en
                                 cuanto a lo que puede pagarse con ellos: obras en zonas con pobreza o rezago social;
                                 alimentación de personas vulnerables; construcción y equipamiento de escuelas;
                                 equipamiento y capacitación de policías; y obras de calles, carreteras, agua potable y
-                                drenaje. Otra parte de los recursos se conocen como “de libre disposición”, porque
+                                drenaje. Otra parte de los recursos se conocen como "de libre disposición", porque
                                 pueden destinarse a cualquier proyecto de inversión. Teniendo en cuenta la descripción
-                                de tu proyecto y los apartados en los que se pueden gastar los recursos etiquetados
-                                ¿cuánto del presupuesto de tu proyecto podría pagarse con recursos “etiquetados”?
+                                de tu proyecto y los apartados en los que se pueden gastar los recursos "etiquetados"
+                                ¿cuánto del presupuesto de tu proyecto podría pagarse con recursos "etiquetados"?
                               </kendo-label>
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -929,10 +930,10 @@
                                 en:
                                 <ol type="a" style="margin-bottom:5px;">
                                   <li>
-                                    Realizar obras públicas.
+                                    Realizar obras públicas
                                   </li>
                                   <li>
-                                    Comprar mobiliario y equipo para la prestación de servicios a la ciudadanía.
+                                    Comprar mobiliario y equipo para la prestación de servicios a la ciudadanía
                                   </li>
                                   <li>
                                     Comprar terrenos o edificios para realizar obras públicas en ellos
@@ -1016,13 +1017,13 @@
                             <ng-template #tooltipTemplate6>
                               <div class="tooltip-justificado">
                                 En los proyectos de inversión, lo ideal sería atender a toda la población afectada por
-                                la problemática o necesidad que se pretende solucionar (“población objetivo”), pero eso
+                                la problemática o necesidad que se pretende solucionar ("población objetivo"), pero eso
                               </div>
                             </ng-template>
                             <div kendoTooltip [tooltipTemplate]="tooltipTemplate6" filter=".info-icon">
                               <kendo-label class="label-justificado">En los proyectos de inversión, lo ideal sería
                                 atender a toda la población afectada por
-                                la problemática o necesidad que se pretende solucionar (“población objetivo”), pero eso
+                                la problemática o necesidad que se pretende solucionar ("población objetivo"), pero eso
                                 no siempre es posible, y en ocasiones, las personas que se benefician de manera directa
                                 con el proyecto es menor, ya sea por la falta de recursos para atender a toda la
                                 población a la vez, o por la complejidad del problema o necesidad. Piensa en la
@@ -1307,7 +1308,7 @@
                               necesitan mayor inversión en obras y acciones relacionadas con esos derechos sociales.
                               Busca debajo el nombre del municipio en el que realizarás tu proyecto, y selecciónalo.
                               Si tu proyecto abarca más de un municipio, selecciona el más importante o
-                              selecciona “Varios”.
+                              selecciona "Varios".
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
                                 <kendo-svg-icon [icon]="icons.mapMarkerIcon" (click)="abrirInfo()"
                                   class="colorMapa"></kendo-svg-icon>
