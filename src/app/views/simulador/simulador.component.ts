@@ -240,7 +240,7 @@ export class SimuladorComponent implements OnInit {
     { text: "Selecciona", value: null },
     { text: "Todo el presupuesto de mi proyecto es para inversión productiva", value: 4 },
     { text: "Más del 85% del presupuesto es para inversión productiva", value: 3 },
-    { text: "Entre un 31 y un 85% del presupuesto es para inversión productiva", value: 2 },
+    { text: "Entre un 31% y un 85% del presupuesto es para inversión productiva", value: 2 },
     { text: "Hasta un 30% del presupuesto es para inversión productiva", value: 1 },
     { text: "Mi proyecto no considera inversión productiva", value: 0 },
 
@@ -326,7 +326,7 @@ export class SimuladorComponent implements OnInit {
     { id: 44, text: "Villagrán (muy bajo)", value: 0 },
     { id: 45, text: "Xichú (medio)", value: 2 },
     { id: 46, text: "Yuriria (bajo)", value: 1 },
-    { id: 47, text: "Varios municipios(muy bajo)", value: 0 }
+    { id: 47, text: "Varios municipios (muy bajo)", value: 0 }
   ];
   public OpIS2_text: string[] = [
     "Selecciona",
@@ -382,8 +382,8 @@ export class SimuladorComponent implements OnInit {
   // Subsidios Sociales *
   public OpIS3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Mi proyecto entregará apoyos sociales directamente a las personas", value: 2 },
-    { text: "Mi proyecto entregará apoyos sociales a asociaciones o instituciones que atienden a personas vulnerables", value: 1 },
+    { text: "Mi proyecto entregará apoyos directamente a las personas", value: 2 },
+    { text: "Mi proyecto entregará ayudas a asociaciones o instituciones que atienden a personas vulnerables", value: 1 },
     { text: "Mi proyecto no consiste en entregar apoyos", value: 0 },
 
   ];
@@ -1318,21 +1318,21 @@ export class SimuladorComponent implements OnInit {
     const camposFaltantes: string[] = [];
 
     const nombresCampos: any = {
-      Res1: 'Gasto de Administración',
-      Res2: 'Preparación Técnica',
-      Res3: 'Desempeño Histórico',
-      Res4: 'Fuente Financiamiento',
-      Res5: 'Inversión Productiva',
-      Res6: 'Cobertura de la Población Objetivo',
-      Res7: 'Concurrencia',
-      Res8: 'Igualdad de Género',
-      Res9: 'Atención Rezago Social',
-      Res10: 'Subsidios Sociales',
-      Res11: 'Incidencia en los ODS',
-      Res12: 'Incidencia en los Indicadores de Pobreza',
-      Res13: 'Incidencia Empleos Temporales',
-      Res14: 'Actividad Económica',
-      Res15: 'Incidencia en Empleos Permanentes',
+      Res1: '1.1',
+      Res2: '1.2',
+      Res3: '1.3',
+      Res4: '1.4',
+      Res5: '1.5',
+      Res6: '1.6',
+      Res7: '1.7',
+      Res8: '2.1',
+      Res9: '2.2',
+      Res10: '2.3',
+      Res11: '2.4',
+      Res12: '2.5',
+      Res13: '3.1',
+      Res14: '3.3',
+      Res15: '3.2',
     };
 
     // 🔴 1️⃣ Validar formulario
