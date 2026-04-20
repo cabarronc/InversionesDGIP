@@ -1,3 +1,13 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55); /* oscurece fondo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
 .disc-wrap {
   position: fixed;
   bottom: 24px;
