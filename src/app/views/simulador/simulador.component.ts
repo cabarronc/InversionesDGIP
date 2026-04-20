@@ -1368,7 +1368,7 @@ export class SimuladorComponent implements OnInit {
         hideAfter: 2500,
         animation: { type: "slide", duration: 2500 },
         type: { style: "error", icon: true },
-        position: { horizontal: "center", vertical: "top" },
+        position: { horizontal: "center", vertical: "bottom" },
       });
       setTimeout(() => {
         this.irAlPrimerError();
