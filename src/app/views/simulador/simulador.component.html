@@ -424,21 +424,21 @@
           <div class="row ms-2">
             <div class="col-lg-8 col-md-8 col-sm-6 border-end border-dark d-flex flex-column ">
               @if (itemSeleccionado) {
-              <div class="texto"><strong style="color: black;">Nombre del proyecto: </strong>{{
+              <div class="texto-grande"><strong style="color: black;">Nombre del proyecto: </strong>{{
                 itemSeleccionado.nombre }}
               </div>
-              <div class="texto"><strong style="color: black;">Descripción del proyecto: </strong>{{
+              <div class="texto-grande"><strong style="color: black;">Descripción del proyecto: </strong>{{
                 itemSeleccionado.descripcion }}
               </div>
-              <div class="texto"><strong style="color: black;">Presupuesto total del proyecto: </strong> {{
+              <div class="texto-grande"><strong style="color: black;">Presupuesto total del proyecto: </strong> {{
                 itemSeleccionado.monto_f }}</div>
 
               @if (itemSeleccionado.continuidad){
-              <div class="texto"><strong style="color: black;">Proyecto nuevo o de continuidad: </strong> 🔄 Continuidad
+              <div class="texto-grande"><strong style="color: black;">Proyecto nuevo o de continuidad: </strong> 🔄 Continuidad
               </div>
               }
               @else{
-              <div class="texto"> <strong>Proyecto nuevo o de continuidad: </strong>🆕 Nuevo </div>
+              <div class="texto-grande"> <strong>Proyecto nuevo o de continuidad: </strong>🆕 Nuevo </div>
               }
 
               }
@@ -520,8 +520,11 @@
       </div>
     </div>
   </div>
-    <app-disclaimer (accepted)="onAccepted($event)" >
+  @if (flag_acept) {
+ <app-disclaimer (accepted)="onAccepted($event)" >
   </app-disclaimer>
+  }
+   
   @if (itemSeleccionado) {
   <form class="k-form" [formGroup]="formSimulacion">
     <div class="row justify-content-center">
@@ -539,7 +542,7 @@
         <!-- ================================= Seccion 1  Racionalodad Publica 61 % ======================== -->
         <!-- ============================================================================================================= -->
         <kendo-panelbar class="panel-personalizadoValorPublico">
-          <kendo-panelbar-item [svgIcon]="icons.buildingsOutlineIcon"
+          <kendo-panelbar-item  [svgIcon]="icons.buildingsOutlineIcon"
             title="1 – El primer grupo de variables, al que llamaremos Valor Público, califica la capacidad de tu proyecto para lograr el efecto esperado sobre un problema o necesidad, usando el mínimo posible de recursos."
             [expanded]="true">
             <ng-template kendoPanelBarContent>

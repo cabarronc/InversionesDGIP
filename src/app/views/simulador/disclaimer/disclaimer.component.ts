@@ -20,14 +20,6 @@ export class DisclaimerComponent {
     this.accepted.emit(false);
   }
 
-  reject(): void {
-    this.visible = false;
-    this.rejected.emit();
-  }
-
-  configure(): void {
-    this.configured.emit();
-  }
 
   close(): void {
     this.visible = false;

@@ -151,7 +151,7 @@
    align-items: center;
    text-align: start;
    gap: 8px;
-   font-size: 11px;
+   font-size: 13px;
    /* puedes subir/bajar */
    font-weight: 600;
  }
@@ -161,7 +161,7 @@
  }
 
  .texto-grande {
-   font-size: 12px;
+   font-size: 13px;
    text-align: justify;
    white-space: nowrap;
 
@@ -522,6 +522,7 @@
    font-weight: bold;
    text-align: justify;
    display: block;
+   font-size: 13px;
  }
 
 
@@ -671,7 +672,9 @@
 
  }
 
-
+::ng-deep .k-panelbar .k-link {
+  font-size: 14px;
+}
  /* Tablet */
  @media (max-width: 992px) {
  
@@ -680,10 +683,24 @@
      position: sticky;
      top: 130px;
    }
+   ::ng-deep .k-panelbar .k-link {
+  font-size: 15px;
+}
+ .texto-grande {
+   font-size: 11px;
+   text-align: justify;
+   white-space: nowrap;
 
+ }
    .sectiondefault {
      padding-top: 100px;
    }
+    .item-content {
+   font-size: 11px;
+ }
+  .label-justificado {
+   font-size: 11px;
+ }
  }
 
  /* Móvil */
@@ -691,6 +708,9 @@
    .barra {
      top: 440px;
    }
+    .item-content {
+   font-size: 10px;
+ }
 
    .barraGenerales {
      position: sticky;
@@ -701,6 +721,9 @@
   font-size: 1.2rem;
 
  }
+  .label-justificado {
+   font-size: 11px;
+ }
  .title2{
   font-size: 1rem;
 
@@ -710,6 +733,8 @@
      padding-top: 120px;
    }
  }
+
+
  .form-success{
   padding-top: 0.2rem;
   font-size: 0.6rem;
