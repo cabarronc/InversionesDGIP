@@ -56,7 +56,7 @@
         </span>
 
       </div>
-      <button kendoButton (click)="open()" [disabled]="cantidadProyMax || flag_acept" themeColor="success" class="mt-2">Crea</button>
+      <button kendoButton size="large"  (click)="open()" [disabled]="cantidadProyMax || flag_acept" themeColor="success" class="mt-2 btn-grande">Crea</button>
       }
 
       @if (dataSaved) {
@@ -235,7 +235,7 @@
         </span>
 
         <kendo-combobox class="mt-2" #sizes [data]="listItems" valueField="clave" [valuePrimitive]="false"
-          textField="nombre" [(value)]="itemSeleccionado" [disabled]="flag_acept_lista" (valueChange)="onProyChange($event)" [clearButton]="false"
+          textField="nombre" size="large" [(value)]="itemSeleccionado" [disabled]="flag_acept_lista" (valueChange)="onProyChange($event)" [clearButton]="false"
           placeholder="Proyecto"></kendo-combobox>
 
       </div>
@@ -257,7 +257,7 @@
 
       </div>
       <!-- @if(listItems.length > 2){ -->
-      <button kendoButton (click)="open2()" [disabled]="cantidadBol" themeColor="tertiary" class="mt-2">Compara</button>
+      <button kendoButton size="large" (click)="open2()" [disabled]="cantidadBol" themeColor="tertiary" class="mt-2 btn-grande">Compara</button>
       <!-- } -->
       } @if (dataSaved2) {
       } @if (opened2) {
@@ -410,7 +410,7 @@
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
       </div>
-      <button kendoButton class="mt-2" type="button" themeColor="error" [disabled]="flag_acept_terminar" (click)="limpia_simulacion_confirm()">Termina
+      <button kendoButton class="mt-2 btn-grande" type="button" themeColor="error"  size="large" [disabled]="flag_acept_terminar" (click)="limpia_simulacion_confirm()">Termina
       </button>
     </div>
 
@@ -447,13 +447,13 @@
 
             <div class="col-lg-2 col-md-2 col-sm-3 d-flex align-items-start justify-content-center align-items-center ">
               @if (dictaminacion) {
-              <div class="fw-bold"><strong style="color: rgb(245, 2, 2);"></strong> La probabilidad de
+              <div class="fw-bold texto-grande"><strong style="color: rgb(245, 2, 2);"></strong> La probabilidad de
                 que tu
                 proyecto pueda obtener recursos del presupuesto público es:
               </div>
               }
               @else{
-              <div class="fw-bold text-danger"><strong style="color: rgb(0, 0, 0);"></strong>Para ver el
+              <div class="fw-bold text-danger texto-grande"><strong style="color: rgb(0, 0, 0);"></strong>Para ver el
                 resultado primero simula un proyecto.
               </div>
               }
@@ -521,7 +521,7 @@
     </div>
   </div>
   @if (flag_acept) {
- <app-disclaimer (accepted)="onAccepted($event)" >
+  <app-disclaimer (accepted)="onAccepted($event)" >
   </app-disclaimer>
   }
    

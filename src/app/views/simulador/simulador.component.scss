@@ -151,7 +151,7 @@
    align-items: center;
    text-align: start;
    gap: 8px;
-   font-size: 13px;
+   font-size: 14px;
    /* puedes subir/bajar */
    font-weight: 600;
  }
@@ -161,9 +161,9 @@
  }
 
  .texto-grande {
-   font-size: 13px;
-   text-align: justify;
-   white-space: nowrap;
+   font-size: 14px;
+   text-align: start;
+  //  white-space: nowrap;
 
  }
 
@@ -327,7 +327,7 @@
  .descripcion {
    text-align: justify;
    margin-bottom: 0;
-  //  font-size: 1rem !important;
+  font-size: 1.1rem !important;
  }
 
  .title2 {
@@ -522,7 +522,7 @@
    font-weight: bold;
    text-align: justify;
    display: block;
-   font-size: 13px;
+   font-size: 14px;
  }
 
 
@@ -670,26 +670,34 @@
   color: black; 
   font-size: 1rem;
 
+
  }
 
 ::ng-deep .k-panelbar .k-link {
-  font-size: 14px;
+  font-size: 15px;
+}
+.btn-grande {
+  font-size: 15px;
+  padding: 6px 12px;
 }
  /* Tablet */
  @media (max-width: 992px) {
  
+   .descripcion {
+  font-size: 0.7rem !important;
+ }
 
    .barraGenerales {
      position: sticky;
      top: 130px;
    }
    ::ng-deep .k-panelbar .k-link {
-  font-size: 15px;
+  font-size: 13px;
 }
  .texto-grande {
    font-size: 11px;
-   text-align: justify;
-   white-space: nowrap;
+   text-align: start;
+  //  white-space: nowrap;
 
  }
    .sectiondefault {
@@ -705,6 +713,9 @@
 
  /* Móvil */
  @media (max-width: 576px) {
+   .descripcion {
+  font-size: 0.7rem !important;
+ }
    .barra {
      top: 440px;
    }
