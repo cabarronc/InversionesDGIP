@@ -144,6 +144,9 @@
    white-space: normal;
    line-height: 1.4;
  }
+  .tooltip-justificado span {
+   color: #f4f775;
+ }
 
  /* Contenido interno */
  .item-content {
@@ -762,9 +765,9 @@
   font-size: 14px !important;
 }
 
-::ng-deep .k-animation-container {
-  z-index: 9999 !important;
-}
+// ::ng-deep .k-animation-container {
+//   z-index: 9999 !important;
+// }
 
  /* Tablet */
  @media (max-width: 992px) {

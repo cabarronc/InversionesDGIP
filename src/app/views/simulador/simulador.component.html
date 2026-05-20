@@ -46,12 +46,13 @@
       @if (!opened) {
       <ng-template #tooltipProyecto1>
         <div class="tooltip-justificado">
-          Primero, configura tu proyecto de inversión capturando algunos datos básicos.
+          Primero, configura tu proyecto de inversión capturando algunos datos básicos. <span>Por favor, NO PROPORCIONES en
+            ningún apartado datos que puedan identificarte, tales como tu nombre, domicilio, teléfono o correo electrónico.</span>
         </div>
       </ng-template>
-      <div kendoTooltip [tooltipTemplate]="tooltipProyecto1" filter=".info-icon" position="right">
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto1" filter=".info-icon8" position="right" [showAfter]="0">
         <kendo-label text="1. Crea tu proyecto"></kendo-label>
-        <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+        <span class="info-icon8" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
 
@@ -78,13 +79,15 @@
               <ng-template #tooltipNombreProyecto>
                 <div class="tooltip-justificado">
                   <p> Ejemplo 1: Pavimentación de la Calle Oro en la Colonia Las Minas, en Celaya</p>
-                  <p>Ejemplo 2: Camino Los Huizaches - El Encinal en Dolores Hidalgo</p>
+                  <p> Ejemplo 2: Camino Los Huizaches - El Encinal en Dolores Hidalgo</p>
                   <p> Ejemplo 3: Construcción de Plaza Pública en la Localidad Peña Grande, en Salamanca</p>
+                  <p> Ejemplo 4: Mobiliario para la Escuela Primaria 5 de Mayo, Colonia Los Altos, en León</p>
+                  <p> Ejemplo 5: Apoyo de Transporte para Estudiantes de Primaria, Secundaria y Preparatoria </p>
                 </div>
               </ng-template>
-              <div kendoTooltip [tooltipTemplate]="tooltipNombreProyecto" filter=".info-icon" position="right">
+              <div kendoTooltip [tooltipTemplate]="tooltipNombreProyecto" filter=".info-icon7" position="right" [showAfter]="0">
                 <span>Define un nombre corto para tu proyecto, con referencias de su ubicación.</span>
-                <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                <span class="info-icon7" style="cursor: pointer; display: inline-flex;">
                   <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                 </span>
                 <kendo-formfield showHints="initial">
@@ -126,12 +129,16 @@
                   <p> Ejemplo 3: Construcción de quiosco, andadores, áreas verdes y cerca perimetral, e instalación de
                     alumbrado y mobiliario (bancas, basureros), en un área de 1,200 metros cuadrados, para beneficio de
                     las 1,200 personas que habitan en la localidad.</p>
+                    <p>Ejemplo 4: Sustitución de 10 pizarrones, 10 escritorios para docentes, 10 sillas para docentes y 
+                      300 mesa bancos para estudiantes, beneficiando a 310 personas.</p>
+                      <p>Ejemplo 5: Apoyo económico de hasta $1,500 por semestre a 50,000 estudiantes de escuelas 
+                        públicas, canjeable en rutas de transporte público autorizadas mediante el uso de una tarjeta.</p>
                 </div>
               </ng-template>
-              <div kendoTooltip [tooltipTemplate]="tooltipDescripcion" filter=".info-icon" position="right">
+              <div kendoTooltip [tooltipTemplate]="tooltipDescripcion" filter=".info-icon6" position="right" [showAfter]="0">
                 <span>Describe brevemente lo que realizarás en tu proyecto, incluyendo la cantidad de personas que se
                   beneficiarán al realizarlo.</span>
-                <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                <span class="info-icon6" style="cursor: pointer; display: inline-flex;">
                   <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                 </span>
                 <kendo-formfield showHints="initial">
@@ -166,9 +173,9 @@
                   <p> Captura un importe mayor o igual a $50,000.00</p>
                 </div>
               </ng-template>
-              <div kendoTooltip [tooltipTemplate]="tooltipMonto" filter=".info-icon" position="right">
+              <div kendoTooltip [tooltipTemplate]="tooltipMonto" filter=".info-icon5" position="right" [showAfter]="0">
                 <span>¿Cuál es el presupuesto total que necesitarás para realizar tu proyecto?</span>
-                <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+                <span class="info-icon5" style="cursor: pointer; display: inline-flex;">
                   <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
                 </span>
                 <kendo-formfield showHints="initial">
@@ -228,9 +235,9 @@
           Después de crear tu proyecto, selecciónalo aquí y completa la simulación capturando todas las variables.
         </div>
       </ng-template>
-      <div kendoTooltip [tooltipTemplate]="tooltipProyecto2" filter=".info-icon" position="right">
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto2" filter=".info-icon4" position="right" [showAfter]="0">
         <kendo-label [for]="sizes" text="2. Simula tu proyecto"></kendo-label>
-        <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+        <span class="info-icon4" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
 
@@ -246,12 +253,12 @@
       @if (!opened2) {
       <ng-template #tooltipProyecto3>
         <div class="tooltip-justificado">
-          Crea y completa la simulación de al menos tres proyectos, y compara aquí los resultados.
+          Crea y completa la simulación de al menos tres proyectos y hasta cinco proyectos, y compara aquí los resultados.
         </div>
       </ng-template>
-      <div kendoTooltip [tooltipTemplate]="tooltipProyecto3" filter=".info-icon" position="right">
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto3" filter=".info-icon3" position="right" [showAfter]="0">
         <kendo-label [for]="sizes" text="3. Compara entre proyectos"></kendo-label>
-        <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+        <span class="info-icon3" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
 
@@ -404,9 +411,9 @@
           sus resultados.
         </div>
       </ng-template>
-      <div kendoTooltip [tooltipTemplate]="tooltipProyecto4" filter=".info-icon" position="top">
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto4" filter=".info-icon2" position="top" [showAfter]="0">
         <kendo-label [for]="sizes" text="Termina tu simulación"></kendo-label>
-        <span class="info-icon" style="cursor: pointer; display: inline-flex;">
+        <span class="info-icon2" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
       </div>
@@ -493,7 +500,7 @@
           Debes
         </div>
       </ng-template>
-      <div kendoTooltip [tooltipTemplate]="tooltipProyecto5" filter=".info-icon" position="right">
+      <div kendoTooltip [tooltipTemplate]="tooltipProyecto5" filter=".info-icon" position="right" [showAfter]="0">
         <kendo-label text="2. Simulador"></kendo-label>&nbsp;
         <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
@@ -562,7 +569,7 @@
                                 según la naturaleza y propósito de sus entregables
                               </div>
                             </ng-template>
-                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon">
+                            <div kendoTooltip [tooltipTemplate]="tooltipTemplate" filter=".info-icon" [showAfter]="0">
                               <kendo-label class="label-justificado">El primer criterio a calificar
                                 es ¿qué tanto del presupuesto de tu proyecto destinarás a
                                 gastos necesarios para administrarlo? Por ejemplo: contratación de personal y de

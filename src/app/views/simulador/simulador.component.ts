@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild, ViewContainerRef, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit, ViewChild, ViewContainerRef, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule, FormArray, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { KENDO_GAUGES } from "@progress/kendo-angular-gauges";
@@ -56,7 +56,8 @@ export function noCeroValidator(control: AbstractControl): ValidationErrors | nu
   imports: [KENDO_ICONS, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT,
     KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule, KENDO_DIALOGS, NotificationModule, AutoCompleteModule, DisclaimerComponent],
   templateUrl: './simulador.component.html',
-  styleUrl: './simulador.component.scss'
+  styleUrl: './simulador.component.scss',
+   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SimuladorComponent implements OnInit {
   estadoActual: 'happy' | 'neutral' | 'sad' = 'neutral';
@@ -214,9 +215,9 @@ export class SimuladorComponent implements OnInit {
   // Grado de preparación técnica
   public OpRP2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Se tienen todos los estudios, trámites o documentos que se necesitan para realizar mi proyecto", value: 4 },
-    { text: "Falta algún estudio o trámite, o alguno de los documentos está incompleto, pero falta poco para completarlos", value: 3 },
-    { text: "Los estudios, trámites o documentos están incompletos y llevará algo de tiempo completarlos", value: 2 },
+    { text: "Se tienen todos los estudios, terrenos, trámites o documentos que se necesitan para realizar mi proyecto", value: 4 },
+    { text: "Falta algún estudio, terreno o trámite, o alguno de los documentos necesarios está incompleto, pero se tendrá en menos de 6 meses", value: 3 },
+    { text: "Los estudios, terrenos, trámites o documentos necesarios están incompletos, pero se tendrán en 1 año o menos", value: 2 },
     { text: "No se tienen los estudios, trámites o documentos que se necesitan para realizar mi proyecto", value: 1 },
 
   ];
@@ -233,8 +234,8 @@ export class SimuladorComponent implements OnInit {
   public OpRP4: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
     { text: 'El total de mi proyecto puede pagarse con recursos "etiquetados"', value: 3 },
-    { text: 'Más del 90% del presupuesto de mi proyecto puede pagarse con recursos "etiquetados"', value: 2 },
-    { text: 'Hasta un 90% del presupuesto de mi proyecto puede pagarse con recursos "etiquetados"', value: 1 },
+    { text: 'Más del 60% del presupuesto de mi proyecto puede pagarse con recursos "etiquetados"', value: 2 },
+    { text: 'Hasta un 60% del presupuesto de mi proyecto puede pagarse con recursos "etiquetados"', value: 1 },
     { text: 'El total de mi proyecto debe pagarse con recursos "de libre disposición"', value: 0 },
 
   ];
