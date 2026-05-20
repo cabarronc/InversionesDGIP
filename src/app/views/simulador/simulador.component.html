@@ -8,7 +8,7 @@
         <span>{{ mensajeConfirmacionterminacion }}</span>
       </div>
       }
-      <h1 class="title2 mb-3">
+      <h1 class="title2 mb-2">
         Simulador de <span class="d-block d-md-inline">priorización de proyectos</span>
       </h1>
 
@@ -234,9 +234,9 @@
           <kendo-svg-icon [icon]="icons.infoSolidIcon"></kendo-svg-icon>
         </span>
 
-        <kendo-combobox class="mt-2" #sizes [data]="listItems" valueField="clave" [valuePrimitive]="false"
-          textField="nombre" size="large" [(value)]="itemSeleccionado" [disabled]="flag_acept_lista" (valueChange)="onProyChange($event)" [clearButton]="false"
-          placeholder="Proyecto"></kendo-combobox>
+        <kendo-combobox class="mt-2 combo_proyecto " #sizes [data]="listItems" valueField="clave" [valuePrimitive]="false"
+          textField="nombre"  [(value)]="itemSeleccionado" [disabled]="flag_acept_lista" (valueChange)="onProyChange($event)" [clearButton]="false"
+          placeholder="Proyecto"  [popupSettings]="{ appendTo: 'component' }"></kendo-combobox>
 
       </div>
 
@@ -257,7 +257,7 @@
 
       </div>
       <!-- @if(listItems.length > 2){ -->
-      <button kendoButton size="large" (click)="open2()" [disabled]="cantidadBol" themeColor="tertiary" class="mt-2 btn-grande">Compara</button>
+      <button kendoButton (click)="open2()" [disabled]="cantidadBol" themeColor="tertiary" class="mt-2 btn-grande">Compara</button>
       <!-- } -->
       } @if (dataSaved2) {
       } @if (opened2) {
@@ -420,7 +420,7 @@
     <div class="col-md-12 col-lg-11 col-sm-12 col-12 mt-3 ">
       <kendo-card width="100%" orientation="vertical" style="background-color:transparent;">
         <kendo-card-header
-          style="background-color:transparent;  border: 2px solid #004b87; border-radius: 14px; color:rgb(0, 0, 0);">
+          class="datos-generales">
           <div class="row ms-2">
             <div class="col-lg-8 col-md-8 col-sm-6 border-end border-dark d-flex flex-column ">
               @if (itemSeleccionado) {
@@ -590,7 +590,7 @@
                                     (selectionChange)="RespuestaRP1($event)" formControlName="Res1"
                                     showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res1')?.valid && formSimulacion.get('Res1')?.dirty
-                                }">
+                                }" [popupSettings]="{ appendTo: 'component' }">
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
@@ -680,7 +680,7 @@
                                     [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado2"
                                     formControlName="Res2" showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res2')?.valid && formSimulacion.get('Res2')?.dirty
-                                }">
+                                }" [popupSettings]="{ appendTo: 'component' }">
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
@@ -778,7 +778,7 @@
                                     (selectionChange)="RespuestaRP3($event)" formControlName="Res3"
                                     showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res3')?.valid && formSimulacion.get('Res3')?.dirty
-                                }">
+                                }" [popupSettings]="{ appendTo: 'component' }">
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
@@ -869,7 +869,7 @@
                                     [defaultItem]="{ text: 'Selecciona', value: null }" [value]="valorSeleccionado4"
                                     showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res4')?.valid && formSimulacion.get('Res4')?.dirty
-                                }">
+                                }" [popupSettings]="{ appendTo: 'component' }">
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
                                         <span [ngClass]="getTemplateClass_fin(dataItem.value)"></span>&nbsp;{{
@@ -967,7 +967,7 @@
                                     [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
                                     showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res5')?.valid && formSimulacion.get('Res5')?.dirty
-                                }">
+                                }" [popupSettings]="{ appendTo: 'component' }">
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
                                         <span [ngClass]="getTemplateClass(dataItem.value)"></span>&nbsp;{{
@@ -1054,7 +1054,7 @@
                                     formControlName="Res6" [defaultItem]="{ text: 'Selecciona', value: null }"
                                     showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res6')?.valid && formSimulacion.get('Res6')?.dirty
-                                }">
+                                }" [popupSettings]="{ appendTo: 'component' }">
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
                                         <span [ngClass]="getTemplateClass_cobertura(dataItem.value)">
@@ -1142,7 +1142,7 @@
                                     [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
                                     showSuccessIcon="initial" [ngClass]="{
                                   'k-valid': formSimulacion.get('Res7')?.valid && formSimulacion.get('Res7')?.dirty
-                                }">
+                                }" [popupSettings]="{ appendTo: 'component' }">
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
@@ -1253,7 +1253,7 @@
                                     formControlName="Res8" [defaultItem]="{ text: 'Selecciona', value: null }"
                                     showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                       'k-valid': formSimulacion.get('Res8')?.valid && formSimulacion.get('Res8')?.dirty
-                                    }">
+                                    }" [popupSettings]="{ appendTo: 'component' }">
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
                                         <span [ngClass]="getTemplateClassIgualdadGenero(dataItem.value)"></span>&nbsp;{{
@@ -1348,7 +1348,7 @@
                                     [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
                                     showSuccessIcon="initial" [ngClass]="{
                                       'k-valid': formSimulacion.get('Res9')?.valid && formSimulacion.get('Res9')?.dirty
-                                    }">
+                                    }" [popupSettings]="{ appendTo: 'component' }">
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
                                         <span [ngClass]="getTemplateClassIgualdadGenero(dataItem.value)"></span>&nbsp;{{
@@ -1452,7 +1452,7 @@
                                     formControlName="Res10" [defaultItem]="{ text: 'Selecciona', value: null }"
                                     showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                     'k-valid': formSimulacion.get('Res10')?.valid && formSimulacion.get('Res10')?.dirty
-                                  }">
+                                  }" [popupSettings]="{ appendTo: 'component' }">
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
@@ -1538,7 +1538,7 @@
                                     formControlName="Res11" [defaultItem]="{ text: 'Selecciona', value: null }"
                                     showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                       'k-valid': formSimulacion.get('Res11')?.valid && formSimulacion.get('Res11')?.dirty
-                                    }">
+                                    }" [popupSettings]="{ appendTo: 'component' }">
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
@@ -1623,7 +1623,7 @@
                                     formControlName="Res12" [defaultItem]="{ text: 'Selecciona', value: null }"
                                     showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                       'k-valid': formSimulacion.get('Res12')?.valid && formSimulacion.get('Res12')?.dirty
-                                    }">
+                                    }" [popupSettings]="{ appendTo: 'component' }">
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
@@ -1742,7 +1742,7 @@
                                     [defaultItem]="{ text: 'Selecciona', value: null }" showErrorIcon="initial"
                                     showSuccessIcon="initial" [ngClass]="{
                                         'k-valid': formSimulacion.get('Res13')?.valid && formSimulacion.get('Res13')?.dirty
-                                      }">
+                                      }" [popupSettings]="{ appendTo: 'component' }">
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
@@ -1825,7 +1825,7 @@
                                     formControlName="Res15" [defaultItem]="{ text: 'Selecciona', value: null }"
                                     showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                           'k-valid': formSimulacion.get('Res15')?.valid && formSimulacion.get('Res15')?.dirty
-                                        }">
+                                        }" [popupSettings]="{ appendTo: 'component' }">
 
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
@@ -1932,7 +1932,7 @@
                                     formControlName="Res14" [defaultItem]="{ text: 'Selecciona', value: null }"
                                     showErrorIcon="initial" showSuccessIcon="initial" [ngClass]="{
                                           'k-valid': formSimulacion.get('Res14')?.valid && formSimulacion.get('Res14')?.dirty
-                                        }">
+                                        }"[popupSettings]="{ appendTo: 'component' }" >
                                     <ng-template kendoDropDownListItemTemplate let-dataItem>
                                       <span class="item-content">
                                         <span [ngClass]="getTemplateClass_permanentes(dataItem.value)"></span>{{

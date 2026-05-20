@@ -1,42 +1,195 @@
+// .overlay {
+//   position: fixed;
+//   inset: 0;
+//   background: rgba(0, 0, 0, 0.55); /* oscurece fondo */
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   z-index: 999;
+// }
+
+// .disc-wrap {
+//   position: fixed;
+//   bottom: 24px;
+//   left: 0;
+//   right: 0;
+//   // display: flex;
+//   justify-content: center;
+//   // padding: 0 16px;
+//   z-index: 1000;
+//     top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
+// }
+
+// .disc-card {
+//   /* 🔥 efecto vidrio */
+//   background: rgba(168, 168, 223, 0.55);
+//   backdrop-filter: blur(12px);
+//   -webkit-backdrop-filter: blur(12px);
+
+//   border: 0.5px solid #e0e0e0;
+//   border-radius: 20px;
+//   padding: 1rem 1rem 1.5rem;
+//   max-width: 800px;
+//   width: 100%;
+//   text-align: center;
+//   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+// }
+
+// .disc-icon {
+//   width: 48px;
+//   height: 48px;
+//   border-radius: 14px;
+//   background: #F1EFE8;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   margin: 0 auto 1rem;
+// }
+
+// .disc-title {
+//   font-size: 17px;
+//   font-weight: 500;
+//   color: #e20d0d;
+//   margin: 0 0 8px;
+// }
+
+// .disc-body {
+//   font-size: 1rem;
+//   color: #1b1b1b;
+//   line-height: 1.65;
+//   margin: 0 0 1.5rem;
+// }
+
+// .disc-pills {
+//   display: flex;
+//   gap: 8px;
+//   justify-content: center;
+//   flex-wrap: wrap;
+//   margin-bottom: 1.25rem;
+// }
+
+// .pill {
+//   padding: 5px 14px;
+//   border-radius: 999px;
+//   font-size: 12px;
+//   font-weight: 500;
+//   border: 0.5px solid #ddd;
+//   color: #666;
+//   background: #f7f7f7;
+// }
+
+// .disc-actions {
+//   display: flex;
+//   gap: 8px;
+//   justify-content: center;
+//   flex-wrap: wrap;
+// }
+
+// .btn-ghost {
+//   padding: 9px 18px;
+//   border-radius: 10px;
+//   border: 0.5px solid #ccc;
+//   background: transparent;
+//   color: #666;
+//   font-size: 13px;
+//   cursor: pointer;
+// }
+
+// .btn-reject {
+//   padding: 9px 18px;
+//   border-radius: 10px;
+//   border: 0.5px solid #ccc;
+//   background: #f5f5f5;
+//   color: #1a1a1a;
+//   font-size: 13px;
+//   cursor: pointer;
+// }
+
+// .btn-accept {
+//   padding: 9px 22px;
+//   border-radius: 10px;
+//   border: none;
+//   background: #2C2C2A;
+//   color: #F1EFE8;
+//   font-size: 13px;
+//   font-weight: 500;
+//   cursor: pointer;
+// }
+
+// .disc-footer {
+//   margin-top: 1rem;
+//   font-size: 11px;
+//   color: #999;
+
+//   a {
+//     color: #666;
+//     text-decoration: underline;
+//     cursor: pointer;
+//   }
+// }
+
+/* Overlay (fondo oscuro con blur) */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.55); /* oscurece fondo */
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   z-index: 999;
+
+  animation: fadeIn 0.3s ease;
 }
 
+/* Contenedor (centrado) */
 .disc-wrap {
-  position: fixed;
-  bottom: 24px;
-  left: 0;
-  right: 0;
-  // display: flex;
-  justify-content: center;
-  // padding: 0 16px;
-  z-index: 1000;
-    top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
-.disc-card {
-  /* 🔥 efecto vidrio */
-  background: rgba(168, 168, 223, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  border: 0.5px solid #e0e0e0;
-  border-radius: 20px;
-  padding: 1rem 1rem 1.5rem;
-  max-width: 800px;
   width: 100%;
-  text-align: center;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: center;
+  padding: 16px;
 }
 
+/* Modal */
+.disc-card {
+  background: rgba(168, 168, 223, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 20px;
+
+  width: min(90%, 800px);
+  padding: 1.5rem;
+
+  text-align: center;
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+
+  animation: scaleIn 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
 .disc-icon {
   width: 48px;
   height: 48px;
@@ -129,3 +282,27 @@
     cursor: pointer;
   }
 }
+ /* Tablet */
+ @media (max-width: 992px) {
+.disc-card {
+  transform: none;}
+ }
+
+ @media (max-width: 576px) {
+
+.disc-card {
+  transform: none;
+    width: 100%;
+    height: auto;
+    border-radius: 16px;
+    padding: 1.3rem;
+    top: auto;
+    bottom: 0;
+    left: 0;
+  }
+
+  .overlay {
+    align-items: flex-end; /* tipo app mobile */
+  }
+
+ }
