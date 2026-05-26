@@ -436,7 +436,7 @@
     </div>
 </div>
 }
-@if (selectedItem === 'PPI' && canViewDeuda) {
+@if (selectedItem === 'PPI' && canViewPPI) {
 <div class="container-fluid mt-4">
     <div class="row">
         <h1 class="title2">Reporte<span> Programas y Proyectos Inversión</span>📝</h1>
@@ -485,7 +485,7 @@
 }
 
 @if ((!canViewCosainceg && selectedItem === 'Cosainceg') ||
-(!canViewDeuda && selectedItem === 'Deuda') || (!canViewInversion && selectedItem === 'Inversion')) {
+(!canViewDeuda && selectedItem === 'Deuda') || (!canViewInversion && selectedItem === 'Inversion') || (!canViewPPI && selectedItem === 'PPI')) {
 <div>
     <div class="max-w-md w-full space-y-8">
         <div class="text-center">

@@ -100,6 +100,7 @@ export class CosaincegComponent implements OnInit {
   nombre_archivo_2: string | null = null;
 
   canViewCosainceg = false;
+  canViewPPI = false;
   canViewInversion = false;
   canViewDeuda = false;
 
@@ -135,6 +136,7 @@ export class CosaincegComponent implements OnInit {
     this.canViewCosainceg = this.authService.hasPermission('cosainceg', 'manage');
     this.canViewInversion = this.authService.hasPermission('inversion', 'manage');
     this.canViewDeuda = this.authService.hasPermission('deuda', 'manage');
+     this.canViewPPI = this.authService.hasPermission('ppi', 'manage');
     console.log(this.canViewCosainceg)
     console.log(this.canViewDeuda)
   }

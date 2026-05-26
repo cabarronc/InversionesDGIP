@@ -80,7 +80,7 @@ export const routes: Routes = [
           {path: 'reportes',
         component: ReportesComponent,
         canActivate: [PermissionGuard],
-        data: { modules: ['cosainceg', 'deuda','inversion'], action: 'manage' }
+        data: { modules: ['cosainceg', 'deuda','inversion','ppi'], action: 'manage' }
       },
    
              {path: 'claude',
