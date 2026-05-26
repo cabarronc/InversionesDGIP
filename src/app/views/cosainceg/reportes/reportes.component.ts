@@ -1,12 +1,13 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
 import {fileWordIcon,menuIcon, chartBarClusteredIcon, SVGIcon,
-  dollarIcon, chevronDoubleDownIcon,fileExcelIcon,graphIcon,alignJustifyIcon, aggregateFieldsIcon,fileWrenchIcon} from '@progress/kendo-svg-icons';
+  dollarIcon, chevronDoubleDownIcon,fileExcelIcon,graphIcon,alignJustifyIcon, aggregateFieldsIcon,fileWrenchIcon, fileFooterIcon} from '@progress/kendo-svg-icons';
 import { KENDO_INDICATORS } from "@progress/kendo-angular-indicators";
 import { DrawerPosition, KENDO_LAYOUT } from "@progress/kendo-angular-layout";
 import { DrawerItem, DrawerSelectEvent } from "@progress/kendo-angular-layout";
 import { CosaincegComponent } from "../cosainceg.component";
 import { PermissionGuard } from '../../../guards/permission.guard';
+
 @Component({
   selector: 'app-reportes',
   standalone: true,
@@ -21,6 +22,7 @@ export class ReportesComponent {
     public wordIcon: SVGIcon = fileWordIcon;
     public menuSvg: SVGIcon = menuIcon;
     public dollarIcon: SVGIcon = dollarIcon
+    public fileFooterIcon: SVGIcon = fileFooterIcon
     public position: DrawerPosition = "start";
     public chevronDoubleDownIcon: SVGIcon = chevronDoubleDownIcon
     public items: Array<DrawerItem> = [
@@ -29,6 +31,8 @@ export class ReportesComponent {
       { text: "Deuda", svgIcon: chevronDoubleDownIcon},
       { separator: true },
       { text: "Inversion", svgIcon: dollarIcon},
+      { separator: true },
+      { text: "PPI", svgIcon: fileFooterIcon},
       { separator: true }
     ];
     constructor() {    

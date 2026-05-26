@@ -3,7 +3,7 @@ import { NavBarComponent } from "../nav-bar/nav-bar.component";
 import { KENDO_LAYOUT } from "@progress/kendo-angular-layout";
 import { KENDO_BUTTONS } from '@progress/kendo-angular-buttons';
 import { CommonModule } from '@angular/common';
-import { ColumnMenuSettings, KENDO_GRID } from '@progress/kendo-angular-grid';
+import { ColumnMenuSettings, KENDO_GRID,KENDO_GRID_EXCEL_EXPORT } from '@progress/kendo-angular-grid';
 import { WindowModule, WindowThemeColor } from '@progress/kendo-angular-dialog';
 import { KENDO_PDFVIEWER } from '@progress/kendo-angular-pdfviewer';
 import { FileService } from '../../services/file.service';
@@ -42,7 +42,7 @@ import { Router } from '@angular/router';
   selector: 'app-cosainceg',
   standalone: true,
   imports: [KENDO_LAYOUT, CommonModule, KENDO_BUTTONS, KENDO_GRID, WindowModule, KENDO_PDFVIEWER, KENDO_ICONS, KENDO_INDICATORS, KENDO_DIALOGS
-    , UploadsComponent, KENDO_INPUTS, KENDO_LABELS, FormsModule],
+    , UploadsComponent, KENDO_INPUTS, KENDO_LABELS, FormsModule,KENDO_GRID_EXCEL_EXPORT],
   templateUrl: './cosainceg.component.html',
   styleUrl: './cosainceg.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -107,13 +107,16 @@ export class CosaincegComponent implements OnInit {
   public opened = false;
   isInversionGeneral: boolean = false;
   isInversionGeneralD: boolean = false;
+  isPPI: boolean = false;
   generandoReporte: boolean = false;
   generandoReporteD: boolean = false;
   isCoping: boolean = false;
   copiado_respuesta: any
   interval: any;
   info: any;
+  info2: any;
   EjecutandoInversion: boolean =false;
+  EjecutandoPPI: boolean =false;
   cascaron: boolean = false;
 
   public close(): void {
@@ -1974,9 +1977,12 @@ export class CosaincegComponent implements OnInit {
     },
   ];
 
-  hasProps(obj: any): boolean {
+    hasProps(obj: any): boolean {
     return obj && Object.keys(obj).length > 0;
-  }
+    }
+    hasProps2(obj: any): boolean {
+    return obj && Object.keys(obj).length > 0;
+    }
   //////////////////////////////////////////////////////////////
   ///// Hoja de trabajo///////////////////////////////////////////////////////////////////////////////////////////////////
   public dataExcelInversionHojaTrabajo = [
@@ -2375,7 +2381,7 @@ export class CosaincegComponent implements OnInit {
       },
     },
   ];
-///Copias
+  ///Copias
   public dataExcelInversionesCopias = [
     {
       text: 'Primer Trimestre',
@@ -2535,7 +2541,7 @@ export class CosaincegComponent implements OnInit {
       },
     },
   ];
-///Crear Cascaron
+  ///Crear Cascaron
   public dataCascaron = [
     {
       text: 'Primer Trimestre',
@@ -2695,6 +2701,227 @@ export class CosaincegComponent implements OnInit {
       },
     },
   ];
+   //////////////////////////////////////////////////////////////
+  ///// Hoja de trabajo///////////////////////////////////////////////////////////////////////////////////////////////////
+  public dataExcelPPI = [
+    {
+      text: 'Primer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const primerTrimestre = `${anio}-04-10`;
+        const filename = `PPI_1T_${anio}.xlsx`
+        console.log("Primer Trimestre: ", primerTrimestre)
+        this.EjecutandoPPI = true;
+        this.isPPI = true
+        this.cosaincegService.GenerarPPI(primerTrimestre, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            this.info2 = x
+            console.log("Objeto recibido:", x);
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoPPI = false;
+            this.isPPI = false
+
+          }),
+          (error) => {
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+            console.error('Error fetching files', error);
+          }
+        );
+      },
+    },
+    {
+      text: 'Segundo Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const segundoTrimestre = `${anio}-07-10`;
+        const filename = `PPI_2T_${anio}.xlsx`
+        console.log("Segundo Trimestre: ", segundoTrimestre)
+         this.EjecutandoPPI = true;
+        this.isPPI = true
+        this.cosaincegService.GenerarPPI(segundoTrimestre, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            this.info2 = x
+            console.log("Objeto recibido:", x);
+
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoPPI = false;
+            this.isPPI = false
+
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+      },
+    },
+    {
+      text: 'Tercer Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const tercerTrimestre = `${anio}-10-10`;
+        console.log("Tercer Trimestre: ", tercerTrimestre)
+        const filename = `PPI_3T_${anio}.xlsx`
+         this.EjecutandoPPI = true;
+        this.isPPI = true
+        this.cosaincegService.GenerarPPI(tercerTrimestre, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            this.info2 = x
+            console.log("Objeto recibido:", x);
+
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoPPI = false;
+            this.isPPI = false
+          }),
+          (error) => {
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+            console.error('Error fetching files', error);
+          }
+        );
+      },
+    },
+    {
+      text: 'Cuarto Trimestre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        const Year = new Date(today);
+        Year.setFullYear(today.getFullYear());
+        lastYearDate.setFullYear(today.getFullYear() - 1);
+        const anio = Year.getFullYear().toString();
+        const anio_menosuno = lastYearDate.getFullYear().toString();
+        const cuartoTrimestre = `${anio}-02-10`;
+        const filename = `PPI_4T_${anio}.xlsx`
+        console.log("cuartoTrimestre: ", cuartoTrimestre)
+        this.EjecutandoPPI = true;
+        this.isPPI = true
+        this.cosaincegService.GenerarPPI(cuartoTrimestre, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoPPI = false;
+            this.isPPI = true
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+      },
+    },
+    
+  ];
+
 
   constructor(private fileService: FileService, private cosaincegService: CosaincegService,
     private notificationService: NotificationService, private authService: AuthService, private router: Router) {

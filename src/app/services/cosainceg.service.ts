@@ -161,5 +161,21 @@ GenerarDescargasInversionHojaTrabajo(fecha: any, filename: string): Observable<H
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     return this.http.post<any>(`${this.apiUrl}/GetActualizacionRubros`, body, { headers });
   }
+// Hojas de Trabajo
+  GenerarPPI(fecha: any, filename: string): Observable<HttpResponse<Blob>> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = { fecha };
+
+    return this.http.post(
+      `${this.apiUrl}/GetPpi/${filename}`,
+      body,
+      {
+        headers,
+        responseType: 'blob',
+        observe: 'response'  // 👈 NECESARIO PARA RECIBIR HEADERS
+      }
+    ) as Observable<HttpResponse<Blob>>;
+}
+
 
 }

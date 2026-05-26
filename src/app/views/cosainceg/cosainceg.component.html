@@ -436,6 +436,53 @@
     </div>
 </div>
 }
+@if (selectedItem === 'PPI' && canViewDeuda) {
+<div class="container-fluid mt-4">
+    <div class="row">
+        <h1 class="title2">Reporte<span> Programas y Proyectos Inversión</span>📝</h1>
+
+    </div>
+    <div class="page">
+        <div class="content">
+            <div class="col-12 mt-3">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelPPI"
+                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
+                            [disabled]="EjecutandoPPI">
+                            Generar Reporte PPI
+                        </kendo-splitbutton>
+                        <span class="ps-2">
+                            @if (isPPI) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
+                        </span>
+
+                    </div>
+                </div>
+                @if (hasProps2(info2)){
+                <kendo-grid [data]="info2" [kendoGridBinding]="info2" [filterable]="true" [pageable]="true"
+                    [pageSize]="25" [sortable]="true" [columnMenu]="menuSettings" size="small" [resizable]="true">
+                    <ng-template kendoGridToolbarTemplate>
+                        <button type="button" kendoGridExcelCommand [svgIcon]="fileExcelIcon">
+                            Export to Excel
+                        </button>
+                    </ng-template>
+                    <kendo-grid-column field="fondo" title="Fondo" [width]="180"></kendo-grid-column>
+                    <kendo-grid-column field="denominacion" title="Nombre del Fondo" [width]="180"></kendo-grid-column>
+                    <kendo-grid-column field="entidad_x" title="Numero de Entidades" [width]="100"></kendo-grid-column>
+                    <kendo-grid-column field="EntidadNoGEG" title="Entidad No en GEG" [width]="100"></kendo-grid-column>
+                    <kendo-grid-column field="entidad_y" title="Nombre Entidad" [width]="350"></kendo-grid-column>
+                     <kendo-grid-excel fileName="FondosInexistentes.xlsx" ></kendo-grid-excel>
+                </kendo-grid>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+}
 
 @if ((!canViewCosainceg && selectedItem === 'Cosainceg') ||
 (!canViewDeuda && selectedItem === 'Deuda') || (!canViewInversion && selectedItem === 'Inversion')) {
