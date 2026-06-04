@@ -83,7 +83,23 @@
   display: inline-block;
   vertical-align: middle; /* opcional para centrar con texto */
 }
+.excel-title{
+    background: linear-gradient(
+        90deg,
+        #1e5738,
+        #2e8b57
+    );
+    color: white;
+    padding: 14px 20px;
+    border-radius: 8px 8px 0 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,.15);
+}
 
+.excel-title h5{
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: .5px;
+}
 /* Título con efecto máquina de escribir */
 .title2 {
    display: inline-block;

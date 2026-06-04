@@ -462,20 +462,36 @@
                     </div>
                 </div>
                 @if (hasProps2(info2)){
-                <kendo-grid [data]="info2" [kendoGridBinding]="info2" [filterable]="true" [pageable]="true"
-                    [pageSize]="25" [sortable]="true" [columnMenu]="menuSettings" size="small" [resizable]="true">
-                    <ng-template kendoGridToolbarTemplate>
-                        <button type="button" kendoGridExcelCommand [svgIcon]="fileExcelIcon">
-                            Export to Excel
-                        </button>
-                    </ng-template>
-                    <kendo-grid-column field="fondo" title="Fondo" [width]="180"></kendo-grid-column>
-                    <kendo-grid-column field="denominacion" title="Nombre del Fondo" [width]="180"></kendo-grid-column>
-                    <kendo-grid-column field="entidad_x" title="Numero de Entidades" [width]="100"></kendo-grid-column>
-                    <kendo-grid-column field="EntidadNoGEG" title="Entidad No en GEG" [width]="100"></kendo-grid-column>
-                    <kendo-grid-column field="entidad_y" title="Nombre Entidad" [width]="350"></kendo-grid-column>
-                     <kendo-grid-excel fileName="FondosInexistentes.xlsx" ></kendo-grid-excel>
-                </kendo-grid>
+                <div class="card shadow-sm">
+                    <div class="card-header excel-title">
+                        <h4 class="mb-0">
+                            <i class="bi bi-file-earmark-excel-fill me-2"></i>
+                            Fondos no encontrados en SGEG
+                        </h4>
+                    </div>
+                    <div class="card-body p-0">
+                        <kendo-grid [data]="info2" [kendoGridBinding]="info2" [filterable]="true" [pageable]="true"
+                            [pageSize]="25" [sortable]="true" [columnMenu]="menuSettings" size="small"
+                            [resizable]="true">
+                            <ng-template kendoGridToolbarTemplate>
+                                <button type="button" themeColor="success"
+                                kendoGridExcelCommand [svgIcon]="fileExcelIcon">
+                                    Export to Excel
+                                </button>
+                            </ng-template>
+                            <kendo-grid-column field="fondo" title="Fondo" [width]="180"></kendo-grid-column>
+                            <kendo-grid-column field="denominacion" title="Nombre del Fondo"
+                                [width]="180"></kendo-grid-column>
+                            <kendo-grid-column field="entidad_x" title="Numero de Entidades"
+                                [width]="100"></kendo-grid-column>
+                            <kendo-grid-column field="EntidadNoGEG" title="Entidad No en GEG"
+                                [width]="100"></kendo-grid-column>
+                            <kendo-grid-column field="entidad_y" title="Nombre Entidad"
+                                [width]="350"></kendo-grid-column>
+                            <kendo-grid-excel fileName="FondosInexistentes.xlsx"></kendo-grid-excel>
+                        </kendo-grid>
+                    </div>
+                </div>
                 }
             </div>
         </div>
@@ -485,7 +501,8 @@
 }
 
 @if ((!canViewCosainceg && selectedItem === 'Cosainceg') ||
-(!canViewDeuda && selectedItem === 'Deuda') || (!canViewInversion && selectedItem === 'Inversion') || (!canViewPPI && selectedItem === 'PPI')) {
+(!canViewDeuda && selectedItem === 'Deuda') || (!canViewInversion && selectedItem === 'Inversion') || (!canViewPPI &&
+selectedItem === 'PPI')) {
 <div>
     <div class="max-w-md w-full space-y-8">
         <div class="text-center">
