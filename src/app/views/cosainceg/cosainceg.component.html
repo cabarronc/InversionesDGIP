@@ -499,10 +499,74 @@
 </div>
 
 }
+@if (selectedItem === 'AvanceFinanciero' && canViewAvance) {
+<div class="container-fluid mt-4">
+    <div class="row">
+        <h1 class="title2">Reporte<span> Avance Financiero por Mes</span>📝</h1>
+
+    </div>
+    <div class="page">
+        <div class="content">
+            <div class="col-12 mt-3">
+                <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataAvanceFinanciero"
+                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
+                            [disabled]="EjecutandoAvance">
+                            Generar Reporte PPI
+                        </kendo-splitbutton>
+                        <span class="ps-2">
+                            @if (isAvance) {
+                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                            </kendo-loader>
+                            }
+                        </span>
+
+                    </div>
+                </div>
+                <!-- @if (!hasProps2(info2)){
+                <div class="card shadow-sm">
+                    <div class="card-header excel-title">
+                        <h5 class="mb-0">
+                            <i class="bi bi-file-earmark-excel-fill me-2"></i>
+                            Fondos no encontrados en SGEG
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <kendo-grid [data]="info2" [kendoGridBinding]="info2" [filterable]="true" [pageable]="true"
+                            [pageSize]="25" [sortable]="true" [columnMenu]="menuSettings" size="small"
+                            [resizable]="true">
+                            <ng-template kendoGridToolbarTemplate>
+                                <button type="button" themeColor="success"
+                                kendoGridExcelCommand [svgIcon]="fileExcelIcon">
+                                    Export to Excel
+                                </button>
+                            </ng-template>
+                            <kendo-grid-column field="fondo" title="Fondo" [width]="180"></kendo-grid-column>
+                            <kendo-grid-column field="denominacion" title="Nombre del Fondo"
+                                [width]="180"></kendo-grid-column>
+                            <kendo-grid-column field="entidad_x" title="Numero de Entidades"
+                                [width]="100"></kendo-grid-column>
+                            <kendo-grid-column field="EntidadNoGEG" title="Entidad No en GEG"
+                                [width]="100"></kendo-grid-column>
+                            <kendo-grid-column field="entidad_y" title="Nombre Entidad"
+                                [width]="350"></kendo-grid-column>
+                            <kendo-grid-excel fileName="FondosInexistentes.xlsx"></kendo-grid-excel>
+                        </kendo-grid>
+                    </div>
+                </div>
+                } -->
+            </div>
+        </div>
+    </div>
+</div>
+
+}
 
 @if ((!canViewCosainceg && selectedItem === 'Cosainceg') ||
 (!canViewDeuda && selectedItem === 'Deuda') || (!canViewInversion && selectedItem === 'Inversion') || (!canViewPPI &&
-selectedItem === 'PPI')) {
+selectedItem === 'PPI') || (!canViewAvance &&
+selectedItem === 'AvanceFinanciero')) {
 <div>
     <div class="max-w-md w-full space-y-8">
         <div class="text-center">

@@ -1,0 +1,1152 @@
+
+// ============================================================
+// VARIABLES
+// ============================================================
+
+$primary: #2563eb;
+$primary-dark: #1d4ed8;
+$success: #16a34a;
+$warning: #d97706;
+$danger: #dc2626;
+
+$text-primary: #1f2937;
+$text-secondary: #6b7280;
+$text-muted: #9ca3af;
+
+$border: #e5e7eb;
+$background: #f3f6fa;
+$surface: #ffffff;
+
+$radius: 12px;
+$radius-small: 8px;
+
+$shadow:
+  0 4px 12px rgba(0, 0, 0, 0.06);
+
+
+// ============================================================
+// CONTENEDOR PRINCIPAL
+// ============================================================
+
+.procesamiento-container {
+
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 0 auto;
+
+  padding: 32px;
+
+  box-sizing: border-box;
+
+  color: $text-primary;
+
+}
+
+
+// ============================================================
+// TITULO
+// ============================================================
+
+.procesamiento-container > h2 {
+
+  margin: 0 0 24px;
+
+  font-size: 26px;
+
+  font-weight: 700;
+
+  letter-spacing: -0.3px;
+
+}
+
+
+// ============================================================
+// FORMULARIO
+// ============================================================
+
+.formulario {
+
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 14px;
+
+  padding: 22px;
+
+  background: $surface;
+
+  border: 1px solid $border;
+
+  border-radius: $radius;
+
+  box-shadow: $shadow;
+
+  margin-bottom: 20px;
+
+}
+
+
+.formulario label {
+
+  display: block;
+
+  margin-bottom: 7px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  color: $text-secondary;
+
+}
+
+
+.formulario input {
+
+  width: 120px;
+
+  height: 42px;
+
+  padding: 0 12px;
+
+  box-sizing: border-box;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: $radius-small;
+
+  background: #fff;
+
+  color: $text-primary;
+
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+}
+
+
+.formulario input:hover {
+
+  border-color: #9ca3af;
+
+}
+
+
+.formulario input:focus {
+
+  border-color: $primary;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.12);
+
+}
+
+
+// ============================================================
+// BOTONES
+// ============================================================
+
+button {
+
+  height: 42px;
+
+  padding: 0 20px;
+
+  border: 0;
+
+  border-radius: $radius-small;
+
+  background: $primary;
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.1s ease,
+    box-shadow 0.2s ease;
+
+}
+
+
+button:hover:not(:disabled) {
+
+  background: $primary-dark;
+
+  box-shadow:
+    0 4px 10px rgba(37, 99, 235, 0.22);
+
+}
+
+
+button:active:not(:disabled) {
+
+  transform: translateY(1px);
+
+}
+
+
+button:disabled {
+
+  opacity: 0.55;
+
+  cursor: not-allowed;
+
+}
+
+
+// ============================================================
+// MENSAJE
+// ============================================================
+
+.mensaje {
+
+  display: flex;
+
+  align-items: center;
+
+  min-height: 42px;
+
+  margin-bottom: 16px;
+
+  padding: 10px 14px;
+
+  border: 1px solid #bfdbfe;
+
+  border-radius: $radius-small;
+
+  background: #eff6ff;
+
+  color: #1e40af;
+
+  font-size: 14px;
+
+}
+
+
+// ============================================================
+// ERROR GENERAL
+// ============================================================
+
+.error {
+
+  margin-bottom: 16px;
+
+  padding: 12px 15px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: $radius-small;
+
+  background: #fef2f2;
+
+  color: #991b1b;
+
+  font-size: 14px;
+
+}
+
+
+// ============================================================
+// TARJETA DE ESTADO
+// ============================================================
+
+.estado {
+
+  background: $surface;
+
+  border: 1px solid $border;
+
+  border-radius: $radius;
+
+  box-shadow: $shadow;
+
+  overflow: hidden;
+
+}
+
+
+// ============================================================
+// HEADER DEL ESTADO
+// ============================================================
+
+.estado-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 24px;
+
+  border-bottom: 1px solid $border;
+
+}
+
+
+.estado-header h3 {
+
+  margin: 0 0 5px;
+
+  font-size: 19px;
+
+  font-weight: 700;
+
+}
+
+
+.estado-header small {
+
+  display: block;
+
+  max-width: 650px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color: $text-muted;
+
+  font-size: 11px;
+
+}
+
+
+// ============================================================
+// BADGES
+// ============================================================
+
+.badge {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 105px;
+
+  padding: 7px 13px;
+
+  border-radius: 999px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  letter-spacing: 0.2px;
+
+}
+
+
+.badge.pendiente {
+
+  background: #fef3c7;
+
+  color: #92400e;
+
+}
+
+
+.badge.procesando {
+
+  background: #dbeafe;
+
+  color: #1e40af;
+
+}
+
+
+.badge.completado {
+
+  background: #dcfce7;
+
+  color: #166534;
+
+}
+
+
+.badge.error-badge {
+
+  background: #fee2e2;
+
+  color: #991b1b;
+
+}
+
+
+// ============================================================
+// SECCIÓN PROGRESO
+// ============================================================
+
+.progreso-section {
+
+  padding: 24px;
+
+}
+
+
+.progreso-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 10px;
+
+}
+
+
+.progreso-header span {
+
+  color: $text-secondary;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+}
+
+
+.progreso-header strong {
+
+  color: $text-primary;
+
+  font-size: 18px;
+
+}
+
+
+// ============================================================
+// BARRA DE PROGRESO
+// ============================================================
+
+.progreso-barra {
+
+  width: 100%;
+
+  height: 16px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: #e5e7eb;
+
+  box-shadow:
+    inset 0 1px 2px rgba(0, 0, 0, 0.08);
+
+}
+
+
+.progreso-barra-valor {
+
+  height: 100%;
+
+  min-width: 0;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #3b82f6,
+      #60a5fa
+    );
+
+  box-shadow:
+    0 1px 4px rgba(37, 99, 235, 0.25);
+
+  transition:
+    width 0.5s ease;
+
+}
+
+
+// ============================================================
+// CONTADORES
+// ============================================================
+
+.contadores {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 14px;
+
+  margin-top: 20px;
+
+}
+
+
+.contador {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 5px;
+
+  padding: 15px;
+
+  border: 1px solid $border;
+
+  border-radius: $radius-small;
+
+  background: #f9fafb;
+
+}
+
+
+.contador-label {
+
+  color: $text-muted;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+}
+
+
+.contador strong {
+
+  font-size: 20px;
+
+  color: $text-primary;
+
+}
+
+
+// ============================================================
+// ARCHIVO ACTUAL
+// ============================================================
+
+.archivo-actual {
+
+  margin: 0 24px 24px;
+
+  padding: 16px;
+
+  border: 1px solid #dbeafe;
+
+  border-left: 4px solid $primary;
+
+  border-radius: $radius-small;
+
+  background: #f8fbff;
+
+}
+
+
+.archivo-titulo {
+
+  margin-bottom: 8px;
+
+  color: $text-secondary;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+
+}
+
+
+.archivo-nombre {
+
+  overflow: hidden;
+
+  color: #1e3a8a;
+
+  font-family:
+    'Consolas',
+    'Courier New',
+    monospace;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+
+  word-break: break-all;
+
+}
+
+
+// ============================================================
+// RESULTADO
+// ============================================================
+
+.resultado {
+
+  padding: 24px;
+
+  border-top: 1px solid $border;
+
+  background: #fafafa;
+
+}
+
+
+.resultado h3 {
+
+  margin: 0 0 18px;
+
+  font-size: 17px;
+
+  font-weight: 700;
+
+}
+
+
+// ============================================================
+// GRID DE RESULTADOS
+// ============================================================
+
+.resultado-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(5, minmax(0, 1fr));
+
+  gap: 12px;
+
+}
+
+
+.resultado-item {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 6px;
+
+  min-width: 0;
+
+  padding: 15px;
+
+  border: 1px solid $border;
+
+  border-radius: $radius-small;
+
+  background: white;
+
+}
+
+
+.resultado-item span {
+
+  color: $text-muted;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  text-transform: uppercase;
+
+}
+
+
+.resultado-item strong {
+
+  color: $text-primary;
+
+  font-size: 20px;
+
+}
+
+
+// ============================================================
+// LOG
+// ============================================================
+
+.log {
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  margin-top: 18px;
+
+}
+
+
+.log span {
+
+  color: $text-secondary;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+}
+
+
+.log code {
+
+  display: block;
+
+  padding: 12px;
+
+  overflow-x: auto;
+
+  border: 1px solid $border;
+
+  border-radius: $radius-small;
+
+  background: #111827;
+
+  color: #d1d5db;
+
+  font-family:
+    'Consolas',
+    'Courier New',
+    monospace;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+
+}
+
+
+// ============================================================
+// ERROR DEL JOB
+// ============================================================
+
+.error-job {
+
+  margin: 24px;
+
+  padding: 18px;
+
+  border: 1px solid #fecaca;
+
+  border-left: 4px solid $danger;
+
+  border-radius: $radius-small;
+
+  background: #fff7f7;
+
+}
+
+
+.error-job h3 {
+
+  margin: 0 0 8px;
+
+  color: #991b1b;
+
+  font-size: 15px;
+
+}
+
+
+.error-job p {
+
+  margin: 0;
+
+  color: #7f1d1d;
+
+  font-family:
+    'Consolas',
+    'Courier New',
+    monospace;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+
+  word-break: break-word;
+
+}
+
+
+// ============================================================
+// ACCIONES
+// ============================================================
+
+.acciones {
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  padding: 18px 24px;
+
+  border-top: 1px solid $border;
+
+  background: #fafafa;
+
+}
+
+
+.acciones button {
+
+  background: #6b7280;
+
+}
+
+
+.acciones button:hover:not(:disabled) {
+
+  background: #4b5563;
+
+}
+
+// ============================================================
+// ERRORES ENCONTRADOS
+// ============================================================
+
+.errores-container {
+
+  margin: 0 24px 24px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  background: #fffafa;
+
+}
+
+
+// ------------------------------------------------------------
+// HEADER
+// ------------------------------------------------------------
+
+.errores-header {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding: 16px 18px;
+
+  border-bottom: 1px solid #fecaca;
+
+  background: #fef2f2;
+
+}
+
+
+.errores-header h3 {
+
+  margin: 0 0 4px;
+
+  color: #991b1b;
+
+  font-size: 15px;
+
+  font-weight: 700;
+
+}
+
+
+.errores-header span {
+
+  color: #b91c1c;
+
+  font-size: 12px;
+
+}
+
+
+// ------------------------------------------------------------
+// LISTA
+// ------------------------------------------------------------
+
+.errores-lista {
+
+  max-height: 350px;
+
+  overflow-y: auto;
+
+}
+
+
+// ------------------------------------------------------------
+// ERROR
+// ------------------------------------------------------------
+
+.error-item {
+
+  display: flex;
+
+  gap: 12px;
+
+  padding: 14px 18px;
+
+  border-bottom: 1px solid #fee2e2;
+
+}
+
+
+.error-item:last-child {
+
+  border-bottom: none;
+
+}
+
+
+// ------------------------------------------------------------
+// ICONO
+// ------------------------------------------------------------
+
+.error-icon {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 25px;
+
+  height: 25px;
+
+  border-radius: 50%;
+
+  background: #dc2626;
+
+  color: white;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+}
+
+
+// ------------------------------------------------------------
+// CONTENIDO
+// ------------------------------------------------------------
+
+.error-content {
+
+  min-width: 0;
+
+  flex: 1;
+
+}
+
+
+.error-archivo {
+
+  margin-bottom: 4px;
+
+  color: #7f1d1d;
+
+  font-family:
+    'Consolas',
+    'Courier New',
+    monospace;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  line-height: 1.5;
+
+  word-break: break-all;
+
+}
+
+
+.error-mensaje {
+
+  color: #991b1b;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+
+  word-break: break-word;
+
+}
+// ============================================================
+// RESPONSIVE - TABLET
+// ============================================================
+
+@media (max-width: 900px) {
+
+  .procesamiento-container {
+
+    padding: 20px;
+
+  }
+
+
+  .resultado-grid {
+
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+  }
+
+}
+
+
+// ============================================================
+// RESPONSIVE - MÓVIL
+// ============================================================
+
+@media (max-width: 600px) {
+
+  .procesamiento-container {
+
+    padding: 12px;
+
+  }
+
+
+  .procesamiento-container > h2 {
+
+    font-size: 22px;
+
+  }
+
+
+  .formulario {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+  }
+
+
+  .formulario input {
+
+    width: 100%;
+
+  }
+
+
+  .formulario button {
+
+    width: 100%;
+
+  }
+
+
+  .estado-header {
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+  }
+
+
+  .estado-badge {
+
+    width: 100%;
+
+  }
+
+
+  .badge {
+
+    width: 100%;
+
+  }
+
+
+  .contadores {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .resultado-grid {
+
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+  }
+
+
+  .progreso-section,
+  .resultado {
+
+    padding: 18px;
+
+  }
+
+
+  .archivo-actual {
+
+    margin: 0 18px 18px;
+
+  }
+
+}
+
+
+// ============================================================
+// MÓVIL PEQUEÑO
+// ============================================================
+
+@media (max-width: 400px) {
+
+  .resultado-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .estado-header h3 {
+
+    font-size: 17px;
+
+  }
+
+
+  .progreso-header strong {
+
+    font-size: 16px;
+
+  }
+
+}
+

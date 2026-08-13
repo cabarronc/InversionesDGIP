@@ -20,7 +20,7 @@
     <kendo-appbar-spacer width="32px"></kendo-appbar-spacer>
 
     <kendo-appbar-section class="appbar-items">
-        
+
         <ul class="appbar-menu">
             <li><a routerLink="/circular" routerLinkActive="router-link-active"
                     ariaCurrentWhenActive="page">Circular</a></li>
@@ -34,48 +34,46 @@
                     ariaCurrentWhenActive="page"><span>Cuenta Publica</span></a></li>
             <li><a routerLink="/simulador" routerLinkActive="router-link-active"
                     ariaCurrentWhenActive="page"><span>Simulador</span></a></li>
-                    
+            <li><a routerLink="/procesador" routerLinkActive="router-link-active"
+                    ariaCurrentWhenActive="page"><span>Procesador</span></a></li>
+
             <!-- <li><span>Tableros</span></li>
             <li><span>Catalogos</span></li> -->
 
         </ul>
     </kendo-appbar-section>
-<!-- Resposivo -->
-     <kendo-appbar-section>
-        <button
-          kendoButton
-          fillMode="flat"
-          class="overflow-button"
-          #anchor
-          (click)="onToggle()"
-        >
-          <kendo-svgicon [icon]="menuIcon"></kendo-svgicon>
+    <!-- Resposivo -->
+    <kendo-appbar-section>
+        <button kendoButton fillMode="flat" class="overflow-button" #anchor (click)="onToggle()">
+            <kendo-svgicon [icon]="menuIcon"></kendo-svgicon>
         </button>
         @if (show) {
         <kendo-popup [anchor]="anchor.element" [margin]="margin">
-          <div class="content">
-            <ul>
-             <li><a routerLink="/circular" routerLinkActive="router-link-active"
-                    ariaCurrentWhenActive="page">Circular</a></li>
-            <!-- <li><a routerLink="/claude" routerLinkActive="router-link-active" ariaCurrentWhenActive="page"><span>Centro
+            <div class="content">
+                <ul>
+                    <li><a routerLink="/circular" routerLinkActive="router-link-active"
+                            ariaCurrentWhenActive="page">Circular</a></li>
+                    <!-- <li><a routerLink="/claude" routerLinkActive="router-link-active" ariaCurrentWhenActive="page"><span>Centro
                         de Datos</span></a></li> -->
-            <li><a routerLink="/correos" routerLinkActive="router-link-active"
-                    ariaCurrentWhenActive="page"><span>Correos</span></a></li>
-            <li><a routerLink="/adecuaciones" routerLinkActive="router-link-active"
-                    ariaCurrentWhenActive="page"><span>Adecuaciones</span></a></li>
-            <li><a routerLink="/reportes" routerLinkActive="router-link-active"
-                    ariaCurrentWhenActive="page"><span>Cuenta Publica</span></a></li>
-            <li><a routerLink="/simulador" routerLinkActive="router-link-active"
-                    ariaCurrentWhenActive="page"><span>Simulador</span></a></li>
-            </ul>
-          </div>
+                    <li><a routerLink="/correos" routerLinkActive="router-link-active"
+                            ariaCurrentWhenActive="page"><span>Correos</span></a></li>
+                    <li><a routerLink="/adecuaciones" routerLinkActive="router-link-active"
+                            ariaCurrentWhenActive="page"><span>Adecuaciones</span></a></li>
+                    <li><a routerLink="/reportes" routerLinkActive="router-link-active"
+                            ariaCurrentWhenActive="page"><span>Cuenta Publica</span></a></li>
+                    <li><a routerLink="/simulador" routerLinkActive="router-link-active"
+                            ariaCurrentWhenActive="page"><span>Simulador</span></a></li>
+                    <li><a routerLink="/procesador" routerLinkActive="router-link-active"
+                            ariaCurrentWhenActive="page"><span>Procesador</span></a></li>
+                </ul>
+            </div>
         </kendo-popup>
         }
-      </kendo-appbar-section>
+    </kendo-appbar-section>
 
     <kendo-appbar-spacer></kendo-appbar-spacer>
     @if (!isMobile) {
-    <kendo-appbar-section >
+    <kendo-appbar-section>
         <img src="/navigation/appbar/SF.jpg" class="appbar-logo">
     </kendo-appbar-section>
     }
@@ -95,47 +93,46 @@
         <div class="relative inline-block text-left">
             <div *ngIf="currentUser">
                 <!-- <div *ngIf="currentUser.avatar"> -->
-                    <app-navbar-avatar [showSessionDetails]="showSessionDetailsModal" [logout]="logout"
-                        [showUserMenu]="showUserMenu" [showSessionModal]="showSessionModal" [animating]="animating">
-                        <button kendoButton #infoButton class="button-perfil"
-                            (click)="showSessionModal = !showSessionModal" [svgIcon]="infoSolidIcon" width="36px"
-                            height="36px">
-                            <span class="text-perfil">
-                                Info
-                            </span>
-                        </button>
-                    </app-navbar-avatar>
+                <app-navbar-avatar [showSessionDetails]="showSessionDetailsModal" [logout]="logout"
+                    [showUserMenu]="showUserMenu" [showSessionModal]="showSessionModal" [animating]="animating">
+                    <button kendoButton #infoButton class="button-perfil" (click)="showSessionModal = !showSessionModal"
+                        [svgIcon]="infoSolidIcon" width="36px" height="36px">
+                        <span class="text-perfil">
+                            Info
+                        </span>
+                    </button>
+                </app-navbar-avatar>
 
-                    <kendo-popup [anchor]="infoButton"  [popupAlign]="{ horizontal: 'left', vertical: 'bottom' }"
-                        [anchorAlign]="{ horizontal: 'right', vertical: 'top' }" [animate]="true"
-                        *ngIf="showSessionModal" (close)="showSessionModal  = false">
-                        <div *ngIf="sessionInfo">
-                            <div class="menu-container">
-                                <div class="session-info-card">
-                                    <div class="session-row">
-                                        <span class="label">&#x23F0;Tiempo restante</span>
-                                        <span class="value">{{ formatTimeLeft(sessionInfo.timeLeft) }}</span>
-                                    </div>
-                                    <div class="session-row">
-                                        <span class="label">⏳ Tipo de sesión</span>
-                                        <span class="value">
-                                            {{ sessionInfo.rememberMe ? 'Recordarme (30 días)' : 'Normal (8 horas)' }}
-                                        </span>
-                                    </div>
-                                    <div class="session-row">
-                                        <span class="label">🚦Estado:</span>
-                                        <div [class]="getSessionStatusClass()">
+                <kendo-popup [anchor]="infoButton" [popupAlign]="{ horizontal: 'left', vertical: 'bottom' }"
+                    [anchorAlign]="{ horizontal: 'right', vertical: 'top' }" [animate]="true" *ngIf="showSessionModal"
+                    (close)="showSessionModal  = false">
+                    <div *ngIf="sessionInfo">
+                        <div class="menu-container">
+                            <div class="session-info-card">
+                                <div class="session-row">
+                                    <span class="label">&#x23F0;Tiempo restante</span>
+                                    <span class="value">{{ formatTimeLeft(sessionInfo.timeLeft) }}</span>
+                                </div>
+                                <div class="session-row">
+                                    <span class="label">⏳ Tipo de sesión</span>
+                                    <span class="value">
+                                        {{ sessionInfo.rememberMe ? 'Recordarme (30 días)' : 'Normal (8 horas)' }}
+                                    </span>
+                                </div>
+                                <div class="session-row">
+                                    <span class="label">🚦Estado:</span>
+                                    <div [class]="getSessionStatusClass()">
 
-                                            <span class="value-white">{{ getSessionStatusText() }}</span>
-                                        </div>
+                                        <span class="value-white">{{ getSessionStatusText() }}</span>
                                     </div>
                                 </div>
-
-
-
                             </div>
+
+
+
                         </div>
-                    </kendo-popup>
+                    </div>
+                </kendo-popup>
 
                 <!-- </div> -->
             </div>
@@ -152,13 +149,13 @@
                 0)
                 }}.
                 <button (click)="extendSession(); showSessionWarning = false">
-                  ⏳  Extender sesión
+                    ⏳ Extender sesión
                 </button>
-                 <button (click)="showSessionWarning = false">
-                ❌
-            </button>
+                <button (click)="showSessionWarning = false">
+                    ❌
+                </button>
             </p>
-           
+
         </div>
 
     </div>

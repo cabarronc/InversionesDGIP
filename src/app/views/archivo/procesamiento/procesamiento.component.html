@@ -1,0 +1,474 @@
+<div class="procesamiento-container">
+
+    <h2>Procesamiento de archivos</h2>
+
+    <!-- ====================================================== -->
+    <!-- FORMULARIO -->
+    <!-- ====================================================== -->
+
+    <div class="formulario">
+
+        <label for="anio">
+            Año:
+        </label>
+
+        <input id="anio" type="number" [(ngModel)]="anio" [disabled]="cargando" min="1900" max="2100" />
+
+        <button type="button" (click)="iniciar()" [disabled]="cargando">
+
+            @if (cargando) {
+            Procesando...
+            } @else {
+            Iniciar procesamiento
+            }
+
+        </button>
+
+    </div>
+
+
+    <!-- ====================================================== -->
+    <!-- MENSAJE -->
+    <!-- ====================================================== -->
+
+    @if (mensaje) {
+
+    <div class="mensaje">
+        {{ mensaje }}
+    </div>
+
+    }
+
+
+    <!-- ====================================================== -->
+    <!-- ERROR GENERAL -->
+    <!-- ====================================================== -->
+
+    @if (error) {
+
+    <div class="error">
+        {{ error }}
+    </div>
+
+    }
+
+
+    <!-- ====================================================== -->
+    <!-- ESTADO DEL PROCESAMIENTO -->
+    <!-- ====================================================== -->
+
+    @if (trabajo && trabajo.progreso.detalle_errores.length > 0) {
+
+
+    <div class="errores-container">
+
+        <div class="errores-header">
+
+            <div>
+
+                <h3>
+                    Errores encontrados
+                </h3>
+
+                <span>
+                    {{ trabajo.progreso.detalle_errores.length }}
+                    errores durante el procesamiento
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="errores-lista">
+
+            @for (
+            item of trabajo.progreso.detalle_errores;
+            track item.archivo
+            ) {
+
+            <div class="error-item">
+
+                <div class="error-icon">
+                    !
+                </div>
+
+
+                <div class="error-content">
+
+                    <div class="error-archivo">
+
+                        {{ item.archivo }}
+
+                    </div>
+
+
+                    <div class="error-mensaje">
+
+                        {{ item.mensaje }}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            }
+
+        </div>
+
+    </div>
+
+
+
+    <!-- <div class="errores">
+
+        <h3>
+            Errores encontrados
+        </h3>
+
+        @for (
+        error of trabajo.progreso.detalle_errores;
+        track error.archivo
+        ) {
+
+        <div class="error-item">
+
+            <strong>
+                {{ error.archivo }}
+            </strong>
+
+            <span>
+                {{ error.mensaje }}
+            </span>
+
+        </div>
+
+        }
+
+    </div> -->
+
+    <div class="estado">
+
+        <!-- ================================================== -->
+        <!-- HEADER -->
+        <!-- ================================================== -->
+
+        <div class="estado-header">
+
+            <div>
+
+                <h3>
+                    Procesamiento {{ trabajo.anio }}
+                </h3>
+
+                <small>
+                    Job ID: {{ trabajo.job_id }}
+                </small>
+
+            </div>
+
+
+            <!-- ================================================= -->
+            <!-- ESTADO -->
+            <!-- ================================================= -->
+
+            <div class="estado-badge">
+
+                @switch (trabajo.estado) {
+
+                @case ('pendiente') {
+
+                <span class="badge pendiente">
+                    Pendiente
+                </span>
+
+                }
+
+                @case ('procesando') {
+
+                <span class="badge procesando">
+                    Procesando
+                </span>
+
+                }
+
+                @case ('completado') {
+
+                <span class="badge completado">
+                    Completado
+                </span>
+
+                }
+
+                @case ('error') {
+
+                <span class="badge error-badge">
+                    Error
+                </span>
+
+                }
+
+                @default {
+
+                <span class="badge">
+                    Desconocido
+                </span>
+
+                }
+
+                }
+
+            </div>
+
+        </div>
+
+
+        <!-- ================================================== -->
+        <!-- PROGRESO -->
+        <!-- ================================================== -->
+
+        @if (
+        trabajo.estado === 'procesando' ||
+        trabajo.estado === 'completado'
+        ) {
+
+        <div class="progreso-section">
+
+            <div class="progreso-header">
+
+                <span>
+                    Progreso
+                </span>
+
+                <strong>
+                    {{ trabajo.progreso.porcentaje | number:'1.0-2' }}%
+                </strong>
+
+            </div>
+
+
+            <!-- BARRA -->
+
+            <div class="progreso-barra" role="progressbar" [attr.aria-valuenow]="trabajo.progreso.porcentaje"
+                aria-valuemin="0" aria-valuemax="100">
+
+                <div class="progreso-barra-valor" [style.width.%]="trabajo.progreso.porcentaje"></div>
+
+            </div>
+
+
+            <!-- CONTADORES -->
+
+            <div class="contadores">
+
+                <div class="contador">
+
+                    <span class="contador-label">
+                        Procesados
+                    </span>
+
+                    <strong>
+
+                        {{ trabajo.progreso.procesados }}
+
+                        @if (trabajo.progreso.total > 0) {
+                        / {{ trabajo.progreso.total }}
+                        }
+
+                    </strong>
+
+                </div>
+
+
+                <div class="contador">
+
+                    <span class="contador-label">
+                        Errores
+                    </span>
+
+                    <strong>
+                        {{ trabajo.progreso.errores }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        }
+
+
+        <!-- ================================================== -->
+        <!-- ARCHIVO ACTUAL -->
+        <!-- ================================================== -->
+
+        @if (trabajo.progreso.archivo_actual) {
+
+        <div class="archivo-actual">
+
+            <div class="archivo-titulo">
+                Archivo actual
+            </div>
+
+            <div class="archivo-nombre">
+
+                {{ trabajo.progreso.archivo_actual }}
+
+            </div>
+
+        </div>
+
+        }
+
+
+        <!-- ================================================== -->
+        <!-- RESULTADO FINAL -->
+        <!-- ================================================== -->
+
+        @if (
+        trabajo.estado === 'completado' &&
+        trabajo.resultado
+        ) {
+
+        <div class="resultado">
+
+            <h3>
+                Resultado
+            </h3>
+
+
+            <div class="resultado-grid">
+
+                <div class="resultado-item">
+
+                    <span>
+                        ZIP
+                    </span>
+
+                    <strong>
+                        {{ trabajo.resultado.zip }}
+                    </strong>
+
+                </div>
+
+
+                <div class="resultado-item">
+
+                    <span>
+                        RAR
+                    </span>
+
+                    <strong>
+                        {{ trabajo.resultado.rar }}
+                    </strong>
+
+                </div>
+
+
+                <div class="resultado-item">
+
+                    <span>
+                        Total comprimidos
+                    </span>
+
+                    <strong>
+                        {{ trabajo.resultado.total_comprimidos }}
+                    </strong>
+
+                </div>
+
+
+                <div class="resultado-item">
+
+                    <span>
+                        Archivos extraídos
+                    </span>
+
+                    <strong>
+                        {{ trabajo.resultado.archivos_extraidos }}
+                    </strong>
+
+                </div>
+
+
+                <div class="resultado-item">
+
+                    <span>
+                        Errores
+                    </span>
+
+                    <strong>
+                        {{ trabajo.resultado.errores }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- LOG -->
+
+            <div class="log">
+
+                <span>
+                    Archivo de log:
+                </span>
+
+                <code>
+              {{ trabajo.resultado.log }}
+            </code>
+
+            </div>
+
+        </div>
+
+        }
+
+
+        <!-- ================================================== -->
+        <!-- ERROR DEL JOB -->
+        <!-- ================================================== -->
+
+        @if (
+        trabajo.estado === 'error' &&
+        trabajo.error
+        ) {
+
+        <div class="error-job">
+
+            <h3>
+                Error del procesamiento
+            </h3>
+
+            <p>
+                {{ trabajo.error }}
+            </p>
+
+        </div>
+
+        }
+
+
+        <!-- ================================================== -->
+        <!-- ACCIONES -->
+        <!-- ================================================== -->
+
+        @if (!cargando) {
+
+        <div class="acciones">
+
+            <button type="button" (click)="limpiar()">
+                Limpiar
+            </button>
+
+        </div>
+
+        }
+
+    </div>
+
+    }
+
+</div>

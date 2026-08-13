@@ -33,7 +33,9 @@ export class ReportesComponent {
       { text: "Inversion", svgIcon: dollarIcon},
       { separator: true },
       { text: "PPI", svgIcon: fileFooterIcon},
-      { separator: true }
+      { separator: true },
+      { text: "AvanceFinanciero", svgIcon: dollarIcon},
+      { separator: true },
     ];
     constructor() {    
     }

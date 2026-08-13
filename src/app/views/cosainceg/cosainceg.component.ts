@@ -103,12 +103,13 @@ export class CosaincegComponent implements OnInit {
   canViewPPI = false;
   canViewInversion = false;
   canViewDeuda = false;
-
+  canViewAvance = false
 
   public opened = false;
   isInversionGeneral: boolean = false;
   isInversionGeneralD: boolean = false;
   isPPI: boolean = false;
+  isAvance: boolean = false;
   generandoReporte: boolean = false;
   generandoReporteD: boolean = false;
   isCoping: boolean = false;
@@ -118,6 +119,7 @@ export class CosaincegComponent implements OnInit {
   info2: any;
   EjecutandoInversion: boolean =false;
   EjecutandoPPI: boolean =false;
+  EjecutandoAvance: boolean =false;
   cascaron: boolean = false;
 
   public close(): void {
@@ -136,7 +138,8 @@ export class CosaincegComponent implements OnInit {
     this.canViewCosainceg = this.authService.hasPermission('cosainceg', 'manage');
     this.canViewInversion = this.authService.hasPermission('inversion', 'manage');
     this.canViewDeuda = this.authService.hasPermission('deuda', 'manage');
-     this.canViewPPI = this.authService.hasPermission('ppi', 'manage');
+    this.canViewPPI = this.authService.hasPermission('ppi', 'manage');
+     this.canViewAvance = this.authService.hasPermission('avancefinanciero', 'manage');
     console.log(this.canViewCosainceg)
     console.log(this.canViewDeuda)
   }
@@ -1977,7 +1980,7 @@ export class CosaincegComponent implements OnInit {
         );
       },
     },
-  ];
+    ];
 
     hasProps(obj: any): boolean {
     return obj && Object.keys(obj).length > 0;
@@ -2703,7 +2706,7 @@ export class CosaincegComponent implements OnInit {
       },
     },
   ];
-   //////////////////////////////////////////////////////////////
+
   ///// Hoja de trabajo///////////////////////////////////////////////////////////////////////////////////////////////////
   public dataExcelPPI = [
     {
@@ -2906,7 +2909,7 @@ export class CosaincegComponent implements OnInit {
               position: { horizontal: "left", vertical: "top" },
             });
              this.EjecutandoPPI = false;
-            this.isPPI = true
+            this.isPPI = false
           }),
           (error) => {
             console.error('Error fetching files', error);
@@ -2921,6 +2924,182 @@ export class CosaincegComponent implements OnInit {
         );
       },
     },
+    
+  ];
+//////// Avanbce Financiero
+/////excel///////////////////////////////////////////////////////////////////////////////////////////////////
+  public dataAvanceFinanciero = [
+    {
+      text: '02 Febrero',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const Febrero = `${anio}-02-10`;
+        const formatted =
+              String(today.getFullYear()).slice(-2) +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              String(today.getDate()).padStart(2, '0');
+
+        console.log(formatted); 
+        const filename = `${formatted} Avance Financiero Inversión Feb ${anio}.pptx`
+        console.log("Febrero: ", Febrero)
+
+        this.EjecutandoAvance = true;
+        this.isAvance = true
+        this.cosaincegService.GenerarDescargasAvanceFinanciero(Febrero, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoAvance = false;
+            this.isAvance = false
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+ 
+      },
+    },
+     {
+      text: '03 Marzo',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const Marzo = `${anio}-03-10`;
+        const formatted =
+              String(today.getFullYear()).slice(-2) +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              String(today.getDate()).padStart(2, '0');
+
+        console.log(formatted); 
+        const filename = `${formatted} Avance Financiero Inversión Mar ${anio}.pptx`
+        console.log("Marzo: ", Marzo)
+
+        this.EjecutandoAvance = true;
+        this.isAvance = true
+        this.cosaincegService.GenerarDescargasAvanceFinanciero(Marzo, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoAvance = false;
+            this.isAvance = false
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+ 
+      },
+    },
+    //  {
+    //   text: '03 Marzo',
+    //   svgIcon: fileExcelIcon,
+    //   click: (): void => {
+    //     const today = new Date();
+    //     const lastYearDate = new Date(today);
+    //     lastYearDate.setFullYear(today.getFullYear());
+    //     const anio = lastYearDate.getFullYear().toString();
+    //     const Marzo = `${anio}-03-10`;
+    //     const formatted =
+    //           String(today.getFullYear()).slice(-2) +
+    //           String(today.getMonth() + 1).padStart(2, '0') +
+    //           String(today.getDate()).padStart(2, '0');
+
+    //     console.log(formatted); 
+    //     const filename = `${formatted} Avance Financiero Inversión Mar ${anio}.pptx`
+    //     console.log("Marzo: ", Marzo)
+
+    //     this.EjecutandoAvance = true;
+    //     this.isAvance = true
+    //     this.cosaincegService.GenerarDescargasAvanceFinanciero(Marzo, filename).subscribe(
+    //       (blob) => {
+    //         const url = window.URL.createObjectURL(blob);
+    //         const link = document.createElement('a');
+    //         link.href = url;
+    //         link.download = filename;
+    //         link.click();
+    //         this.notificationService.show({
+    //           content: "Power Point Generado Correctamente, espere que se descargue!",
+    //           hideAfter: 1500,
+    //           animation: { type: "slide", duration: 900 },
+    //           type: { style: "success", icon: true },
+    //           position: { horizontal: "left", vertical: "top" },
+    //         });
+    //         this.EjecutandoAvance = false;
+    //          this.isAvance = false
+
+    //       },
+    //       (error) => {
+    //         this.notificationService.show({
+    //           content: "Existe un Error en la Generacion del Reporte!",
+    //           hideAfter: 1500,
+    //           animation: { type: "slide", duration: 900 },
+    //           type: { style: "error", icon: true },
+    //           position: { horizontal: "left", vertical: "top" },
+    //         });
+    //         console.error('Error fetching files', error);
+    //       }
+    //     );
+    //   },
+    // },
     
   ];
 
