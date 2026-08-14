@@ -118,7 +118,7 @@
         </div>
 
     </div>
-
+    }
 
 
     <!-- <div class="errores">
@@ -147,7 +147,7 @@
         }
 
     </div> -->
-
+  @if (trabajo) {
     <div class="estado">
 
         <!-- ================================================== -->
@@ -188,8 +188,9 @@
                 @case ('procesando') {
 
                 <span class="badge procesando">
-                    Procesando
+                    Procesando: {{ trabajo.progreso.mensaje_actual }}
                 </span>
+
 
                 }
 

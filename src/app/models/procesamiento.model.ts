@@ -5,6 +5,7 @@ export interface ProgresoProcesamiento {
   errores: number;
   porcentaje: number;
   archivo_actual: string | null;
+  mensaje_actual: string;
    detalle_errores: ErrorProcesamiento[];
 }
 

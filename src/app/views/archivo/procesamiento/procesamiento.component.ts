@@ -127,6 +127,8 @@ export class ProcesamientoComponent implements OnDestroy {
 
               archivo_actual: null,
 
+              mensaje_actual: '',
+
               detalle_errores: []
 
             },
