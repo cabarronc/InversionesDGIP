@@ -8,7 +8,10 @@
 
    box-sizing: border-box;
  }
-
+.div{
+  padding-bottom: 0.5rem;
+  font-size:small;
+}
  .kendo-wrapper {
    display: block;
  }
@@ -58,7 +61,7 @@
 
  .template9 {
    display: inline-flex;
-   background: #046b1e;
+   background: #024613;
    color: #fff;
    font-weight: bold;
    border-radius: 50%;
@@ -72,7 +75,7 @@
 
  .template8 {
    display: inline-flex;
-   background: #099b2e;
+   background: #10ce40;
    color: #fff;
    font-weight: bold;
    border-radius: 50%;
@@ -599,7 +602,6 @@
  }
 
  .label-justificado {
-   font-weight: bold;
    text-align: justify;
    display: block;
    font-size: 14px;
