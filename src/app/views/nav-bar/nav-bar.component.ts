@@ -19,6 +19,7 @@ import { DialogComponent, DialogTitleBarComponent } from "@progress/kendo-angula
 import { NavbarAvatarComponent } from "../navbar-avatar/navbar-avatar.component";
 import { KENDO_INPUTS } from "@progress/kendo-angular-inputs";
 import { KENDO_POPUP } from "@progress/kendo-angular-popup";
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-nav-bar',
@@ -40,6 +41,7 @@ export class NavBarComponent implements OnInit{
   private warningShown = false;
   public margin = { horizontal: -46, vertical: 7 };
   public show = false;
+  public url:string = environment.ApiPocketBase
   isMobile = window.innerWidth <= 768;
   @HostListener('window:resize', [])
 onResize() {
@@ -197,7 +199,7 @@ formatTimeLeft(timeLeft: number): string {
     this.showSessionModal = false;
   }
  getAvatarUrl(avatar: string): string {
-   const url_completa =  `http://172.31.33.105:9000/api/files/users/${this.currentUser?.id}/${avatar}`
+   const url_completa =  `${this.url}/api/files/users/${this.currentUser?.id}/${avatar}`
     return url_completa;
   }
 

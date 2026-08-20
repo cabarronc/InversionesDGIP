@@ -8,8 +8,6 @@ import { environment } from '../../environments/environment'
 })
 export class MailApiService {
 
-  // private apiUrl = 'http://172.31.33.28:5000/send-email-gmail'; // URL del backend
-  // private apiUrl_2 = 'http://172.31.33.28:5000/send-email-gmail_2'; // URL del backend
   private apiUrl = environment.apiUrl_G1;
   private apiUrl_2 = environment.apiUrl_G2;
 

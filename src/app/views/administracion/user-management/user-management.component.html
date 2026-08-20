@@ -29,7 +29,7 @@
             <ng-template kendoGridCellTemplate let-user>
                 <div class="row-center">
                     <img *ngIf="user.avatar"
-                        [src]="'http://172.31.33.105:9000/api/files/users/' + user.id + '/' + user.avatar" width="60"
+                        [src]="url + '/api/files/users/' + user.id + '/' + user.avatar" width="60"
                         [alt]="user.name" />
                     <img *ngIf="!user.avatar"
                         src="https://github.com/cabarronc/RecursosMultimedia/blob/main/usuario_default.jpg?raw=true"

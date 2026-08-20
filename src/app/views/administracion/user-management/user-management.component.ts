@@ -15,6 +15,7 @@ import { AutoCompleteComponent, DropDownsModule, KENDO_COMBOBOX } from "@progres
 import { GridDataResult, KENDO_GRID, PageChangeEvent } from '@progress/kendo-angular-grid';
 import { NotificationService } from '@progress/kendo-angular-notification';
 import { AvatarUploadComponent } from "../../uploads/avatar-upload/avatar-upload.component";
+import { environment } from '../../../../environments/environment';
 
 
 
@@ -43,10 +44,11 @@ export class UserManagementComponent implements OnInit {
   public confirmEyeIcon = eyeSlashIcon;
   public confirmEyeIcon2 = eyeSlashIcon;
   public correoList: Array<string> = [
+  
 
 
   ];
-
+  public url:string = environment.ApiPocketBase
   public passInputType: InputType = 'password';
   public passInputType2: InputType = 'password';
   public confirmInputType: InputType = "password";
@@ -65,7 +67,7 @@ export class UserManagementComponent implements OnInit {
   itemsPerPage = 10;
   totalItems = 0;
   totalPages = 0;
-
+ 
   userForm: FormGroup;
   selectedRoles: string[] = [];
 
@@ -607,7 +609,7 @@ toggleNavidad(estado: boolean) {
     console.log("usuario", userId)
     if (!avatar) return '';
     // Construir URL del avatar desde PocketBase
-    const url_completa = `http://172.31.33.105:9000/api/files/users/${this.editingUser?.id}/${avatar}`;
+    const url_completa = `${this.url}/api/files/users/${this.editingUser?.id}/${avatar}`;
     console.log("urlcompleta", url_completa)
     return url_completa
   }
