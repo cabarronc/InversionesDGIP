@@ -206,74 +206,75 @@ export class SimuladorComponent implements OnInit {
   // Gasto de administración 
   public OpRP1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "No gastaré nada del presupuesto en esos conceptos", value: 3 },
-    { text: "Gastaré hasta un 10% del presupuesto en esos conceptos", value: 2 },
-    { text: "Gastaré de un 11% a un 15% en esos conceptos", value: 1 },
+    { text: "No gastaré nada en esos conceptos", value: 3 },
+    { text: "Gastaré hasta 10% en esos conceptos", value: 2 },
+    { text: "Gastaré entre 11% y 15% en esos conceptos", value: 1 },
     { text: "Gastaré más del 15% en esos conceptos", value: 0 },
 
   ];
   // Grado de preparación técnica
   public OpRP2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Se tienen todos los estudios, terrenos, trámites o documentos que se necesitan para realizar mi proyecto", value: 4 },
-    { text: "Falta algún estudio, terreno o trámite, o alguno de los documentos necesarios está incompleto, pero se tendrá en menos de 6 meses", value: 3 },
-    { text: "Los estudios, terrenos, trámites o documentos necesarios están incompletos, pero se tendrán en 1 año o menos", value: 2 },
-    { text: "No se tienen los estudios, trámites o documentos que se necesitan para realizar mi proyecto", value: 1 },
+    { text: "Mi proyecto tiene todos los estudios, permisos, terrenos o requisitos necesarios para iniciar hoy mismo", value: 4 },
+    { text: "Tardaré menos de 6 meses en tener lo necesario para iniciar mi proyecto", value: 3 },
+    { text: "Mi proyecto tendrá lo necesario para iniciar en un plazo de 6 a 12 meses", value: 2 },
+    { text: "Mi proyecto no contará con lo necesario para iniciar en menos de 12 meses", value: 1 },
 
   ];
-  // Desempeño Historico
+  // Desempeño Historico 1.3
   public OpRP3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Se cumplieron las metas planteadas, se concluyó en tiempo y no se gastó más de lo planeado", value: 4 },
-    { text: "Se cumplieron las metas planteadas sin gastar más de lo planeado, pero no se concluyó en tiempo", value: 3 },
-    { text: "Se cumplieron las metas planteadas, pero se gastó más de lo planeado y no se concluyó en tiempo", value: 2 },
-    { text: "No se cumplieron las metas planteadas, y se gastó más de lo planeado o no se concluyó en tiempo", value: 1 },
+    { text: "Se cumplieron las metas a tiempo sin gastar más de lo planeado", value: 4 },
+    { text: "Se cumplieron las metas sin gastar más de lo planeado, pero con retraso", value: 3 },
+    { text: "Se cumplieron las metas, pero se gastó más de lo planeado y con retraso", value: 2 },
+    { text: "No se cumplieron las metas, y se gastó más de lo planeado o con retraso", value: 1 },
 
   ];
-  // Fuente Financiamiento
+  // Fuente Financiamiento 1.4
   public OpRP4: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: 'El total de mi proyecto puede pagarse con recursos "etiquetados"', value: 3 },
-    { text: 'Más del 60% del presupuesto de mi proyecto puede pagarse con recursos "etiquetados"', value: 2 },
-    { text: 'Hasta un 60% del presupuesto de mi proyecto puede pagarse con recursos "etiquetados"', value: 1 },
-    { text: 'El total de mi proyecto debe pagarse con recursos "de libre disposición"', value: 0 },
+    { text: 'Todo mi proyecto', value: 3 },
+    { text: 'Más del 60%', value: 2 },
+    { text: 'Hasta el 60%', value: 1 },
+    { text: 'Mi proyecto no puede pagarse con dinero “etiquetado”', value: 0 },
 
   ];
-  // Inversion Productiva
+  // Inversion Productiva 1.5
   public OpRP5: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Todo el presupuesto de mi proyecto es para inversión productiva", value: 4 },
-    { text: "Más del 85% del presupuesto es para inversión productiva", value: 3 },
-    { text: "Entre un 31% y un 85% del presupuesto es para inversión productiva", value: 2 },
-    { text: "Hasta un 30% del presupuesto es para inversión productiva", value: 1 },
-    { text: "Mi proyecto no considera inversión productiva", value: 0 },
+    { text: "Todo el dinero de mi proyecto", value: 4 },
+    { text: "Más del 85%", value: 3 },
+    { text: "Más del 30%", value: 2 },
+    { text: "Menos del 30%", value: 1 },
+    { text: "El dinero de mi proyecto no es para inversión productiva", value: 0 },
 
   ];
-  // Cobertura de la poblacion objetivo
+  // Cobertura de la poblacion objetivo 1.6
   public OpRP6: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "El 100% de la población objetivo será beneficiada directamente", value: 4 },
-    { text: "Entre un 56%  y hasta un 99% de la población objetivo será beneficiada directamente", value: 3 },
-    { text: "Entre un 31% y un 55% de la población objetivo será beneficiada directamente", value: 2 },
-    { text: "Menos del 31% de la población objetivo será beneficiada directamente", value: 1 },
+    { text: "Al 100% de la población objetivo", value: 4 },
+    { text: "A más del 55%", value: 3 },
+    { text: "A más del 30%", value: 2 },
+    { text: "A menos del 30%", value: 1 },
 
   ];
+  //Concurrenncia 1.7
   public OpRP7: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Más del 50% del presupuesto será aportado por esas fuentes", value: 4 },
-    { text: "Entre un 46% y un 50% del presupuesto será aportado por esas fuentes", value: 3 },
-    { text: "Entre un 36% y un  45% del presupuesto será aportado por esas fuentes", value: 2 },
-    { text: "Hasta un 35% del presupuesto será aportado por esas fuentes", value: 1 },
-    { text: "No se tiene planeada la aportación de recursos de esas fuentes, sólo del presupuesto estatal", value: 0 },
+    { text: "Más del 50% del dinero", value: 4 },
+    { text: "Del 46% al 50%", value: 3 },
+    { text: "Del 36% al 45", value: 2 },
+    { text: "Hasta 35%", value: 1 },
+    { text: "Mi proyecto no tendrá aportaciones externas", value: 0 },
 
   ];
   //----------------------------Impacto Social
   // Igualdad de Genero * 
   public OpIS1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Sí, mi proyecto incluye acciones específicas para mejorar directamente las oportunidades de las mujeres en alguno de esos aspectos", value: 2 },
-    { text: "Sí, mi proyecto incluye acciones para mejorar las oportunidades de las mujeres en alguno de esos aspectos, pero de manera indirecta", value: 1 },
-    { text: "Mi proyecto no incluye acciones específicas para mejorar las oportunidades de las mujeres en esos aspectos", value: 0 },
+    { text: "Sí, mi proyecto está diseñado especialmente para mejorar las oportunidades de las mujeres", value: 2 },
+    { text: "Sí, mi proyecto incluye algunas medidas para mejorar las oportunidades de las mujeres", value: 1 },
+    { text: "Mi proyecto no incluye acciones concretas para mejorar las oportunidades de las mujeres", value: 0 },
   ];
   // Atencion a municipios con rezago social
   // public OpIS2: Array<{ text: string; value: number | null }> = [
@@ -386,52 +387,52 @@ export class SimuladorComponent implements OnInit {
   // Subsidios Sociales *
   public OpIS3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Mi proyecto entregará apoyos directamente a las personas", value: 2 },
-    { text: "Mi proyecto entregará apoyos a asociaciones o instituciones que atienden a personas vulnerables", value: 1 },
-    { text: "Mi proyecto no consiste en entregar apoyos", value: 0 },
+    { text: "Sí, entregará apoyos directamente a las personas", value: 2 },
+    { text: "Sí, entregará apoyos a organizaciones que ayudan a personas vulnerables", value: 1 },
+    { text: "Mi proyecto no contempla la entrega de apoyos", value: 0 },
 
   ];
   // Incidencia ODS
   public OpIS4: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Mi proyecto incluye alguna de las siguientes acciones: promover la educación, capacitación y empleo de personas jóvenes; realizar obras en parques, plazas e instalaciones deportivas públicas; realizar obras de agua potable y drenaje para viviendas; incrementar el ingreso de las personas; promover la finalización del nivel preparatoria", value: 3 },
-    { text: "Mi proyecto incluye algunas de las siguientes acciones: capacitar a personas empleadas; crear empleos permanentes en cualquier actividad; incrementar la conectividad a internet", value: 2 },
-    { text: "Mi proyecto incluye alguna de las siguientes acciones: mejorar la alimentación de personas vulnerables; promover la finalización del nivel secundaria; disminuir las muertes por enfermedades crónicas; alfabetizar a personas 15 años o más; realizar obras de electrificación para viviendas", value: 1 },
-    { text: "Mi proyecto no incluye ninguna de las acciones anteriores", value: 0 },
+    { text: "Educación, capacitación y empleo a jóvenes; obras en parques, plazas y deportivas públicas; obras de agua potable y drenaje; mejorar el ingreso de las personas; ayudar a terminar la preparatoria", value: 3 },
+    { text: "Capacitación laboral; creación de empleos permanentes; conectividad pública a internet", value: 2 },
+    { text: "Alimentación de personas vulnerables; ayudar a terminar la secundaria; reducir las muertes por enfermedades crónicas; alfabetización de personas de 15 años o más; obras de electrificación", value: 1 },
+    { text: "Mi proyecto no incluye ninguna de estas acciones", value: 0 },
 
   ];
   // Incidencia Pobreza
   public OpIS5: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Mi proyecto incluye alguna de las siguientes acciones: promover el estudio del nivel educativo obligatorio, según la edad de las personas; mejorar la alimentación de personas vulnerables", value: 3 },
-    { text: "Mi proyecto incluye alguna de las siguientes acciones: incrementar el ingreso de las personas en pobreza; mejorar los materiales y el número de habitaciones de las viviendas", value: 2 },
-    { text: "Mi proyecto incluye alguna de las siguientes acciones: mejorar el acceso de las personas a servicios de salud; realizar obras de agua potable, drenaje y electrificación para viviendas", value: 1 },
-    { text: "Mi proyecto no incluye ninguna de las acciones anteriores", value: 0 },
+    { text: "Promover la educación obligatoria; alimentación de personas vulnerables", value: 3 },
+    { text: "Incrementar el ingreso de personas en pobreza; mejoramiento y ampliación de viviendas", value: 2 },
+    { text: "Mejorar el acceso a servicios de salud; obras de agua potable, drenaje y electrificación", value: 1 },
+    { text: "Mi proyecto no incluye ninguna de estas acciones", value: 0 },
 
   ];
   // ------------------------------- Impacto Ecónomico
   // Empleos temporales
   public OpIE1: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Mi proyecto tendrá efecto en la creación de más de 175 empleos temporales", value: 3 },
-    { text: "Mi proyecto tendrá efecto en la creación de 76 a 175 empleos temporales", value: 2 },
-    { text: "Mi proyecto tendrá efecto en la creación de hasta 75 empleos temporales", value: 1 },
-    { text: "Mi proyecto no tendrá efecto en la creación de empleos temporales", value: 0 },
+    { text: "Más de 175 empleos", value: 3 },
+    { text: "Más de 75", value: 2 },
+    { text: "Hasta 75", value: 1 },
+    { text: "Mi proyecto no ayudará a crear empleos temporales", value: 0 },
 
   ];
   // Actividad Economica
   public OpIE2: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Mi proyecto puede vincularse directamente con alguna de esas actividades", value: 2 },
-    { text: "Mi proyecto puede vincularse indirectamente con alguna de esas actividades", value: 1 },
-    { text: "Mi proyecto no puede vincularse con alguna de las actividades anteriores", value: 0 },
+    { text: "Sí, mi proyecto se vincula directamente con una de esas actividades", value: 2 },
+    { text: "Mi proyecto tiene poca relación con alguna de esas actividades", value: 1 },
+    { text: "Mi proyecto no tiene relación con ninguna de esas actividades", value: 0 },
   ];
   //Empleos permanentes
   public OpIE3: Array<{ text: string; value: number | null }> = [
     { text: "Selecciona", value: null },
-    { text: "Mi proyecto tendrá efecto en la creación de más de 1,000 empleos permanentes", value: 2 },
-    { text: "Mi proyecto tendrá efecto en la creación de hasta 1,000 empleos permanentes", value: 1 },
-    { text: "Mi proyecto no tendrá efecto en la creación de empleos permanentes", value: 0 },
+    { text: "Más de 1,000 empleos", value: 2 },
+    { text: "Hasta 1,000", value: 1 },
+    { text: "Mi proyecto no ayudará a crear empleos permanentes", value: 0 },
   ];
  public municipio = "";
   //contador de letras
@@ -496,7 +497,7 @@ export class SimuladorComponent implements OnInit {
   }
   get textoContinuidad(): string {
     return this.form.get('continuidad')?.value
-      ? 'Mi proyecto cuenta con etapas previas'
+      ? 'Mi proyecto ha tenido otras etapas'
       : '';
   }
   ngOnInit(): void {
