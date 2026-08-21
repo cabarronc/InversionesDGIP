@@ -172,7 +172,7 @@
                   <kendo-formerror>Mínimo 10 caracteres</kendo-formerror>
 
                   }
-                </kendo-formfield>
+                </kendo-formfield>       
               </div>
               <br>
               <!-- Monto -->
@@ -224,10 +224,11 @@
               </div>
               <kendo-formfield showHints="initial">
                 <div class="k-form-field-checkbox-wrap">
-                  <kendo-checkbox formControlName="continuidad"></kendo-checkbox>
-                  <kendo-label class="k-checkbox-label" [text]="textoContinuidad"></kendo-label>
+                  <input   kendoCheckBox type="checkbox" formControlName="continuidad"  #checkbox >
+                
+                  <kendo-label [for]="checkbox"   class="k-checkbox-label" [text]="textoContinuidad"></kendo-label>
                 </div>
-              </kendo-formfield>
+              </kendo-formfield>  
             </fieldset>
             <div class="k-actions k-actions-center">
               <button kendoButton type="button" (click)="close()">Cancelar</button>

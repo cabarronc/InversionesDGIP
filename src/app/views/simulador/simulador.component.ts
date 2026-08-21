@@ -13,6 +13,7 @@ import { KENDO_DIALOGS } from "@progress/kendo-angular-dialog";
 declare var window: any;
 import { KENDO_DROPDOWNS } from "@progress/kendo-angular-dropdowns";
 import { FormsModule } from '@angular/forms';
+import { CheckBoxModule } from '@progress/kendo-angular-inputs';
 import { KENDO_ICONS } from "@progress/kendo-angular-icons";
 import { paperclipIcon, infoSolidIcon, imageIcon, accessibilityIcon, dollarIcon, buildingsOutlineIcon, trashIcon, mapMarkerIcon } from "@progress/kendo-svg-icons";
 import { TooltipModule } from '@progress/kendo-angular-tooltip';
@@ -53,11 +54,11 @@ export function noCeroValidator(control: AbstractControl): ValidationErrors | nu
 @Component({
   selector: 'app-simulador',
   standalone: true,
-  imports: [KENDO_ICONS, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT,
+  imports: [KENDO_ICONS, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT, CheckBoxModule,
     KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule, KENDO_DIALOGS, NotificationModule, AutoCompleteModule, DisclaimerComponent],
   templateUrl: './simulador.component.html',
   styleUrl: './simulador.component.scss',
-   changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SimuladorComponent implements OnInit {
   estadoActual: 'happy' | 'neutral' | 'sad' = 'neutral';
@@ -434,7 +435,7 @@ export class SimuladorComponent implements OnInit {
     { text: "Hasta 1,000", value: 1 },
     { text: "Mi proyecto no ayudará a crear empleos permanentes", value: 0 },
   ];
- public municipio = "";
+  public municipio = "";
   //contador de letras
   public charachtersCount: number;
   public counter: string
@@ -457,6 +458,7 @@ export class SimuladorComponent implements OnInit {
       continuidad: new FormControl(this.continuidad),
       monto: new FormControl("", [Validators.required, noCeroValidator])
     });
+
     this.formSimulacion = new FormGroup({
       Res1: new FormControl("", [Validators.required]),
       Res2: new FormControl("", [Validators.required]),
@@ -500,8 +502,9 @@ export class SimuladorComponent implements OnInit {
       ? 'Mi proyecto ha tenido otras etapas'
       : '';
   }
+
   ngOnInit(): void {
-    
+
     this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
       console.log("Usuario:", this.currentUser)
@@ -588,16 +591,16 @@ export class SimuladorComponent implements OnInit {
     if (value == 2) return 'template9';
     return 'template';
   }
-   getTemplateClassIgualdadGeneroText(text: string): string {
+  getTemplateClassIgualdadGeneroText(text: string): string {
     if (!text) return 'template';
 
     const t = text.toLowerCase();
 
     if (t.includes('(muy bajo)')) return 'templateNeutro';
-    if (t.includes('(bajo)'))     return 'template8';
-    if (t.includes('(medio)'))    return 'template9';
+    if (t.includes('(bajo)')) return 'template8';
+    if (t.includes('(medio)')) return 'template9';
 
-  return 'template';
+    return 'template';
   }
 
   //Diseño con  3 variables sin cero
@@ -758,7 +761,7 @@ export class SimuladorComponent implements OnInit {
       descripcion: this.itemSeleccionado!.descripcion,
       continuidad: this.itemSeleccionado!.continuidad,
       dictaminacion: this.dictaminacion,
-      
+
       resultados: {
         res1: this.formSimulacion.get('Res1')?.value,
         pon1: this.Pon1 ?? 0,
@@ -1234,7 +1237,7 @@ export class SimuladorComponent implements OnInit {
       Res15: simulacion.resultados.res15,
 
     });
-    this.municipio =  simulacion.resultados.municipio
+    this.municipio = simulacion.resultados.municipio
     this.Pon1 = simulacion.resultados.pon1
     this.Pon2 = simulacion.resultados.pon2
     this.Pon3 = simulacion.resultados.pon3
@@ -1804,19 +1807,19 @@ export class SimuladorComponent implements OnInit {
     else if (t.includes('(bajo)')) {
       this.Pon9 = 3.5;
       this.color9 = '#3ecf6d';
-       this.municipio = text
+      this.municipio = text
     }
     else if (t.includes('(medio)')) {
       this.Pon9 = 7;
       this.color9 = '#046b1e';
-       this.municipio = text
+      this.municipio = text
     }
     else {
       this.Pon9 = 0;
       this.color9 = '#64686d';
-       this.municipio = text
+      this.municipio = text
     }
-     console.log("Respuesta Ponderacion", this.Pon9)
+    console.log("Respuesta Ponderacion", this.Pon9)
     console.log("Respuesta2.2", text)
 
   }
@@ -2088,15 +2091,15 @@ export class SimuladorComponent implements OnInit {
     this.mostrarConfirmacion = false;
     this.limpia_simulacion();
   }
-  public onAccepted(value:boolean){
+  public onAccepted(value: boolean) {
     this.flag_acept = value
     this.flag_acept_lista = value
-    this.flag_acept_terminar =value
+    this.flag_acept_terminar = value
     console.log(value)
 
   }
-  onCookiesRejected(){}
+  onCookiesRejected() { }
 
-  openCookieSettings(){}
+  openCookieSettings() { }
 
 }
