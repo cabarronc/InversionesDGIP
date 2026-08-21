@@ -131,6 +131,8 @@
    margin-top: 3px;
  }
 
+
+ 
  .row2 {
    flex-wrap: wrap;
    display: flex;
@@ -619,20 +621,67 @@
 .mediana{
   font-size: 1rem;
 }
+
+// .mi-celda-valor-pub {
+//       position: relative;
+//     padding-left: 15px;
+    
+// }
+// .mi-celda-valor-pub::before{
+//       content: "";
+//     position: absolute;
+//     left: 3px;
+//     top: 4px;
+//     bottom: 4px;
+//     width: 3px;
+//     background-color: #1916cf;
+    
+// }
+
+// .mi-celda-impacto-social {
+//       position: relative;
+//     padding-left: 15px;
+    
+// }
+// .mi-celda-impacto-social::before{
+//       content: "";
+//     position: absolute;
+//     left: 3px;
+//     top: 4px;
+//     bottom: 4px;
+//     width: 3px;
+//     background-color: #333130;
+    
+// }
+// .mi-celda-impacto-economico {
+//       position: relative;
+//     padding-left: 15px;
+    
+// }
+// .mi-celda-impacto-economico::before{
+//       content: "";
+//     position: absolute;
+//     left: 3px;
+//     top: 4px;
+//     bottom: 4px;
+//     width: 3px;
+//     background-color: #d60cbb;
+    
+// }
 .table th:first-child {
-    border-top-left-radius: 8px;
+    border-top-left-radius: 12px;
 }
 
 .table th:last-child {
-    border-top-right-radius: 8px;
+    border-top-right-radius: 12px;
 }
 
 .table tr:last-child td:first-child {
-    border-bottom-left-radius: 8px;
+    border-bottom-left-radius: 12px;
 }
 
 .table tr:last-child td:last-child {
-    border-bottom-right-radius: 8px;
+    border-bottom-right-radius: 12px;
 }
 
  .linea7 td {
@@ -766,7 +815,49 @@
 .combo_proyecto{
   font-size: 14px !important;
 }
+.window-content {
+  max-height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
 
+}
+.window-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.window-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.window-content::-webkit-scrollbar-thumb {
+    background: #49bed8;
+    border-radius: 10px;
+}
+
+.window-content::-webkit-scrollbar-thumb:hover {
+    background: #338597;
+}
+
+.tabla-container {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ultima-fila td {
+  border-bottom: none !important;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 10;
+}
 // ::ng-deep .k-animation-container {
 //   z-index: 9999 !important;
 // }

@@ -286,20 +286,20 @@
       } @if (dataSaved2) {
       } @if (opened2) {
       <kendo-window title="Comparador" (close)="close2()" [minWidth]="450" [width]="750" [top]="top2" [left]="left2">
-        <div class="container mt-4">
+        <div class="container mt-4 window-content">
 
 
-          <table class="table table-bordered text-center table-primary table-striped table-hover ">
+          <table class="table text-center table-primary table-hover">
 
-            <thead class="table-light">
-              <tr>
-                <th class="align-middle text-center">
+            <thead>
+              <tr >
+                <th class="align-middle text-center" style="background-color: #b3bfc7 !important; color: rgb(0, 0, 0);">
                   <p class="mediana  mb-0"># Variable</p>
                 </th>
                 @for (sim of Getsimulaciones; track sim.clave; let i = $index) {
 
 
-                <th>
+                <th style="background-color: #b3bfc7 !important; color: white;">
                   <div class="row d-flex justify-content-center">
                     <div class="col-12 d-flex flex-column align-items-center justify-content-center">
                       <!-- {{sim.nombre}} -->
@@ -350,9 +350,14 @@
                 <tr [ngClass]="{
                     'linea7':i ==1.7,
                     'linea12':i == 2.5,
+                    'ultima-fila': $last
                   }">
 
-                  <td class="mediana">{{ i }}</td>
+                  <td class="mediana"   [ngClass]="{
+                    'mi-celda-valor-pub':i >= 1.1 && i <= 1.7,
+                    'mi-celda-impacto-social':i >= 2.1 && i <= 2.5,
+                    'mi-celda-impacto-economico':i >= 3.1 && i <= 3.3,
+                  }">{{ i }} </td>
                   @for (sim of Getsimulaciones; track $index; let colIndex = $index) {
                   <td>
                     <div class="color-circle" [style.background]="sim.resultados['color'+ (rowIndex+1)] ?? '#cccccc'">

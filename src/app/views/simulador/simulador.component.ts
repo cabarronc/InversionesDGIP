@@ -519,9 +519,9 @@ export class SimuladorComponent implements OnInit {
 
 
     this.left = (window.innerWidth - width) / 2;
-    this.top = (window.innerHeight - height) / 2 + window.scrollY;
-    this.left2 = (window.innerWidth - width2) / 2;
-    this.top2 = (window.innerHeight - height2) / 4 + window.scrollY;
+    this.top = (window.innerHeight - height) / 5 + window.scrollY;
+    this.left2 = (window.innerWidth - width2) / 3;
+    this.top2 = (window.innerHeight - height2) / 8 + window.scrollY;
     const estructura = [7, 5, 3];
     this.variables = estructura.flatMap((cantidad, grupo) =>
       Array.from({ length: cantidad }, (_, i) => (grupo + 1) + (i + 1) / 10)
