@@ -222,13 +222,15 @@
                   otro tramo de la misma calle, la construcción de drenaje en otra zona de la misma colonia, el
                   equipamiento de algunos salones de la misma escuela. Si es así, selecciona la casilla de abajo.</span>
               </div>
+              <div class="row mb-1 mt-2 justify-content-center">
               <kendo-formfield showHints="initial">
-                <div class="k-form-field-checkbox-wrap">
-                  <input   kendoCheckBox type="checkbox" formControlName="continuidad"  #checkbox >
+                <div class="d-flex justify-content-center align-items-center">
+                  <input   kendoCheckBox type="checkbox" formControlName="continuidad"  size="large" rounded="large"  #checkbox >
                 
                   <kendo-label [for]="checkbox"   class="k-checkbox-label" [text]="textoContinuidad"></kendo-label>
                 </div>
-              </kendo-formfield>  
+              </kendo-formfield>
+              </div>  
             </fieldset>
             <div class="k-actions k-actions-center">
               <button kendoButton type="button" (click)="close()">Cancelar</button>
