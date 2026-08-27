@@ -210,6 +210,11 @@
                     <ng-template kendoPrefixTemplate>
                       <kendo-svgicon [icon]="icons.dollarIcon"></kendo-svgicon>
                     </ng-template>
+                     <ng-template kendoSuffixTemplate>
+                      <button kendoButton look="clear" (click)="limpiarMascaraMonto()">
+                        <kendo-svgicon [icon]="icons.trashIcon" style="color: rgb(230, 26, 11);"></kendo-svgicon>
+                      </button>
+                    </ng-template>
 
                   </kendo-numerictextbox>
                   <kendo-formhint></kendo-formhint>
