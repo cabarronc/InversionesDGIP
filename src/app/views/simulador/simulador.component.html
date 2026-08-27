@@ -172,7 +172,7 @@
                   <kendo-formerror>Mínimo 10 caracteres</kendo-formerror>
 
                   }
-                </kendo-formfield>       
+                </kendo-formfield>
               </div>
               <br>
               <!-- Monto -->
@@ -189,7 +189,7 @@
                   </span>
                 </div>
                 <kendo-formfield showHints="initial">
-                  <kendo-maskedtextbox name="masked" [maskOnFocus]="true" [mask]="mask_monto" (input)="onInput($event)"
+                  <!-- <kendo-maskedtextbox name="masked" [maskOnFocus]="true" [mask]="mask_monto" (input)="onInput($event)"
                     [size]="'small'" [maskValidation]="false" formControlName="monto" [ngClass]="{
                                   'k-valid': form.get('monto')?.valid && form.get('monto')?.dirty
                                 }">
@@ -201,15 +201,35 @@
                         <kendo-svgicon [icon]="icons.trashIcon" style="color: rgb(230, 26, 11);"></kendo-svgicon>
                       </button>
                     </ng-template>
-                  </kendo-maskedtextbox>
+                  </kendo-maskedtextbox> -->
+                  <kendo-numerictextbox formControlName="monto" [format]="'#,##0'" [decimals]="0" [spinners]="false"
+                    [size]="'small'" (input)="onInput($event)" [ngClass]="{
+    'k-valid': form.get('monto')?.valid && form.get('monto')?.dirty
+  }">
+
+                    <ng-template kendoPrefixTemplate>
+                      <kendo-svgicon [icon]="icons.dollarIcon"></kendo-svgicon>
+                    </ng-template>
+
+                  </kendo-numerictextbox>
                   <kendo-formhint></kendo-formhint>
+                  @if (resultadoFinal) {
+                  <div class="row mt-1">
+
+                    <div class="col-12">
+                      <p class="mb-0">
+                        <strong>Cantidad:</strong> {{ resultadoFinal }}
+                      </p>
+                    </div>
+                  </div>
+                  }
                   @if (form.get('monto')?.valid && form.get('monto')?.dirty) {
                   <div class="form-success">
                     ✔ Campo válido
                   </div>
                   }
                   @else{
-                  <kendo-formerror></kendo-formerror>
+                  <kendo-formerror>La cantidad no es válida</kendo-formerror>
 
                   }
                 </kendo-formfield>
@@ -223,14 +243,15 @@
                   equipamiento de algunos salones de la misma escuela. Si es así, selecciona la casilla de abajo.</span>
               </div>
               <div class="row mb-1 mt-2 justify-content-center">
-              <kendo-formfield showHints="initial">
-                <div class="d-flex justify-content-center align-items-center">
-                  <input   kendoCheckBox type="checkbox" formControlName="continuidad"  size="large" rounded="large"  #checkbox >
-                
-                  <kendo-label [for]="checkbox"   class="k-checkbox-label" [text]="textoContinuidad"></kendo-label>
-                </div>
-              </kendo-formfield>
-              </div>  
+                <kendo-formfield showHints="initial">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <input kendoCheckBox type="checkbox" formControlName="continuidad" size="large" rounded="large"
+                      #checkbox>
+
+                    <kendo-label [for]="checkbox" class="k-checkbox-label" [text]="textoContinuidad"></kendo-label>
+                  </div>
+                </kendo-formfield>
+              </div>
             </fieldset>
             <div class="k-actions k-actions-center">
               <button kendoButton type="button" (click)="close()">Cancelar</button>
@@ -292,7 +313,7 @@
           <table class="table text-center table-primary table-hover">
 
             <thead>
-              <tr >
+              <tr>
                 <th class="align-middle text-center" style="background-color: #b3bfc7 !important; color: rgb(0, 0, 0);">
                   <p class="mediana  mb-0"># Variable</p>
                 </th>
@@ -353,7 +374,7 @@
                     'ultima-fila': $last
                   }">
 
-                  <td class="mediana"   [ngClass]="{
+                  <td class="mediana" [ngClass]="{
                     'mi-celda-valor-pub':i >= 1.1 && i <= 1.7,
                     'mi-celda-impacto-social':i >= 2.1 && i <= 2.5,
                     'mi-celda-impacto-economico':i >= 3.1 && i <= 3.3,
@@ -777,7 +798,7 @@
                                 En los proyectos de inversión, un resultado ideal implica cumplir las metas (por
                                 ejemplo, pavimentar los 100 metros de calle que se planearon) y hacerlo dentro del
                                 tiempo y presupuesto previstos.<b> Teniendo en cuenta las etapas ya realizadas de tu
-                                proyecto ¿cómo fueron sus resultados?</b>
+                                  proyecto ¿cómo fueron sus resultados?</b>
                               </kendo-label>
 
                               <!-- <span class="info-icon" style="cursor: pointer; display: inline-flex;">

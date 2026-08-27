@@ -62,7 +62,7 @@ export function noCeroValidator(control: AbstractControl): ValidationErrors | nu
 })
 export class SimuladorComponent implements OnInit {
   estadoActual: 'happy' | 'neutral' | 'sad' = 'neutral';
-  public mask_monto = "999,000,000";
+  // public mask_monto = "000,000,000";
   recibirEstado(mood: string) {
     console.log('Nuevo estado:', mood);
   }
