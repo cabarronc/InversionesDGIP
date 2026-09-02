@@ -3049,6 +3049,546 @@ export class CosaincegComponent implements OnInit {
  
       },
     },
+     {
+      text: '04 Abril',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const Abril = `${anio}-04-10`;
+        const formatted =
+              String(today.getFullYear()).slice(-2) +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              String(today.getDate()).padStart(2, '0');
+
+        console.log(formatted); 
+        const filename = `${formatted} Avance Financiero Inversión Abr ${anio}.pptx`
+        console.log("Abril: ", Abril)
+
+        this.EjecutandoAvance = true;
+        this.isAvance = true
+        this.cosaincegService.GenerarDescargasAvanceFinanciero(Abril, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoAvance = false;
+            this.isAvance = false
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+ 
+      },
+    },
+    {
+      text: '05 Mayo',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const Mayo = `${anio}-05-10`;
+        const formatted =
+              String(today.getFullYear()).slice(-2) +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              String(today.getDate()).padStart(2, '0');
+
+        console.log(formatted); 
+        const filename = `${formatted} Avance Financiero Inversión Mayo ${anio}.pptx`
+        console.log("Mayo: ", Mayo)
+
+        this.EjecutandoAvance = true;
+        this.isAvance = true
+        this.cosaincegService.GenerarDescargasAvanceFinanciero(Mayo, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoAvance = false;
+            this.isAvance = false
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+ 
+      },
+    },
+    {
+      text: '06 Junio',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const Junio = `${anio}-06-10`;
+        const formatted =
+              String(today.getFullYear()).slice(-2) +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              String(today.getDate()).padStart(2, '0');
+
+        console.log(formatted); 
+        const filename = `${formatted} Avance Financiero Inversión Jun ${anio}.pptx`
+        console.log("Junio: ", Junio)
+
+        this.EjecutandoAvance = true;
+        this.isAvance = true
+        this.cosaincegService.GenerarDescargasAvanceFinanciero(Junio, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoAvance = false;
+            this.isAvance = false
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+ 
+      },
+    },
+    {
+      text: '07 Julio',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const Julio = `${anio}-07-10`;
+        const formatted =
+              String(today.getFullYear()).slice(-2) +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              String(today.getDate()).padStart(2, '0');
+
+        console.log(formatted); 
+        const filename = `${formatted} Avance Financiero Inversión Jul ${anio}.pptx`
+        console.log("Julio: ", Julio)
+
+        this.EjecutandoAvance = true;
+        this.isAvance = true
+        this.cosaincegService.GenerarDescargasAvanceFinanciero(Julio, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoAvance = false;
+            this.isAvance = false
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+ 
+      },
+    },
+    {
+      text: '08 Agosto',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const Agosto = `${anio}-08-10`;
+        const formatted =
+              String(today.getFullYear()).slice(-2) +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              String(today.getDate()).padStart(2, '0');
+
+        console.log(formatted); 
+        const filename = `${formatted} Avance Financiero Inversión Ago ${anio}.pptx`
+        console.log("Agosto: ", Agosto)
+
+        this.EjecutandoAvance = true;
+        this.isAvance = true
+        this.cosaincegService.GenerarDescargasAvanceFinanciero(Agosto, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoAvance = false;
+            this.isAvance = false
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+ 
+      },
+    },
+     {
+      text: '09 Septiembre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const Septiembre = `${anio}-09-10`;
+        const formatted =
+              String(today.getFullYear()).slice(-2) +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              String(today.getDate()).padStart(2, '0');
+
+        console.log(formatted); 
+        const filename = `${formatted} Avance Financiero Inversión Sep ${anio}.pptx`
+        console.log("Septiembre: ", Septiembre)
+
+        this.EjecutandoAvance = true;
+        this.isAvance = true
+        this.cosaincegService.GenerarDescargasAvanceFinanciero(Septiembre, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoAvance = false;
+            this.isAvance = false
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+ 
+      },
+    },
+     {
+      text: '10 Octubre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const Octubre = `${anio}-10-10`;
+        const formatted =
+              String(today.getFullYear()).slice(-2) +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              String(today.getDate()).padStart(2, '0');
+
+        console.log(formatted); 
+        const filename = `${formatted} Avance Financiero Inversión Oct ${anio}.pptx`
+        console.log("Octubre: ", Octubre)
+
+        this.EjecutandoAvance = true;
+        this.isAvance = true
+        this.cosaincegService.GenerarDescargasAvanceFinanciero(Octubre, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoAvance = false;
+            this.isAvance = false
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+ 
+      },
+    },
+     {
+      text: '11 Noviembre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const Noviembre = `${anio}-11-10`;
+        const formatted =
+              String(today.getFullYear()).slice(-2) +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              String(today.getDate()).padStart(2, '0');
+
+        console.log(formatted); 
+        const filename = `${formatted} Avance Financiero Inversión Nov ${anio}.pptx`
+        console.log("Noviembre: ", Noviembre)
+
+        this.EjecutandoAvance = true;
+        this.isAvance = true
+        this.cosaincegService.GenerarDescargasAvanceFinanciero(Noviembre, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoAvance = false;
+            this.isAvance = false
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+ 
+      },
+    },
+     {
+      text: '12 Diciembre',
+      svgIcon: fileExcelIcon,
+      click: (): void => {
+        const today = new Date();
+        const lastYearDate = new Date(today);
+        lastYearDate.setFullYear(today.getFullYear());
+        const anio = lastYearDate.getFullYear().toString();
+        const Diciembre = `${anio}-12-10`;
+        const formatted =
+              String(today.getFullYear()).slice(-2) +
+              String(today.getMonth() + 1).padStart(2, '0') +
+              String(today.getDate()).padStart(2, '0');
+
+        console.log(formatted); 
+        const filename = `${formatted} Avance Financiero Inversión Dic ${anio}.pptx`
+        console.log("Diciembre: ", Diciembre)
+
+        this.EjecutandoAvance = true;
+        this.isAvance = true
+        this.cosaincegService.GenerarDescargasAvanceFinanciero(Diciembre, filename).subscribe(
+          (resp => {
+            // 1. Archivo (BLOB)
+            const blob = resp.body!;
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+
+            // 2. JSON enviado en headers
+            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+            const x = JSON.parse(xHeader!);
+            console.log("Objeto recibido:", x);
+            this.info = x
+            this.notificationService.show({
+              content: "Excel Generado Correctamente, espero que se descargue!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "success", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+             this.EjecutandoAvance = false;
+            this.isAvance = false
+          }),
+          (error) => {
+            console.error('Error fetching files', error);
+            this.notificationService.show({
+              content: "Existe un Error en la Generacion del Reporte!",
+              hideAfter: 1500,
+              animation: { type: "slide", duration: 900 },
+              type: { style: "error", icon: true },
+              position: { horizontal: "left", vertical: "top" },
+            });
+          }
+        );
+ 
+      },
+    },
     //  {
     //   text: '03 Marzo',
     //   svgIcon: fileExcelIcon,
