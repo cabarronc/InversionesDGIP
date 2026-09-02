@@ -1,0 +1,6 @@
+allowBuilds:
+  '@progress/kendo-licensing': true
+  canvas: true
+  esbuild: true
+  lmdb: true
+  msgpackr-extract: true
