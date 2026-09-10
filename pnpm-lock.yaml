@@ -35,6 +35,9 @@ importers:
       '@angular/router':
         specifier: ^18.2.0
         version: 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(@angular/platform-browser@18.2.14(@angular/animations@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(rxjs@7.8.2)
+      '@primeng/themes':
+        specifier: ^21.0.4
+        version: 21.0.4
       '@progress/kendo-angular-buttons':
         specifier: 18.5.2
         version: 18.5.2(8fb4273e9276b2533daeaed1b4e5b40c)
@@ -152,6 +155,12 @@ importers:
       pocketbase:
         specifier: ^0.25.1
         version: 0.25.2
+      primeicons:
+        specifier: ^8.0.0
+        version: 8.0.0
+      primeng:
+        specifier: ^18.0.2
+        version: 18.0.2(be30a3dd88072c4e43c474fd13d1dbc2)
       rxjs:
         specifier: ~7.8.0
         version: 7.8.2
@@ -298,6 +307,13 @@ packages:
         optional: true
       tailwindcss:
         optional: true
+
+  '@angular/cdk@18.2.14':
+    resolution: {integrity: sha512-vDyOh1lwjfVk9OqoroZAP8pf3xxKUvyl+TVR8nJxL4c5fOfUFkD7l94HaanqKSRwJcI2xiztuu92IVoHn8T33Q==}
+    peerDependencies:
+      '@angular/common': ^18.0.0 || ^19.0.0
+      '@angular/core': ^18.0.0 || ^19.0.0
+      rxjs: ^6.5.3 || ^7.4.0
 
   '@angular/cli@18.2.21':
     resolution: {integrity: sha512-efweY4p8awRTbHs+HKdg6s44hl7Y0gdVlXYi3HeY8Z5JDC0abbka0K6sA/MrV9AXvn/5ovxYbxiL3AsOApjTpg==}
@@ -1543,6 +1559,29 @@ packages:
 
   '@popperjs/core@2.11.8':
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
+
+  '@primeng/themes@21.0.4':
+    resolution: {integrity: sha512-WDF8pj91K3ItGmUJB91T1mRj6ut3dCMz4/5rb1sZR6sjxP7jX06PT/uXkKF8sz60ewEEBbh3yK98Js/mKxev3A==}
+    deprecated: 'Deprecated. This package is no longer maintained. Please migrate to @primeuix/themes: https://www.npmjs.com/package/@primeuix/themes'
+
+  '@primeuix/styled@0.3.2':
+    resolution: {integrity: sha512-ColZes0+/WKqH4ob2x8DyNYf1NENpe5ZguOvx5yCLxaP8EIMVhLjWLO/3umJiDnQU4XXMLkn2mMHHw+fhTX/mw==}
+    engines: {node: '>=12.11.0'}
+
+  '@primeuix/styled@0.7.4':
+    resolution: {integrity: sha512-QSO/NpOQg8e9BONWRBx9y8VGMCMYz0J/uKfNJEya/RGEu7ARx0oYW0ugI1N3/KB1AAvyGxzKBzGImbwg0KUiOQ==}
+    engines: {node: '>=12.11.0'}
+
+  '@primeuix/themes@2.0.3':
+    resolution: {integrity: sha512-3fS1883mtCWhgUgNf/feiaaDSOND4EBIOu9tZnzJlJ8QtYyL6eFLcA6V3ymCWqLVXQ1+lTVEZv1gl47FIdXReg==}
+
+  '@primeuix/utils@0.3.2':
+    resolution: {integrity: sha512-B+nphqTQeq+i6JuICLdVWnDMjONome2sNz0xI65qIOyeB4EF12CoKRiCsxuZ5uKAkHi/0d1LqlQ9mIWRSdkavw==}
+    engines: {node: '>=12.11.0'}
+
+  '@primeuix/utils@0.6.4':
+    resolution: {integrity: sha512-pZ5f+vj7wSzRhC7KoEQRU5fvYAe+RP9+m39CTscZ3UywCD1Y2o6Fe1rRgklMPSkzUcty2jzkA0zMYkiJBD1hgg==}
+    engines: {node: '>=12.11.0'}
 
   '@progress/jszip-esm@1.0.4':
     resolution: {integrity: sha512-A5i26JcTosFKeHCrklarNsByW3RUJd8osRq69eskZgIaq05weTCXdpztlFMwrHpgOGods1D0WFoSQcMNE0eI8Q==}
@@ -4273,6 +4312,21 @@ packages:
     resolution: {integrity: sha512-u82N74LFzG8ca+dD8puPnplTXoGH4fTPpVGuIbt36G3qvNlkvfD0lEAZSxaly3KX8TS/L1A1gsCEmvKmBcVbkQ==}
     engines: {node: ^10 || ^12 || >=14}
 
+  primeicons@8.0.0:
+    resolution: {integrity: sha512-eZGk+Mgb4fE+LkJi9LvllbnB4RVUF9kzmnLVnT3ZMY6stqKVh7TUJ0mFoMNIEgTnJSvhaGcJotDiSvtVvkHd7g==}
+
+  primeng@18.0.2:
+    resolution: {integrity: sha512-Tt4KmbstxRmrUdxvVjV1j/1L3SnN8QdkPdC5hRHWQjOCheX71BA0aQ7aTJ4CXZZuw6wiDKlb7Jrm0aqTixE7+A==}
+    peerDependencies:
+      '@angular/animations': ^17.0.0 || ^18.0.0
+      '@angular/cdk': ^17.0.0 || ^18.0.0
+      '@angular/common': ^17.0.0 || ^18.0.0
+      '@angular/core': ^17.0.0 || ^18.0.0
+      '@angular/forms': ^17.0.0 || ^18.0.0
+      '@angular/platform-browser': ^17.0.0 || ^18.0.0
+      '@angular/router': ^17.0.0 || ^18.0.0
+      rxjs: ^6.0.0 || ^7.8.1
+
   proc-log@4.2.0:
     resolution: {integrity: sha512-g8+OnU/L2v+wyiVK+D5fA34J7EH8jZ8DDlvwhRCMxmMj7UCBvxiO1mGeN+36JXIKF4zevU4kRBd8lVgG9vLelA==}
     engines: {node: ^14.17.0 || ^16.13.0 || >=18.0.0}
@@ -5341,6 +5395,15 @@ snapshots:
       - sugarss
       - supports-color
       - terser
+
+  '@angular/cdk@18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2)':
+    dependencies:
+      '@angular/common': 18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2)
+      '@angular/core': 18.2.14(rxjs@7.8.2)(zone.js@0.14.10)
+      rxjs: 7.8.2
+      tslib: 2.8.1
+    optionalDependencies:
+      parse5: 7.3.0
 
   '@angular/cli@18.2.21(chokidar@3.6.0)(supports-color@8.1.1)':
     dependencies:
@@ -6743,6 +6806,27 @@ snapshots:
     optional: true
 
   '@popperjs/core@2.11.8': {}
+
+  '@primeng/themes@21.0.4':
+    dependencies:
+      '@primeuix/styled': 0.7.4
+      '@primeuix/themes': 2.0.3
+
+  '@primeuix/styled@0.3.2':
+    dependencies:
+      '@primeuix/utils': 0.3.2
+
+  '@primeuix/styled@0.7.4':
+    dependencies:
+      '@primeuix/utils': 0.6.4
+
+  '@primeuix/themes@2.0.3':
+    dependencies:
+      '@primeuix/styled': 0.7.4
+
+  '@primeuix/utils@0.3.2': {}
+
+  '@primeuix/utils@0.6.4': {}
 
   '@progress/jszip-esm@1.0.4':
     dependencies:
@@ -9909,6 +9993,22 @@ snapshots:
       nanoid: 3.3.18
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  primeicons@8.0.0: {}
+
+  primeng@18.0.2(be30a3dd88072c4e43c474fd13d1dbc2):
+    dependencies:
+      '@angular/animations': 18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))
+      '@angular/cdk': 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2)
+      '@angular/common': 18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2)
+      '@angular/core': 18.2.14(rxjs@7.8.2)(zone.js@0.14.10)
+      '@angular/forms': 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(@angular/platform-browser@18.2.14(@angular/animations@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(rxjs@7.8.2)
+      '@angular/platform-browser': 18.2.14(@angular/animations@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))
+      '@angular/router': 18.2.14(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(@angular/platform-browser@18.2.14(@angular/animations@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(@angular/common@18.2.14(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10))(rxjs@7.8.2))(@angular/core@18.2.14(rxjs@7.8.2)(zone.js@0.14.10)))(rxjs@7.8.2)
+      '@primeuix/styled': 0.3.2
+      '@primeuix/utils': 0.3.2
+      rxjs: 7.8.2
+      tslib: 2.8.1
 
   proc-log@4.2.0: {}
 

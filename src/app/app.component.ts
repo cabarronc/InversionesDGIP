@@ -8,12 +8,14 @@ import { ClaudeComponent } from './views/claude/claude.component';
 import { KENDO_LAYOUT } from '@progress/kendo-angular-layout';
 import { FabGlobalComponent } from "./views/home/fab-global/fab-global.component";
 import { DisclaimerComponent } from "./views/simulador/disclaimer/disclaimer.component";
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, WindowModule, TooltipModule, DialogModule, KENDO_LAYOUT, FabGlobalComponent, DisclaimerComponent],
+  imports: [RouterOutlet, WindowModule, TooltipModule, DialogModule, KENDO_LAYOUT, FabGlobalComponent, DisclaimerComponent, ToastModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -25,7 +27,7 @@ export class AppComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private dialogService: DialogService
+    private dialogService: DialogService,
   ) {}
     ngOnInit(): void {
     // Opcional: Configurar interceptores o inicializaciones globales

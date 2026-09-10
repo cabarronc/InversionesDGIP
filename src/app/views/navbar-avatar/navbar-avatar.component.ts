@@ -1,30 +1,31 @@
 import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService, User } from '../../services/auth.service';
-import { Subscription } from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import { AvatarService } from '../../services/avatar.service';
-import { CapitalizeFirstPipe } from '../../pipes/capitalize-first.pipe'
-import { PopupModule } from '@progress/kendo-angular-popup';
-import { LoaderComponent } from '@progress/kendo-angular-indicators';
-import { KENDO_BUTTONS } from '@progress/kendo-angular-buttons';
-import { fileWordIcon, imageIcon ,menuIcon, SVGIcon, copyIcon,trashIcon,arrowsSwapIcon} from '@progress/kendo-svg-icons';
-
+import { CapitalizeFirstPipe } from '../../pipes/capitalize-first.pipe';
+import { ButtonModule } from 'primeng/button';
+import { PopoverModule } from 'primeng/popover';
+import { AccordionModule } from 'primeng/accordion';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+    
 @Component({
   selector: 'app-navbar-avatar',
   standalone: true,
-  imports: [CommonModule, LoaderComponent, PopupModule,CapitalizeFirstPipe,KENDO_BUTTONS],
+  imports: [CommonModule,CapitalizeFirstPipe,ButtonModule,PopoverModule,AccordionModule,ProgressSpinnerModule],
   templateUrl: './navbar-avatar.component.html',
   styleUrl: './navbar-avatar.component.scss'
 })
-export class NavbarAvatarComponent {
-@Input() showSessionDetails!: () => void;
+  export class NavbarAvatarComponent {
+  @Input() showSessionDetails!: () => void;
   @Input() logout!: () => void;
   @Input() showUserMenu: boolean = false;
   @Input() animating:boolean =true
    @Input() showSessionModal: boolean = false;
+   private warningShown = false;
+   showSessionWarning = false;
  sessionInfo: { timeLeft: number ; rememberMe: boolean} | null = null;
-  public trashIcon: SVGIcon = trashIcon;
-    public arrowsSwapIcon: SVGIcon = arrowsSwapIcon;
+
 
 
 
@@ -60,6 +61,18 @@ onClickOutside(event: Event) {
       this.updateAvatarUrl();
       this.generateDefaultAvatars();
     });
+     this.authService.currentUser$.subscribe(user => {
+          this.currentUser = user;
+          console.log("Usuario:", this.currentUser)
+        });
+        // Actualizar información de sesión cada 30 segundos
+        this.subscription = interval(30000).subscribe(() => {
+          this.updateSessionInfo();
+          this.checkSessionWarning();
+        });
+    
+        // Actualización inicial
+        this.updateSessionInfo();
 
     // Cerrar menú al hacer click fuera
     document.addEventListener('click', this.handleClickOutside.bind(this));
@@ -71,7 +84,29 @@ onClickOutside(event: Event) {
     }
     document.removeEventListener('click', this.handleClickOutside.bind(this));
   }
+  private updateSessionInfo(): void {
+    this.sessionInfo = this.authService.getSessionInfo();
+    console.log("info", this.sessionInfo)
+  }
 
+    private checkSessionWarning(): void {
+    if (this.sessionInfo) {
+      const fiveMinutes = 5 * 60 * 1000;
+      // if (this.sessionInfo.timeLeft <= fiveMinutes && this.sessionInfo.timeLeft > 0 && !this.warningShown) {
+      //   this.showSessionWarning = true;
+      //   this.warningShown = true;
+      // }
+      if (this.sessionInfo.timeLeft <= fiveMinutes && this.sessionInfo.timeLeft > 0) {
+        this.showSessionWarning = true;
+        this.warningShown = true;
+      }
+
+      // Reset warning if session is extended
+      if (this.sessionInfo.timeLeft > fiveMinutes) {
+        this.warningShown = false;
+      }
+    }
+  }
   private updateAvatarUrl(): void {
     if (this.currentUser?.avatar && this.currentUser.id) {
       this.currentAvatarUrl = this.avatarService.getAvatarUrl(

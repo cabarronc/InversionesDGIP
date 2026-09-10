@@ -6,8 +6,8 @@
 /* Botón redondo */
 .avatar-button {
   border-radius: 50%;
-  width: 35px;
-  height: 35px;
+  width: 25px;
+  height: 25px;
   padding: 0;
   position: relative;
   overflow: hidden;
@@ -33,27 +33,47 @@
 
 /* Popup */
 .menu-container {
-  width: 20rem;
-  background: #fff;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-  overflow: hidden;
-  position: fixed; /* importante para hijos con z-index */
-  top: 55px;       /* ajusta según la posición del botón */
-  right: 50px;      /* ajusta según la posición del botón */
-  z-index: 9999; /* suficiente */
-  pointer-events: auto; 
- /* número alto para que quede por encima */
+    width: 400px;
+    max-width: calc(100vw - 2rem);
+
+    background: var(--p-content-background);
+    color: var(--p-text-color);
+
+    border-radius: 0.75rem;
+
+    overflow: hidden;
+
+    box-shadow: var(--p-overlay-popover-shadow);
+
+    position: relative;
+    z-index: 1;
+
+    pointer-events: auto;
 }
 
-.menu-header {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  background: linear-gradient(90deg, #3b82f6, #9333ea);
-  color: #fff;
- /* número alto para que quede por encima */
-}
+// .menu-header {
+//   display: flex;
+//   align-items: center;
+//   padding: 1rem;
+//   // background: linear-gradient(90deg, #3b82f6, #9333ea);
+//   background: var(--p-content-background);
+//    color: var(--p-text-color);
+
+//   // color: #fff;
+
+// }
+
+// .dark .menu-header {
+//   display: flex;
+//   align-items: center;
+//   padding: 1rem;
+//   // background: linear-gradient(90deg, #3b82f6, #9333ea);
+//   background: var(--p-content-background);
+//    color: var(--p-text-color);
+
+//   // color: #fff;
+
+// }
 
 .avatar-large {
   position: relative;
@@ -77,7 +97,6 @@
   bottom: 0;
   right: 0;
   border-radius: 50%;
-  background: #fff;
   padding: 2px;
  /* número alto para que quede por encima */
 }
@@ -124,6 +143,7 @@
              /* focus:outline-none */
 
 }
+
 .button-perfil:focus{
      position: relative;
      z-index: 9999;
@@ -161,6 +181,9 @@
   right:0;
   font-size: 20px;
 }
+
+
+
 
 /* Animación super mini */
 @keyframes walkOut {

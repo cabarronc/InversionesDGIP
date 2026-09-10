@@ -38,7 +38,151 @@
     width: 95%; /* Ajusta el ancho */
     margin: 20px auto; /* Centra la línea horizontal */
 }
-  
-  
-  
-  
+
+.contact-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.25rem;
+}
+
+.contact-icon {
+    font-size: 1.3rem;
+    color: #64748b;
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.contact-email {
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.label-para {
+    font-weight: bold;
+    margin: 0;
+}
+
+.contact-name-para {
+    font-family: 'Segoe UI';
+    font-size: 17px;
+    font-style: oblique;
+    color: rgb(37, 95, 201);
+}
+
+
+.subject-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.subject-wrapper input {
+    width: 100%;
+    padding-right: 2.5rem;
+     box-sizing: border-box;
+    
+}
+
+.subject-clear {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 2.2rem;
+    height: 2.2rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+
+    color: #fc1202;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.subject-clear:hover {
+    background-color: #fef2f2;
+    color: #fc1202;
+    transform: translateY(-50%) scale(1.05);
+}
+
+.subject-clear:active {
+    transform: translateY(-50%) scale(0.92);
+}
+
+.subject-clear i {
+    font-size: 1.25rem;
+}
+p-toggleswitch {
+    --p-toggleswitch-width: 4rem;
+    --p-toggleswitch-height: 2rem;
+    --p-toggleswitch-handle-size: 1.9rem;
+}
+
+.custom-upload {
+    margin-top: 0.5rem;
+}
+
+.message-floatlabel {
+    display: block;
+    width: 100%;
+}
+
+.message-floatlabel textarea {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.responsive-card {
+    width: 100%;
+    max-width: 100%;
+}
+
+.file-upload-container {
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+}
+
+:host ::ng-deep .custom-upload {
+    width: 100%;
+    max-width: 100%;
+}
+
+:host ::ng-deep .custom-upload .p-fileupload {
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (max-width: 576px) {
+
+    :host ::ng-deep .custom-upload .p-fileupload-buttonbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+}

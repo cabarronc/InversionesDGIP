@@ -1,54 +1,117 @@
 <!-- <app-nav-bar></app-nav-bar> -->
-<div class="profile-demo card-container">
-    <div class="container">
-        <div class="col-9 justify-content-center">
-            @if (checked) {
-                <div class="row mt-5 mb-2">
-            <kendo-label class="k-display-block" [for]="switch" text="Un Asunto para todos los destinatarios"></kendo-label>
-                    </div>
-            }
-            @else{
-                <div class="row mt-5 mb-2">
-                <kendo-label class="k-display-block" [for]="switch" text="Un Asunto para cada uno de los destinarios(Independientes) "></kendo-label>
-            </div>
-            }
-                <kendo-switch #switch [(ngModel)]="checked" style="width: 70px;"></kendo-switch>
-            <div class="row mt-2">
-                
+<div class="container">
+    <div class="col-9 justify-content-center">
+        @if (checked) {
+        <div class="row mt-5 mb-2">
+            <label pLabel>Un Asunto para todos los destinatarios</label>
+        </div>
+        }
+        @else{
+        <div class="row mt-5 mb-2">
+            <label class="k-display-block">Un Asunto para cada uno de los destinarios(Independientes) </label>
+        </div>
+        }
+        <p-toggleswitch [(ngModel)]="checked" class="custom-toggle">
+            <ng-template #handle let-checked="checked">
                 @if (checked) {
-                <kendo-label><span style="font-weight: bold;">Asunto: </span>
-                    <kendo-textbox placeholder="Cual es el asunto del correo?" [(ngModel)]="subject"></kendo-textbox>
-                </kendo-label>
+                <i class="pi pi-check"></i>
+                } @else {
+                <i class="pi pi-times"></i>
+                }
+            </ng-template>
+        </p-toggleswitch>
+        <div class="row mt-2">
+
+            @if (checked) {
+            <label><span style="font-weight: bold; margin-bottom: 0.5rem;">Asunto: </span></label>
+
+            <div class="subject-wrapper"> <!-- clase global para inputText e icono de liminar  -->
+                <input pInputText [(ngModel)]="subject" placeholder="Cual es el asunto del correo?" />
+
+                @if (subject) {
+                <button type="button" class="subject-clear" (click)="subject = ''" aria-label="Limpiar asunto">
+                    <i class="pi pi-times"></i>
+                </button>
                 }
             </div>
-            <div class="row mt-2">
-                @for (contact of selectedContacts; track $index; let idx = $index) {
-                    @if (!checked) {
-                        <kendo-label><span style="font-weight: bold;">Asunto: </span>
-                            <kendo-textbox placeholder="Cual es el asunto del correo?1" (input)="updateSubject(idx, $event)"></kendo-textbox>
-                        </kendo-label>
+            }
+        </div>
+        <div class="row mt-2 mb-2">
+            @for (contact of selectedContacts; track $index; let idx = $index) {
+
+            <p-card class="mb-2" styleClass="custom-card">
+                <p-divider align="center" type="solid"><code
+                        class="uppercase text-xs">Correo {{idx+1}}</code></p-divider>
+                @if (!checked) {
+                <label><span style="font-weight: bold;">Asunto: </span></label>
+                <div class="subject-wrapper">
+                    <input pInputText placeholder="Cual es el asunto del correo {{idx+1}}?" [(ngModel)]="subjects[idx]"
+                        class="w-full" (ngModelChange)="updateSubject(idx, $event)" />
+                    @if (subjects[idx]) {
+                    <button type="button" class="subject-clear" (click)="subjects[idx] = ''"
+                        aria-label="Limpiar asunto">
+                        <i class="pi pi-times"></i>
+                    </button>
+                    }
+
+                </div>
+                }
+
+
+                <p class="label-para">Para: <span class="contact-name-para">
+                        {{ contact }}
+                    </span></p>
+
+
+
+                <!-- <label><span style="font-weight: bold;">Mensaje:</span> -->
+                <!-- <kendo-textarea style="margin-top: 0.3rem;" placeholder="Escribe un mensaje" [rows]="3"
+                            resizable="vertical" (input)="updateMessage(idx, $event)"></kendo-textarea> -->
+                <div class="subject-wrapper">
+                    <p-floatlabel variant="on" class="mt-3 message-floatlabel">
+                        <textarea rows="3" pTextarea [autoResize]="true" [(ngModel)]="messages[idx]"
+                            (input)="updateMessage(idx, $event)"></textarea>
+                        <label for="in_label">Escribe un mensaje</label>
+                        @if (messages[idx]) {
+                             <button type="button" class="subject-clear" (click)="messages[idx] = ''"
+                        aria-label="Limpiar mensaje">
+                        <i class="pi pi-times"></i>
+                    </button>
                         }
-                <kendo-label><span style="font-weight: bold;">Para:</span>&nbsp;<span
-                        style="font-family:'Segoe UI'; font-size:18px; font-style:oblique; color:rgb(0, 89, 255);">{{
-                        contact }}</span><br>
-                    <kendo-label><span style="font-weight: bold;">Mensaje:</span>
-                        <kendo-textarea style="margin-top: 0.3rem;" placeholder="Escribe un mensaje" [rows]="3"
-                            resizable="vertical" (input)="updateMessage(idx, $event)"></kendo-textarea>
-                    </kendo-label>
-                </kendo-label>
-                <!-- <kendo-label text="Necesitas Adjuntar un Archivo?:">
+
+                    </p-floatlabel>
+                </div>
+
+
+                <!-- <label text="Necesitas Adjuntar un Archivo?:">
                                     <input type="file" multiple (change)="onFileSelected(idx,$event)"
                                         placeholder="Seleciona un archivo">
-                                </kendo-label> -->
-                <div class="mt-2 d-flex flex-wrap">
+                                </label> -->
+                <!-- <div class="mt-2 d-flex flex-wrap">
                     <label [for]="'fileInput-' + idx" class="btn btn-success btn-sm">
                         <i class="bi bi-upload"></i> Subir Archivos
                         <input type="file" class="d-none" [id]="'fileInput-' + idx"
                             (change)="onFileSelected(idx,$event)" multiple />
                     </label>
+                </div> -->
+                <div class="file-upload-container">
+                    <p-fileUpload mode="advanced" name="files" chooseLabel="Seleccionar Archivos"
+                        chooseIcon="pi pi-file-import" [multiple]="true" [auto]="false" styleClass="custom-upload"
+                        (onSelect)="onFileSelected(idx, $event)">
+                    </p-fileUpload>
                 </div>
+                <!-- <div class="mt-2 d-flex flex-wrap gap-2">
 
-                <div class="mt-2 d-flex flex-wrap">
+                    @for (file of (attachments[idx]); track $index; let j = $index) {
+
+                    <p-chip [label]="file.name" [removable]="true" (onRemove)="removeFile(idx, j)">
+                    </p-chip>
+
+                    }
+
+                </div> -->
+
+                <!-- <div class="mt-2 d-flex flex-wrap">
                     @for (file of attachments[idx]; track $index; let j = $index) {
                     <div class="btn btn-secondary m-1 btn-sm">
                         {{ file.name }}
@@ -56,8 +119,7 @@
                             aria-label="Close"></button>
                     </div>
                     }
-
-                </div>
+                </div> -->
                 <div class="mt-1 d-flex flex-wrap">
                     Nombre: &nbsp; <span style="font-weight: bold;">{{selectedContacts2[idx].nombre}}</span>
 
@@ -66,39 +128,71 @@
                 <div class="mt-1 d-flex flex-wrap">
                     Dependencia: &nbsp; <span style="font-weight: bold;">{{selectedContacts2[idx].dependencia}}</span>
                 </div>
+            </p-card>
+            }
 
-                <hr class="linea-punteada">
+        </div>
+        <div class="row mt-1 mb-1">
+            <label><span style="font-weight: bold;">Destinatarios</span>&nbsp;
+                @for (contact of selectedContacts; track $index;){
+
+                <p-chip [label]="contact" [removable]="true" (onRemove)="onRemove(contact)" class="ms-2 mb-2"></p-chip>
+
+
                 }
+            </label>
+        </div>
 
-            </div>
-            <div class="row mt-1 mb-1">
-                <kendo-label><span style="font-weight: bold;">Destinatarios</span>&nbsp;
-                    @for (contact of selectedContacts; track $index;){
-
-                    <kendo-chip style="margin-top: 0.3rem;" themeColor="info" [label]="contact" [removable]="true"
-                        (remove)="onRemove($event)">
-                    </kendo-chip>
-
-                    }
-                </kendo-label>
-            </div>
-
-            <kendo-autocomplete #contactslist [data]="contacts" textField="email" valueField="nombre"
+        <!-- <kendo-autocomplete #contactslist [data]="contacts" textField="email" valueField="nombre"
                 [kendoDropDownFilter]="{ operator: 'contains' }" [filterable]="true"
                 placeholder="Seleccione los Correos" (valueChange)="valueChange($event)">
-            </kendo-autocomplete>
+            </kendo-autocomplete> -->
+
+        <p-autocomplete [(ngModel)]="selectedContact" [suggestions]="filteredContacts"
+            (completeMethod)="filterContacts($event)" (onSelect)="valueChange($event.value)" optionLabel="nombre"
+            placeholder="Seleccione los Correos" [fluid]="true">
+            <ng-template #item let-contact>
+                <div class="contact-option">
+                    <i class="pi pi-user contact-icon"></i>
+
+                    <div class="contact-info">
+                        <span class="contact-name">
+                            {{ contact.nombre }}
+                        </span>
+
+                        <span class="contact-email">
+                            {{ contact.email }}
+                        </span>
+
+                        <span class="contact-email">
+                            {{ contact.dependencia }}
+                        </span>
+                    </div>
+                </div>
+            </ng-template>
+        </p-autocomplete>
 
 
-            <!-- <div class="row mt-3">
+
+        <!-- <div class="row mt-3">
                                 <div class="col-6">
                                     <button (click)="addRecipient(contactslist.value); contactslist.value='a' ">Añadir
                                         Correo</button>
                                 </div>
                             </div> -->
-            <div class="row mt-3 mb-2 d-flex">
-                <div class="col-12 d-flex justify-content-center">
-                    <button kendoButton themeColor="primary" (click)="sendEmails()" [disabled]="!enviar_disable">Enviar Correos</button>
-                </div>
+        <div class="row mt-3 mb-2 d-flex">
+            <div class="col-12 d-flex justify-content-center mb-4">
+                <button pButton (click)="sendEmails()" [disabled]="!enviar_disable">
+                    @if (!enviar_disable) {
+                        <i class="pi pi-spiner animate-spin"></i>
+                    <!-- <svg data-p-icon="spinner" class="animate-spin"></svg> -->
+                    Cargando...
+                } @else {
+                    <i class="pi pi-send"></i>
+                    <!-- <svg data-p-icon="check"></svg> -->
+                    Enviar Correos
+                }
+        </button>
             </div>
         </div>
     </div>

@@ -1,82 +1,220 @@
-<button class="button-perfil" (click)="toggleMenu()" width="36px">
+<button pButton class="button-perfil" type="button" (click)="profilePopover.toggle($event)">
+
     <div class="avatar-wrapper">
+
         <!-- Botón Avatar -->
-        <button #anchor kendoButton look="flat" class="avatar-button">
+        <button pButton type="button" class="avatar-button" severty="secondary" [disabled]="uploading">
 
             <!-- Imagen -->
-            <img *ngIf="currentAvatarUrl" [src]="currentAvatarUrl" [alt]="currentUser?.name" class="avatar-img"
+             @if (currentAvatarUrl) {
+                 <img  [src]="currentAvatarUrl" [alt]="currentUser?.name" class="avatar-img"
                 (error)="onImageError()" />
+             }
+           
 
             <!-- Placeholder si no hay avatar -->
-            <div *ngIf="!currentAvatarUrl && currentUser" [innerHTML]="defaultAvatarSvg"></div>
+             @if (!currentAvatarUrl && currentUser) {
+                <div [innerHTML]="defaultAvatarSvg">
+                </div>
+             }
 
             <!-- Loader sobrepuesto -->
-            <kendo-loader *ngIf="uploading" type="infinite-spinner" themeColor="light" size="small"
-                class="avatar-loader">
-            </kendo-loader>
+             @if (uploading) {
+                <p-progressSpinner styleClass="avatar-loader" strokeWidth="5" animationDuration=".8s">
+            </p-progressSpinner>
+             }
+            
+
         </button>
 
-        <!-- Popup -->
-        <kendo-popup *ngIf="showMenu" [anchor]="anchor" [popupAlign]="{ horizontal: 'left', vertical: 'bottom' }"
-            [anchorAlign]="{ horizontal: 'right', vertical: 'top' }" [animate]="true">
-
-            <div class="menu-container">
-                <!-- Cabecera -->
-                <div class="menu-header">
-                    <div class="avatar-large">
-                        <img *ngIf="currentAvatarUrl" [src]="currentAvatarUrl" [alt]="currentUser?.name"
-                            (error)="onImageError()" />
-                        <div *ngIf="!currentAvatarUrl && currentUser" [innerHTML]="defaultAvatarLargeSvg"></div>
-
-                        <!-- Botón editar -->
-                        <button kendoButton look="flat" (click)="fileInput.click()" class="edit-button">
-                            <span class="k-icon k-i-edit"></span>
-                        </button>
-                    </div>
-
-                    <div class="user-info">
-                        <div class="user-name">{{ currentUser?.name }}</div>
-                        <div class="user-email">{{ currentUser?.email }}</div>
-                    </div>
-                </div>
-
-                <!-- Acciones -->
-                <div class="menu-actions">
-                    <button kendoButton themeColor="primary" (click)="fileInput.click()" [svgIcon]="arrowsSwapIcon"
-                        [disabled]="uploading">
-                        {{ currentAvatarUrl ? 'Cambiar' : 'Subir' }}
-                    </button>
-                    <button *ngIf="currentAvatarUrl && !uploading" kendoButton themeColor="error"
-                        (click)="removeAvatar()" [svgIcon]="trashIcon">
-                        Quitar
-                    </button>
-                </div>
-
-                <!-- Info Sesión -->
-                <button kendoButton look="flat" (click)="showSessionDetails()" class="menu-link">
-                    ℹ️ Información de Sesión
-                </button>
-
-
-                <!-- <button kendoButton look="flat" (click)="logout()" class="menu-link">
-                    🔒 Cerrar Sesión
-                </button>  -->
-                 <button  kendoButton look="flat" class="menu-link" (click)="logout()">
-                  🔒  Cerrar Sesion
-
-                    <span class="mini-scene">
-                        <span class="mini-person">🏃‍♂️‍➡️</span>
-                        <span class="mini-door">🚪</span>
-                    </span>
-                </button> 
-            </div>
-        </kendo-popup>
-
-        <!-- Input oculto -->
-        <input #fileInput type="file" accept="image/jpeg,image/jpg,image/png,image/gif"
-            (change)="onFileSelected($event)" hidden />
     </div>
+
     <span class="text-perfil">
         {{ currentUser?.name | capitalizeFirst }}
     </span>
+
 </button>
+
+
+<!-- Popup -->
+<p-popover #profilePopover>
+
+    <div class="menu-container">
+        <!-- Cabecera -->
+        <div class="menu-header">
+
+            <div class="avatar-large">
+                @if (currentAvatarUrl) {
+                <img [src]="currentAvatarUrl" [alt]="currentUser?.name"
+                    (error)="onImageError()" />
+                }
+
+                @if (!currentAvatarUrl && currentUser) {
+                <div [innerHTML]="defaultAvatarLargeSvg">
+                </div>
+                }
+
+
+                <!-- Botón editar -->
+                <button pButton type="button" class="edit-button" icon="pi pi-pencil" (click)="fileInput.click()">
+                </button>
+
+            </div>
+
+            <div class="user-info">
+
+                <div class="user-name">
+                    {{ currentUser?.name }}
+                </div>
+
+                <div class="user-email">
+                    {{ currentUser?.email }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Acciones -->
+        <div class="menu-actions">
+
+            <button pButton type="button" severity="primary" icon="pi pi-upload" (click)="fileInput.click()"
+                [disabled]="uploading">
+
+                {{ currentAvatarUrl ? 'Cambiar' : 'Subir' }}
+
+            </button>
+
+
+            <button *ngIf="currentAvatarUrl && !uploading" pButton type="button" severity="danger" icon="pi pi-trash"
+                (click)="removeAvatar()">
+
+                Quitar
+
+            </button>
+
+        </div>
+
+        <!-- Info Sesión -->
+        @if (sessionInfo) {
+
+        <div class="session-popover">
+
+            <!-- ENCABEZADO -->
+            <div class="session-popover-header">
+
+                <i class="pi pi-info-circle"></i>
+
+                <span>
+                    Información de Sesión
+                </span>
+
+            </div>
+
+
+            <!-- TIEMPO -->
+            <div class="session-row">
+
+                <div class="session-label">
+
+                    <i class="pi pi-clock"></i>
+
+                    <span>Tiempo restante</span>
+
+                </div>
+
+                <strong>
+                    {{ formatTimeLeft(sessionInfo.timeLeft) }}
+                </strong>
+
+            </div>
+
+
+            <!-- TIPO DE SESIÓN -->
+            <div class="session-row">
+
+                <div class="session-label">
+
+                    <i class="pi pi-hourglass"></i>
+
+                    <span>Tipo de sesión</span>
+
+                </div>
+
+                <strong>
+                    {{
+                    sessionInfo.rememberMe
+                    ? 'Recordarme (30 días)'
+                    : 'Normal (8 horas)'
+                    }}
+                </strong>
+
+            </div>
+
+
+            <!-- ESTADO -->
+            <div class="session-row">
+
+                <div class="session-label">
+
+                    <i class="pi pi-check-circle"></i>
+
+                    <span>Estado</span>
+
+                </div>
+
+                <span class="session-status-active">
+
+                    <i class="pi pi-circle-fill"></i>
+
+                    Activa
+
+                </span>
+
+            </div>
+
+
+            <!-- MENSAJE DE SEGURIDAD -->
+            <div class="session-security">
+
+                <i class="pi pi-shield"></i>
+
+                <div>
+
+                    <strong>
+                        Tu sesión está activa y segura.
+                    </strong>
+
+                    <span>
+                        Recuerda cerrar sesión al finalizar.
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        }
+        <!-- Cerrar Sesión -->
+        <button pButton type="button" class="menu-link" (click)="logout()" severity="danger" icon="pi pi-sign-out">
+            Cerrar Sesión
+
+            <span class="mini-scene">
+                <span class="mini-person">🏃‍♂️‍➡️</span>
+                <span class="mini-door">🚪</span>
+            </span>
+
+        </button>
+
+
+    </div>
+
+
+</p-popover>
+
+
+<!-- Input oculto -->
+<input #fileInput type="file" accept="image/jpeg,image/jpg,image/png,image/gif" (change)="onFileSelected($event)"
+    hidden />

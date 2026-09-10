@@ -189,5 +189,16 @@ GenerarDescargasInversionHojaTrabajo(fecha: any, filename: string): Observable<H
     }) as Observable<HttpResponse<Blob>>;
   }
 
+    GenerarDescargasAvanceFinancieroPreview(fecha: any,filename: string): Observable<HttpResponse<Blob>> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = { fecha }; // crea objeto JSON con clave "fecha"
+    const encodedFilename = encodeURIComponent(filename);
+    return this.http.post(`${this.apiUrl}/GetAvanceFinancieroPreview/${encodedFilename}`, body, {
+      headers,
+      responseType: 'blob',
+      observe: 'response'
+    }) as Observable<HttpResponse<Blob>>;
+  }
+
 
 }

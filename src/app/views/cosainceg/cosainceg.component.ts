@@ -3,7 +3,7 @@ import { NavBarComponent } from "../nav-bar/nav-bar.component";
 import { KENDO_LAYOUT } from "@progress/kendo-angular-layout";
 import { KENDO_BUTTONS } from '@progress/kendo-angular-buttons';
 import { CommonModule } from '@angular/common';
-import { ColumnMenuSettings, KENDO_GRID,KENDO_GRID_EXCEL_EXPORT } from '@progress/kendo-angular-grid';
+import { ColumnMenuSettings, KENDO_GRID, KENDO_GRID_EXCEL_EXPORT } from '@progress/kendo-angular-grid';
 import { WindowModule, WindowThemeColor } from '@progress/kendo-angular-dialog';
 import { KENDO_PDFVIEWER } from '@progress/kendo-angular-pdfviewer';
 import { FileService } from '../../services/file.service';
@@ -36,13 +36,14 @@ import { NotificationService } from '@progress/kendo-angular-notification';
 import { catchError, concat, forkJoin, of } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 
 @Component({
   selector: 'app-cosainceg',
   standalone: true,
   imports: [KENDO_LAYOUT, CommonModule, KENDO_BUTTONS, KENDO_GRID, WindowModule, KENDO_PDFVIEWER, KENDO_ICONS, KENDO_INDICATORS, KENDO_DIALOGS
-    , UploadsComponent, KENDO_INPUTS, KENDO_LABELS, FormsModule,KENDO_GRID_EXCEL_EXPORT],
+    , UploadsComponent, KENDO_INPUTS, KENDO_LABELS, FormsModule, KENDO_GRID_EXCEL_EXPORT],
   templateUrl: './cosainceg.component.html',
   styleUrl: './cosainceg.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -67,6 +68,8 @@ export class CosaincegComponent implements OnInit {
   public isDisabledActualizacionRubros = false;
   public checked = false
   public windowWidth = 600;
+  pdfUrl!: SafeResourceUrl;
+  mostrarPreview = false;
 
   public isMetas = false
   public isMetasD = false
@@ -117,9 +120,9 @@ export class CosaincegComponent implements OnInit {
   interval: any;
   info: any;
   info2: any;
-  EjecutandoInversion: boolean =false;
-  EjecutandoPPI: boolean =false;
-  EjecutandoAvance: boolean =false;
+  EjecutandoInversion: boolean = false;
+  EjecutandoPPI: boolean = false;
+  EjecutandoAvance: boolean = false;
   cascaron: boolean = false;
 
   public close(): void {
@@ -139,7 +142,7 @@ export class CosaincegComponent implements OnInit {
     this.canViewInversion = this.authService.hasPermission('inversion', 'manage');
     this.canViewDeuda = this.authService.hasPermission('deuda', 'manage');
     this.canViewPPI = this.authService.hasPermission('ppi', 'manage');
-     this.canViewAvance = this.authService.hasPermission('avancefinanciero', 'manage');
+    this.canViewAvance = this.authService.hasPermission('avancefinanciero', 'manage');
     console.log(this.canViewCosainceg)
     console.log(this.canViewDeuda)
   }
@@ -1150,7 +1153,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-           this.isDisabled_deuda = true;
+            this.isDisabled_deuda = true;
             this.isDisabledExcelRecursoDeuda = false
 
           },
@@ -1179,7 +1182,7 @@ export class CosaincegComponent implements OnInit {
         const filename = `Rel Obras Financiamiento Deuda02`
         console.log("Segundo Trimestre: ", segundoTrimestre)
         this.isDisabled_deuda = true;
-       this.isDisabledExcelRecursoDeuda = true
+        this.isDisabledExcelRecursoDeuda = true
         this.cosaincegService.GenerarDescargasDeudaRecurso(segundoTrimestre, filename).subscribe(
           (blob) => {
             const url = window.URL.createObjectURL(blob);
@@ -1980,14 +1983,14 @@ export class CosaincegComponent implements OnInit {
         );
       },
     },
-    ];
+  ];
 
-    hasProps(obj: any): boolean {
+  hasProps(obj: any): boolean {
     return obj && Object.keys(obj).length > 0;
-    }
-    hasProps2(obj: any): boolean {
+  }
+  hasProps2(obj: any): boolean {
     return obj && Object.keys(obj).length > 0;
-    }
+  }
   //////////////////////////////////////////////////////////////
   ///// Hoja de trabajo///////////////////////////////////////////////////////////////////////////////////////////////////
   public dataExcelInversionHojaTrabajo = [
@@ -2027,7 +2030,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoInversion = false;
+            this.EjecutandoInversion = false;
             this.isInversionGeneralD = false
 
           }),
@@ -2055,7 +2058,7 @@ export class CosaincegComponent implements OnInit {
         const segundoTrimestre = `${anio}-07-10`;
         const filename = `inversion_2t_${anio}_(HT).xlsx`
         console.log("Segundo Trimestre: ", segundoTrimestre)
-         this.EjecutandoInversion = true;
+        this.EjecutandoInversion = true;
         this.isInversionGeneralD = true
         this.cosaincegService.GenerarDescargasInversionHojaTrabajo(segundoTrimestre, filename).subscribe(
           (resp => {
@@ -2081,7 +2084,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoInversion = false;
+            this.EjecutandoInversion = false;
             this.isInversionGeneralD = false
 
           }),
@@ -2109,7 +2112,7 @@ export class CosaincegComponent implements OnInit {
         const tercerTrimestre = `${anio}-10-10`;
         console.log("Tercer Trimestre: ", tercerTrimestre)
         const filename = `inversion_3t_${anio}_(HT).xlsx`
-         this.EjecutandoInversion = true;
+        this.EjecutandoInversion = true;
         this.isInversionGeneralD = true
         this.cosaincegService.GenerarDescargasInversionHojaTrabajo(tercerTrimestre, filename).subscribe(
           (resp => {
@@ -2135,7 +2138,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoInversion = false;
+            this.EjecutandoInversion = false;
             this.isInversionGeneralD = false
           }),
           (error) => {
@@ -2190,7 +2193,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoInversion = false;
+            this.EjecutandoInversion = false;
             this.isInversionGeneralD = true
           }),
           (error) => {
@@ -2221,7 +2224,7 @@ export class CosaincegComponent implements OnInit {
         const primerTrimestre = `${anio}-04-10`;
         const filename = `Inversion_entregable_01_${anio}`
         console.log("Primer Trimestre: ", primerTrimestre)
-         this.EjecutandoInversion = true;
+        this.EjecutandoInversion = true;
         this.generandoReporteD = true
         this.cosaincegService.GenerarDescargasInversionEntregables(primerTrimestre, filename).subscribe(
           (blob) => {
@@ -2412,7 +2415,7 @@ export class CosaincegComponent implements OnInit {
               position: { horizontal: "left", vertical: "top" },
             });
             this.EjecutandoInversion = false;
-             this.isCoping = false
+            this.isCoping = false
 
           },
           (error) => {
@@ -2439,7 +2442,7 @@ export class CosaincegComponent implements OnInit {
         const segundoTrimestre = `${anio}-07-10`;
         console.log("Segundo Trimestre: ", segundoTrimestre)
         this.EjecutandoInversion = true;
-         this.isCoping = true
+        this.isCoping = true
         this.cosaincegService.InversionCopy(segundoTrimestre).subscribe(
           (resp) => {
             console.log(resp)
@@ -2451,7 +2454,7 @@ export class CosaincegComponent implements OnInit {
               position: { horizontal: "left", vertical: "top" },
             });
             this.EjecutandoInversion = false;
-             this.isCoping = false
+            this.isCoping = false
           },
           (error) => {
             console.error('Error fetching files', error);
@@ -2477,7 +2480,7 @@ export class CosaincegComponent implements OnInit {
         const tercerTrimestre = `${anio}-10-10`;
         console.log("Tercer Trimestre: ", tercerTrimestre)
         this.EjecutandoInversion = true;
-         this.isCoping = true
+        this.isCoping = true
         this.cosaincegService.InversionCopy(tercerTrimestre).subscribe(
           (resp) => {
             console.log(resp)
@@ -2489,7 +2492,7 @@ export class CosaincegComponent implements OnInit {
               position: { horizontal: "left", vertical: "top" },
             });
             this.EjecutandoInversion = false;
-             this.isCoping = false
+            this.isCoping = false
           },
           (error) => {
             this.notificationService.show({
@@ -2518,7 +2521,7 @@ export class CosaincegComponent implements OnInit {
         const cuarttoTrimestre = `${anio}-02-10`;
         console.log("cuartoTrimestre: ", cuarttoTrimestre)
         this.EjecutandoInversion = true;
-         this.isCoping = true
+        this.isCoping = true
         this.cosaincegService.InversionCopy(cuarttoTrimestre).subscribe(
           (resp) => {
             console.log(resp)
@@ -2530,7 +2533,7 @@ export class CosaincegComponent implements OnInit {
               position: { horizontal: "left", vertical: "top" },
             });
             this.EjecutandoInversion = false;
-             this.isCoping = false
+            this.isCoping = false
           },
           (error) => {
             console.error('Error fetching files', error);
@@ -2559,7 +2562,7 @@ export class CosaincegComponent implements OnInit {
         const primerTrimestre = `${anio}-04-10`;
         console.log("Primer Trimestre: ", primerTrimestre)
         this.EjecutandoInversion = true;
-        this.cascaron =true
+        this.cascaron = true
         this.cosaincegService.GetCascaron(primerTrimestre).subscribe(
           (resp) => {
             console.log(resp)
@@ -2599,7 +2602,7 @@ export class CosaincegComponent implements OnInit {
         const segundoTrimestre = `${anio}-07-10`;
         console.log("Segundo Trimestre: ", segundoTrimestre)
         this.EjecutandoInversion = true;
-        this.cascaron =true
+        this.cascaron = true
         this.cosaincegService.GetCascaron(segundoTrimestre).subscribe(
           (resp) => {
             console.log(resp)
@@ -2637,7 +2640,7 @@ export class CosaincegComponent implements OnInit {
         const tercerTrimestre = `${anio}-10-10`;
         console.log("Tercer Trimestre: ", tercerTrimestre)
         this.EjecutandoInversion = true;
-        this.cascaron =true
+        this.cascaron = true
         this.cosaincegService.GetCascaron(tercerTrimestre).subscribe(
           (resp) => {
             console.log(resp)
@@ -2678,7 +2681,7 @@ export class CosaincegComponent implements OnInit {
         const cuarttoTrimestre = `${anio}-02-10`;
         console.log("cuartoTrimestre: ", cuarttoTrimestre)
         this.EjecutandoInversion = true;
-        this.cascaron =true
+        this.cascaron = true
         this.cosaincegService.GetCascaron(cuarttoTrimestre).subscribe(
           (resp) => {
             console.log(resp)
@@ -2745,7 +2748,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoPPI = false;
+            this.EjecutandoPPI = false;
             this.isPPI = false
 
           }),
@@ -2773,7 +2776,7 @@ export class CosaincegComponent implements OnInit {
         const segundoTrimestre = `${anio}-07-10`;
         const filename = `PPI_2T_${anio}.xlsx`
         console.log("Segundo Trimestre: ", segundoTrimestre)
-         this.EjecutandoPPI = true;
+        this.EjecutandoPPI = true;
         this.isPPI = true
         this.cosaincegService.GenerarPPI(segundoTrimestre, filename).subscribe(
           (resp => {
@@ -2799,7 +2802,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoPPI = false;
+            this.EjecutandoPPI = false;
             this.isPPI = false
 
           }),
@@ -2827,7 +2830,7 @@ export class CosaincegComponent implements OnInit {
         const tercerTrimestre = `${anio}-10-10`;
         console.log("Tercer Trimestre: ", tercerTrimestre)
         const filename = `PPI_3T_${anio}.xlsx`
-         this.EjecutandoPPI = true;
+        this.EjecutandoPPI = true;
         this.isPPI = true
         this.cosaincegService.GenerarPPI(tercerTrimestre, filename).subscribe(
           (resp => {
@@ -2853,7 +2856,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoPPI = false;
+            this.EjecutandoPPI = false;
             this.isPPI = false
           }),
           (error) => {
@@ -2908,7 +2911,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoPPI = false;
+            this.EjecutandoPPI = false;
             this.isPPI = false
           }),
           (error) => {
@@ -2924,10 +2927,10 @@ export class CosaincegComponent implements OnInit {
         );
       },
     },
-    
+
   ];
-//////// Avanbce Financiero
-/////excel///////////////////////////////////////////////////////////////////////////////////////////////////
+  //////// Avanbce Financiero
+  /////excel///////////////////////////////////////////////////////////////////////////////////////////////////
   public dataAvanceFinanciero = [
     {
       text: '02 Febrero',
@@ -2939,57 +2942,146 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const Febrero = `${anio}-02-10`;
         const formatted =
-              String(today.getFullYear()).slice(-2) +
-              String(today.getMonth() + 1).padStart(2, '0') +
-              String(today.getDate()).padStart(2, '0');
+          String(today.getFullYear()).slice(-2) +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          String(today.getDate()).padStart(2, '0');
 
-        console.log(formatted); 
+        console.log(formatted);
         const filename = `${formatted} Avance Financiero Inversión Feb ${anio}.pptx`
         console.log("Febrero: ", Febrero)
 
         this.EjecutandoAvance = true;
         this.isAvance = true
-        this.cosaincegService.GenerarDescargasAvanceFinanciero(Febrero, filename).subscribe(
-          (resp => {
-            // 1. Archivo (BLOB)
-            const blob = resp.body!;
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-            URL.revokeObjectURL(url);
+        this.cosaincegService
+          .GenerarDescargasAvanceFinanciero(Febrero, filename)
+          .subscribe({
+            next: (resp) => {
 
-            // 2. JSON enviado en headers
-            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
-            const x = JSON.parse(xHeader!);
-            console.log("Objeto recibido:", x);
-            this.info = x
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-             this.EjecutandoAvance = false;
-            this.isAvance = false
-          }),
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
- 
+              // ==========================================
+              // 1. GENERACIÓN TERMINÓ CORRECTAMENTE
+              // ==========================================
+
+              const blob = resp.body!;
+
+              // Descargar PPTX
+              const url = window.URL.createObjectURL(blob);
+
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = filename;
+              a.click();
+
+              window.URL.revokeObjectURL(url);
+
+              console.log('PPTX generado correctamente');
+
+              // ==========================================
+              // 2. AHORA PEDIMOS EL PREVIEW
+              // ==========================================
+
+              this.cosaincegService
+                .GenerarDescargasAvanceFinancieroPreview(Febrero, filename)
+                .subscribe({
+                  next: (previewResp) => {
+
+                    console.log('PDF encontrado correctamente');
+
+                    const pdfBlob = previewResp.body!;
+
+                    const pdfUrl = window.URL.createObjectURL(
+                      pdfBlob
+                    );
+
+                    this.pdfUrl =
+                      this.sanitizer.bypassSecurityTrustResourceUrl(
+                        pdfUrl
+                      );
+
+                    this.mostrarPreview = true;
+
+                  },
+
+                  error: (error) => {
+
+                    console.error(
+                      'Error obteniendo preview:',
+                      error
+                    );
+
+                  }
+                });
+
+              // ==========================================
+              // JSON DEL HEADER
+              // ==========================================
+
+              const xHeader = resp.headers.get('X-Data');
+
+              if (xHeader) {
+                const x = JSON.parse(xHeader);
+
+                console.log(
+                  'Objeto recibido:',
+                  x
+                );
+
+                this.info = x;
+              }
+
+              this.notificationService.show({
+                content: 'Archivo generado correctamente',
+                hideAfter: 1500,
+                animation: {
+                  type: 'slide',
+                  duration: 900
+                },
+                type: {
+                  style: 'success',
+                  icon: true
+                },
+                position: {
+                  horizontal: 'left',
+                  vertical: 'top'
+                }
+              });
+
+              this.EjecutandoAvance = false;
+              this.isAvance = false;
+            },
+
+            error: (error) => {
+
+              console.error(
+                'Error generando reporte:',
+                error
+              );
+
+              this.EjecutandoAvance = false;
+
+              this.notificationService.show({
+                content: 'Existe un Error en la Generacion del Reporte!',
+                hideAfter: 1500,
+                animation: {
+                  type: 'slide',
+                  duration: 900
+                },
+                type: {
+                  style: 'error',
+                  icon: true
+                },
+                position: {
+                  horizontal: 'left',
+                  vertical: 'top'
+                }
+              });
+            }
+          });
+
+
+
       },
     },
-     {
+    {
       text: '03 Marzo',
       svgIcon: fileExcelIcon,
       click: (): void => {
@@ -2999,11 +3091,11 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const Marzo = `${anio}-03-10`;
         const formatted =
-              String(today.getFullYear()).slice(-2) +
-              String(today.getMonth() + 1).padStart(2, '0') +
-              String(today.getDate()).padStart(2, '0');
+          String(today.getFullYear()).slice(-2) +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          String(today.getDate()).padStart(2, '0');
 
-        console.log(formatted); 
+        console.log(formatted);
         const filename = `${formatted} Avance Financiero Inversión Mar ${anio}.pptx`
         console.log("Marzo: ", Marzo)
 
@@ -3032,7 +3124,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoAvance = false;
+            this.EjecutandoAvance = false;
             this.isAvance = false
           }),
           (error) => {
@@ -3046,10 +3138,10 @@ export class CosaincegComponent implements OnInit {
             });
           }
         );
- 
+
       },
     },
-     {
+    {
       text: '04 Abril',
       svgIcon: fileExcelIcon,
       click: (): void => {
@@ -3059,11 +3151,11 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const Abril = `${anio}-04-10`;
         const formatted =
-              String(today.getFullYear()).slice(-2) +
-              String(today.getMonth() + 1).padStart(2, '0') +
-              String(today.getDate()).padStart(2, '0');
+          String(today.getFullYear()).slice(-2) +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          String(today.getDate()).padStart(2, '0');
 
-        console.log(formatted); 
+        console.log(formatted);
         const filename = `${formatted} Avance Financiero Inversión Abr ${anio}.pptx`
         console.log("Abril: ", Abril)
 
@@ -3092,7 +3184,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoAvance = false;
+            this.EjecutandoAvance = false;
             this.isAvance = false
           }),
           (error) => {
@@ -3106,7 +3198,7 @@ export class CosaincegComponent implements OnInit {
             });
           }
         );
- 
+
       },
     },
     {
@@ -3119,11 +3211,11 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const Mayo = `${anio}-05-10`;
         const formatted =
-              String(today.getFullYear()).slice(-2) +
-              String(today.getMonth() + 1).padStart(2, '0') +
-              String(today.getDate()).padStart(2, '0');
+          String(today.getFullYear()).slice(-2) +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          String(today.getDate()).padStart(2, '0');
 
-        console.log(formatted); 
+        console.log(formatted);
         const filename = `${formatted} Avance Financiero Inversión Mayo ${anio}.pptx`
         console.log("Mayo: ", Mayo)
 
@@ -3152,7 +3244,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoAvance = false;
+            this.EjecutandoAvance = false;
             this.isAvance = false
           }),
           (error) => {
@@ -3166,7 +3258,7 @@ export class CosaincegComponent implements OnInit {
             });
           }
         );
- 
+
       },
     },
     {
@@ -3179,11 +3271,11 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const Junio = `${anio}-06-10`;
         const formatted =
-              String(today.getFullYear()).slice(-2) +
-              String(today.getMonth() + 1).padStart(2, '0') +
-              String(today.getDate()).padStart(2, '0');
+          String(today.getFullYear()).slice(-2) +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          String(today.getDate()).padStart(2, '0');
 
-        console.log(formatted); 
+        console.log(formatted);
         const filename = `${formatted} Avance Financiero Inversión Jun ${anio}.pptx`
         console.log("Junio: ", Junio)
 
@@ -3212,7 +3304,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoAvance = false;
+            this.EjecutandoAvance = false;
             this.isAvance = false
           }),
           (error) => {
@@ -3226,7 +3318,7 @@ export class CosaincegComponent implements OnInit {
             });
           }
         );
- 
+
       },
     },
     {
@@ -3239,11 +3331,11 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const Julio = `${anio}-07-10`;
         const formatted =
-              String(today.getFullYear()).slice(-2) +
-              String(today.getMonth() + 1).padStart(2, '0') +
-              String(today.getDate()).padStart(2, '0');
+          String(today.getFullYear()).slice(-2) +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          String(today.getDate()).padStart(2, '0');
 
-        console.log(formatted); 
+        console.log(formatted);
         const filename = `${formatted} Avance Financiero Inversión Jul ${anio}.pptx`
         console.log("Julio: ", Julio)
 
@@ -3272,7 +3364,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoAvance = false;
+            this.EjecutandoAvance = false;
             this.isAvance = false
           }),
           (error) => {
@@ -3286,7 +3378,7 @@ export class CosaincegComponent implements OnInit {
             });
           }
         );
- 
+
       },
     },
     {
@@ -3299,11 +3391,11 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const Agosto = `${anio}-08-10`;
         const formatted =
-              String(today.getFullYear()).slice(-2) +
-              String(today.getMonth() + 1).padStart(2, '0') +
-              String(today.getDate()).padStart(2, '0');
+          String(today.getFullYear()).slice(-2) +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          String(today.getDate()).padStart(2, '0');
 
-        console.log(formatted); 
+        console.log(formatted);
         const filename = `${formatted} Avance Financiero Inversión Ago ${anio}.pptx`
         console.log("Agosto: ", Agosto)
 
@@ -3332,7 +3424,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoAvance = false;
+            this.EjecutandoAvance = false;
             this.isAvance = false
           }),
           (error) => {
@@ -3346,10 +3438,10 @@ export class CosaincegComponent implements OnInit {
             });
           }
         );
- 
+
       },
     },
-     {
+    {
       text: '09 Septiembre',
       svgIcon: fileExcelIcon,
       click: (): void => {
@@ -3359,11 +3451,11 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const Septiembre = `${anio}-09-10`;
         const formatted =
-              String(today.getFullYear()).slice(-2) +
-              String(today.getMonth() + 1).padStart(2, '0') +
-              String(today.getDate()).padStart(2, '0');
+          String(today.getFullYear()).slice(-2) +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          String(today.getDate()).padStart(2, '0');
 
-        console.log(formatted); 
+        console.log(formatted);
         const filename = `${formatted} Avance Financiero Inversión Sep ${anio}.pptx`
         console.log("Septiembre: ", Septiembre)
 
@@ -3392,7 +3484,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoAvance = false;
+            this.EjecutandoAvance = false;
             this.isAvance = false
           }),
           (error) => {
@@ -3406,10 +3498,10 @@ export class CosaincegComponent implements OnInit {
             });
           }
         );
- 
+
       },
     },
-     {
+    {
       text: '10 Octubre',
       svgIcon: fileExcelIcon,
       click: (): void => {
@@ -3419,11 +3511,11 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const Octubre = `${anio}-10-10`;
         const formatted =
-              String(today.getFullYear()).slice(-2) +
-              String(today.getMonth() + 1).padStart(2, '0') +
-              String(today.getDate()).padStart(2, '0');
+          String(today.getFullYear()).slice(-2) +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          String(today.getDate()).padStart(2, '0');
 
-        console.log(formatted); 
+        console.log(formatted);
         const filename = `${formatted} Avance Financiero Inversión Oct ${anio}.pptx`
         console.log("Octubre: ", Octubre)
 
@@ -3452,7 +3544,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoAvance = false;
+            this.EjecutandoAvance = false;
             this.isAvance = false
           }),
           (error) => {
@@ -3466,10 +3558,10 @@ export class CosaincegComponent implements OnInit {
             });
           }
         );
- 
+
       },
     },
-     {
+    {
       text: '11 Noviembre',
       svgIcon: fileExcelIcon,
       click: (): void => {
@@ -3479,11 +3571,11 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const Noviembre = `${anio}-11-10`;
         const formatted =
-              String(today.getFullYear()).slice(-2) +
-              String(today.getMonth() + 1).padStart(2, '0') +
-              String(today.getDate()).padStart(2, '0');
+          String(today.getFullYear()).slice(-2) +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          String(today.getDate()).padStart(2, '0');
 
-        console.log(formatted); 
+        console.log(formatted);
         const filename = `${formatted} Avance Financiero Inversión Nov ${anio}.pptx`
         console.log("Noviembre: ", Noviembre)
 
@@ -3512,7 +3604,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoAvance = false;
+            this.EjecutandoAvance = false;
             this.isAvance = false
           }),
           (error) => {
@@ -3526,10 +3618,10 @@ export class CosaincegComponent implements OnInit {
             });
           }
         );
- 
+
       },
     },
-     {
+    {
       text: '12 Diciembre',
       svgIcon: fileExcelIcon,
       click: (): void => {
@@ -3539,11 +3631,11 @@ export class CosaincegComponent implements OnInit {
         const anio = lastYearDate.getFullYear().toString();
         const Diciembre = `${anio}-12-10`;
         const formatted =
-              String(today.getFullYear()).slice(-2) +
-              String(today.getMonth() + 1).padStart(2, '0') +
-              String(today.getDate()).padStart(2, '0');
+          String(today.getFullYear()).slice(-2) +
+          String(today.getMonth() + 1).padStart(2, '0') +
+          String(today.getDate()).padStart(2, '0');
 
-        console.log(formatted); 
+        console.log(formatted);
         const filename = `${formatted} Avance Financiero Inversión Dic ${anio}.pptx`
         console.log("Diciembre: ", Diciembre)
 
@@ -3572,7 +3664,7 @@ export class CosaincegComponent implements OnInit {
               type: { style: "success", icon: true },
               position: { horizontal: "left", vertical: "top" },
             });
-             this.EjecutandoAvance = false;
+            this.EjecutandoAvance = false;
             this.isAvance = false
           }),
           (error) => {
@@ -3586,7 +3678,7 @@ export class CosaincegComponent implements OnInit {
             });
           }
         );
- 
+
       },
     },
     //  {
@@ -3640,12 +3732,12 @@ export class CosaincegComponent implements OnInit {
     //     );
     //   },
     // },
-    
+
   ];
 
 
   constructor(private fileService: FileService, private cosaincegService: CosaincegService,
-    private notificationService: NotificationService, private authService: AuthService, private router: Router) {
+    private notificationService: NotificationService, private authService: AuthService, private router: Router, private sanitizer: DomSanitizer) {
 
 
   }

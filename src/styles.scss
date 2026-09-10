@@ -2,6 +2,7 @@
 
 // @import "@progress/kendo-theme-bootstrap/dist/bootstrap-urban.scss";
 // @use '@progress/kendo-theme-bootstrap/scss/all.scss' as *;
+
 @use "@progress/kendo-theme-bootstrap/scss/all.scss" as * with (
 $kendo-font-size: 0.75rem,
 // $kendo-grid-header-bg: #e3eef4,
@@ -13,6 +14,75 @@ $kendo-font-size: 0.75rem,
 //   $kendo-grid-border: #a0a0a3,
 //   $kendo-grid-footer-bg:#e3eef4
 );
+@import "primeicons/primeicons.css";
+//clase global para inputText(PrimeNG) e icono de liminar  -->
+.subject-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.subject-wrapper input {
+    width: 90%;
+    padding-right: 2.5rem;
+}
+
+.subject-clear {
+    position: absolute;
+    right: 0.9rem;
+    top: 50%;
+    transform: translateY(-50%);
+
+    width: 1.5rem;
+    height: 1.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+
+    color: #fc1202;
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.subject-clear:hover {
+    background-color: #fc1202;
+    color: #050505;
+    transform: translateY(-50%) scale(1.05);
+}
+
+.subject-clear:active {
+    transform: translateY(-50%) scale(0.92);
+}
+
+.subject-clear i {
+    font-size: 0.75rem;
+}
+
+.p-toast-top-center {
+    top: 70px !important;
+}
+
+.menu-header {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+
+    background: linear-gradient(90deg, #3b82f6, #9333ea);
+    color: #fff;
+}
+
+html.dark .menu-header {
+    background: #000 !important;
+    color: #fff !important;
+}
 // @import "@progress/kendo-theme-bootstrap/scss/all.scss";
 // @use "@progress/kendo-theme-material/scss/all.scss" as *with (
 //   $kendo-font-size: 0.75rem,
@@ -35,6 +105,7 @@ $kendo-font-size: 0.75rem,
 body {
     background-color: rgb(223, 223, 212)!important;
     margin: 0; height: 100%;
+    margin-top: 35px;
 }
 a {
     text-decoration: none !important;

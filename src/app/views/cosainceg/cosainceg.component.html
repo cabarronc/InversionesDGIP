@@ -474,8 +474,8 @@
                             [pageSize]="25" [sortable]="true" [columnMenu]="menuSettings" size="small"
                             [resizable]="true">
                             <ng-template kendoGridToolbarTemplate>
-                                <button type="button" themeColor="success"
-                                kendoGridExcelCommand [svgIcon]="fileExcelIcon">
+                                <button type="button" themeColor="success" kendoGridExcelCommand
+                                    [svgIcon]="fileExcelIcon">
                                     Export to Excel
                                 </button>
                             </ng-template>
@@ -524,6 +524,14 @@
 
                     </div>
                 </div>
+                @if (mostrarPreview) {
+                <div class="preview-container">
+                    <iframe [src]="pdfUrl" width="100%" height="800px" style="border: none;">
+                    </iframe>
+                </div>
+
+                }
+
                 <!-- @if (!hasProps2(info2)){
                 <div class="card shadow-sm">
                     <div class="card-header excel-title">
