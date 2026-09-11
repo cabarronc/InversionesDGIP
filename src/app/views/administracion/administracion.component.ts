@@ -8,12 +8,11 @@ import { NavBarComponent } from "../nav-bar/nav-bar.component";
 import { UserManagementComponent} from "../administracion/user-management/user-management.component"
 
 @Component({
-  selector: 'app-administracion',
-  standalone: true,
-  imports: [NavBarComponent,KENDO_BUTTONS, KENDO_INDICATORS, KENDO_LAYOUT,UserManagementComponent ],
-  templateUrl: './administracion.component.html',
+    selector: 'app-administracion',
+    imports: [NavBarComponent, KENDO_BUTTONS, KENDO_INDICATORS, KENDO_LAYOUT, UserManagementComponent],
+    templateUrl: './administracion.component.html',
     encapsulation: ViewEncapsulation.None,
-  styleUrl: './administracion.component.scss'
+    styleUrl: './administracion.component.scss'
 })
 export class AdministracionComponent {
   data:any;

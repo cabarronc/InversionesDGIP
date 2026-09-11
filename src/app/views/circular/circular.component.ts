@@ -8,12 +8,11 @@ import { DrawerItem, DrawerSelectEvent } from "@progress/kendo-angular-layout";
 import { CircularContentComponent } from "./circular-content/circular-content.component";
 
 @Component({
-  selector: 'app-circular',
-  standalone: true,
-  imports: [KENDO_BUTTONS, KENDO_INDICATORS, KENDO_LAYOUT, CircularContentComponent],
-  templateUrl: './circular.component.html',
-  encapsulation: ViewEncapsulation.None,
-  styleUrl: './circular.component.scss'
+    selector: 'app-circular',
+    imports: [KENDO_BUTTONS, KENDO_INDICATORS, KENDO_LAYOUT, CircularContentComponent],
+    templateUrl: './circular.component.html',
+    encapsulation: ViewEncapsulation.None,
+    styleUrl: './circular.component.scss'
 })
 export class CircularComponent {
   data:any;

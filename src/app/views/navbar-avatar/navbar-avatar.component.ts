@@ -10,11 +10,10 @@ import { AccordionModule } from 'primeng/accordion';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
     
 @Component({
-  selector: 'app-navbar-avatar',
-  standalone: true,
-  imports: [CommonModule,CapitalizeFirstPipe,ButtonModule,PopoverModule,AccordionModule,ProgressSpinnerModule],
-  templateUrl: './navbar-avatar.component.html',
-  styleUrl: './navbar-avatar.component.scss'
+    selector: 'app-navbar-avatar',
+    imports: [CommonModule, CapitalizeFirstPipe, ButtonModule, PopoverModule, AccordionModule, ProgressSpinnerModule],
+    templateUrl: './navbar-avatar.component.html',
+    styleUrl: './navbar-avatar.component.scss'
 })
   export class NavbarAvatarComponent {
   @Input() showSessionDetails!: () => void;

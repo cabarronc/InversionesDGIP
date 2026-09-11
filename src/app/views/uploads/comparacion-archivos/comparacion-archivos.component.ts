@@ -4,11 +4,10 @@ import { ComparacionArchivosService, UploadResponse, FileInfo } from '../../../s
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-comparacion-archivos',
-  standalone: true,
-  imports: [CommonModule,FormsModule],
-  templateUrl: './comparacion-archivos.component.html',
-  styleUrl: './comparacion-archivos.component.scss'
+    selector: 'app-comparacion-archivos',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './comparacion-archivos.component.html',
+    styleUrl: './comparacion-archivos.component.scss'
 })
 export class ComparacionArchivosComponent {
   @ViewChild('fileInput1') fileInput1!: ElementRef<HTMLInputElement>;

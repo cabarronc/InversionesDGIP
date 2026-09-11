@@ -9,11 +9,10 @@ import { fileExcelIcon, SVGIcon, xIcon } from "@progress/kendo-svg-icons"
 
 
 @Component({
-  selector: 'app-fab-global',
-  standalone: true,
-  imports: [CommonModule,FloatingActionButtonModule,KENDO_LAYOUT,KENDO_BUTTONS],
-  templateUrl: './fab-global.component.html',
-  styleUrl: './fab-global.component.scss'
+    selector: 'app-fab-global',
+    imports: [CommonModule, FloatingActionButtonModule, KENDO_LAYOUT, KENDO_BUTTONS],
+    templateUrl: './fab-global.component.html',
+    styleUrl: './fab-global.component.scss'
 })
 export class FabGlobalComponent {
 public image = "https://github.com/cabarronc/RecursosMultimedia/blob/main/inversiones.png?raw=true";

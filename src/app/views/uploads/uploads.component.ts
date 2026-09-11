@@ -2,11 +2,10 @@ import { Component } from '@angular/core';
 import { KENDO_UPLOADS } from "@progress/kendo-angular-upload";
 import { environment } from '../../../environments/environment';
 @Component({
-  selector: 'my-uploads',
-  standalone: true,
-  imports: [KENDO_UPLOADS],
-  templateUrl: './uploads.component.html',
-  styleUrl: './uploads.component.scss'
+    selector: 'my-uploads',
+    imports: [KENDO_UPLOADS],
+    templateUrl: './uploads.component.html',
+    styleUrl: './uploads.component.scss'
 })
 export class UploadsComponent {
 private apiUrl = environment.apiUrl;// URL de tu API Flask

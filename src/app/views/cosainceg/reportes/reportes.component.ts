@@ -9,11 +9,10 @@ import { CosaincegComponent } from "../cosainceg.component";
 import { PermissionGuard } from '../../../guards/permission.guard';
 
 @Component({
-  selector: 'app-reportes',
-  standalone: true,
-  imports: [KENDO_BUTTONS, KENDO_INDICATORS, KENDO_LAYOUT, CosaincegComponent],
-  templateUrl: './reportes.component.html',
-  styleUrl: './reportes.component.scss'
+    selector: 'app-reportes',
+    imports: [KENDO_BUTTONS, KENDO_INDICATORS, KENDO_LAYOUT, CosaincegComponent],
+    templateUrl: './reportes.component.html',
+    styleUrl: './reportes.component.scss'
 })
 export class ReportesComponent {
    data:any;

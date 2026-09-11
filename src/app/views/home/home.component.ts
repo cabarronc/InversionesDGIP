@@ -23,11 +23,10 @@ interface PlanetItem {
   size: number; color: string; ring: boolean;
 }
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [KENDO_BUTTONS, KENDO_LAYOUT, KENDO_INPUTS, DialogModule, CommonModule],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+    selector: 'app-home',
+    imports: [KENDO_BUTTONS, KENDO_LAYOUT, KENDO_INPUTS, DialogModule, CommonModule],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit, AfterViewInit, OnDestroy {
   public dialOpen = false;

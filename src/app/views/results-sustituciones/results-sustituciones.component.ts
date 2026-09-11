@@ -2,11 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { FieldSubstitutions } from '../../services/comparacion-archivos.service'
 @Component({
-  selector: 'app-results-sustituciones',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './results-sustituciones.component.html',
-  styleUrl: './results-sustituciones.component.scss'
+    selector: 'app-results-sustituciones',
+    imports: [CommonModule],
+    templateUrl: './results-sustituciones.component.html',
+    styleUrl: './results-sustituciones.component.scss'
 })
 export class ResultsSustitucionesComponent {
 @Input() fieldSubstitutions!: { [fieldName: string]: FieldSubstitutions } | undefined;

@@ -43,13 +43,12 @@ import { ExcelExportData } from "@progress/kendo-angular-excel-export";
 import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-adecuaciones-content',
-  standalone: true,
-  imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
-    KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
-    WindowModule, FormsModule, DropDownsModule, KENDO_TOOLTIPS, KENDO_PDFVIEWER, WindowModule, KENDO_GRID, ExcelModule, NgClass],
-  templateUrl: './adecuaciones-content.component.html',
-  styleUrl: './adecuaciones-content.component.scss',
+    selector: 'app-adecuaciones-content',
+    imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
+        KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
+        WindowModule, FormsModule, DropDownsModule, KENDO_TOOLTIPS, KENDO_PDFVIEWER, WindowModule, KENDO_GRID, ExcelModule, NgClass],
+    templateUrl: './adecuaciones-content.component.html',
+    styleUrl: './adecuaciones-content.component.scss'
 })
 export class AdecuacionesContentComponent implements OnInit {
   @ViewChild("deplist") public list?: AutoCompleteComponent;

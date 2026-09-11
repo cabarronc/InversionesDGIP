@@ -18,14 +18,13 @@ import { PopoverModule } from 'primeng/popover';
 import { AvatarService } from '../../services/avatar.service';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';  
 @Component({
-  selector: 'app-nav-bar',
-  standalone: true,
-  imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive,
-    RouterModule, PopupModule, NavbarAvatarComponent,ButtonModule, MenubarModule, PopoverModule,
-    TooltipModule, ProgressSpinnerModule],
-  templateUrl: './nav-bar.component.html',
-  encapsulation: ViewEncapsulation.None,
-  styleUrl: './nav-bar.component.scss'
+    selector: 'app-nav-bar',
+    imports: [CommonModule, RouterOutlet, RouterLink, RouterLinkActive,
+        RouterModule, PopupModule, NavbarAvatarComponent, ButtonModule, MenubarModule, PopoverModule,
+        TooltipModule, ProgressSpinnerModule],
+    templateUrl: './nav-bar.component.html',
+    encapsulation: ViewEncapsulation.None,
+    styleUrl: './nav-bar.component.scss'
 })
 export class NavBarComponent implements OnInit {
   isDarkMode = false;

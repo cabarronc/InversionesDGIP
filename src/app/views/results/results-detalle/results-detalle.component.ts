@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FieldAnalysis, ChangeDetection } from '../../../services/comparacion-archivos.service';
 
 @Component({
-  selector: 'app-results-detalle',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './results-detalle.component.html',
-  styleUrl: './results-detalle.component.scss'
+    selector: 'app-results-detalle',
+    imports: [CommonModule],
+    templateUrl: './results-detalle.component.html',
+    styleUrl: './results-detalle.component.scss'
 })
 export class ResultsDetalleComponent {
   @Input() fieldLevelChanges!: { [fieldName: string]: FieldAnalysis } | undefined;

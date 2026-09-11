@@ -13,11 +13,10 @@ import { MessageService } from 'primeng/api';
 
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, WindowModule, TooltipModule, DialogModule, KENDO_LAYOUT, FabGlobalComponent, DisclaimerComponent, ToastModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+    selector: 'app-root',
+    imports: [RouterOutlet, WindowModule, TooltipModule, DialogModule, KENDO_LAYOUT, FabGlobalComponent, DisclaimerComponent, ToastModule],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.scss'
 })
 export class AppComponent implements OnInit {
   // public image = "https://github.com/cabarronc/RecursosMultimedia/blob/main/inversiones.png?raw=true";

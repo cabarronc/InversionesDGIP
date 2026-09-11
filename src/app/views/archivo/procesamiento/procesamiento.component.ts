@@ -11,11 +11,10 @@ import { ProcesamientoService } from '../../../services/procesamiento.service';
 import { TrabajoProcesamiento } from '../../../models/procesamiento.model';
 
 @Component({
-  selector: 'app-procesamiento',
-  standalone: true,
-  imports: [DecimalPipe, FormsModule],
-  templateUrl: './procesamiento.component.html',
-  styleUrl: './procesamiento.component.scss'
+    selector: 'app-procesamiento',
+    imports: [DecimalPipe, FormsModule],
+    templateUrl: './procesamiento.component.html',
+    styleUrl: './procesamiento.component.scss'
 })
 export class ProcesamientoComponent implements OnInit, OnDestroy {
 

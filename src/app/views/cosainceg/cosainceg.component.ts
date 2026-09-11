@@ -40,13 +40,12 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 
 @Component({
-  selector: 'app-cosainceg',
-  standalone: true,
-  imports: [KENDO_LAYOUT, CommonModule, KENDO_BUTTONS, KENDO_GRID, WindowModule, KENDO_PDFVIEWER, KENDO_ICONS, KENDO_INDICATORS, KENDO_DIALOGS
-    , UploadsComponent, KENDO_INPUTS, KENDO_LABELS, FormsModule, KENDO_GRID_EXCEL_EXPORT],
-  templateUrl: './cosainceg.component.html',
-  styleUrl: './cosainceg.component.scss',
-  encapsulation: ViewEncapsulation.None,
+    selector: 'app-cosainceg',
+    imports: [KENDO_LAYOUT, CommonModule, KENDO_BUTTONS, KENDO_GRID, WindowModule, KENDO_PDFVIEWER, KENDO_ICONS, KENDO_INDICATORS, KENDO_DIALOGS,
+        UploadsComponent, KENDO_INPUTS, KENDO_LABELS, FormsModule, KENDO_GRID_EXCEL_EXPORT],
+    templateUrl: './cosainceg.component.html',
+    styleUrl: './cosainceg.component.scss',
+    encapsulation: ViewEncapsulation.None
 })
 
 export class CosaincegComponent implements OnInit {

@@ -23,14 +23,13 @@ import { environment } from '../../../../environments/environment';
 
 
 @Component({
-  selector: 'app-user-management',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, KENDO_INPUTS,
-    KENDO_LABELS,
-    KENDO_BUTTONS, KENDO_COMBOBOX,
-    KENDO_LAYOUT, DialogComponent, DialogTitleBarComponent, IconsModule, KENDO_GRID, AvatarUploadComponent],
-  templateUrl: './user-management.component.html',
-  styleUrl: './user-management.component.scss'
+    selector: 'app-user-management',
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, KENDO_INPUTS,
+        KENDO_LABELS,
+        KENDO_BUTTONS, KENDO_COMBOBOX,
+        KENDO_LAYOUT, DialogComponent, DialogTitleBarComponent, IconsModule, KENDO_GRID, AvatarUploadComponent],
+    templateUrl: './user-management.component.html',
+    styleUrl: './user-management.component.scss'
 })
 export class UserManagementComponent implements OnInit {
   @Input() selectedItem: string | undefined;

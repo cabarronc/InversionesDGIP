@@ -36,14 +36,13 @@ import { ResultsSustitucionesComponent } from "../../results-sustituciones/resul
 import { ResultsSustitucionesKeyComponent } from "../../results-sustituciones-key/results-sustituciones-key.component";
 import { JsonPipe } from '@angular/common';
 @Component({
-  selector: 'app-circular-content',
-  standalone: true,
-  imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
-    KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
-    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent, ResultsSustitucionesKeyComponent],
-  encapsulation: ViewEncapsulation.None,
-  templateUrl: './circular-content.component.html',
-  styleUrl: './circular-content.component.scss'
+    selector: 'app-circular-content',
+    imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
+        KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
+        WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent, ResultsSustitucionesKeyComponent],
+    encapsulation: ViewEncapsulation.None,
+    templateUrl: './circular-content.component.html',
+    styleUrl: './circular-content.component.scss'
 })
 export class CircularContentComponent implements OnInit {
   dashUrl: SafeResourceUrl;

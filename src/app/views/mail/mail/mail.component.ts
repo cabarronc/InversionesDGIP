@@ -29,12 +29,11 @@ interface DataContact {
 }
 
 @Component({
-  selector: 'app-mail',
-  standalone: true,
-  imports: [NavBarComponent, HttpClientModule, ChipModule,
-    ToggleSwitchModule, InputTextModule, AutoCompleteModule, TextareaModule, FloatLabelModule, DividerModule, CardModule, FileUploadModule, ButtonDirective, FormsModule],
-  templateUrl: './mail.component.html',
-  styleUrl: './mail.component.scss'
+    selector: 'app-mail',
+    imports: [NavBarComponent, HttpClientModule, ChipModule,
+        ToggleSwitchModule, InputTextModule, AutoCompleteModule, TextareaModule, FloatLabelModule, DividerModule, CardModule, FileUploadModule, ButtonDirective, FormsModule],
+    templateUrl: './mail.component.html',
+    styleUrl: './mail.component.scss'
 })
 export class MailComponent implements OnInit {
 

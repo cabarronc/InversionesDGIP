@@ -4,11 +4,10 @@ import { ComparacionArchivosService, ComparisonResult } from '../../services/com
 import { ResultsDetalleComponent } from "./results-detalle/results-detalle.component";
 
 @Component({
-  selector: 'app-results',
-  standalone: true,
-  imports: [CommonModule, ResultsDetalleComponent],
-  templateUrl: './results.component.html',
-  styleUrl: './results.component.scss'
+    selector: 'app-results',
+    imports: [CommonModule, ResultsDetalleComponent],
+    templateUrl: './results.component.html',
+    styleUrl: './results.component.scss'
 })
 export class ResultsComponent {
   @Input() result!: ComparisonResult;

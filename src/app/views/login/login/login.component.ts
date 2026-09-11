@@ -15,14 +15,13 @@ import { KENDO_TOOLTIPS } from "@progress/kendo-angular-tooltip";
 
 
 @Component({
-  selector: 'app-login',
-  standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, KENDO_INPUTS,
-    KENDO_LABELS,
-    KENDO_BUTTONS,
-    KENDO_LAYOUT, DialogComponent, DialogTitleBarComponent, IconsModule,KENDO_TOOLTIPS,],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+    selector: 'app-login',
+    imports: [CommonModule, FormsModule, ReactiveFormsModule, KENDO_INPUTS,
+        KENDO_LABELS,
+        KENDO_BUTTONS,
+        KENDO_LAYOUT, DialogComponent, DialogTitleBarComponent, IconsModule, KENDO_TOOLTIPS,],
+    templateUrl: './login.component.html',
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent  implements OnInit {
   loginForm: FormGroup;

@@ -52,13 +52,12 @@ export function noCeroValidator(control: AbstractControl): ValidationErrors | nu
 }
 
 @Component({
-  selector: 'app-simulador',
-  standalone: true,
-  imports: [KENDO_ICONS, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT, CheckBoxModule,
-    KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule, KENDO_DIALOGS, NotificationModule, AutoCompleteModule, DisclaimerComponent],
-  templateUrl: './simulador.component.html',
-  styleUrl: './simulador.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
+    selector: 'app-simulador',
+    imports: [KENDO_ICONS, TooltipModule, ReactiveFormsModule, KENDO_DROPDOWNS, KENDO_SLIDER, KENDO_GAUGES, KENDO_LABELS, KENDO_LAYOUT, CheckBoxModule,
+        KENDO_BUTTONS, KENDO_PROGRESSBARS, KENDO_INPUTS, KENDO_INDICATORS, FormsModule, DecimalPipe, CommonModule, KENDO_DIALOGS, NotificationModule, AutoCompleteModule, DisclaimerComponent],
+    templateUrl: './simulador.component.html',
+    styleUrl: './simulador.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SimuladorComponent implements OnInit {
   estadoActual: 'happy' | 'neutral' | 'sad' = 'neutral';

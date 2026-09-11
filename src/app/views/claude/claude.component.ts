@@ -12,12 +12,11 @@ import { DialogModule } from '@progress/kendo-angular-dialog';
 import { FloatingActionButtonModule } from '@progress/kendo-angular-buttons';
 
 @Component({
-  selector: 'app-claude',
-  standalone: true,
-  imports: [LabelModule,InputsModule,FormsModule,KENDO_BUTTONS,ReactiveFormsModule,CommonModule,DialogModule,
-    FloatingActionButtonModule],
-  templateUrl: './claude.component.html',
-  styleUrl: './claude.component.scss'
+    selector: 'app-claude',
+    imports: [LabelModule, InputsModule, FormsModule, KENDO_BUTTONS, ReactiveFormsModule, CommonModule, DialogModule,
+        FloatingActionButtonModule],
+    templateUrl: './claude.component.html',
+    styleUrl: './claude.component.scss'
 })
 export class ClaudeComponent implements OnInit {
 naturalLanguage: string = '';

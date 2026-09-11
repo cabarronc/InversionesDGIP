@@ -8,11 +8,10 @@ import { DrawerItem, DrawerSelectEvent } from "@progress/kendo-angular-layout";
 import { AdecuacionesContentComponent } from "../adecuaciones-content/adecuaciones-content.component";
 
 @Component({
-  selector: 'app-adecuaciones',
-  standalone: true,
-  imports: [KENDO_BUTTONS, KENDO_INDICATORS, KENDO_LAYOUT, NavBarComponent, AdecuacionesContentComponent],
-  templateUrl: './adecuaciones.component.html',
-  styleUrl: './adecuaciones.component.scss'
+    selector: 'app-adecuaciones',
+    imports: [KENDO_BUTTONS, KENDO_INDICATORS, KENDO_LAYOUT, NavBarComponent, AdecuacionesContentComponent],
+    templateUrl: './adecuaciones.component.html',
+    styleUrl: './adecuaciones.component.scss'
 })
 export class AdecuacionesComponent {
   data:any;
