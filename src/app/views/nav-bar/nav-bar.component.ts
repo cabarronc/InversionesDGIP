@@ -99,6 +99,11 @@ export class NavBarComponent implements OnInit {
           label: 'Procesador',
           icon: 'pi pi-cog',
           routerLink: '/procesador'
+        },
+        {
+          label: 'Obra',
+          icon: 'pi pi-building-columns', 
+          routerLink: '/obra'
         }
       ]
     },

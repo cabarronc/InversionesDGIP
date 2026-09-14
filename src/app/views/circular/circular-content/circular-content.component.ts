@@ -35,6 +35,7 @@ import { ResultsComponent } from "../../results/results.component";
 import { ResultsSustitucionesComponent } from "../../results-sustituciones/results-sustituciones.component";
 import { ResultsSustitucionesKeyComponent } from "../../results-sustituciones-key/results-sustituciones-key.component";
 import { JsonPipe } from '@angular/common';
+
 @Component({
     selector: 'app-circular-content',
     imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,

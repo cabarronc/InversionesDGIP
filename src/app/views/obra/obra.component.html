@@ -1,0 +1,13 @@
+   <!-- <div style="height: 60%; width: 60%; display: flex; justify-content: center; align-items: center; margin-top:2rem;">
+            <p-chart-svg>
+                <p-chart-bar [data]="dataBar" categoryXField="month" valueYField="shipped" [borderRadius]="4" />
+                <p-chart-x-axis />
+                <p-chart-y-axis label="Orders shipped" />
+            </p-chart-svg>
+        </div> -->
+
+        <p-chart class="chart-container mt-5"
+        type="bar"
+        [data]="data"
+        [options]="options">
+    </p-chart>

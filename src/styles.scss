@@ -15,6 +15,8 @@ $kendo-font-size: 0.75rem,
 //   $kendo-grid-footer-bg:#e3eef4
 );
 @import "primeicons/primeicons.css";
+@import '@primeui/chart-style/style.css';
+@import '@primeui/chart-style/themes/primeone.css'; /* or themes/default.css */
 //clase global para inputText(PrimeNG) e icono de liminar  -->
 .subject-wrapper {
     position: relative;
@@ -83,6 +85,27 @@ html.dark .menu-header {
     background: #000 !important;
     color: #fff !important;
 }
+/* MODO NORMAL */
+:root {
+    --bg-primary: rgb(223, 223, 212);
+    --bg-secondary: #ffffff;
+    --text-primary: #1f2937;
+}
+
+/* MODO OSCURO - AZUL */
+html.dark {
+    --bg-primary: #0b1628;
+    --bg-secondary: #101f38;
+    --text-primary: #e5eefc;
+}
+
+html,
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    margin: 0;
+    min-height: 100%;
+}
 // @import "@progress/kendo-theme-bootstrap/scss/all.scss";
 // @use "@progress/kendo-theme-material/scss/all.scss" as *with (
 //   $kendo-font-size: 0.75rem,
@@ -102,11 +125,7 @@ html.dark .menu-header {
 }
 
 * { box-sizing: border-box; } html,
-body {
-    background-color: rgb(223, 223, 212)!important;
-    margin: 0; height: 100%;
-    margin-top: 35px;
-}
+
 a {
     text-decoration: none !important;
   }

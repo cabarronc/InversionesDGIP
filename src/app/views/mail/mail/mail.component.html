@@ -136,7 +136,7 @@
             <label><span style="font-weight: bold;">Destinatarios</span>&nbsp;
                 @for (contact of selectedContacts; track $index;){
 
-                <p-chip [label]="contact" [removable]="true" (onRemove)="onRemove(contact)" class="ms-2 mb-2"></p-chip>
+                <p-chip   icon="pi pi-user" [label]="contact" [removable]="true" (onRemove)="onRemove(contact)" class="ms-2 mb-2"></p-chip>
 
 
                 }

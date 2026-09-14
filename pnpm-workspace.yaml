@@ -1,4 +1,5 @@
 allowBuilds:
+  '@parcel/watcher': true
   '@progress/kendo-licensing': true
   canvas: true
   esbuild: true

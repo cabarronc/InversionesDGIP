@@ -19,6 +19,7 @@ import { NavbarAvatarComponent } from './views/navbar-avatar/navbar-avatar.compo
 import { ReportesComponent } from './views/cosainceg/reportes/reportes.component';
 import { SimuladorComponent } from './views/simulador/simulador.component';
 import { ProcesamientoComponent } from './views/archivo/procesamiento/procesamiento.component';
+import { ObraComponent } from './views/obra/obra.component';
 
 
 export const routes: Routes = [
@@ -101,6 +102,12 @@ export const routes: Routes = [
         component: ClaudeComponent,
         canActivate: [PermissionGuard],
         data: { module: 'claude', action: 'manage' }
+      },
+              {
+        path: 'obra',
+        component: ObraComponent,
+        canActivate: [PermissionGuard],
+        data: { module: 'obra', action: 'manage' }
       },
       // {
       //   path: 'roles',
