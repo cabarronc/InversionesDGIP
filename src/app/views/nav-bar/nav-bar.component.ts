@@ -179,6 +179,7 @@ export class NavBarComponent implements OnInit {
       'dark',
       this.isDarkMode
     );
+     
   }
 
   canAccessModule(module: string): boolean {

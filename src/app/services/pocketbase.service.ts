@@ -4,7 +4,7 @@ import { GridDataResult } from '@progress/kendo-angular-grid';
 import PocketBase from 'pocketbase';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-
+export type TablaTipo = 'Obra' | 'SED' | 'SAP';
 @Injectable({
   providedIn: 'root'
 })
@@ -149,6 +149,54 @@ export class PocketbaseService {
       console.error('Error al actualizar el registro:', error);
       throw error;
     }
+  }
+
+  // --- Ediciones de campo ---
+  async guardarEdicion(registro_id: string, tabla: TablaTipo, campo: string, valor: any) {
+    const filtro = `registro_id="${registro_id}" && campo="${campo}"`;
+    const existente = await this.pb.collection('ediciones_obra')
+      .getFirstListItem(filtro).catch(() => null);
+
+    if (existente) {
+      return this.pb.collection('ediciones_obra').update(existente.id, { valor: String(valor) });
+    }
+    return this.pb.collection('ediciones_obra').create({
+      registro_id, tabla, campo, valor: String(valor),
+      usuario: this.pb.authStore.record?.id
+    });
+  }
+
+  async cargarEdiciones() {
+    return this.pb.collection('ediciones_obra').getFullList();
+  }
+
+  suscribirEdiciones(callback: (e: any) => void) {
+    return this.pb.collection('ediciones_obra').subscribe('*', callback);
+  }
+
+  // --- Eliminaciones ---
+  async guardarEliminacion(registro_id: string, tabla: TablaTipo) {
+    const filtro = `registro_id="${registro_id}" && tabla="${tabla}"`;
+    const existente = await this.pb.collection('eliminados_obra')
+      .getFirstListItem(filtro).catch(() => null);
+    if (existente) return existente; // ya estaba marcado
+
+    return this.pb.collection('eliminados_obra').create({
+      registro_id, tabla, usuario: this.pb.authStore.record?.id
+    });
+  }
+
+  async cargarEliminados() {
+    return this.pb.collection('eliminados_obra').getFullList();
+  }
+
+  suscribirEliminados(callback: (e: any) => void) {
+    return this.pb.collection('eliminados_obra').subscribe('*', callback);
+  }
+
+  desuscribirTodo() {
+    this.pb.collection('ediciones_obra').unsubscribe();
+    this.pb.collection('eliminados_obra').unsubscribe();
   }
 
 }

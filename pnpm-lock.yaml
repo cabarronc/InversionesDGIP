@@ -176,6 +176,9 @@ importers:
       tslib:
         specifier: ^2.3.0
         version: 2.8.1
+      xlsx:
+        specifier: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz
+        version: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz
       zone.js:
         specifier: ~0.15.1
         version: 0.15.1
@@ -5585,6 +5588,12 @@ packages:
 
   xlf-translate@2.0.7:
     resolution: {integrity: sha512-diqIu34dIBVfrmLPVUgPKMoTlr9y0GBSTnaYmUIc1IawxINVnfeMtNJnMxshUUpEMmXQAUsPZTqnlK8lYbt+xg==}
+    hasBin: true
+
+  xlsx@https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz:
+    resolution: {integrity: sha512-oLDq3jw7AcLqKWH2AhCpVTZl8mf6X2YReP+Neh0SJUzV/BdZYjth94tG5toiMB1PPrYtxOCfaoUCkvtuH+3AJA==, tarball: https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz}
+    version: 0.20.3
+    engines: {node: '>=0.8'}
     hasBin: true
 
   y18n@5.0.8:
@@ -11749,6 +11758,8 @@ snapshots:
       argparse: 2.0.1
       cheerio: 1.2.0
       js-yaml: 4.3.2
+
+  xlsx@https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz: {}
 
   y18n@5.0.8: {}
 
