@@ -192,7 +192,8 @@
             <tr>
                 <td colspan="9" class="detalle-expandido">
                     <h5 style="padding-left: 3rem;">SED ({{ obra.DatosSED?.length || 0 }})</h5>
-                    <p-table [value]="obra.DatosSED" style="padding-left: 3rem;" (onEditComplete)="onSedEditComplete($event)">
+                    <p-table [value]="obra.DatosSED" style="padding-left: 3rem;"
+                        (onEditComplete)="onSedEditComplete($event)">
                         <ng-template #header>
             <tr>
                 <th>Descripcion Meta</th>
@@ -225,6 +226,12 @@
                         </ng-template>
                         <ng-template #output>
                             <span class="font-medium"> {{ sed.municipio_nombre }} </span>
+                            @if (infoEdicion(sed.id_registro_sed, 'municipio_nombre'); as info) {
+                            <br>
+                            <small class="text-500 texto-editado" style="font-size: 0.65rem;">
+                                editado por {{ info.usuario }}
+                            </small>
+                            }
                         </ng-template>
 
                     </p-cellEditor>

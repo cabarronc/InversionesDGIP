@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
 import { NavBarComponent } from "../../nav-bar/nav-bar.component";
 import { ApiService } from '../../../services/api.service';
-import { fileWordIcon, imageIcon, menuIcon, SVGIcon, copyIcon, fileExcelIcon,downloadIcon , aggregateFieldsIcon, chartDoughnutIcon } from '@progress/kendo-svg-icons';
+import { fileWordIcon, imageIcon, menuIcon, SVGIcon, copyIcon, fileExcelIcon, downloadIcon, aggregateFieldsIcon, chartDoughnutIcon } from '@progress/kendo-svg-icons';
 import { KENDO_BUTTONS } from '@progress/kendo-angular-buttons';
 import { KENDO_INDICATORS } from '@progress/kendo-angular-indicators';
 import { KENDO_FLOATINGLABEL } from "@progress/kendo-angular-label";
@@ -37,13 +37,13 @@ import { ResultsSustitucionesKeyComponent } from "../../results-sustituciones-ke
 import { JsonPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-circular-content',
-    imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
-        KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
-        WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent, ResultsSustitucionesKeyComponent],
-    encapsulation: ViewEncapsulation.None,
-    templateUrl: './circular-content.component.html',
-    styleUrl: './circular-content.component.scss'
+  selector: 'app-circular-content',
+  imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
+    KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
+    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent, ResultsSustitucionesKeyComponent],
+  encapsulation: ViewEncapsulation.None,
+  templateUrl: './circular-content.component.html',
+  styleUrl: './circular-content.component.scss'
 })
 export class CircularContentComponent implements OnInit {
   dashUrl: SafeResourceUrl;
@@ -52,12 +52,13 @@ export class CircularContentComponent implements OnInit {
   progress_graficos = 0;
   data2: any;
   copiado_respuesta: any
+  copiado_respuesta_evidencia: any
   integracion_respuesta: any
   cumplimiento_respuesta: any
   vencidas_respuesta: any
   puntosAtencion: any
   graficosrespuesta: any;
-  
+
   programacionrespuesta: any;
   fecha: Date = new Date()
   public data = {
@@ -102,15 +103,15 @@ export class CircularContentComponent implements OnInit {
 
 
   constructor(private apiService: ApiService, private notificationService: NotificationService, private fileService: FileService, private sanitizer: DomSanitizer
-    , private comparacionArchivos:ComparacionArchivosService
+    , private comparacionArchivos: ComparacionArchivosService
   ) {
     this.form = new FormGroup({
       numero_circular: new FormControl(this.data.numero_circular, [Validators.required]),
       fecha: new FormControl(this.data.fecha, [Validators.required,]),
     });
-     this.dashUrl = this.sanitizer.bypassSecurityTrustResourceUrl(environment.apiUrlDash);
+    this.dashUrl = this.sanitizer.bypassSecurityTrustResourceUrl(environment.apiUrlDash);
   }
- customKeyColumn: string = '';
+  customKeyColumn: string = '';
   public allowCustom = true;
   public selectedValues1: string = "2025";
   public selectedValues2: string = "2025";
@@ -120,12 +121,12 @@ export class CircularContentComponent implements OnInit {
     "2024",
     "2023",
   ];
-    public listItems2: Array<string> = [
+  public listItems2: Array<string> = [
     "2025",
     "2024",
     "2023",
   ];
-    public listItems3: Array<string> = [
+  public listItems3: Array<string> = [
     "2025",
     "2024",
     "2023",
@@ -181,7 +182,7 @@ export class CircularContentComponent implements OnInit {
       }
     );
   }
-    //DESCARGAR ARCHIVOS SEGUIMIENTO
+  //DESCARGAR ARCHIVOS SEGUIMIENTO
   downloadFilesSEDSEGUIMIENTO(filename: string): void {
     this.fileService.downloadFileSEDSeguimiento(filename).subscribe(
       (blob) => {
@@ -196,7 +197,7 @@ export class CircularContentComponent implements OnInit {
       }
     );
   }
-    //DESCARGAR ARCHIVOS SAP
+  //DESCARGAR ARCHIVOS SAP
   downloadFilesSAP(filename: string): void {
     this.fileService.downloadFileSap(filename).subscribe(
       (blob) => {
@@ -337,6 +338,45 @@ export class CircularContentComponent implements OnInit {
       }
     );
   }
+
+  public CopiarCircularAcuses(): void {
+    this.isCoping = true
+    this.notificationService.show({
+      content: "Espere. copiando",
+      hideAfter: 1500,
+      animation: { type: "slide", duration: 900 },
+      type: { style: "info", icon: true },
+      position: { horizontal: "center", vertical: "top" },
+    });
+
+    this.apiService.CircularCopyEvidencia().subscribe(
+      (response) => {
+        this.copiado_respuesta_evidencia = response;
+        this.isCoping = false;
+        this.notificationService.show({
+          content: "Copiado Correcto",
+          hideAfter: 1500,
+          animation: { type: "slide", duration: 900 },
+          type: { style: "success", icon: true },
+          position: { horizontal: "center", vertical: "top" },
+        });
+        console.log('Datos obtenidos:', this.copiado_respuesta_evidencia);
+
+      },
+      (error) => {
+        this.isCoping = false;
+        clearInterval(this.interval); // Detén el intervalo si hay error
+        this.notificationService.show({
+          content: "Existe un error",
+          hideAfter: 1500,
+          animation: { type: "slide", duration: 900 },
+          type: { style: "error", icon: true },
+          position: { horizontal: "center", vertical: "top" },
+        });
+        console.error('Error al obtener datos:', error);
+      }
+    );
+  }
   public PuntosAtencion(): void {
     this.isPuntos = true
     this.notificationService.show({
@@ -460,7 +500,7 @@ export class CircularContentComponent implements OnInit {
       }
     );
   }
-//#############################SEGUIMIENTO ACTIVIDADES #########################################
+  //#############################SEGUIMIENTO ACTIVIDADES #########################################
   public CumplimientoMetas(): void {
     this.isGenerarCumplimiento = true
     this.notificationService.show({
@@ -535,7 +575,7 @@ export class CircularContentComponent implements OnInit {
       type: { style: "info", icon: true },
       position: { horizontal: "center", vertical: "top" },
     });
-    console.log("ejercicio",this.selectedValues1)
+    console.log("ejercicio", this.selectedValues1)
     this.apiService.ExcelSEDProgramacion(this.selectedValues1).subscribe(
       (response) => {
         this.isProgramacion = false;
@@ -574,7 +614,7 @@ export class CircularContentComponent implements OnInit {
       type: { style: "info", icon: true },
       position: { horizontal: "center", vertical: "top" },
     });
-    console.log("ejercicio",this.selectedValues2)
+    console.log("ejercicio", this.selectedValues2)
     this.apiService.ExcelSEDSeguimiento(this.selectedValues2).subscribe(
       (response) => {
         this.isSeguimiento = false;
@@ -612,7 +652,7 @@ export class CircularContentComponent implements OnInit {
       type: { style: "info", icon: true },
       position: { horizontal: "center", vertical: "top" },
     });
-console.log("ejercicio",this.selectedValues3)
+    console.log("ejercicio", this.selectedValues3)
     this.apiService.ExcelSAP(this.selectedValues3).subscribe(
       (response) => {
         this.isSAP = false;
@@ -674,60 +714,60 @@ console.log("ejercicio",this.selectedValues3)
     );
 
   }
-// Servicio de comparacion de archivos
-onFilesUploaded(uploadResult: any) {
+  // Servicio de comparacion de archivos
+  onFilesUploaded(uploadResult: any) {
     console.log('Archivos subidos:', uploadResult);
   }
 
 
-onStructureChanged(hasChanges:boolean){
- console.log('Hubo cambios estructurales:', hasChanges);
-}
-onStructureChangedAdd(hasChanges:boolean){
-   console.log('Hubo cambios en filas agregadas:', hasChanges);
-}
-
-
-
-onComparisonRequested(comparisonData: any) {
-  this.isComparing = true;
-  
-  let compareMethod;
-  
-  switch (comparisonData.analysisType) {
-    case 'detailed':
-      compareMethod = this.comparacionArchivos.compareFilesDetailed(
-        comparisonData.file1Id, comparisonData.file2Id
-      );
-      break;
-    case 'substitutions':
-      compareMethod = this.comparacionArchivos.compareFilesSubstitutions(
-        comparisonData.file1Id, comparisonData.file2Id
-      );
-      break;
-       case 'substitutions_by_key':
-        compareMethod = this.comparacionArchivos.compareFilesSubstitutions_by_id(
-        comparisonData.file1Id, comparisonData.file2Id, [this.customKeyColumn] 
-      );
-      break;
-    default:
-      compareMethod = this.comparacionArchivos.compareFiles(
-        comparisonData.file1Id, comparisonData.file2Id
-      );
+  onStructureChanged(hasChanges: boolean) {
+    console.log('Hubo cambios estructurales:', hasChanges);
   }
-  
-  compareMethod.subscribe({
-    next: (result) => {
-      this.comparisonResult = result;
-      console.log('ROW CHANGES modified raw:', this.comparisonResult?.row_changes?.modified);
-      console.log('Keys:', Object.keys(this.comparisonResult?.row_changes?.modified || {}));
-      console.log(this.comparisonResult)
-      this.isComparing = false;
-    },
-    error: (error) => {
-      console.error('Error en la comparación:', error);
-      this.isComparing = false;
+  onStructureChangedAdd(hasChanges: boolean) {
+    console.log('Hubo cambios en filas agregadas:', hasChanges);
+  }
+
+
+
+  onComparisonRequested(comparisonData: any) {
+    this.isComparing = true;
+
+    let compareMethod;
+
+    switch (comparisonData.analysisType) {
+      case 'detailed':
+        compareMethod = this.comparacionArchivos.compareFilesDetailed(
+          comparisonData.file1Id, comparisonData.file2Id
+        );
+        break;
+      case 'substitutions':
+        compareMethod = this.comparacionArchivos.compareFilesSubstitutions(
+          comparisonData.file1Id, comparisonData.file2Id
+        );
+        break;
+      case 'substitutions_by_key':
+        compareMethod = this.comparacionArchivos.compareFilesSubstitutions_by_id(
+          comparisonData.file1Id, comparisonData.file2Id, [this.customKeyColumn]
+        );
+        break;
+      default:
+        compareMethod = this.comparacionArchivos.compareFiles(
+          comparisonData.file1Id, comparisonData.file2Id
+        );
     }
-  });
-}
+
+    compareMethod.subscribe({
+      next: (result) => {
+        this.comparisonResult = result;
+        console.log('ROW CHANGES modified raw:', this.comparisonResult?.row_changes?.modified);
+        console.log('Keys:', Object.keys(this.comparisonResult?.row_changes?.modified || {}));
+        console.log(this.comparisonResult)
+        this.isComparing = false;
+      },
+      error: (error) => {
+        console.error('Error en la comparación:', error);
+        this.isComparing = false;
+      }
+    });
+  }
 }

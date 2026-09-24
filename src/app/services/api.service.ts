@@ -20,6 +20,9 @@ private apiUrl = environment.apiUrl;
   CircularCopy(): Observable<any> {
     return this.http.get(`${this.apiUrl}/GetCircularCopy`);
   }
+    CircularCopyEvidencia(): Observable<any> {
+    return this.http.get(`${this.apiUrl}/GetCircularCopyEvidencia`);
+  }
   // PUNTOS ATENCION
   PuntosAtencion(): Observable<any> {
     return this.http.get(`${this.apiUrl}/GetPuntosAtencion`);

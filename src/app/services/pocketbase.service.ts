@@ -1,19 +1,22 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { GridDataResult } from '@progress/kendo-angular-grid';
 import PocketBase from 'pocketbase';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { AuthService } from './auth.service';
 export type TablaTipo = 'Obra' | 'SED' | 'SAP';
 @Injectable({
   providedIn: 'root'
 })
 export class PocketbaseService {
-  private apiUrl = environment.ApiPocketBase;
-  private pb: PocketBase;
+   private authService = inject(AuthService);
+  private get pb() {
+    return this.authService.getPocketBase();
+  }
 
   constructor(private http: HttpClient) {
-    this.pb = new PocketBase(this.apiUrl); // Cambiar URL según el entorno
+   
   }
 
 
@@ -158,20 +161,23 @@ export class PocketbaseService {
       .getFirstListItem(filtro).catch(() => null);
 
     if (existente) {
-      return this.pb.collection('ediciones_obra').update(existente.id, { valor: String(valor) });
+      return this.pb.collection('ediciones_obra').update(existente.id, { 
+        valor: String(valor),
+        usuario: this.pb.authStore.record?.id?? null 
+      });
     }
     return this.pb.collection('ediciones_obra').create({
       registro_id, tabla, campo, valor: String(valor),
-      usuario: this.pb.authStore.record?.id
+      usuario: this.pb.authStore.record?.id ?? null
     });
   }
 
   async cargarEdiciones() {
-    return this.pb.collection('ediciones_obra').getFullList();
+    return this.pb.collection('ediciones_obra').getFullList({ expand: 'usuario' });
   }
 
   suscribirEdiciones(callback: (e: any) => void) {
-    return this.pb.collection('ediciones_obra').subscribe('*', callback);
+     return this.pb.collection('ediciones_obra').subscribe('*', callback, { expand: 'usuario' });
   }
 
   // --- Eliminaciones ---

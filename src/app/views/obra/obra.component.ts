@@ -7,7 +7,7 @@ import { CardModule } from 'primeng/card';
 import { CurrencyPipe, DecimalPipe } from '@angular/common';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { SelectModule } from 'primeng/select';
-import { Table, TableModule, TableEditCompleteEvent  } from 'primeng/table';
+import { Table, TableModule, TableEditCompleteEvent } from 'primeng/table';
 import { ObraService } from '../../services/obra.service';
 import { FormsModule } from '@angular/forms';
 import { TagModule } from 'primeng/tag';
@@ -163,7 +163,8 @@ export class ObraComponent {
     saldo: 0,
     totalProyectos: 0
   });
-
+  // Nuevo Map: guarda metadata de "quién editó qué" por registro_id + campo
+  public metaEdiciones = new Map<string, { usuario: string; fecha: string }>();
   data_origen: any;
   options_origen: any;
   data_mensual: any;
@@ -268,15 +269,15 @@ export class ObraComponent {
     ];
   });
   private unsubEdiciones?: () => void;
-private unsubEliminados?: () => void;
-  async ngOnInit(): Promise<void>  {
+  private unsubEliminados?: () => void;
+  async ngOnInit(): Promise<void> {
     this.GetObra()
-     this.unsubEdiciones = await this.pocketBaseService.suscribirEdiciones((e) => {
-    if (e.action === 'create' || e.action === 'update') this.aplicarEdicion(e.record);
-  });
-  this.unsubEliminados = await this.pocketBaseService.suscribirEliminados((e) => {
-    if (e.action === 'create') this.aplicarEliminacion(e.record);
-  });
+    this.unsubEdiciones = await this.pocketBaseService.suscribirEdiciones((e) => {
+      if (e.action === 'create' || e.action === 'update') this.aplicarEdicion(e.record);
+    });
+    this.unsubEliminados = await this.pocketBaseService.suscribirEliminados((e) => {
+      if (e.action === 'create') this.aplicarEliminacion(e.record);
+    });
   }
   ngAfterViewInit() {
 
@@ -296,7 +297,7 @@ private unsubEliminados?: () => void;
   public GetObra() {
     this.cargado.set(false);
     this.obraService.GetObra().subscribe(
-      async  (data) => {
+      async (data) => {
         console.log('data:', data);
         console.log('es arreglo:', Array.isArray(data.Obra));
         this.ObrasExtendida = data.Obra as ObraExtendida[];
@@ -341,6 +342,13 @@ private unsubEliminados?: () => void;
   }
 
   private aplicarEdicion(e: any) {
+    const nombreUsuario = e.expand?.['usuario']?.['name'] ?? 'Usuario desconocido';
+    const fecha = e.updated ?? e.created;
+
+    // clave compuesta para poder buscarlo luego desde el template
+    const clave = `${e.registro_id}__${e.campo}`;
+    this.metaEdiciones.set(clave, { usuario: nombreUsuario, fecha });
+
     if (e.tabla === 'Obra') {
       const obra = this.ObrasExtendida.find(o => o.meta_estandarizada === e.registro_id);
       if (obra) (obra as any)[e.campo] = e.valor;
@@ -863,35 +871,38 @@ private unsubEliminados?: () => void;
 
   eliminarSAP(obra: ObraExtendida, sap: any) {
     obra.DatosSAP = obra.DatosSAP.filter(s => s.id_registro_sap !== sap.id_registro_sap);
-     this.pocketBaseService.guardarEliminacion(sap.id_registro_sap, 'SAP');
+    this.pocketBaseService.guardarEliminacion(sap.id_registro_sap, 'SAP');
   }
 
   eliminarSED(obra: ObraExtendida, sed: DatosSED) {
     obra.DatosSED = obra.DatosSED.filter(s => s.id_registro_sed !== sed.id_registro_sed);
-     this.pocketBaseService.guardarEliminacion(sed.id_registro_sed, 'SED');
+    this.pocketBaseService.guardarEliminacion(sed.id_registro_sed, 'SED');
   }
- onSedEditComplete(event: TableEditCompleteEvent) {
-   if (!event.data || !event.field) return;
-  const data = event.data as DatosSED;
-  const field = event.field;
-  this.pocketBaseService.guardarEdicion(
-    data.id_registro_sed, 'SED', field, (data as any)[field]
-  );
+  onSedEditComplete(event: TableEditCompleteEvent) {
+    if (!event.data || !event.field) return;
+    const data = event.data as DatosSED;
+    const field = event.field;
+    this.pocketBaseService.guardarEdicion(
+      data.id_registro_sed, 'SED', field, (data as any)[field]
+    );
+  }
+  infoEdicion(registro_id: string, campo: string): { usuario: string; fecha: string } | undefined {
+  return this.metaEdiciones.get(`${registro_id}__${campo}`);
 }
 
-onSapEditComplete(event: TableEditCompleteEvent) {
-   if (!event.data || !event.field) return;
+  onSapEditComplete(event: TableEditCompleteEvent) {
+    if (!event.data || !event.field) return;
 
-  const data = event.data;
-  const field = event.field;
+    const data = event.data;
+    const field = event.field;
 
-  this.pocketBaseService.guardarEdicion(
-    data.id_registro_sap,
-    'SAP',
-    field,
-    (data as any)[field]
-  );
-}
+    this.pocketBaseService.guardarEdicion(
+      data.id_registro_sap,
+      'SAP',
+      field,
+      (data as any)[field]
+    );
+  }
   restaurar() {
     this.ObrasExtendida = structuredClone(this.ObrasOriginal);
   }
@@ -915,7 +926,7 @@ onSapEditComplete(event: TableEditCompleteEvent) {
 
   ngOnDestroy() {
     this.observer?.disconnect();
-     this.pocketBaseService.desuscribirTodo();
+    this.pocketBaseService.desuscribirTodo();
   }
 
 

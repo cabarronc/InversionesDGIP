@@ -53,6 +53,10 @@ export class AuthService {
     NORMAL: 8* 60 * 60 * 1000, // 8 horas
     WARNING_TIME: 5 * 60 * 1000 // 5 minutos antes de expirar
   };
+   public getPocketBase(): PocketBase {
+    return this.pb;
+  }
+
   constructor(private router: Router) {
     this.pb = new PocketBase(this.apiUrl);
     // Verificar si hay una sesión guardada
@@ -95,7 +99,7 @@ export class AuthService {
         this.currentUserSubject.next(sessionData.user);
         
         // Restaurar la sesión de PocketBase
-        this.pb.authStore.save(sessionData.token);
+        this.pb.authStore.save(sessionData.token,sessionData.user as any);
         
         // Luego intentar actualizar con datos frescos (en segundo plano)
         this.refreshUserData().catch(error => {
