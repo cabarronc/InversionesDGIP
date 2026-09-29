@@ -417,7 +417,7 @@
                 <div class="col-12 col-lg-7">
                     <p-table #dtMunicipios [value]="municipiosSEDTabla()" [paginator]="true" [rows]="10"
                         [rowsPerPageOptions]="[10, 20, 48]" [globalFilterFields]="['municipio']" sortMode="single"
-                        size="small" showGridlines>
+                        size="small" showGridlines stripedRows [tableStyle]="{ 'min-width': '40rem' }">
 
                         <ng-template #caption>
                             <div class="flex justify-content-end">
