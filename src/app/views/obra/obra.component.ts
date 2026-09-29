@@ -15,6 +15,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { SortEvent } from 'primeng/api';
 import { InputTextModule } from 'primeng/inputtext';
 import { FluidModule } from 'primeng/fluid';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { TooltipModule } from 'primeng/tooltip';
 
 import * as XLSX from 'xlsx';
 import { PocketbaseService } from '../../services/pocketbase.service';
@@ -119,7 +122,7 @@ export interface Obra {
 
 @Component({
   selector: 'app-obra',
-  imports: [ChartModule, ButtonModule, ProgressSpinnerModule, SkeletonModule, CardModule, CurrencyPipe,
+  imports: [ChartModule, ButtonModule, ProgressSpinnerModule, SkeletonModule, CardModule, CurrencyPipe, IconFieldModule, InputIconModule, TooltipModule,
     DecimalPipe, SelectButtonModule, FormsModule, SelectModule, TableModule, TagModule, InputTextModule, InputNumberModule, FluidModule],
   templateUrl: './obra.component.html',
   styleUrl: './obra.component.scss',
@@ -223,6 +226,42 @@ export class ObraComponent {
     { id_municipio: 50, municipio_nombre: 'Cobertura Estatal' },
     { id_municipio: 51, municipio_nombre: 'Por Determinar' }
   ];
+  ejercicio = [
+    { id: true, text: 'actual' }, { id: false, text: 'refrendo' }
+  ];
+  // dentro de ObraComponent
+  private dataVersion = signal(0);
+
+  private markDataChanged() {
+    this.dataVersion.update(v => v + 1);
+  }
+
+  private generarId(prefijo: string): string {
+    return `${prefijo}_${crypto.randomUUID()}`;
+  }
+
+  // Filtro por meta para el bloque SED
+  filtroMetaSED = signal<string | null>(null);
+  //  Filtro por municipio para el bloque SED
+  filtroMunicipioSED = signal<string | null>(null);
+
+  // KPIs SED
+  kpisSED = signal({
+    totalEstatal: 0,
+    totalFederal: 0,
+    totalMunicipal: 0,
+    totalPropios: 0,
+    totalOtros: 0,
+    totalDocumentado: 0,
+    totalMunicipios: 0
+  });
+
+  // Datos de gráficas SED
+  data_origen_sed: any;
+  options_origen_sed: any;
+  // data_municipio_sed: any;
+  // options_municipio_sed: any;
+
   constructor(private obraService: ObraService, private pocketBaseService: PocketbaseService,) {
     effect(() => {
       // se re-ejecuta automáticamente cuando cambian obraFiltrada(), obrasGegFiltrada(), etc.
@@ -232,6 +271,10 @@ export class ObraComponent {
         this.createChartEnt();
         this.createChartOrigen();
         this.createChartMensual();
+        // nuevo bloque SED
+        this.calcularKPIsSED();
+        this.createChartOrigenSED();
+        // this.createChartMunicipioSED();
       }
     });
 
@@ -243,14 +286,44 @@ export class ObraComponent {
 
   //Filtros con signals
   obraFiltrada = computed(() => {
+    this.dataVersion();
     const filtroActualVal = this.filtroActual();
     const filtroSiglasVal = this.filtroSiglas();
     const filtroOrigenVal = this.filtroOrigen();
+    const filtroMetaVal = this.filtroMetaSED();   // <- agregado
     return this.Obra.filter(o => {
       const pasaActual = filtroActualVal === null || o.es_anio_actual === filtroActualVal;
       const pasaSiglas = filtroSiglasVal === null || o.Siglas === filtroSiglasVal;
       const pasaOrigen = filtroOrigenVal === null || o.Origen_Circular === filtroOrigenVal;
-      return pasaActual && pasaSiglas && pasaOrigen;
+      const pasaMeta = filtroMetaVal === null || o.meta_estandarizada === filtroMetaVal;  // <- agregado
+      return pasaActual && pasaSiglas && pasaOrigen && pasaMeta;
+    });
+  });
+
+  obrasExtendidaFiltrada = computed(() => {
+    this.dataVersion();
+    const filtroActualVal = this.filtroActual();
+    const filtroSiglasVal = this.filtroSiglas();
+    const filtroOrigenVal = this.filtroOrigen();
+    const filtroMetaVal = this.filtroMetaSED();
+    const filtroMunicipioVal = this.filtroMunicipioSED();
+
+    return this.ObrasExtendida.filter(obra => {
+      const pasaSiglas = filtroSiglasVal === null || obra.Siglas === filtroSiglasVal;
+      if (!pasaSiglas) return false;
+      const pasaMeta = filtroMetaVal === null || obra.meta_estandarizada === filtroMetaVal;  // <- agregado
+      if (!pasaMeta) return false;
+      const pasaMunicipio = filtroMunicipioVal === null ||
+        obra.DatosSED.some(s => s.municipio_nombre === filtroMunicipioVal);
+      if (!pasaMunicipio) return false;
+
+      if (filtroActualVal === null && filtroOrigenVal === null) return true;
+
+      // la obra se muestra si AL MENOS uno de sus registros SAP cumple el filtro
+      return obra.DatosSAP.some(sap =>
+        (filtroActualVal === null || sap.es_anio_actual === filtroActualVal) &&
+        (filtroOrigenVal === null || sap.Origen_Circular === filtroOrigenVal)
+      );
     });
   });
 
@@ -268,8 +341,88 @@ export class ObraComponent {
       ...Array.from(siglas).sort().map(s => ({ label: s, value: s }))
     ];
   });
+
   private unsubEdiciones?: () => void;
   private unsubEliminados?: () => void;
+
+  metaSEDOpciones = computed(() => {
+    const metas = this.ObrasExtendida.map(o => ({
+      label: `${o.meta_estandarizada} - ${o.Nombre_Proyecto}`,
+      value: o.meta_estandarizada
+    }));
+    return [
+      { label: 'Todas las Metas', value: null },
+      ...metas.sort((a, b) => a.label.localeCompare(b.label))
+    ];
+  });
+
+  datosSEDFiltrados = computed(() => {
+    this.dataVersion(); // se recalcula cuando edites/agregues/elimines
+    const filtroMeta = this.filtroMetaSED();
+    const filtroMunicipio = this.filtroMunicipioSED();
+    const filtroActualVal = this.filtroActual();
+    return this.ObrasExtendida
+      .filter(o => filtroMeta === null || o.meta_estandarizada === filtroMeta)
+      .flatMap(o => o.DatosSED)
+      .filter(s => filtroMunicipio === null || s.municipio_nombre === filtroMunicipio)
+      .filter(s => filtroActualVal === null || s.es_anio_actual === filtroActualVal);
+  });
+
+  municipiosSEDTabla = computed(() => {
+    this.dataVersion();
+    const datos = this.datosSEDFiltrados();
+
+    const acumulado = datos.reduce((acc, s) => {
+      const municipio = s.municipio_nombre || 'Sin municipio';
+      if (!acc[municipio]) acc[municipio] = 0;
+      acc[municipio] += parseFloat(String(s.documentado2026)) || 0;
+      return acc;
+    }, {} as Record<string, number>);
+
+    const filas = Object.entries(acumulado)
+      .map(([municipio, monto]) => ({ municipio, monto }))
+      .sort((a, b) => b.monto - a.monto);
+
+    const maximo = filas.length > 0 ? filas[0].monto : 0;
+    const totalGeneral = filas.reduce((acc, f) => acc + f.monto, 0);  // <- suma de todos los montos
+
+    return filas.map(f => ({
+      ...f,
+      anchoBarra: maximo > 0 ? (f.monto / maximo) * 100 : 0,           // <- para el ancho visual
+      porcentajeDelTotal: totalGeneral > 0 ? (f.monto / totalGeneral) * 100 : 0  // <- para el tooltip
+    }));
+  });
+
+  porcentajeTooltip(fila: { porcentajeDelTotal: number }): string {
+    return `${fila.porcentajeDelTotal.toFixed(1)}% del total`;
+  }
+  //Filtro sobre la tabal de municipio
+  filtrarMunicipios(event: Event, tabla: Table) {
+    const valor = (event.target as HTMLInputElement).value;
+    tabla.filterGlobal(valor, 'contains');
+  }
+  //filtro global par avarios obtejos visuales
+  municipioSEDOpciones = computed(() => {
+    const municipios = new Set(
+      this.ObrasExtendida.flatMap(o => o.DatosSED.map(s => s.municipio_nombre)).filter(Boolean)
+    );
+    return [
+      { label: 'Todos los municipios', value: null },
+      ...Array.from(municipios).sort().map(m => ({ label: m, value: m }))
+    ];
+  });
+
+  // Filtro de Municipio tabla jerarquica
+  sedFiltradoPorMunicipio(obra: ObraExtendida): DatosSED[] {
+    const filtroMunicipio = this.filtroMunicipioSED();
+    const filtroActualVal = this.filtroActual();   // <- agregado
+
+    return obra.DatosSED.filter(s =>
+      (filtroMunicipio === null || s.municipio_nombre === filtroMunicipio) &&
+      (filtroActualVal === null || s.es_anio_actual === filtroActualVal)
+    );
+  }
+
   async ngOnInit(): Promise<void> {
     this.GetObra()
     this.unsubEdiciones = await this.pocketBaseService.suscribirEdiciones((e) => {
@@ -286,6 +439,9 @@ export class ObraComponent {
       this.createChartEnt();
       this.createChartOrigen();
       this.createChartMensual();
+      // nuevo bloque SED
+      this.createChartOrigenSED();
+      // this.createChartMunicipioSED();
     });
 
     this.observer.observe(document.documentElement, {
@@ -302,12 +458,14 @@ export class ObraComponent {
         console.log('es arreglo:', Array.isArray(data.Obra));
         this.ObrasExtendida = data.Obra as ObraExtendida[];
         // 1. Aplica ediciones y eliminaciones ya guardadas por cualquier usuario
-        const [ediciones, eliminados] = await Promise.all([
+        const [ediciones, eliminados, nuevos] = await Promise.all([
           this.pocketBaseService.cargarEdiciones(),
-          this.pocketBaseService.cargarEliminados()
+          this.pocketBaseService.cargarEliminados(),
+          this.pocketBaseService.cargarNuevos()
         ]);
         ediciones.forEach(e => this.aplicarEdicion(e));
         eliminados.forEach(e => this.aplicarEliminacion(e));
+        nuevos.forEach(n => this.aplicarNuevo(n));
 
         this.ObrasOriginal = structuredClone(this.ObrasExtendida);
         console.log('Obra Original:', this.ObrasOriginal);
@@ -363,6 +521,12 @@ export class ObraComponent {
         if (reg) { (reg as any)[e.campo] = e.valor; break; }
       }
     }
+    if (e.tabla === 'SED' && e.campo === 'documentado2026') {
+      const obra = this.ObrasExtendida.find(o =>
+        o.DatosSED.some(s => s.id_registro_sed === e.registro_id)
+      );
+      if (obra) this.recalcularTotalesSED(obra);
+    }
   }
 
   private aplicarEliminacion(e: any) {
@@ -374,7 +538,12 @@ export class ObraComponent {
       }
     } else if (e.tabla === 'SED') {
       for (const obra of this.ObrasExtendida) {
+        const teniaElRegistro = obra.DatosSED.some(s => s.id_registro_sed === e.registro_id);
         obra.DatosSED = obra.DatosSED.filter(s => s.id_registro_sed !== e.registro_id);
+        if (teniaElRegistro) {
+          this.recalcularTotalesSED(obra);
+          break; // ya encontramos la obra dueña, no hace falta seguir recorriendo
+        }
       }
     }
   }
@@ -396,6 +565,23 @@ export class ObraComponent {
       porcentajeAvance: totalModificado > 0 ? (totalEjercido / totalModificado) * 100 : 0,
       saldo,
       totalProyectos
+    });
+  }
+
+  private calcularKPIsSED() {
+    const datos = this.datosSEDFiltrados();
+
+    const totalEstatal = datos.reduce((acc, s) => acc + (s.mtoestatal ?? 0), 0);
+    const totalFederal = datos.reduce((acc, s) => acc + (s.mtofederal ?? 0), 0);
+    const totalMunicipal = datos.reduce((acc, s) => acc + (s.mtompal ?? 0), 0);
+    const totalPropios = datos.reduce((acc, s) => acc + (s.mtopropios ?? 0), 0);
+    const totalOtros = datos.reduce((acc, s) => acc + (s.mtotros ?? 0), 0);
+    const totalDocumentado = datos.reduce((acc, s) => acc + (parseFloat(String(s.documentado2026)) || 0), 0);
+    const totalMunicipios = new Set(datos.map(s => s.municipio_nombre)).size;
+
+    this.kpisSED.set({
+      totalEstatal, totalFederal, totalMunicipal, totalPropios, totalOtros,
+      totalDocumentado, totalMunicipios
     });
   }
 
@@ -576,6 +762,83 @@ export class ObraComponent {
 
     };
   }
+
+  private createChartOrigenSED() {
+    const datos = this.datosSEDFiltrados();
+    const styles = getComputedStyle(document.documentElement);
+    const textColor = styles.getPropertyValue('--p-text-color').trim();
+
+    const totalEstatal = datos.reduce((acc, s) => acc + (s.mtoestatal ?? 0), 0);
+    const totalFederal = datos.reduce((acc, s) => acc + (s.mtofederal ?? 0), 0);
+    const totalMunicipal = datos.reduce((acc, s) => acc + (s.mtompal ?? 0), 0);
+    const totalPropios = datos.reduce((acc, s) => acc + (s.mtopropios ?? 0), 0);
+    const totalOtros = datos.reduce((acc, s) => acc + (s.mtotros ?? 0), 0);
+
+    const valores = [totalEstatal, totalFederal, totalMunicipal, totalPropios, totalOtros];
+    const labels = ['Estatal', 'Federal', 'Municipal', 'Propios', 'Otros'];
+    const total = valores.reduce((acc, v) => acc + v, 0);
+
+    const labelsConPorcentaje = labels.map((label, i) => {
+      const porcentaje = total > 0 ? ((valores[i] / total) * 100).toFixed(2) : '0.00';
+      return `${label} - ${porcentaje}%`;
+    });
+
+    this.data_origen_sed = {
+      labels: labelsConPorcentaje,
+      datasets: [{
+        data: valores,
+        backgroundColor: ['#42A5F5', '#66BB6A', '#FFA726', '#AB47BC', '#da0d0d']
+      }]
+    };
+
+    this.options_origen_sed = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { labels: { color: textColor } } }
+    };
+  }
+
+  // private createChartMunicipioSED() {
+  //   const datos = this.datosSEDFiltrados();
+  //   const styles = getComputedStyle(document.documentElement);
+  //   const textColor = styles.getPropertyValue('--p-text-color').trim();
+  //   const borderColor = styles.getPropertyValue('--p-content-border-color').trim();
+
+  //   const acumulado = datos.reduce((acc, s) => {
+  //     const municipio = s.municipio_nombre || 'Sin municipio';
+  //     if (!acc[municipio]) acc[municipio] = 0;
+  //     acc[municipio] += parseFloat(String(s.documentado2026)) || 0;
+  //     return acc;
+  //   }, {} as Record<string, number>);
+
+  //   const entradas = Object.entries(acumulado).sort(([, a], [, b]) => b - a);
+
+  //   this.data_municipio_sed = {
+  //     labels: entradas.map(([m]) => m),
+  //     datasets: [{
+  //       label: 'Documentado 2026',
+  //       data: entradas.map(([, v]) => v),
+  //       backgroundColor: '#42A5F5'
+  //     }]
+  //   };
+
+  //   this.options_municipio_sed = {
+  //     responsive: true,
+  //     maintainAspectRatio: false,
+  //     plugins: { legend: { labels: { color: textColor } } },
+  //     scales: {
+  //       x: {
+  //         ticks: { color: textColor, autoSkip: false, maxRotation: 45, minRotation: 45 },
+  //         grid: { color: borderColor }
+  //       },
+  //       y: {
+  //         beginAtZero: true,
+  //         ticks: { color: textColor },
+  //         grid: { color: borderColor }
+  //       }
+  //     }
+  //   };
+  // }
 
   loadObra() {
     this.loading.set(true);
@@ -877,6 +1140,7 @@ export class ObraComponent {
   eliminarSED(obra: ObraExtendida, sed: DatosSED) {
     obra.DatosSED = obra.DatosSED.filter(s => s.id_registro_sed !== sed.id_registro_sed);
     this.pocketBaseService.guardarEliminacion(sed.id_registro_sed, 'SED');
+    this.recalcularTotalesSED(obra);
   }
   onSedEditComplete(event: TableEditCompleteEvent) {
     if (!event.data || !event.field) return;
@@ -885,10 +1149,17 @@ export class ObraComponent {
     this.pocketBaseService.guardarEdicion(
       data.id_registro_sed, 'SED', field, (data as any)[field]
     );
+    if (field === 'documentado2026') {
+      const obra = this.ObrasExtendida.find(o =>
+        o.DatosSED.some(s => s.id_registro_sed === data.id_registro_sed)
+      );
+      if (obra) this.recalcularTotalesSED(obra);
+    }
+
   }
   infoEdicion(registro_id: string, campo: string): { usuario: string; fecha: string } | undefined {
-  return this.metaEdiciones.get(`${registro_id}__${campo}`);
-}
+    return this.metaEdiciones.get(`${registro_id}__${campo}`);
+  }
 
   onSapEditComplete(event: TableEditCompleteEvent) {
     if (!event.data || !event.field) return;
@@ -903,22 +1174,53 @@ export class ObraComponent {
       (data as any)[field]
     );
   }
+
+  private aplicarNuevo(n: any) {
+    const obra = this.ObrasExtendida.find(o => o.meta_estandarizada === n.meta_estandarizada);
+    if (!obra) return; // la obra padre ya no existe o fue eliminada
+
+    if (n.tabla === 'SED') {
+      const yaExiste = obra.DatosSED.some(s => s.id_registro_sed === n.registro_id);
+      if (!yaExiste) obra.DatosSED.push({ ...n.datos, id_registro_sed: n.registro_id });
+    } else if (n.tabla === 'SAP') {
+      const yaExiste = obra.DatosSAP.some(s => s.id_registro_sap === n.registro_id);
+      if (!yaExiste) obra.DatosSAP.push({ ...n.datos, id_registro_sap: n.registro_id });
+    }
+    if (n.tabla === 'SED') {
+      const obra = this.ObrasExtendida.find(o => o.meta_estandarizada === n.meta_estandarizada);
+      if (obra) this.recalcularTotalesSED(obra);
+    }
+  }
+
+
   restaurar() {
     this.ObrasExtendida = structuredClone(this.ObrasOriginal);
   }
 
   exportarExcel() {
     const wb = XLSX.utils.book_new();
+    const obras = this.obrasExtendidaFiltrada();   // <- debe estar esta línea
 
-    const padres = this.ObrasExtendida.map(({ DatosSED, DatosSAP, ...resto }) => resto);
+    // Hoja 1: Obras
+    const padres = obras.map(({ DatosSED, DatosSAP, ...resto }) => ({
+      ...resto,
+      Difererencia: Math.round((resto.Difererencia ?? 0) * 100) / 100
+    }));
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(padres), 'Obras');
 
-    const sed = this.ObrasExtendida.flatMap(o =>
-      (o.DatosSED ?? []).map((s: any) => ({ meta_estandarizada: o.meta_estandarizada, ...s })));
+    // Hoja 2: DatosSED — debe usar sedFiltradoPorMunicipio, NO o.DatosSED directo
+    const sed = obras.flatMap(o =>
+      this.sedFiltradoPorMunicipio(o).map((s: any) => ({ meta_estandarizada: o.meta_estandarizada, ...s,
+        documentado2026: Number(s.documentado2026) || 0
+
+      }))
+    );
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(sed), 'DatosSED');
 
-    const sap = this.ObrasExtendida.flatMap(o =>
-      (o.DatosSAP ?? []).map((s: any) => ({ meta_estandarizada: o.meta_estandarizada, ...s })));
+    // Hoja 3: DatosSAP
+    const sap = obras.flatMap(o =>
+      (o.DatosSAP ?? []).map((s: any) => ({ meta_estandarizada: o.meta_estandarizada, ...s }))
+    );
     XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(sap), 'DatosSAP');
 
     XLSX.writeFile(wb, 'obras.xlsx');
@@ -929,5 +1231,34 @@ export class ObraComponent {
     this.pocketBaseService.desuscribirTodo();
   }
 
+  agregarSED(obra: ObraExtendida) {
+    const id = this.generarId('sed_nuevo');
+    const referencia = obra.DatosSED[0];
+    const filtroActivo = this.filtroMunicipioSED();
+    const nuevoRegistro: Partial<DatosSED> = {
+      descripmeta: referencia?.descripmeta ?? '',   // se copia automáticamente
+      municipio_nombre: filtroActivo ?? '',  // Evitrar confusion si se manteien filtro sobre un municipio  y se crea un registro
+      cantestatal: 0,
+      unidad_medida: referencia?.unidad_medida ?? '',
+      documentado2026: '0',
+      es_anio_actual: referencia?.es_anio_actual ?? false,  // ya no queda undefined
+      // agrega aquí otros campos de DatosSED que quieras precargar
+    };
+    const registroCompleto = { ...nuevoRegistro, id_registro_sed: id } as DatosSED;
 
+    obra.DatosSED.push(registroCompleto);
+    this.pocketBaseService.guardarNuevoRegistro(id, 'SED', obra.meta_estandarizada, nuevoRegistro);
+    this.recalcularTotalesSED(obra);
+  }
+
+  private recalcularTotalesSED(obra: ObraExtendida) {
+    const totalSED = obra.DatosSED.reduce((acc, s) => {
+      const valor = parseFloat(String(s.documentado2026)) || 0;
+      return acc + valor;
+    }, 0);
+
+    obra.Modificado_SED = totalSED;
+    obra.Difererencia = (obra.Modificado_SAP ?? 0) - totalSED;
+    obra.Conciliado = Math.abs(obra.Difererencia ?? 0) < 0.01;
+  }
 }

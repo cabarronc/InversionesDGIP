@@ -1,39 +1,45 @@
-<!-- <div style="height: 60%; width: 60%; display: flex; justify-content: center; align-items: center; margin-top:2rem;">
-            <p-chart-svg>
-                <p-chart-bar [data]="dataBar" categoryXField="month" valueYField="shipped" [borderRadius]="4" />
-                <p-chart-x-axis />
-                <p-chart-y-axis label="Orders shipped" />
-            </p-chart-svg>
-        </div> -->
 @if (cargado()) {
-<div class="row ms-5 mt-3">
-    {{fechaActual}}
+<div class="dashboard-date">
+    <i class="pi pi-calendar"></i>
+    <span>Actualizado:</span>
+    <strong>{{fechaActual}}</strong>
 </div>
+<!------------------------------- Filtros ---------------------------------->
+<div class="row mx-2 mx-md-5 mt-2 g-2 align-items-center sticky-row">
 
-<div class="row mx-3 mx-md-5 mt-3 g-2 align-items-center">
+    <div class="col-12 col-sm-6 col-lg-auto g-2">
 
-    <div class="col-12 col-sm-6 col-lg-auto">
-        <!-- <p-card>
-            <span class="text-500 titulo-filtro">Dependecia o Entidad</span> -->
+
         <p-select [options]="siglasOpciones()" [ngModel]="filtroSiglas()" optionLabel="label" optionValue="value"
             placeholder="Filtrar por siglas" [filter]="true" filterBy="label" (ngModelChange)="filtroSiglas.set($event)"
             size="small">
+        </p-select> &nbsp;
+
+        <p-select [options]="metaSEDOpciones()" [ngModel]="filtroMetaSED()" optionLabel="label" optionValue="value"
+            placeholder="Filtrar por meta" [filter]="true" filterBy="label" (ngModelChange)="filtroMetaSED.set($event)"
+            size="small">
+        </p-select> &nbsp;
+        <p-select [options]="municipioSEDOpciones()" [ngModel]="filtroMunicipioSED()" optionLabel="label"
+            optionValue="value" placeholder="Filtrar por municipio" [filter]="true" filterBy="label"
+            (ngModelChange)="filtroMunicipioSED.set($event)" size="small">
         </p-select>
-        <!-- </p-card> -->
+
     </div>
     <div class="col-12 col-sm-6 col-lg-auto">
-        <!-- <p-card>
-            <span class="text-500 titulo-filtro">Recurso Actual o Refrendo</span> -->
+
         <p-selectButton [options]="filtroOpciones" [ngModel]="filtroActual()" optionLabel="label" optionValue="value"
             (ngModelChange)="filtroActual.set($event)" size="small" fluid>
         </p-selectButton>
-        <!-- </p-card> -->
+
     </div>
     <div class="col-12 col-sm-6 col-lg-auto">
+
         <p-selectButton [options]="filtroOrigenOpciones" [ngModel]="filtroOrigen()" optionLabel="label"
             optionValue="value" (ngModelChange)="filtroOrigen.set($event)" size="small">
         </p-selectButton>
+
     </div>
+
     <div class="col-12 col-sm-6 col-lg-auto">
 
 
@@ -49,285 +55,623 @@
 
     </div>
 </div>
+<!------------------------------ DASHBORAD --------------------------------->
+<div class="grid">
+    <!----------------------------- DATOS SAP ------------------------------>
+    <div class="row mx-3 mx-md-5 mt-3 g-2 align-items-center">
+        <p-card header="DATOS SAP" styleClass="liquid-card">
+            <!-- --------------------------- KPI SAP------------------------>
+            <div class="row mx-3 mx-md-5 mt-4 g-3">
+                <!-- Asignado -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-asignado liquid-card">
+                        <div class="kpi-content">
 
-<div class="row mx-3 mx-md-5 mt-4 g-3">
-    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <p-card>
-            <span class="text-500">Asignado</span>
-            <div class="text-2xl font-bold">
-                {{ kpis().totalAsignado | currency:'MXN':'symbol':'1.0-2' }}
+                            <div class="kpi-header">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-wallet"></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    Asignado
+                                </span>
+                            </div>
+                            <div [pTooltip]="(kpis().totalAsignado | currency:'MXN':'symbol':'1.0-2')??''"
+                                tooltipPosition="bottom">
+                                <div class="kpi-value">
+                                    {{ kpis().totalAsignado | currency:'MXN':'symbol':'1.0-2' }}
+                                </div>
+                            </div>
+
+                            <!-- 
+                                <span class="kpi-description">
+                                   Presupuesto asinado
+                                </span> -->
+
+                        </div>
+                    </p-card>
+                </div>
+
+
+                <!-- Modificado -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-modificado liquid-card">
+                        <div class="kpi-content">
+
+                            <div class="kpi-header">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-file-edit"></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    Modificado
+                                </span>
+                            </div>
+                            <div [pTooltip]="(kpis().totalModificado | currency:'MXN':'symbol':'1.0-2')??''"
+                                tooltipPosition="bottom">
+                                <div class="kpi-value">
+                                    {{ kpis().totalModificado | currency:'MXN':'symbol':'1.0-2' }}
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </p-card>
+                </div>
+
+
+                <!-- Devengado -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-devengado liquid-card">
+                        <div class="kpi-content">
+
+                            <div class="kpi-header">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-chart-line"></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    Devengado
+                                </span>
+                            </div>
+                            <div [pTooltip]="(kpis().totalDvengado | currency:'MXN':'symbol':'1.0-2')??''"
+                                tooltipPosition="bottom">
+                                <div class="kpi-value">
+                                    {{ kpis().totalDvengado | currency:'MXN':'symbol':'1.0-2' }}
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </p-card>
+                </div>
+
+
+                <!-- Ejercido -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-ejercido liquid-card">
+                        <div class="kpi-content">
+
+                            <div class="kpi-header">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-check-circle"></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    Ejercido
+                                </span>
+                            </div>
+                            <div [pTooltip]="(kpis().totalEjercido | currency:'MXN':'symbol':'1.0-2')??''"
+                                tooltipPosition="bottom">
+                                <div class="kpi-value">
+                                    {{ kpis().totalEjercido | currency:'MXN':'symbol':'1.0-2' }}
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </p-card>
+                </div>
+
+
+                <!-- Avance -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-avance liquid-card">
+                        <div class="kpi-content">
+
+                            <div class="kpi-header">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-chart-bar"></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    Avance
+                                </span>
+                            </div>
+                            <div [pTooltip]="(kpis().porcentajeAvance | number:'1.1-2')??''" tooltipPosition="bottom">
+                                <div class="kpi-value">
+                                    {{ kpis().porcentajeAvance | number:'1.1-1' }}%
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </p-card>
+                </div>
+
+
+                <!-- Saldo -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-saldo liquid-card">
+                        <div class="kpi-content">
+
+                            <div class="kpi-header ">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-money-bill "></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    Saldo
+                                </span>
+                            </div>
+                            <div [pTooltip]="(kpis().saldo | currency:'MXN':'symbol':'1.0-2')?? ''"
+                                tooltipPosition="bottom">
+                                <div class="kpi-value">
+                                    {{ kpis().saldo | currency:'MXN':'symbol':'1.0-2' }}
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </p-card>
+                </div>
+
+            </div>
+            <!------------------GRAFICOS DE SAP DONA Y LINEAS(SAP) --------->
+            <div class="row mx-3 mx-md-5 g-3">
+                <div class="col-12 col-lg-6">
+                    <p-chart class="chart-container mt-3 mt-lg-5" type="doughnut" [data]="data_origen"
+                        [options]="options_origen">
+                    </p-chart>
+                </div>
+                <div class="col-12 col-lg-6">
+                    <p-chart class="chart-container mt-3 mt-lg-5" type="line" [data]="data_mensual"
+                        [options]="options_mensual">
+                    </p-chart>
+                </div>
+            </div>
+            <!-----------------------GRAFICO ENTIDAD Y GEG(SAP) ------------>
+            <div class="col">
+                <div class="row ms-5 me-5">
+                    <p-chart class="chart-container mt-5" type="bar" [data]="data_geg" [options]="options">
+                    </p-chart>
+                </div>
+                <div class="row ms-5 me-5">
+                    <p-chart class="chart-container mt-5" type="bar" [data]="data_ent" [options]="options">
+                    </p-chart>
+                </div>
             </div>
         </p-card>
     </div>
-    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <p-card>
-            <span class="text-500">Modificado</span>
-            <div class="text-2xl font-bold">
-                {{ kpis().totalModificado | currency:'MXN':'symbol':'1.0-2' }}
+    <!----------------------------- DATOS SED ------------------------------>
+    <div class="row mx-3 mx-md-5 mt-3 g-2 align-items-center">
+        <p-card header="DATOS SED">
+            <!------------------ KPI SED ----------------------------------->
+            <div class="row mx-3 mx-md-5 mt-3 g-3">
+
+                <!-- Estatal -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-estatal">
+                        <div class="kpi-content">
+
+                            <div class="kpi-header">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-building"></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    Estatal
+                                </span>
+                            </div>
+                            <div [pTooltip]="(kpisSED().totalEstatal | currency:'MXN':'symbol':'1.0-2') ?? ''"
+                                tooltipPosition="bottom">
+                                <div class="kpi-value">
+                                    {{ kpisSED().totalEstatal | currency:'MXN':'symbol':'1.0-2' }}
+                                </div>
+                            </div>
+                        </div>
+                    </p-card>
+                </div>
+
+
+                <!-- Federal -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-federal">
+                        <div class="kpi-content">
+
+                            <div class="kpi-header">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-globe"></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    Federal
+                                </span>
+                            </div>
+                            <div [pTooltip]="(kpisSED().totalFederal | currency:'MXN':'symbol':'1.0-2')??''"
+                                tooltipPosition="bottom">
+                                <div class="kpi-value">
+                                    {{ kpisSED().totalFederal | currency:'MXN':'symbol':'1.0-2' }}
+                                </div>
+                            </div>
+                        </div>
+                    </p-card>
+                </div>
+
+
+                <!-- Municipal -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-municipal">
+                        <div class="kpi-content">
+
+                            <div class="kpi-header">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-map"></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    Municipal
+                                </span>
+                            </div>
+                            <div [pTooltip]="(kpisSED().totalMunicipal | currency:'MXN':'symbol':'1.0-2')??''"
+                                tooltipPosition="bottom">
+                                <div class="kpi-value">
+                                    {{ kpisSED().totalMunicipal | currency:'MXN':'symbol':'1.0-2' }}
+                                </div>
+                            </div>
+                        </div>
+                    </p-card>
+                </div>
+
+
+                <!-- Propios -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-propios">
+                        <div class="kpi-content">
+
+                            <div class="kpi-header">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-wallet"></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    Propios
+                                </span>
+                            </div>
+
+                            <div class="kpi-value">
+                                {{ kpisSED().totalPropios | currency:'MXN':'symbol':'1.0-2' }}
+                            </div>
+                        </div>
+                    </p-card>
+                </div>
+
+
+                <!-- Otros -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-otros">
+                        <div class="kpi-content">
+
+                            <div class="kpi-header">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-chart-pie"></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    Otros
+                                </span>
+                            </div>
+
+                            <div class="kpi-value">
+                                {{ kpisSED().totalOtros | currency:'MXN':'symbol':'1.0-2' }}
+                            </div>
+                        </div>
+                    </p-card>
+                </div>
+
+
+                <!-- Documentado -->
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-2">
+                    <p-card styleClass="kpi-card kpi-documentado">
+                        <div class="kpi-content">
+
+                            <div class="kpi-header">
+                                <div class="kpi-icon">
+                                    <i class="pi pi-check-circle"></i>
+                                </div>
+
+                                <span class="kpi-label">
+                                    TOTAL
+                                </span>
+                            </div>
+                            <div [pTooltip]="(kpisSED().totalDocumentado | currency:'MXN':'symbol':'1.0-2')??''"
+                                tooltipPosition="bottom">
+                                <div class="kpi-value">
+                                    {{ kpisSED().totalDocumentado | currency:'MXN':'symbol':'1.0-2' }}
+                                </div>
+                            </div>
+                        </div>
+                    </p-card>
+                </div>
+
             </div>
-        </p-card>
-    </div>
-    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <p-card>
-            <span class="text-500">Devengado</span>
-            <div class="text-2xl font-bold">
-                {{ kpis().totalDvengado | currency:'MXN':'symbol':'1.0-2' }}
-            </div>
-        </p-card>
-    </div>
-    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <p-card>
-            <span class="text-500">Ejercido</span>
-            <div class="text-2xl font-bold">
-                {{ kpis().totalEjercido | currency:'MXN':'symbol':'1.0-2' }}
-            </div>
-        </p-card>
-    </div>
-    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <p-card>
-            <span class="text-500">% Avance</span>
-            <div class="text-2xl font-bold">
-                {{ kpis().porcentajeAvance | number:'1.1-1' }}%
-            </div>
-        </p-card>
-    </div>
-    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
-        <p-card>
-            <span class="text-500">Saldo disponible</span>
-            <div class="text-2xl font-bold">
-                {{ kpis().saldo | currency:'MXN':'symbol':'1.0-2' }}
-            </div>
-        </p-card>
-    </div>
-</div>
+            <!------------------CHART DE ORIGEN Y MUNICIPIOS (SED) --------->
+            <div class="row mx-3 mx-md-5 g-3 mt-3">
+                <div class="col-12 col-lg-5">
+                    <p-chart class="chart-container  mt-lg-5" type="doughnut" [data]="data_origen_sed"
+                        [options]="options_origen_sed">
+                    </p-chart>
+                </div>
+                <div class="col-12 col-lg-7">
+                    <p-table #dtMunicipios [value]="municipiosSEDTabla()" [paginator]="true" [rows]="10"
+                        [rowsPerPageOptions]="[10, 20, 48]" [globalFilterFields]="['municipio']" sortMode="single"
+                        size="small" showGridlines>
 
-<div class="row mx-3 mx-md-5 g-3">
-    <div class="col-12 col-lg-6">
-        <p-chart class="chart-container mt-3 mt-lg-5" type="doughnut" [data]="data_origen" [options]="options_origen">
-        </p-chart>
-    </div>
-    <div class="col-12 col-lg-6">
-        <p-chart class="chart-container mt-3 mt-lg-5" type="line" [data]="data_mensual" [options]="options_mensual">
-        </p-chart>
-    </div>
-</div>
+                        <ng-template #caption>
+                            <div class="flex justify-content-end">
+                                <p-iconfield iconPosition="left">
+                                    <p-inputicon styleClass="pi pi-search" />
+                                    <input pInputText type="text" size="small" placeholder="Buscar municipio..."
+                                        (input)="dtMunicipios.filterGlobal($any($event.target).value, 'contains')" />
+                                </p-iconfield>
+                            </div>
+                        </ng-template>
 
-
-
-<div class="col">
-    <div class="row ms-5 me-5">
-        <p-chart class="chart-container mt-5" type="bar" [data]="data_geg" [options]="options">
-        </p-chart>
-    </div>
-    <div class="row ms-5 me-5">
-        <p-chart class="chart-container mt-5" type="bar" [data]="data_ent" [options]="options">
-        </p-chart>
-    </div>
-</div>
-<!-- } @else {
-  <div class="d-flex justify-content-center align-items-center" style="height: 300px;">
-    <p-progressSpinner strokeWidth="4" animationDuration=".8s"></p-progressSpinner>
-    <span class="ms-3">Cargando información...</span>
-  </div>
-} -->
-
-
-<div class="row mx-3 mx-md-5 g-3 mt-3">
-    <div class="flex gap-4 mb-3">
-        <p-button label="Exportar Excel" icon="pi pi-file-excel" (onClick)="exportarExcel()" />&nbsp;
-        <p-button label="Restaurar" icon="pi pi-refresh" severity="secondary" (onClick)="restaurar()" />
-    </div>
-
-
-    <p-table #dt [value]="ObrasExtendida" dataKey="meta_estandarizada" [expandedRowKeys]="expandedRows"
-        [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 20, 50]" showGridlines
-        [tableStyle]="{ 'min-width': '50rem' }" stripedRows [tableStyle]="{ 'min-width': '50rem' }" size="small"
-        (sortFunction)="customSort($event)" [customSort]="true">
-        <ng-template #header>
-            <tr>
-                <th style="width:3rem"></th>
-                <th pSortableColumn="meta_estandarizada">
-                    <div class="flex items-center gap-2">Meta <p-sortIcon field="meta_estandarizada"></p-sortIcon></div>
-                </th>
-                <th pSortableColumn="Nombre_Proyecto">
-                    <div class="flex items-center gap-2">Proyecto <p-sortIcon field="Nombre_Proyecto"></p-sortIcon>
-                    </div>
-                </th>
-                <th pSortableColumn="Siglas">
-                    <div class="flex items-center gap-2">Siglas <p-sortIcon field="Siglas"></p-sortIcon></div>
-                </th>
-                <th pSortableColumn="Modificado_SAP">
-                    <div class="flex items-center gap-2"></div>Modificado SAP <p-sortIcon field="Siglas"></p-sortIcon>
-                </th>
-                <th>Modificado SED</th>
-                <th>Conciliacion</th>
-                <th>Diferencia</th>
-                <th style="text-align: center; vertical-align: middle;">Eliminar</th>
-            </tr>
-        </ng-template>
-
-        <ng-template #body let-obra let-expanded="expanded">
-            <tr [class.fila-expandida]="expanded">
-                <td>
-                    <p-button type="button" [pRowToggler]="obra" [text]="true" [rounded]="true"
-                        [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
-                </td>
-                <td>{{ obra.meta_estandarizada }}</td>
-                <td>{{ obra.Nombre_Proyecto }}</td>
-                <td>{{ obra.Siglas }}</td>
-                <td style="text-align: right; vertical-align: middle;">{{ obra.Modificado_SAP | currency }}</td>
-                <td style="text-align: right; vertical-align: middle;">{{ obra.Modificado_SED | currency }}</td>
-                <td style="text-align: center; vertical-align: middle;">
-                    <p-tag [value]="getConcilacionValue(obra.Conciliado)"
-                        [severity]="getConciliacionlabel(obra.Conciliado)" />
-                </td>
-                <td>{{ obra.Difererencia | currency }}</td>
-                <td style="text-align: center; vertical-align: middle;">
-                    <p-button icon="pi pi-trash" severity="danger" [text]="true" (onClick)="eliminarObra(obra)" />
-                </td>
-            </tr>
-        </ng-template>
-
-        <ng-template #expandedrow let-obra>
-            <tr>
-                <td colspan="9" class="detalle-expandido">
-                    <h5 style="padding-left: 3rem;">SED ({{ obra.DatosSED?.length || 0 }})</h5>
-                    <p-table [value]="obra.DatosSED" style="padding-left: 3rem;"
-                        (onEditComplete)="onSedEditComplete($event)">
                         <ng-template #header>
-            <tr>
-                <th>Descripcion Meta</th>
-                <th>Municipio</th>
-                <th>Cantidad Estatal</th>
-                <th>Unidad Medida</th>
-                <th>Monto</th>
-                <th>Ejercicio</th>
-                <th style="text-align: center; vertical-align: middle;">Eliminar</th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-sed>
-            <tr>
-                <td>{{ sed.descripmeta }}</td>
-                <td [pEditableColumn]="sed" pEditableColumnField="municipio_nombre">
-                    <p-cellEditor>
-                        <ng-template #input>
-                            <p-select [options]="municipios" [(ngModel)]="sed.municipio_nombre"
-                                optionLabel="municipio_nombre" optionValue="municipio_nombre"
-                                placeholder="Selecciona un municipio" fluid size="small" appendTo="body" [filter]="true"
-                                filterBy="municipio_nombre" [showClear]="true">
-                                <ng-template let-municipios #item>
-                                    <div class="flex items-center justify-between w-full">
-                                        <span>{{ municipios.municipio_nombre }}</span>
-                                        <p-tag [value]="'' + municipios.id_municipio" severity="secondary"
-                                            [rounded]="true" />
+                            <tr>
+                                <th pSortableColumn="municipio">
+                                    <div class="flex items-center gap-2">Municipio <p-sortIcon
+                                            field="municipio"></p-sortIcon>
                                     </div>
-                                </ng-template>
-                            </p-select>
-                        </ng-template>
-                        <ng-template #output>
-                            <span class="font-medium"> {{ sed.municipio_nombre }} </span>
-                            @if (infoEdicion(sed.id_registro_sed, 'municipio_nombre'); as info) {
-                            <br>
-                            <small class="text-500 texto-editado" style="font-size: 0.65rem;">
-                                editado por {{ info.usuario }}
-                            </small>
-                            }
+                                </th>
+                                <th pSortableColumn="monto">
+                                    <div class="flex items-center gap-2">Documentado 2026 <p-sortIcon
+                                            field="monto"></p-sortIcon>
+                                    </div>
+                                </th>
+                                <th style="width: 30%;">Proporción</th>
+                            </tr>
                         </ng-template>
 
-                    </p-cellEditor>
-                </td>
-                <td style="text-align: center; vertical-align: middle;">{{ sed.cantestatal }}</td>
-                <td>{{ sed.unidad_medida }}</td>
-                <td style="text-align: right; vertical-align: middle;" [pEditableColumn]="sed"
-                    pEditableColumnField="documentado2026">
-                    <p-cellEditor>
-                        <ng-template #input>
-                            <p-inputnumber [(ngModel)]="sed.documentado2026" mode="decimal" fluid />
+                        <ng-template #body let-fila>
+                            <tr>
+                                <td>{{ fila.municipio }}</td>
+                                <td style="text-align: right;">{{ fila.monto | currency:'MXN':'symbol':'1.0-2' }}</td>
+                                <td>
+                                    <div class="barra-fondo" [pTooltip]="porcentajeTooltip(fila)" tooltipPosition="top">
+                                        <div class="barra-relleno" [style.width.%]="fila.anchoBarra"></div>
+                                    </div>
+                                </td>
+                            </tr>
                         </ng-template>
-                        <ng-template #output>
-                            <span class="font-medium"> {{ sed.documentado2026 | currency }} </span>
+
+                        <ng-template #emptymessage>
+                            <tr>
+                                <td colspan="3">Sin registros</td>
+                            </tr>
                         </ng-template>
-                    </p-cellEditor>
+                    </p-table>
+                </div>
 
-                </td>
-                <td>
-                    <p-tag [value]="getRefrendoValue(sed.es_anio_actual)"
-                        [severity]="getRefrendolabel(sed.es_anio_actual)" />
-                </td>
-                <td style="text-align: center; vertical-align: middle;"><p-button icon="pi pi-times" [text]="true"
-                        severity="danger" (onClick)="eliminarSED(obra, sed)" />
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template #emptymessage>
-            <tr>
-                <td colspan="4">Sin registros</td>
-            </tr>
-        </ng-template>
-    </p-table>
+            </div>
+        </p-card>
+    </div>
+    <!---------------------------- TABLA JERARQUICA SAP-SED----------------->
+    <div class="row mx-3 mx-md-5 g-3 mt-3">
+        <div class="flex gap-4 mb-3">
+            <p-button label="Exportar Excel" icon="pi pi-file-excel" (onClick)="exportarExcel()" />&nbsp;
+            <p-button label="Restaurar" icon="pi pi-refresh" severity="secondary" (onClick)="restaurar()" />
+        </div>
 
-    <h5 style="padding-left: 3rem;padding-top: 0.7rem;">SAP ({{ obra.DatosSAP?.length || 0 }}) </h5>
-    <p-table [value]="obra.DatosSAP" size="small" style="padding-left: 3rem;">
-        <ng-template #header>
-            <tr>
-                <th>Fondo</th>
-                <th>Denominacion Fondo</th>
-                <th>Origen</th>
-                <th>Partida</th>
-                <th>Modificado</th>
-                <th>Pagado</th>
-                <th style="text-align: center; vertical-align: middle;">Eliminar</th>
-            </tr>
-        </ng-template>
-        <ng-template #body let-sap>
-            <tr>
-                <td>{{ sap.Fondo }}</td>
-                <td>{{ sap.Denominacion_Fondo }}</td>
-                <td>{{sap.Origen_Circular}}</td>
-                <td>{{ sap.Partida }}</td>
-                <td style="text-align: right; vertical-align: middle;">{{ sap.MOD | currency }}</td>
-                <td style="text-align: right; vertical-align: middle;">{{ sap.PAG | currency }}</td>
-                <td style="text-align: center; vertical-align: middle;"><p-button icon="pi pi-times" [text]="true"
-                        severity="danger" (onClick)="eliminarSAP(obra, sap)" />
-                </td>
-            </tr>
-        </ng-template>
-        <ng-template #emptymessage>
-            <tr>
-                <td colspan="5">Sin registros</td>
-            </tr>
-        </ng-template>
-    </p-table>
-    </td>
-    </tr>
-    </ng-template>
-    </p-table>
-</div>
 
-<div class="row mx-3 mx-md-5 g-3 mt-3">
-    <p-table [value]="Obra" [tableStyle]="{ 'min-width': '50rem' }" [paginator]="true" [rows]="10"
-        [rowsPerPageOptions]="[5, 10, 20, 50]" showGridlines [tableStyle]="{ 'min-width': '50rem' }" stripedRows
-        [tableStyle]="{ 'min-width': '50rem' }" sortMode="multiple" removableSort
-        [tableStyle]="{ 'min-width': '50rem' }" size="small" [customSort]="true">
-        <ng-template #header>
-            <tr>
-                <th pSortableColumn="name">
-                    <div class="flex items-center gap-2">Clave Proyecto <p-sortIcon field="name"></p-sortIcon></div>
-                </th>
-                <th>Nombre Proyecto</th>
-                <th>Ramo</th>
-                <th>Siglas</th>
-            </tr>
+        <p-table #dt [value]="obrasExtendidaFiltrada()" dataKey="meta_estandarizada" [expandedRowKeys]="expandedRows"
+            [paginator]="true" [rows]="10" [rowsPerPageOptions]="[5, 10, 20, 50]" showGridlines
+            [tableStyle]="{ 'min-width': '50rem' }" stripedRows [tableStyle]="{ 'min-width': '50rem' }" size="small"
+            (sortFunction)="customSort($event)" [customSort]="true">
+            <ng-template #header>
+                <tr>
+                    <th style="width:3rem"></th>
+                    <th pSortableColumn="meta_estandarizada">
+                        <div class="flex items-center gap-2">Meta <p-sortIcon field="meta_estandarizada"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th pSortableColumn="Nombre_Proyecto">
+                        <div class="flex items-center gap-2">Proyecto <p-sortIcon field="Nombre_Proyecto"></p-sortIcon>
+                        </div>
+                    </th>
+                    <th pSortableColumn="Siglas">
+                        <div class="flex items-center gap-2">Siglas <p-sortIcon field="Siglas"></p-sortIcon></div>
+                    </th>
+                    <th pSortableColumn="Modificado_SAP">
+                        <div class="flex items-center gap-2"></div>Modificado SAP <p-sortIcon
+                            field="Siglas"></p-sortIcon>
+                    </th>
+                    <th>Modificado SED</th>
+                    <th>Conciliacion</th>
+                    <th>Diferencia</th>
+                    <th style="text-align: center; vertical-align: middle;">Eliminar</th>
+                </tr>
+            </ng-template>
+
+            <ng-template #body let-obra let-expanded="expanded">
+                <tr [class.fila-expandida]="expanded">
+                    <td>
+                        <p-button type="button" [pRowToggler]="obra" [text]="true" [rounded]="true"
+                            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
+                    </td>
+                    <td>{{ obra.meta_estandarizada }}</td>
+                    <td>{{ obra.Nombre_Proyecto }}</td>
+                    <td>{{ obra.Siglas }}</td>
+                    <td style="text-align: right; vertical-align: middle;">{{ obra.Modificado_SAP | currency }}</td>
+                    <td style="text-align: right; vertical-align: middle;">{{ obra.Modificado_SED | currency }}</td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <p-tag [value]="getConcilacionValue(obra.Conciliado)"
+                            [severity]="getConciliacionlabel(obra.Conciliado)" />
+                    </td>
+                    <td>{{ obra.Difererencia | currency }}</td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        <p-button icon="pi pi-trash" severity="danger" [text]="true" (onClick)="eliminarObra(obra)" />
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template #expandedrow let-obra>
+                <tr>
+                    <td colspan="9" class="detalle-expandido">
+                        <h5 style="padding-left: 3rem;">SED ({{ sedFiltradoPorMunicipio(obra).length }})</h5>
+                        <div style="margin-left: 3rem; margin-bottom: 0.6rem;">
+                            <p-button label="Agregar registro" icon="pi pi-plus" size="small" severity="secondary"
+                                (onClick)="agregarSED(obra)" />
+
+                        </div>
+
+                        <p-table [value]="sedFiltradoPorMunicipio(obra)" style="padding-left: 3rem;"
+                            (onEditComplete)="onSedEditComplete($event)">
+                            <ng-template #header>
+                <tr>
+                    <th>Descripcion Meta</th>
+                    <th>Municipio</th>
+                    <th>Cantidad Estatal</th>
+                    <th>Unidad Medida</th>
+                    <th>Monto</th>
+                    <th>Ejercicio</th>
+                    <th style="text-align: center; vertical-align: middle;">Eliminar</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-sed>
+                <tr>
+                    <td>{{ sed.descripmeta }}</td>
+                    <td [pEditableColumn]="sed" pEditableColumnField="municipio_nombre">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <p-select [options]="municipios" [(ngModel)]="sed.municipio_nombre"
+                                    optionLabel="municipio_nombre" optionValue="municipio_nombre"
+                                    placeholder="Selecciona un municipio" fluid size="small" appendTo="body"
+                                    [filter]="true" filterBy="municipio_nombre" [showClear]="true">
+                                    <ng-template let-municipios #item>
+                                        <div class="flex items-center justify-between w-full">
+                                            <span>{{ municipios.municipio_nombre }}</span>
+                                            <p-tag [value]="'' + municipios.id_municipio" severity="secondary"
+                                                [rounded]="true" />
+                                        </div>
+                                    </ng-template>
+                                </p-select>
+                            </ng-template>
+                            <ng-template #output>
+                                <span class="font-medium"> {{ sed.municipio_nombre }} </span>
+                                @if (infoEdicion(sed.id_registro_sed, 'municipio_nombre'); as info) {
+                                <br>
+                                <small class="text-500 texto-editado" style="font-size: 0.65rem;">
+                                    editado por {{ info.usuario }}
+                                </small>
+                                }
+                            </ng-template>
+
+                        </p-cellEditor>
+                    </td>
+
+                    <td style="text-align: center; vertical-align: middle;" [pEditableColumn]="sed"
+                        pEditableColumnField="cantestatal"><p-cellEditor>
+                            <ng-template #input>
+                                <p-inputnumber [(ngModel)]="sed.cantestatal" mode="decimal" fluid />
+                            </ng-template>
+                            <ng-template #output>
+                                {{ sed.cantestatal }}
+                                @if (infoEdicion(sed.id_registro_sed, 'cantestatal'); as info) {
+                                <br>
+                                <small class="text-500 texto-editado" style="font-size: 0.65rem;">
+                                    editado por {{ info.usuario }}
+                                </small>
+                                }
+                            </ng-template>
+                        </p-cellEditor>
+                    </td>
+                    <td>{{ sed.unidad_medida }}</td>
+                    <td style="text-align: right; vertical-align: middle;" [pEditableColumn]="sed"
+                        pEditableColumnField="documentado2026">
+                        <p-cellEditor>
+                            <ng-template #input>
+                                <p-inputnumber [(ngModel)]="sed.documentado2026" mode="decimal" fluid />
+                            </ng-template>
+                            <ng-template #output>
+                                <span class="font-medium"> {{ sed.documentado2026 | currency }} </span>
+                                @if (infoEdicion(sed.id_registro_sed, 'documentado2026'); as info) {
+                                <br>
+                                <small class="text-500 texto-editado" style="font-size: 0.65rem;">
+                                    editado por {{ info.usuario }}
+                                </small>
+                                }
+                            </ng-template>
+                        </p-cellEditor>
+
+                    </td>
+                    <td>
+
+                        <p-tag [value]="getRefrendoValue(sed.es_anio_actual)"
+                            [severity]="getRefrendolabel(sed.es_anio_actual)" />
+
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;"><p-button icon="pi pi-times" [text]="true"
+                            severity="danger" (onClick)="eliminarSED(obra, sed)" />
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="4">Sin registros</td>
+                </tr>
+            </ng-template>
+        </p-table>
+
+        <h5 style="padding-left: 3rem;padding-top: 0.7rem;">SAP ({{ obra.DatosSAP?.length || 0 }}) </h5>
+        <p-table [value]="obra.DatosSAP" size="small" style="padding-left: 3rem;">
+            <ng-template #header>
+                <tr>
+                    <th>Fondo</th>
+                    <th>Denominacion Fondo</th>
+                    <th>Origen</th>
+                    <th>Partida</th>
+                    <th>Modificado</th>
+                    <th>Pagado</th>
+                    <th style="text-align: center; vertical-align: middle;">Eliminar</th>
+                </tr>
+            </ng-template>
+            <ng-template #body let-sap>
+                <tr>
+                    <td>{{ sap.Fondo }}</td>
+                    <td>{{ sap.Denominacion_Fondo }}</td>
+                    <td>{{sap.Origen_Circular}}</td>
+                    <td>{{ sap.Partida }}</td>
+                    <td style="text-align: right; vertical-align: middle;">{{ sap.MOD | currency }}</td>
+                    <td style="text-align: right; vertical-align: middle;">{{ sap.PAG | currency }}</td>
+                    <td style="text-align: center; vertical-align: middle;"><p-button icon="pi pi-times" [text]="true"
+                            severity="danger" (onClick)="eliminarSAP(obra, sap)" />
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template #emptymessage>
+                <tr>
+                    <td colspan="5">Sin registros</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        </td>
+        </tr>
         </ng-template>
-        <ng-template #body let-Obra>
-            <tr>
-                <td>{{ Obra.clave_recodificada }}</td>
-                <td>{{ Obra.Nombre_Proyecto }}</td>
-                <td>{{ Obra.ramo_aux }}</td>
-                <td>{{ Obra.Siglas }}</td>
-            </tr>
-        </ng-template>
-    </p-table>
+        </p-table>
+    </div>
 </div>
 } @else {
 <div class="row ms-5 mt-3">

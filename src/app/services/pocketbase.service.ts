@@ -203,6 +203,21 @@ export class PocketbaseService {
   desuscribirTodo() {
     this.pb.collection('ediciones_obra').unsubscribe();
     this.pb.collection('eliminados_obra').unsubscribe();
+     this.pb.collection('nuevos_obra').unsubscribe();
   }
+  
+  async guardarNuevoRegistro(registro_id: string, tabla: 'SED' | 'SAP', meta_estandarizada: string, datos: any) {
+  return this.pb.collection('nuevos_obra').create({
+    registro_id, tabla, meta_estandarizada, datos,
+    usuario: this.pb.authStore.model?.id ?? null
+  });
+}
 
+async cargarNuevos() {
+  return this.pb.collection('nuevos_obra').getFullList({ expand: 'usuario' });
+}
+
+suscribirNuevos(callback: (e: any) => void) {
+  return this.pb.collection('nuevos_obra').subscribe('*', callback, { expand: 'usuario' });
+}
 }
