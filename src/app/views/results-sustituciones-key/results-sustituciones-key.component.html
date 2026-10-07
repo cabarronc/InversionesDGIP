@@ -1,68 +1,85 @@
-<div class="results-key-container" *ngIf="rowChanges">
-  <h3 style="color: white;">🔹 Comparación por clave</h3>
-    <!-- Eliminados -->
-  <section *ngIf="rowChanges.removed?.length">
+@if (rowChanges) {
+<div class="results-key-container">
+  <h3 style="color: var(--p-text-color);">🔹 Comparación por clave</h3>
+
+  <!-- Eliminados -->
+  @if (rowChanges.removed?.length) {
+  <section>
     <h4 class="removed">❌ Filas eliminadas</h4>
-    <table class="table table-sm table-striped">
-      <thead>
+    <p-table [value]="rowChanges.removed" size="small" [stripedRows]="true">
+      <ng-template #header>
         <tr>
-          <th *ngFor="let key of objectKeys(rowChanges.removed[0])">{{ key }}</th>
+          @for (key of objectKeys(rowChanges.removed[0]); track key) {
+          <th>{{ key }}</th>
+          }
         </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of rowChanges.removed">
-          <td *ngFor="let key of objectKeys(row)">{{ row[key] }}</td>
+      </ng-template>
+      <ng-template #body let-row>
+        <tr>
+          @for (key of objectKeys(row); track key) {
+          <td>{{ row[key] }}</td>
+          }
         </tr>
-      </tbody>
-    </table>
+      </ng-template>
+    </p-table>
   </section>
+  }
 
   <!-- Agregados -->
-  
-  <section *ngIf="rowChanges.added?.length">
+  @if (rowChanges.added?.length) {
+  <section>
     <h4 class="added">➕ Filas agregadas {{rowChanges.added?.length}}</h4>
-     <div class="scroll-table">
-    <table class="table table-sm table-striped">
-      <thead>
-        <tr>
-          <th *ngFor="let key of objectKeys(rowChanges.added[0])">{{ key }}</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let row of rowChanges.added">
-          <td *ngFor="let key of objectKeys(row)">{{ row[key] }}</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="scroll-table">
+      <p-table [value]="rowChanges.added" size="small" [stripedRows]="true">
+        <ng-template #header>
+          <tr>
+            @for (key of objectKeys(rowChanges.added[0]); track key) {
+            <th>{{ key }}</th>
+            }
+          </tr>
+        </ng-template>
+        <ng-template #body let-row>
+          <tr>
+            @for (key of objectKeys(row); track key) {
+            <td>{{ row[key] }}</td>
+            }
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
   </section>
-
-
+  }
 
   <!-- Modificados -->
-  <section *ngIf="rowChanges.modified && objectKeys(rowChanges.modified).length">
+  @if (rowChanges.modified && objectKeys(rowChanges.modified).length) {
+  <section>
     <h4 class="modified">✏️ Filas modificadas</h4>
 
-    <div *ngFor="let key of objectKeys(rowChanges.modified)" class="modified-block">
+    @for (key of objectKeys(rowChanges.modified); track key) {
+    <div class="modified-block">
       <strong style="color: white;">Clave: {{ key }}</strong>
-      <table class="table table-sm table-bordered mt-2">
-        <thead>
+      <p-table [value]="objectKeys(rowChanges.modified[key])" size="small" [showGridlines]="true"
+        styleClass="mt-2">
+        <ng-template #header>
           <tr>
             <th>Campo</th>
             <th>Valor anterior</th>
             <th>Valor nuevo</th>
           </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let field of objectKeys(rowChanges.modified[key])">
+        </ng-template>
+        <ng-template #body let-field>
+          <tr>
             <td>{{ field }}</td>
             <td>{{ rowChanges.modified[key][field]?.line_by_line_changes[0]?.old_value }}</td>
             <td>{{ rowChanges.modified[key][field]?.line_by_line_changes[0]?.new_value }}</td>
             <!-- <td>{{ rowChanges.modified[key][field]?.substitutions[0]?.from }}</td>
             <td>{{ rowChanges.modified[key][field]?.substitutions[0]?.to }}</td> -->
           </tr>
-        </tbody>
-      </table>
+        </ng-template>
+      </p-table>
     </div>
+    }
   </section>
+  }
 </div>
+}

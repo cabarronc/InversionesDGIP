@@ -8,6 +8,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 // PrimeNG
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
+import Lara from '@primeng/themes/lara';
+import Material from '@primeng/themes/material';
+import Nora from '@primeng/themes/nora';
 
 import { routes } from './app.routes';
 import { AuthService } from './services/auth.service';

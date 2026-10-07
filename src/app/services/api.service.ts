@@ -15,10 +15,13 @@ private apiUrl = environment.apiUrl;
 
   // CIRCULAR
   getData(body: any): Observable<any> {
+
     return this.http.post(`${this.apiUrl}/GetCircular`,body, {headers: new HttpHeaders({ 'Content-Type': 'application/json' }),});
   }
-  CircularCopy(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/GetCircularCopy`);
+  CircularCopy(excluir_dep:any): Observable<any> {
+
+      console.log(excluir_dep)
+    return this.http.post(`${this.apiUrl}/GetCircularCopy`,excluir_dep, {headers: new HttpHeaders({ 'Content-Type': 'application/json' }),});
   }
     CircularCopyEvidencia(): Observable<any> {
     return this.http.get(`${this.apiUrl}/GetCircularCopyEvidencia`);

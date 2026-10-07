@@ -278,6 +278,8 @@ export class ObraComponent {
       }
     });
 
+    
+
   }
   data_geg: any;
   data_ent: any;
@@ -334,8 +336,19 @@ export class ObraComponent {
   obrasEntidadFiltrada = computed(() =>
     this.obraFiltrada().filter(o => o["SGEG_OPD"] === "ENTIDAD")
   );
+
   siglasOpciones = computed(() => {
-    const siglas = new Set(this.Obra.map(o => o.Siglas));
+    const filtroMetaVal = this.filtroMetaSED();
+    const filtroMunicipioVal = this.filtroMunicipioSED();
+
+    const registros = this.registrosSEDConMeta().filter(r =>
+      (filtroMetaVal === null || r.meta === filtroMetaVal) &&
+      (filtroMunicipioVal === null || r.municipio === filtroMunicipioVal)
+    );
+
+    const siglas = new Set(registros.map(r => r.siglas).filter(Boolean));
+    // const siglas = new Set(this.Obra.map(o => o.Siglas));
+
     return [
       { label: 'Todas DoE', value: null },
       ...Array.from(siglas).sort().map(s => ({ label: s, value: s }))
@@ -346,10 +359,28 @@ export class ObraComponent {
   private unsubEliminados?: () => void;
 
   metaSEDOpciones = computed(() => {
-    const metas = this.ObrasExtendida.map(o => ({
-      label: `${o.meta_estandarizada} - ${o.Nombre_Proyecto}`,
-      value: o.meta_estandarizada
-    }));
+    const filtroSiglasVal = this.filtroSiglas();
+    const filtroMunicipioVal = this.filtroMunicipioSED();
+
+    const registros = this.registrosSEDConMeta().filter(r =>
+      (filtroSiglasVal === null || r.siglas === filtroSiglasVal) &&
+      (filtroMunicipioVal === null || r.municipio === filtroMunicipioVal)
+    );
+
+    const metasValidas = new Set(registros.map(r => r.meta));
+
+    const metas = this.ObrasExtendida
+      .filter(o => metasValidas.has(o.meta_estandarizada))
+      .map(o => ({
+        label: `${o.meta_estandarizada} - ${o.Nombre_Proyecto}`,
+        value: o.meta_estandarizada
+      }));
+
+    // const metas = this.ObrasExtendida.map(o => ({
+    //   label: `${o.meta_estandarizada} - ${o.Nombre_Proyecto}`,
+    //   value: o.meta_estandarizada
+    // }));
+
     return [
       { label: 'Todas las Metas', value: null },
       ...metas.sort((a, b) => a.label.localeCompare(b.label))
@@ -361,11 +392,13 @@ export class ObraComponent {
     const filtroMeta = this.filtroMetaSED();
     const filtroMunicipio = this.filtroMunicipioSED();
     const filtroActualVal = this.filtroActual();
+    const filtroSiglasVal = this.filtroSiglas();
     return this.ObrasExtendida
       .filter(o => filtroMeta === null || o.meta_estandarizada === filtroMeta)
       .flatMap(o => o.DatosSED)
       .filter(s => filtroMunicipio === null || s.municipio_nombre === filtroMunicipio)
-      .filter(s => filtroActualVal === null || s.es_anio_actual === filtroActualVal);
+      .filter(s => filtroActualVal === null || s.es_anio_actual === filtroActualVal).
+      filter(s => filtroSiglasVal === null || s.siglas === filtroSiglasVal);
   });
 
   municipiosSEDTabla = computed(() => {
@@ -403,9 +436,19 @@ export class ObraComponent {
   }
   //filtro global par avarios obtejos visuales
   municipioSEDOpciones = computed(() => {
-    const municipios = new Set(
-      this.ObrasExtendida.flatMap(o => o.DatosSED.map(s => s.municipio_nombre)).filter(Boolean)
+    const filtroSiglasVal = this.filtroSiglas();
+    const filtroMetaVal = this.filtroMetaSED();
+
+    const registros = this.registrosSEDConMeta().filter(r =>
+      (filtroSiglasVal === null || r.siglas === filtroSiglasVal) &&
+      (filtroMetaVal === null || r.meta === filtroMetaVal)
     );
+
+    const municipios = new Set(registros.map(r => r.municipio).filter(Boolean));
+    // const municipios = new Set(
+    //   this.ObrasExtendida.flatMap(o => o.DatosSED.map(s => s.municipio_nombre)).filter(Boolean)
+    // );
+
     return [
       { label: 'Todos los municipios', value: null },
       ...Array.from(municipios).sort().map(m => ({ label: m, value: m }))
@@ -415,13 +458,26 @@ export class ObraComponent {
   // Filtro de Municipio tabla jerarquica
   sedFiltradoPorMunicipio(obra: ObraExtendida): DatosSED[] {
     const filtroMunicipio = this.filtroMunicipioSED();
-    const filtroActualVal = this.filtroActual();   // <- agregado
+    const filtroActualVal = this.filtroActual();
+    const filtroSiglasVal = this.filtroSiglas();
 
     return obra.DatosSED.filter(s =>
       (filtroMunicipio === null || s.municipio_nombre === filtroMunicipio) &&
-      (filtroActualVal === null || s.es_anio_actual === filtroActualVal)
+      (filtroActualVal === null || s.es_anio_actual === filtroActualVal) &&
+      (filtroSiglasVal === null || s.siglas === filtroSiglasVal)
     );
   }
+  //Filtro  en cascada
+  private registrosSEDConMeta = computed(() => {
+    this.dataVersion();
+    return this.ObrasExtendida.flatMap(o =>
+      o.DatosSED.map(s => ({
+        siglas: s.siglas,
+        meta: o.meta_estandarizada,
+        municipio: s.municipio_nombre
+      }))
+    );
+  });
 
   async ngOnInit(): Promise<void> {
     this.GetObra()
@@ -485,6 +541,9 @@ export class ObraComponent {
           obra => obra["SGEG_OPD"] === "GEG"
         );
         this.calcularKPIs();
+        console.log('ObrasExtendida:', this.ObrasExtendida.length);
+        console.log('registrosSEDConMeta:', this.registrosSEDConMeta().length);
+        console.log('siglasOpciones:', this.siglasOpciones());
         this.cargado.set(true);
         console.log("Obra", data.Obra)
         this.createChartGEG();
@@ -1210,7 +1269,8 @@ export class ObraComponent {
 
     // Hoja 2: DatosSED — debe usar sedFiltradoPorMunicipio, NO o.DatosSED directo
     const sed = obras.flatMap(o =>
-      this.sedFiltradoPorMunicipio(o).map((s: any) => ({ meta_estandarizada: o.meta_estandarizada, ...s,
+      this.sedFiltradoPorMunicipio(o).map((s: any) => ({
+        meta_estandarizada: o.meta_estandarizada, ...s,
         documentado2026: Number(s.documentado2026) || 0
 
       }))

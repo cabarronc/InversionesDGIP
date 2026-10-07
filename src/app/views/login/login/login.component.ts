@@ -1,29 +1,37 @@
-
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute} from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { InputType, KENDO_INPUTS } from '@progress/kendo-angular-inputs';
-import { KENDO_LABELS } from '@progress/kendo-angular-label';
-import { KENDO_BUTTONS } from '@progress/kendo-angular-buttons';
-import { KENDO_LAYOUT } from '@progress/kendo-angular-layout';
-import {eyeIcon, eyeSlashIcon,questionCircleIcon, SVGIcon} from '@progress/kendo-svg-icons';
-import { DialogComponent, DialogTitleBarComponent } from "@progress/kendo-angular-dialog";
-import { IconsModule } from "@progress/kendo-angular-icons";
-import { KENDO_TOOLTIPS } from "@progress/kendo-angular-tooltip";
+import { InputTextModule } from 'primeng/inputtext';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { CheckboxModule } from 'primeng/checkbox';
+import { ButtonModule } from 'primeng/button';
+import { MessageModule } from 'primeng/message';
+import { DialogModule } from 'primeng/dialog';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @Component({
-    selector: 'app-login',
-    imports: [CommonModule, FormsModule, ReactiveFormsModule, KENDO_INPUTS,
-        KENDO_LABELS,
-        KENDO_BUTTONS,
-        KENDO_LAYOUT, DialogComponent, DialogTitleBarComponent, IconsModule, KENDO_TOOLTIPS,],
-    templateUrl: './login.component.html',
-    styleUrl: './login.component.scss'
+  selector: 'app-login',
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    IconFieldModule,
+    InputIconModule,
+    CheckboxModule,
+    ButtonModule,
+    MessageModule,
+    DialogModule,
+    TooltipModule
+  ],
+  templateUrl: './login.component.html',
+  styleUrl: './login.component.scss'
 })
-export class LoginComponent  implements OnInit {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   forgotPasswordForm: FormGroup;
   loading = false;
@@ -32,13 +40,13 @@ export class LoginComponent  implements OnInit {
   showPassword = false;
   showForgotPassword = false;
   returnUrl: string = '';
-public questionCircleIcon: SVGIcon = questionCircleIcon;
-  public eyeIcon = eyeSlashIcon;
-  public confirmEyeIcon = eyeSlashIcon;
 
-  public passInputType: InputType = "password";
-  public confirmInputType: InputType = "password";
-  
+  passInputType: 'password' | 'text' = 'password';
+
+  // Icono del ojo: se recalcula solo según passInputType (no se asigna)
+  get eyeIcon(): string {
+    return this.passInputType === 'password' ? 'pi pi-eye' : 'pi pi-eye-slash';
+  }
 
   constructor(
     private formBuilder: FormBuilder,
@@ -73,12 +81,12 @@ public questionCircleIcon: SVGIcon = questionCircleIcon;
       this.errorMessage = '';
 
       try {
-        const { email, password,rememberMe  } = this.loginForm.value;
-        await this.authService.login(email, password,rememberMe || false);
-        
+        const { email, password, rememberMe } = this.loginForm.value;
+        await this.authService.login(email, password, rememberMe || false);
+
         // Redirigir a la página solicitada o al dashboard
         this.router.navigate([this.returnUrl]);
-        
+
       } catch (error: any) {
         this.errorMessage = error.message || 'Error al iniciar sesión';
       } finally {
@@ -93,13 +101,13 @@ public questionCircleIcon: SVGIcon = questionCircleIcon;
 
       try {
         const { email } = this.forgotPasswordForm.value;
-        console.log("correo:",email)
+        console.log('correo:', email);
         await this.authService.requestPasswordReset(email);
-        
+
         alert('Se ha enviado un email con instrucciones para restablecer tu contraseña');
         this.showForgotPassword = false;
         this.forgotPasswordForm.reset();
-        
+
       } catch (error: any) {
         alert('Error: ' + (error.message || 'No se pudo enviar el email'));
       } finally {
@@ -108,22 +116,11 @@ public questionCircleIcon: SVGIcon = questionCircleIcon;
     }
   }
 
-
   togglePasswordVisibility(): void {
     this.showPassword = !this.showPassword;
   }
- 
-  public togglePassVisibility(isConfirmField?: boolean): void {
-    if (isConfirmField) {
-      const isHidden = this.confirmInputType === "password";
-      this.confirmEyeIcon = isHidden ? eyeIcon : eyeSlashIcon;
-      this.confirmInputType = isHidden ? "text" : "password";
-    } else {
-      const isHidden = this.passInputType === "password";
-      this.eyeIcon = isHidden ? eyeIcon : eyeSlashIcon;
-      this.passInputType = isHidden ? "text" : "password";
-    }
-  }
- 
 
+  public togglePassVisibility(): void {
+    this.passInputType = this.passInputType === 'password' ? 'text' : 'password';
+  }
 }

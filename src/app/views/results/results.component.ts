@@ -2,10 +2,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ComparacionArchivosService, ComparisonResult } from '../../services/comparacion-archivos.service';
 import { ResultsDetalleComponent } from "./results-detalle/results-detalle.component";
+import { ButtonModule } from 'primeng/button';
+import { MessageModule } from 'primeng/message';
 
 @Component({
     selector: 'app-results',
-    imports: [CommonModule, ResultsDetalleComponent],
+    imports: [CommonModule, ResultsDetalleComponent,ButtonModule,MessageModule],
     templateUrl: './results.component.html',
     styleUrl: './results.component.scss'
 })

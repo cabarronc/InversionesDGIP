@@ -1,169 +1,194 @@
- <div class="field-analysis-container" *ngIf="fieldLevelChanges">
-      <div class="analysis-header">
-        <h3>🔬 Análisis Detallado por Campo</h3>
-        <p class="analysis-description">
-          Comparación granular campo por campo mostrando cambios específicos en cada columna
-        </p>
-        <div class="analysis-stats">
-          <div class="stat-badge">
-            <strong>{{ getFieldCount() }}</strong> campos analizados
-          </div>
-          <div class="stat-badge changes">
-            <strong>{{ getFieldsWithChanges() }}</strong> con cambios
-          </div>
-        </div>
+@if (fieldLevelChanges) {
+<div class="field-analysis-container">
+  <div class="analysis-header">
+    <h3>🔬 Análisis Detallado por Campo</h3>
+    <p class="analysis-description">
+      Comparación granular campo por campo mostrando cambios específicos en cada columna
+    </p>
+    <div class="analysis-stats">
+      <p-tag styleClass="stat-badge">
+        <strong>{{ getFieldCount() }}</strong> campos analizados
+      </p-tag>
+      <p-tag styleClass="stat-badge changes">
+        <strong>{{ getFieldsWithChanges() }}</strong> con cambios
+      </p-tag>
+    </div>
+  </div>
+
+  <div class="fields-grid">
+    @for (fieldName of getFieldNames(); track fieldName) {
+    <div class="field-card" [ngClass]="{ 'has-changes': hasFieldChanges(fieldName) }">
+
+      <div class="field-header">
+        <h4>{{ getFieldIcon(fieldName) }} {{ fieldName }}</h4>
+        <p-tag styleClass="field-type" [value]="getFieldType(fieldName)" />
       </div>
 
-      <div class="fields-grid">
-        <div 
-          *ngFor="let fieldName of getFieldNames()" 
-          class="field-card"
-          [ngClass]="{ 'has-changes': hasFieldChanges(fieldName) }">
-          
-          <div class="field-header">
-            <h4>{{ getFieldIcon(fieldName) }} {{ fieldName }}</h4>
-            <span class="field-type">{{ getFieldType(fieldName) }}</span>
+      <div class="field-content">
+        <!-- Información básica del campo -->
+        <div class="field-basic-info">
+          <div class="info-row">
+            <span class="label">Valores únicos:</span>
+            <span class="value">
+              {{ getFieldData(fieldName)?.unique_values_old || 0 }} →
+              {{ getFieldData(fieldName)?.unique_values_new || 0 }}
+              @if (getUniqueValuesChange(fieldName) !== 0) {
+              <span class="change-indicator"
+                [ngClass]="getUniqueValuesChange(fieldName) > 0 ? 'positive' : 'negative'">
+                ({{ getUniqueValuesChange(fieldName) > 0 ? '+' : '' }}{{ getUniqueValuesChange(fieldName) }})
+              </span>
+              }
+            </span>
           </div>
 
-          <div class="field-content">
-            <!-- Información básica del campo -->
-            <div class="field-basic-info">
-              <div class="info-row">
-                <span class="label">Valores únicos:</span>
-                <span class="value">
-                  {{ getFieldData(fieldName)?.unique_values_old || 0 }} → 
-                  {{ getFieldData(fieldName)?.unique_values_new || 0 }}
-                  <span *ngIf="getUniqueValuesChange(fieldName) !== 0" 
-                        class="change-indicator"
-                        [ngClass]="getUniqueValuesChange(fieldName) > 0 ? 'positive' : 'negative'">
-                    ({{ getUniqueValuesChange(fieldName) > 0 ? '+' : '' }}{{ getUniqueValuesChange(fieldName) }})
-                  </span>
-                </span>
+          <div class="info-row">
+            <span class="label">Valores nulos:</span>
+            <span class="value">
+              {{ getFieldData(fieldName)?.null_count_old || 0 }} →
+              {{ getFieldData(fieldName)?.null_count_new || 0 }}
+              @if (getNullCountChange(fieldName) !== 0) {
+              <span class="change-indicator"
+                [ngClass]="getNullCountChange(fieldName) > 0 ? 'negative' : 'positive'">
+                ({{ getNullCountChange(fieldName) > 0 ? '+' : '' }}{{ getNullCountChange(fieldName) }})
+              </span>
+              }
+            </span>
+          </div>
+        </div>
+
+        <!-- Cambios detectados -->
+        @if (hasFieldChanges(fieldName)) {
+        <div class="changes-section">
+          <h5>🔍 Cambios Detectados:</h5>
+          <div class="changes-list">
+            @for (change of getAllChanges(fieldName); track $index) {
+            <div class="change-item" [ngClass]="change.type">
+              <div class="change-icon">{{ getChangeIcon(change.type) }}</div>
+              <div class="change-description">{{ change.description }}</div>
+            </div>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Estadísticas específicas por tipo de dato -->
+        @if (isNumericField(fieldName)) {
+        <div class="numeric-stats">
+          <h5>📊 Estadísticas Numéricas:</h5>
+          <div class="stats-comparison">
+            <div class="stats-column">
+              <h6>Archivo Anterior</h6>
+              <div class="stat-item">
+                <span class="stat-label">Media:</span>
+                <span class="stat-value">{{ getNumericStat(fieldName, 'mean', 'old') }}</span>
               </div>
-              
-              <div class="info-row">
-                <span class="label">Valores nulos:</span>
-                <span class="value">
-                  {{ getFieldData(fieldName)?.null_count_old || 0 }} → 
-                  {{ getFieldData(fieldName)?.null_count_new || 0 }}
-                  <span *ngIf="getNullCountChange(fieldName) !== 0" 
-                        class="change-indicator"
-                        [ngClass]="getNullCountChange(fieldName) > 0 ? 'negative' : 'positive'">
-                    ({{ getNullCountChange(fieldName) > 0 ? '+' : '' }}{{ getNullCountChange(fieldName) }})
-                  </span>
-                </span>
+              <div class="stat-item">
+                <span class="stat-label">Mediana:</span>
+                <span class="stat-value">{{ getNumericStat(fieldName, 'median', 'old') }}</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Min - Max:</span>
+                <span class="stat-value">{{ getNumericStat(fieldName, 'min', 'old') }} - {{ getNumericStat(fieldName, 'max', 'old') }}</span>
               </div>
             </div>
-
-            <!-- Cambios detectados -->
-            <div class="changes-section" *ngIf="hasFieldChanges(fieldName)">
-              <h5>🔍 Cambios Detectados:</h5>
-              <div class="changes-list">
-                <div *ngFor="let change of getAllChanges(fieldName)" 
-                     class="change-item"
-                     [ngClass]="change.type">
-                  <div class="change-icon">{{ getChangeIcon(change.type) }}</div>
-                  <div class="change-description">{{ change.description }}</div>
-                </div>
+            <div class="stats-column">
+              <h6>Archivo Posterior</h6>
+              <div class="stat-item">
+                <span class="stat-label">Media:</span>
+                <span class="stat-value">{{ getNumericStat(fieldName, 'mean', 'new') }}</span>
               </div>
-            </div>
-
-            <!-- Estadísticas específicas por tipo de dato -->
-            <div *ngIf="isNumericField(fieldName)" class="numeric-stats">
-              <h5>📊 Estadísticas Numéricas:</h5>
-              <div class="stats-comparison">
-                <div class="stats-column">
-                  <h6>Archivo Anterior</h6>
-                  <div class="stat-item">
-                    <span class="stat-label">Media:</span>
-                    <span class="stat-value">{{ getNumericStat(fieldName, 'mean', 'old') }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-label">Mediana:</span>
-                    <span class="stat-value">{{ getNumericStat(fieldName, 'median', 'old') }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-label">Min - Max:</span>
-                    <span class="stat-value">{{ getNumericStat(fieldName, 'min', 'old') }} - {{ getNumericStat(fieldName, 'max', 'old') }}</span>
-                  </div>
-                </div>
-                <div class="stats-column">
-                  <h6>Archivo Posterior</h6>
-                  <div class="stat-item">
-                    <span class="stat-label">Media:</span>
-                    <span class="stat-value">{{ getNumericStat(fieldName, 'mean', 'new') }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-label">Mediana:</span>
-                    <span class="stat-value">{{ getNumericStat(fieldName, 'median', 'new') }}</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-label">Min - Max:</span>
-                    <span class="stat-value">{{ getNumericStat(fieldName, 'min', 'new') }} - {{ getNumericStat(fieldName, 'max', 'new') }}</span>
-                  </div>
-                </div>
+              <div class="stat-item">
+                <span class="stat-label">Mediana:</span>
+                <span class="stat-value">{{ getNumericStat(fieldName, 'median', 'new') }}</span>
               </div>
-            </div>
-
-            <!-- Análisis de texto -->
-            <div *ngIf="isTextField(fieldName)" class="text-stats">
-              <h5>📝 Análisis de Texto:</h5>
-              <div class="stats-comparison">
-                <div class="stats-column">
-                  <h6>Archivo Anterior</h6>
-                  <div class="stat-item">
-                    <span class="stat-label">Long. promedio:</span>
-                    <span class="stat-value">{{ getTextStat(fieldName, 'avg_length', 'old') }} chars</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-label">Long. máxima:</span>
-                    <span class="stat-value">{{ getTextStat(fieldName, 'max_length', 'old') }} chars</span>
-                  </div>
-                </div>
-                <div class="stats-column">
-                  <h6>Archivo Posterior</h6>
-                  <div class="stat-item">
-                    <span class="stat-label">Long. promedio:</span>
-                    <span class="stat-value">{{ getTextStat(fieldName, 'avg_length', 'new') }} chars</span>
-                  </div>
-                  <div class="stat-item">
-                    <span class="stat-label">Long. máxima:</span>
-                    <span class="stat-value">{{ getTextStat(fieldName, 'max_length', 'new') }} chars</span>
-                  </div>
-                </div>
+              <div class="stat-item">
+                <span class="stat-label">Min - Max:</span>
+                <span class="stat-value">{{ getNumericStat(fieldName, 'min', 'new') }} - {{ getNumericStat(fieldName, 'max', 'new') }}</span>
               </div>
-            </div>
-
-            <!-- Valores únicos añadidos/eliminados -->
-            <div *ngIf="hasUniqueValuesChanges(fieldName)" class="unique-values-changes">
-              <h5>🔄 Cambios en Valores Únicos:</h5>
-              
-              <div *ngIf="getAddedValues(fieldName).length > 0" class="values-section added">
-                <h6>➕ Valores Añadidos ({{ getAddedValuesCount(fieldName) }}):</h6>
-                <div class="values-list">
-                  <span *ngFor="let value of getAddedValues(fieldName)" class="value-tag added">{{ value }}</span>
-                  <span *ngIf="getAddedValuesCount(fieldName) > getAddedValues(fieldName).length" class="more-indicator">
-                    +{{ getAddedValuesCount(fieldName) - getAddedValues(fieldName).length }} más...
-                  </span>
-                </div>
-              </div>
-              
-              <div *ngIf="getRemovedValues(fieldName).length > 0" class="values-section removed">
-                <h6>➖ Valores Eliminados ({{ getRemovedValuesCount(fieldName) }}):</h6>
-                <div class="values-list">
-                  <span *ngFor="let value of getRemovedValues(fieldName)" class="value-tag removed">{{ value }}</span>
-                  <span *ngIf="getRemovedValuesCount(fieldName) > getRemovedValues(fieldName).length" class="more-indicator">
-                    +{{ getRemovedValuesCount(fieldName) - getRemovedValues(fieldName).length }} más...
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Mensaje si no hay cambios -->
-            <div *ngIf="!hasFieldChanges(fieldName)" class="no-changes">
-              ✅ No se detectaron cambios significativos en este campo
             </div>
           </div>
         </div>
+        }
+
+        <!-- Análisis de texto -->
+        @if (isTextField(fieldName)) {
+        <div class="text-stats">
+          <h5>📝 Análisis de Texto:</h5>
+          <div class="stats-comparison">
+            <div class="stats-column">
+              <h6>Archivo Anterior</h6>
+              <div class="stat-item">
+                <span class="stat-label">Long. promedio:</span>
+                <span class="stat-value">{{ getTextStat(fieldName, 'avg_length', 'old') }} chars</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Long. máxima:</span>
+                <span class="stat-value">{{ getTextStat(fieldName, 'max_length', 'old') }} chars</span>
+              </div>
+            </div>
+            <div class="stats-column">
+              <h6>Archivo Posterior</h6>
+              <div class="stat-item">
+                <span class="stat-label">Long. promedio:</span>
+                <span class="stat-value">{{ getTextStat(fieldName, 'avg_length', 'new') }} chars</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-label">Long. máxima:</span>
+                <span class="stat-value">{{ getTextStat(fieldName, 'max_length', 'new') }} chars</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        }
+
+        <!-- Valores únicos añadidos/eliminados -->
+        @if (hasUniqueValuesChanges(fieldName)) {
+        <div class="unique-values-changes">
+          <h5>🔄 Cambios en Valores Únicos:</h5>
+
+          @if (getAddedValues(fieldName).length > 0) {
+          <div class="values-section added">
+            <h6>➕ Valores Añadidos ({{ getAddedValuesCount(fieldName) }}):</h6>
+            <div class="values-list">
+              @for (value of getAddedValues(fieldName); track $index) {
+              <p-tag styleClass="value-tag added" severity="success" [value]="value" />
+              }
+              @if (getAddedValuesCount(fieldName) > getAddedValues(fieldName).length) {
+              <span class="more-indicator">
+                +{{ getAddedValuesCount(fieldName) - getAddedValues(fieldName).length }} más...
+              </span>
+              }
+            </div>
+          </div>
+          }
+
+          @if (getRemovedValues(fieldName).length > 0) {
+          <div class="values-section removed">
+            <h6>➖ Valores Eliminados ({{ getRemovedValuesCount(fieldName) }}):</h6>
+            <div class="values-list">
+              @for (value of getRemovedValues(fieldName); track $index) {
+              <p-tag styleClass="value-tag removed" severity="danger" [value]="value" />
+              }
+              @if (getRemovedValuesCount(fieldName) > getRemovedValues(fieldName).length) {
+              <span class="more-indicator">
+                +{{ getRemovedValuesCount(fieldName) - getRemovedValues(fieldName).length }} más...
+              </span>
+              }
+            </div>
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Mensaje si no hay cambios -->
+        @if (!hasFieldChanges(fieldName)) {
+        <p-message styleClass="no-changes" severity="success">
+          ✅ No se detectaron cambios significativos en este campo
+        </p-message>
+        }
       </div>
     </div>
+    }
+  </div>
+</div>
+}

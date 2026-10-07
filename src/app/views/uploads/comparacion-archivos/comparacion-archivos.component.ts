@@ -2,10 +2,12 @@ import { Component, EventEmitter, Output, ViewChild, ElementRef } from '@angular
 import { CommonModule } from '@angular/common';
 import { ComparacionArchivosService, UploadResponse, FileInfo } from '../../../services/comparacion-archivos.service'
 import { FormsModule } from '@angular/forms';
-
+import { ButtonModule } from 'primeng/button';
+import { SelectModule } from 'primeng/select';
+import { MessageModule } from 'primeng/message';
 @Component({
     selector: 'app-comparacion-archivos',
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule,ButtonModule,SelectModule,MessageModule],
     templateUrl: './comparacion-archivos.component.html',
     styleUrl: './comparacion-archivos.component.scss'
 })

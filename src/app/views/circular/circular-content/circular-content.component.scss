@@ -149,7 +149,7 @@ my-content ul {
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      background: linear-gradient(135deg,#2c3e50  0%,  #79b9ee 100%);
+      background: var(--p-border-radius);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
@@ -162,6 +162,7 @@ my-content ul {
     }
 
     .container {
+      color: var(--p-text-color);
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 2rem;
@@ -250,6 +251,10 @@ my-content ul {
       opacity: 0.8;
     }
 
+    
+
+
+
     @media (max-width: 768px) {
       .container {
         padding: 0 1rem;
@@ -263,3 +268,544 @@ my-content ul {
         padding: 2rem 0;
       }
     }
+
+   
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.circular-page {
+    width: 100%;
+    min-height: 100%;
+
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.circular-card {
+    width: 100%;
+    max-width: 500px;
+
+    margin:15px auto;
+}
+.circular-card-reportes {
+
+    width: 100%;
+    max-width: 950px;
+
+    margin: 15px auto;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.circular-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+}
+
+
+.header-content {
+    display: flex;
+
+    align-items: center;
+
+    gap: 1rem;
+
+    min-width: 0;
+}
+
+
+.header-icon {
+    width: 3.25rem;
+    height: 3.25rem;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: var(--p-border-radius);
+    
+    background: var(--p-blue-400);
+    color: var(--p-primary-contrast-color);
+}
+
+
+.header-icon i {
+    font-size: 1.4rem;
+}
+
+
+.header-icon-grafico {
+    width: 3.25rem;
+    height: 3.25rem;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: var(--p-border-radius);
+    
+    background: var(--p-yellow-400);
+    color: var(--p-primary-contrast-color);
+}
+
+
+.header-icon-grafico i {
+    font-size: 1.4rem;
+}
+
+.header-icon-integracion {
+    width: 3.25rem;
+    height: 3.25rem;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: var(--p-border-radius);
+    
+    background: var(--p-green-400);
+    color: var(--p-primary-contrast-color);
+}
+
+
+.header-icon-integracion i {
+    font-size: 1.4rem;
+}
+
+.header-icon-atencion {
+    width: 3.25rem;
+    height: 3.25rem;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: var(--p-border-radius);
+    
+    background: var(--p-red-400);
+    color: var(--p-primary-contrast-color);
+
+}
+
+
+.header-icon-atencion i {
+    font-size: 1.4rem;
+}
+
+
+.circular-header h2 {
+    margin: 0;
+
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+
+.circular-header p {
+    margin: 0.35rem 0 0;
+
+    font-size: 0.9rem;
+
+    color: var(--p-text-muted-color);
+}
+
+
+/* =========================================================
+   PROGRESO
+   ========================================================= */
+
+.progress-section {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0.75rem;
+
+    margin-bottom: 2rem;
+}
+
+
+.progress-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.75rem;
+}
+
+
+.progress-title {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.5rem;
+
+    flex: 1;
+
+    font-size: 0.9rem;
+}
+
+
+.progress-title i {
+    color: var(--p-primary-color);
+}
+
+
+.progress-header strong {
+    font-size: 0.85rem;
+}
+
+
+/* =========================================================
+   ENCABEZADOS DE SECCIÓN
+   ========================================================= */
+
+.section-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.75rem;
+
+    margin-bottom: 1.5rem;
+}
+
+
+.section-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: var(--p-border-radius);
+
+    background: var(--p-surface);
+
+    color: var(--p-primary-color);
+}
+
+
+.section-icon i {
+    font-size: 1rem;
+}
+
+
+.section-header h3 {
+    margin: 0;
+
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+
+.section-header p {
+    margin: 0.2rem 0 0;
+
+    font-size: 0.8rem;
+
+    color: var(--p-text-muted-color);
+}
+
+
+/* =========================================================
+   FORMULARIO
+   ========================================================= */
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 1.5rem;
+}
+
+
+.form-field {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 0.5rem;
+}
+
+
+.form-field label {
+    font-size: 0.875rem;
+
+    font-weight: 600;
+}
+
+
+.required {
+    margin-left: 0.15rem;
+
+    color: var(--p-red-500);
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.form-field input {
+    width: 100%;
+
+    box-sizing: border-box;
+}
+
+
+/* =========================================================
+   MENSAJES
+   ========================================================= */
+
+.form-field p-message {
+    width: 100%;
+}
+
+
+/* =========================================================
+   ACCIONES
+   ========================================================= */
+
+.actions {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: 0.75rem;
+
+    flex-wrap: wrap;
+}
+
+
+.actions p-button {
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.form-footer {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+}
+
+
+.footer-info {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.5rem;
+
+    font-size: 0.8rem;
+
+    color: var(--p-text-muted-color);
+}
+
+
+.footer-info i {
+    color: var(--p-primary-color);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .circular-page {
+        padding: 1.25rem;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .actions {
+        justify-content: flex-start;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET / MÓVIL
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .circular-page {
+        padding: 0.75rem;
+    }
+
+
+    .circular-header {
+        align-items: flex-start;
+    }
+
+
+    .circular-header h2 {
+        font-size: 1.25rem;
+    }
+
+
+    .circular-header p {
+        font-size: 0.8rem;
+    }
+
+
+    .header-icon {
+        width: 2.75rem;
+        height: 2.75rem;
+    }
+
+
+    .circular-header p-tag {
+        display: none;
+    }
+
+
+    .progress-header {
+        flex-wrap: wrap;
+    }
+
+
+    .progress-title {
+        flex-basis: 100%;
+    }
+
+
+    .actions {
+        flex-direction: column;
+
+        align-items: stretch;
+
+        width: 100%;
+    }
+
+
+    .actions p-button {
+        width: 100%;
+    }
+
+
+    .form-footer {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+}
+.programacion-select {
+    width: 250px !important;
+    flex-shrink: 1;
+    min-width: 0;
+}
+
+.programacion-button {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+/* =========================================================
+   MÓVIL PEQUEÑO
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .circular-page {
+        padding: 0.5rem;
+    }
+
+
+    .section-header {
+        margin-bottom: 1rem;
+    }
+
+
+    .section-icon {
+        width: 2.25rem;
+        height: 2.25rem;
+    }
+
+}
+.p-collapsible-enter-active {
+    animation: demo-collapsible-expand 500ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.p-collapsible-leave-active {
+    animation: demo-collapsible-collapse 500ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+#Integracion {
+    display: flex;
+    align-items: flex-start;
+}
+
+#Integracion p-card {
+    height: fit-content;
+    align-self: flex-start;
+}
+@keyframes demo-collapsible-expand {
+    from {
+        opacity: 0;
+        grid-template-rows: 0fr;
+        transform: scale(0.93);
+    }
+    to {
+        opacity: 1;
+        grid-template-rows: 1fr;
+    }
+}
+
+@keyframes demo-collapsible-collapse {
+    from {
+        opacity: 1;
+        grid-template-rows: 1fr;
+    }
+    to {
+        opacity: 0;
+        grid-template-rows: 0fr;
+        transform: scale(0.93);
+    }
+}

@@ -1,84 +1,208 @@
+
 @if (selectedItem === 'Circular') {
 <div id="Circular">
-    <div class="container-fluid">
-        <div class="example">
-            <form class="k-form" [formGroup]="form">
-                <h5>REGISTRO DATOS ADICIONALES DE LA CIRCULAR</h5>
-                <kendo-progressbar [value]="progress" [disabled]="!isDisabled"
-                    [indeterminate]="!form.valid"></kendo-progressbar>
-                <div class="container">
-                    <div class="row mt-3">
-                        <div class="col-3"></div>
-                        <div class="col-5 d-flex justify-content-start">
-                            <kendo-label text="Numero de Circular">
-                                <kendo-textbox formControlName="numero_circular"></kendo-textbox>
-                            </kendo-label>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-3 mt-3"></div>
-                        <div class="col-5 d-flex justify-content-start">
-                            <kendo-label style="margin-bottom: -10px" [for]="fecha" text="Fecha">
-                            </kendo-label>
-                        </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-3"></div>
-                        <div class="col-5 d-flex justify-content-start">
-                            <kendo-datepicker #fecha formControlName="fecha"
-                                placeholder="Choose a date ..."></kendo-datepicker>
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="row mt-3 justify-content-center">
-                        <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center">
-                            <button kendoButton (click)="GenerarCicular()" [disabled]="!form.valid" fillMode="solid"
-                                size="large" rounded="medium" themeColor="info" [svgIcon]="wordIcon"
-                                [disabled]="isDisabled">Generar Circular</button>
-                            <span class="ps-2">
-                                @if (isDisabled) {
-                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                                </kendo-loader>
-                                }
+    <form [formGroup]="form">
+        <div class="circular-page">
+            <p-card styleClass="circular-card">
+                <!-- ========================================= -->
+                <!-- HEADER                                    -->
+                <!-- ========================================= -->
+                <div class="circular-header">
 
+                    <div class="header-content">
+
+                        <div class="header-icon">
+                            <i class="pi pi-file-edit"></i>
+                        </div>
+
+                        <div>
+                            <h2>Registro de Circular</h2>
+
+                            <p>
+                                Registra los datos adicionales necesarios
+                                para generar la circular.
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <p-tag value="Circular" icon="pi pi-file" severity="info">
+                    </p-tag>
+
+                </div>
+                <p-divider></p-divider>
+                <!-- ========================================= -->
+                <!-- PROGRESO                                  -->
+                <!-- ========================================= -->
+                <div class="progress-section">
+                    <div class="progress-header">
+                        <div class="progress-title">
+                            <i class="pi pi-check-circle"></i>
+                            <span>
+                                Progreso de la circular
                             </span>
                         </div>
-                        <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center">
-                            <button kendoButton (click)="CopiarCircular()" [disabled]="!form.valid" fillMode="solid"
-                                size="large" rounded="medium" themeColor="tertiary" [svgIcon]="copyIcon"
-                                [disabled]="isCoping">Copiar Archivos</button>
-                            <span class="ps-2"> </span>
-                            @if (isCoping) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
+                        @if (data2) {
+                        @if (form.valid) {
+                        <p-tag value="Completado" icon="pi pi-check" severity="success"></p-tag>
+                        }
+                        @else {
+                        <p-tag value="Generando..." icon="pi pi-spinner-dotted pi-spin" severity="info"></p-tag>
+                        }
+                        } @else {
+                        <p-tag value="Pendiente" icon="pi pi-clock" severity="danger"></p-tag>
+                        }
+                        <strong>
+                            {{ progress }}%
+                        </strong>
+                    </div>
 
-                        </div>
-                        <div class="col-12 ml-2 col-md-4 col-lg-2 mb-3 d-flex justify-content-center">
-                            <button kendoButton (click)="CopiarCircularAcuses()" [disabled]="!form.valid" fillMode="solid"
-                                size="large" rounded="medium" themeColor="tertiary" [svgIcon]="copyIcon"
-                                [disabled]="isCoping">Copiar Acuses</button>
-                            <span class="ps-2"> </span>
-                            @if (isCoping) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
+                    <p-progressbar [value]="progress" [mode]="form.valid ? 'determinate' : 'indeterminate'"
+                        [showValue]="false">
+                    </p-progressbar>
 
-                        </div>
-                        <div class="col-12 ml-2 col-md-4  col-lg-2 mb-3 d-flex justify-content-center">
-                            <button kendoButton (click)="clearForm()" fillMode="solid" size="large" rounded="medium"
-                                themeColor="warning">Limpiar</button>
-
-                        </div>
-
+                </div>
+                <!-- ========================================= -->
+                <!-- DATOS DE LA CIRCULAR                     -->
+                <!-- ========================================= -->
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="pi pi-info-circle"></i>
+                    </div>
+                    <div>
+                        <h3>Datos de la circular</h3>
+                        <p>
+                            Completa la información solicitada.
+                        </p>
                     </div>
                 </div>
-            </form>
+                <div class="form-grid">
+                    <!-- Número de Circular -->
+                    <div class="form-field">
+                        <label for="numero_circular">
+                            Número de Circular
+                            <span class="required">*</span>
+                        </label>
+                        <input id="numero_circular" type="text" pInputText formControlName="numero_circular"
+                            placeholder="Ej. 050/2026" fluid pSize="small" />
+
+                        @if (form.get('numero_circular')?.invalid && form.get('numero_circular')?.touched)
+                        {
+                        <p-message severity="error" icon="pi pi-exclamation-circle"
+                            text="Ingresa el número de circular. ">
+                        </p-message>
+                        }
+                    </div>
+
+
+                    <!-- Fecha -->
+                    <div class="form-field">
+
+                        <label for="fecha">
+                            Fecha
+                            <span class="required">*</span>
+                        </label>
+
+                        <p-datepicker inputId="fecha" formControlName="fecha" placeholder="Seleccione una fecha"
+                            dateFormat="dd/mm/yy" [showIcon]="true" iconDisplay="input" size="small" fluid>
+                        </p-datepicker>
+
+                        @if (
+                        form.get('fecha')?.invalid &&
+                        form.get('fecha')?.touched
+                        ) {
+                        <p-message severity="error" icon="pi pi-exclamation-circle" text="Selecciona una fecha.">
+                        </p-message>
+
+                        }
+                    </div>
+                </div>
+                <p-divider></p-divider>
+                @if (data2) {
+                <p-picklist [source]="dependencias" [target]="dependenciasExcluir" [dragdrop]="true"
+                    [showSourceControls]="false" [showTargetControls]="true" [responsive]="true"
+                    [sourceHeader]="'Dependencias disponibles'" [targetHeader]="'Dependencias a excluir'">
+
+                    <ng-template let-dependencia pTemplate="item">
+                        <div>
+                            {{ dependencia }}
+                        </div>
+                    </ng-template>
+
+                </p-picklist>
+                }
+                <p-divider></p-divider>
+                <!-- ========================================= -->
+                <!-- ACCIONES                                  -->
+                <!-- ========================================= -->
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="pi pi-cog"></i>
+                    </div>
+                    <div>
+                        <h3>Acciones</h3>
+                        <p>
+                            Selecciona la operación que deseas realizar.
+                        </p>
+                    </div>
+                </div>
+                <div class="actions">
+                    <!-- Generar Circular -->
+                    <p-button label="Generar Circular" icon="pi pi-file-word" severity="info" size="small"
+                        [disabled]="!form.valid || isDisabled" [loading]="isDisabled" (onClick)="GenerarCicular()">
+                    </p-button>
+                    <!-- Copiar Archivos -->
+                    <p-button label="Copiar Archivos" icon="pi pi-copy" severity="secondary" size="small"
+                        [disabled]="isCoping" [loading]="isCoping" (onClick)="CopiarCircular()">
+                    </p-button>
+                    <!-- Copiar Acuses -->
+                    <p-button label="Copiar Acuses" icon="pi pi-copy" severity="secondary" size="small"
+                        [disabled]="isCoping" [loading]="isCoping" (onClick)="CopiarCircularAcuses()">
+                    </p-button>
+                    <!-- Limpiar -->
+                    <p-button label="Limpiar" icon="pi pi-refresh" severity="warn" [outlined]="true" size="small"
+                        (onClick)="clearForm()">
+                    </p-button>
+                </div>
+
+
+                <!-- ========================================= -->
+                <!-- FOOTER                                    -->
+                <!-- ========================================= -->
+
+                <p-divider></p-divider>
+
+                <div class="form-footer">
+
+                    <div class="footer-info">
+
+                        <i class="pi pi-info-circle"></i>
+
+                        <span>
+                            Completa los campos requeridos para continuar.
+                        </span>
+
+                    </div>
+
+                    @if (form.valid) {
+
+                    <p-tag value="Formulario listo" icon="pi pi-check" severity="success">
+                    </p-tag>
+
+                    } @else {
+
+                    <p-tag value="Información pendiente" icon="pi pi-exclamation-triangle" severity="warn">
+                    </p-tag>
+
+                    }
+
+                </div>
+
+            </p-card>
+
         </div>
 
-
-    </div>
+    </form>
 </div>
 }
 @if (selectedItem === 'Indicadores') {
@@ -167,231 +291,546 @@
 }
 @if (selectedItem === 'Graficos') {
 <div id="Graficos">
-    <div class="container-fluid">
-        <h5>GENERAR GRAFICOS </h5>
-        <kendo-progressbar [value]="progress_graficos"></kendo-progressbar>
-        <div class="col-12 mt-2">
-            <div class="row d-flex">
-                <div class="col-5"></div>
-                <div class="col-6">
-                    <button kendoButton (click)="Graficos()" [disabled]="isGraficos" fillMode="solid" size="large"
-                        rounded="medium" themeColor="info" [svgIcon]="chartDoughnutIcon">Generar Graficos</button>
-                    <span class="ps-2">
-                        @if(isGraficos) {
-                        <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                        </kendo-loader>
-                        }
+    <div class="circular-page">
+        <p-card styleClass="circular-card">
+            <!-- ========================================= -->
+            <!-- HEADER                                    -->
+            <!-- ========================================= -->
+            <div class="circular-header">
+                <div class="header-content">
+                    <div class="header-icon-grafico">
+                        <i class="pi pi-chart-line"></i>
+                    </div>
+                    <div>
+                        <h2>Graficos Circular</h2>
+                        <p>
+                            Genera los graficos de la circular de seguimiento.
+                        </p>
+                    </div>
+                </div>
+                <p-tag value="Grafico" icon="pi pi-chart-line" severity="warn">
+                </p-tag>
+            </div>
+            <!-- ========================================= -->
+            <!-- PROGRESO                                  -->
+            <!-- ========================================= -->
+            <div class="progress-section mt-3">
+                <div class="progress-header">
+                    <div class="progress-title">
+                        <i class="pi pi-check-circle"></i>
+                        <span>
+                            Progreso Generacion Graficos
+                        </span>
+                    </div>
+                    @if (!isGraficos)
+                    {
+                    <p-tag value="Pendiente..." icon="pi pi-clock" severity="danger"></p-tag>
+                    }
+                    @else {
+                    @if (!graficosrespuesta) {
+                    <p-tag value="Genrando..." icon="pi pi-spinner-dotted pi-spin" severity="info"></p-tag>
 
-                    </span>
+                    }
+                    @else {
+
+                    <p-tag value="Completado" icon="pi pi-clock" severity="success"></p-tag>
+
+                    }
+
+                    }
+                    <strong>
+                        {{ progress_graficos }}%
+                    </strong>
+                </div>
+                <p-progressbar [value]="progress_graficos" [mode]="graficosrespuesta ? 'determinate' : 'indeterminate'"
+                    [showValue]="false">
+                </p-progressbar>
+            </div>
+            <!-- ========================================= -->
+            <!-- ACCIONES                                  -->
+            <!-- ========================================= -->
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="pi pi-cog"></i>
+                </div>
+                <div>
+                    <h3>Acciones</h3>
+                    <p>
+                        Selecciona el boton para generar graficos.
+                    </p>
                 </div>
             </div>
-            <div class="row mt-3">
-                <iframe [src]="dashUrl" width="100%" height="600px" frameborder="0"></iframe>
+            <div class="actions">
+                <!-- Generar Graficos -->
+                <p-button label="Generar Graficos" icon="pi pi-spinner-dotted spin" severity="info" size="small"
+                    [disabled]="graficosrespuesta || isDisabled" [loading]="isDisabled" (onClick)="Graficos()">
+                </p-button>
             </div>
-            <!-- <div class="row mt-3">
-                <iframe src="http://172.31.33.223:5000/dash2/" width="100%" height="600px" frameborder="0"></iframe>
-            </div> -->
-        </div>
+            <!-- ========================================= -->
+            <!-- FOOTER                                    -->
+            <!-- ========================================= -->
+            <p-divider></p-divider>
+            <div class="form-footer">
+                <div class="footer-info">
+                    <i class="pi pi-info-circle"></i>
+                    <span>
+                        Selecciona el boton para ejecutar
+                    </span>
+                </div>
+                @if (graficosrespuesta) {
+                <p-tag value="Formulario listo" icon="pi pi-check" severity="success">
+                </p-tag>
+                } @else {
+                <p-tag value="Ejecución pendiente" icon="pi pi-exclamation-triangle" severity="warn">
+                </p-tag>
+                }
+            </div>
+        </p-card>
     </div>
 </div>
 }
 @if (selectedItem === 'Puntos de Atencion') {
 <div id="Puntos de Atencion">
-    <div class="container-fluid">
-        <h5>GENERAR PUNTOS DE ATENCION </h5>
-        <kendo-progressbar [value]="progress_puntosAtencion"></kendo-progressbar>
-        <div class="col-12 mt-2">
-            <div class="row d-flex">
-                <div class="col-4"></div>
-                <div class="col-4">
-                    <button kendoButton (click)="PuntosAtencion()" [disabled]="isPuntos" fillMode="solid" size="large"
-                        rounded="medium" themeColor="info" [svgIcon]="wordIcon">Generar Puntos Atencion</button>
-                    <span class="ps-2">
-                        @if(isPuntos) {
-                        <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                        </kendo-loader>
-                        }
+    <div class="circular-page">
+        <p-card styleClass="circular-card">
+            <!-- ========================================= -->
+            <!-- HEADER                                    -->
+            <!-- ========================================= -->
+            <div class="circular-header">
+                <div class="header-content">
+                    <div class="header-icon-atencion">
+                        <i class="pi pi-indent"></i>
+                    </div>
+                    <div>
+                        <h2>Puntos de Atención</h2>
+                        <p>
+                            Genera los Puntos de Atención.
+                        </p>
+                    </div>
+                </div>
+                <p-tag value="Puntos de Atención" icon="pi pi-indent" severity="danger">
+                </p-tag>
+            </div>
+            <!-- ========================================= -->
+            <!-- PROGRESO                                  -->
+            <!-- ========================================= -->
+            <div class="progress-section mt-3">
+                <div class="progress-header">
+                    <div class="progress-title">
+                        <i class="pi pi-check-circle"></i>
+                        <span>
+                            Progreso Generacion Puntos de Atención
+                        </span>
+                    </div>
+                    @if (!isPuntos)
+                    {
+                    <p-tag value="Pendiente..." icon="pi pi-clock" severity="danger"></p-tag>
+                    }
+                    @else {
+                    @if (!puntosAtencion) {
+                    <p-tag value="Genrando..." icon="pi pi-spinner-dotted pi-spin" severity="info"></p-tag>
 
-                    </span>
+                    }
+                    @else {
+
+                    <p-tag value="Completado" icon="pi pi-clock" severity="success"></p-tag>
+
+                    }
+
+                    }
+                    <strong>
+                        {{ progress_puntosAtencion }}%
+                    </strong>
+                </div>
+                <p-progressbar [value]="progress_puntosAtencion" [mode]="isPuntos ? 'determinate' : 'indeterminate'"
+                    [showValue]="false">
+                </p-progressbar>
+            </div>
+            <!-- ========================================= -->
+            <!-- ACCIONES                                  -->
+            <!-- ========================================= -->
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="pi pi-cog"></i>
+                </div>
+                <div>
+                    <h3>Acciones</h3>
+                    <p>
+                        Selecciona el boton para generar puntos de atención.
+                    </p>
                 </div>
             </div>
-        </div>
+            <div class="actions">
+                <!-- Generar Puntos de Atencion -->
+                @if(isPuntos) {
+                <p-button label="Generar Puntos de Atencion" icon="pi pi-spinner-dotted pi-spin" severity="info"
+                    size="small" [disabled]="isPuntos" [loading]="isPuntos" (onClick)="PuntosAtencion()">
+                </p-button>
+                }
+                @else {
+                <p-button label="Generar Puntos de Atencion" icon="pi pi-spinner-dotted" severity="info" size="small"
+                    [disabled]="isPuntos" [loading]="isPuntos" (onClick)="PuntosAtencion()">
+                </p-button>
+
+                }
+
+            </div>
+        </p-card>
     </div>
+
 </div>
 }
 @if (selectedItem === 'Integracion') {
-<div id="Integracion">
-
-    <div class="container-fluid">
-        <h5>INTEGRACION DE TODOS LOS PRODUCTOS DE LA CIRCULAR</h5>
-        <div class="col-12">
-            <div class="row mt-3 d-flex">
-                <div class="col-3">
-                    <kendo-label text="Numero de Circular">
-                    </kendo-label>
-                    <kendo-textbox placeholder="tres digitos" [(ngModel)]="nombre_archivo_circular"></kendo-textbox>
+<div id="Integracion" class="row">
+    <!-- Integracion -->
+    <p-card styleClass="circular-card">
+        <!-- ========================================= -->
+        <!-- HEADER                                    -->
+        <!-- ========================================= -->
+        <div class="circular-header">
+            <div class="header-content">
+                <div class="header-icon-integracion">
+                    <i class="pi pi-file-plus"></i>
                 </div>
-
+                <div>
+                    <h2>Integracion de la Circular</h2>
+                    <p>
+                        Integra todos los producto referentes a la circular de seguimiento en red.
+                    </p>
+                </div>
             </div>
-            <div class="row mt-3 mb-3 d-flex">
-                <div class="col-3">
-                    <button kendoButton (click)="Integracion()" fillMode="solid" size="large" rounded="medium"
-                        themeColor="success" [svgIcon]="wordIcon" [disabled]="isIntegracion">Ejecutar
-                        Integracion</button>
-                    <span class="ps-2">
-                        @if (isIntegracion) {
-                        <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                        </kendo-loader>
-                        }
-
-                    </span>
-                </div>
+            <p-tag value="Integracion" icon="pi pi-file-plus" severity="success">
+            </p-tag>
+        </div>
+        <p-divider></p-divider>
+        <!-- ========================================= -->
+        <!-- DATOS DE LA INTEGRACION                   -->
+        <!-- ========================================= -->
+        <div class="section-header">
+            <div class="section-icon">
+                <i class="pi pi-info-circle"></i>
+            </div>
+            <div>
+                <h3>Datos de la circular</h3>
+                <p>
+                    Completa la información solicitada.
+                </p>
             </div>
         </div>
-    </div>
+        <div class="form-grid">
+            <!-- Número de Circular -->
+            <div class="form-field">
 
-    <div class="container-fluid">
-        <h5>REPORTES SED y SAP EXCEL</h5>
+                <label for="numero_circular">
+                    Número de Circular
+                    <span class="required">*</span>
+                </label>
+
+                <input id="numero_circular" type="text" pInputText [(ngModel)]="nombre_archivo_circular"
+                    placeholder="Ej. 050" fluid pSize="small" (blur)="numeroCircularTouched = true" />
+
+                @if (
+                numeroCircularTouched &&
+                !numeroCircularValido
+                ) {
+
+                <p-message severity="error" icon="pi pi-exclamation-circle" text="Ingresa el número de circular. ">
+                </p-message>
+
+                }
+            </div>
+        </div>
+        <p-divider></p-divider>
+        <!-- ========================================= -->
+        <!-- ACCIONES                                  -->
+        <!-- ========================================= -->
+        <div class="section-header">
+            <div class="section-icon">
+                <i class="pi pi-cog"></i>
+            </div>
+            <div>
+                <h3>Acciones</h3>
+                <p>
+                    Selecciona la operación que deseas realizar.
+                </p>
+            </div>
+        </div>
+        <div class="actions">
+            <!-- Generar Circular -->
+            <p-button label="Integrar Circular" icon="pi pi-file-zip" severity="success" size="small"
+                [disabled]="isIntegracion|| !numeroCircularValido" [loading]="isDisabled" (onClick)="Integracion()">
+            </p-button>
+        </div>
+    </p-card>
+    <!-- Reportes Excel de SED Y SAP -->
+    <p-card styleClass="circular-card-reportes">
+        <!-- ========================================= -->
+        <!-- HEADER                                    -->
+        <!-- ========================================= -->
+        <div class="circular-header">
+            <div class="header-content">
+                <div class="header-icon-integracion">
+                    <i class="pi pi-file-plus"></i>
+                </div>
+                <div>
+                    <h2>Reportes SED y SAP EXCEL</h2>
+                    <p>
+                        Expande los reportes que deseas generar y posteriormente descargar
+                    </p>
+                </div>
+            </div>
+            <p-tag value="Reportes" icon="pi pi-file-plus" severity="success">
+            </p-tag>
+        </div>
+        <p-divider></p-divider>
         <div class="col-12 mt-3">
-            <!-- SED PROGRMACION -->
-            <kendo-expansionpanel title="Reportes SED PROGRAMACION" subtitle="Descargar Reporte" [expanded]="true">
+            <!-- SED PROGRMACION-->
+            <p-panel header="Reportes SED PROGRAMACION" [toggleable]="true" [collapsed]="true" class="mb-3">
 
-                <div class="row mb-2">
-                    <div class="col-3">
-                        <kendo-combobox [data]="listItems" [allowCustom]="allowCustom" [(ngModel)]="selectedValues1">
-                        </kendo-combobox>
-                    </div>
-                    <div class="col-2 d-flex align-items-center">
-                        <button kendoButton (click)="Programacion()" fillMode="solid" size="medium" rounded="medium"
-                            themeColor="success" [svgIcon]="fileExcelIcon" [disabled]="isProgramacion ">Generar
-                            Programacion</button>
-                        <span class="ms-2">
-                            @if (isProgramacion) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
+                <!-- Filtros / generación -->
+                <div class="flex align-items-center gap-1 mb-3 w-full">
 
-                        </span>
-                    </div>
+                    <p-select [options]="listaAniosProgramacion" [(ngModel)]="programacion" [editable]="allowCustom"
+                        placeholder="Seleccionar" size="small">
+                    </p-select>
+
+                    <p-button label="Generar Programacion" icon="pi pi-file-excel" severity="info"
+                        [disabled]="isProgramacion" (onClick)="Programacion()" size="small">
+                    </p-button>
+
+                    @if (isProgramacion) {
+                    <p-progressSpinner class="ml-1" [style]="{ width: '25px', height: '25px' }" strokeWidth="4">
+                    </p-progressSpinner>
+                    }
+
                 </div>
-
-
-
-                <div class="row mt-2 mb-3">
-                    <kendo-grid [data]="filesSEDProgramacion" [kendoGridBinding]="filesSEDProgramacion"
-                        [filterable]="true" [pageable]="true" [pageSize]="5" [sortable]="true"
-                        [columnMenu]="menuSettings" size="small" [resizable]="true">
-                        <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
-                        <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
-                            [width]="130"></kendo-grid-column>
-                        <kendo-grid-column field="modification_time" title="Creacion" [width]="160"></kendo-grid-column>
-                        <kendo-grid-command-column title="Acciones" [width]="210">
-                            <ng-template kendoGridCellTemplate let-dataItem>
-                                <button kendoButton (click)="downloadFilesSEDPROGRAMACION(dataItem.name)"
-                                    class="k-primary" [svgIcon]="downloadIcon">Descargar</button>
-                                <!-- @if(dataItem.extension === '.pdf' ){
-                                <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
-                                    PDF</button>
-                                } -->
-                            </ng-template>
-
-                        </kendo-grid-command-column>
-                    </kendo-grid>
+                <!-- Tabla -->
+                <div class="mt-3">
+                    <p-table [value]="filesSEDProgramacion" [paginator]="true" [rows]="5" stripedRows
+                        [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20, 50]"
+                        [sortMode]="'multiple'" [resizableColumns]="true" showGridlines
+                        [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" responsiveLayout="scroll"
+                        styleClass="p-datatable-sm" size="small">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pResizableColumn pSortableColumn="name" style="width: 200px">
+                                    Nombre de Archivo
+                                    <p-sortIcon field="name"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn pSortableColumn="size" style="width: 130px" class="text-center">
+                                    Tamaño
+                                    <p-sortIcon field="size"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn pSortableColumn="creation_time" style="width: 160px">
+                                    Creacion
+                                    <p-sortIcon field="creation_time"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn pSortableColumn="modification_time" style="width: 160px">
+                                    Modificacion
+                                    <p-sortIcon field="modification_time"></p-sortIcon>
+                                </th>
+                                <th style="width: 210px">
+                                    Acciones
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-dataItem>
+                            <tr>
+                                <td>
+                                    {{ dataItem.name }}
+                                </td>
+                                <td class="text-center">
+                                    {{ dataItem.size }}
+                                </td>
+                                <td>
+                                    {{ dataItem.creation_time }}
+                                </td>
+                                <td>
+                                    {{ dataItem.modification_time }}
+                                </td>
+                                <td>
+                                    <p-button label="Descargar" icon="pi pi-download" severity="info" size="small"
+                                        (onClick)="downloadFilesSEDPROGRAMACION(dataItem.name)">
+                                    </p-button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    No hay archivos disponibles.
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
                 </div>
-            </kendo-expansionpanel>
+            </p-panel>
             <!-- SED SEGUIMIENTO -->
-            <kendo-expansionpanel title="Reportes SED Seguimiento" subtitle="Descargar Reporte" [expanded]="true">
-                <div class="row">
-                    <div class="col-3">
-                        <kendo-combobox [data]="listItems2" [allowCustom]="allowCustom" [(ngModel)]="selectedValues2">
-                        </kendo-combobox>
-                    </div>
-                    <div class="col-2 d-flex align-items-center">
-                        <button kendoButton (click)="Seguimiento()" fillMode="solid" size="medium" rounded="medium"
-                            themeColor="success" [svgIcon]="fileExcelIcon" [disabled]="isSeguimiento ">Generar
-                            Seguimiento</button>
-                        <span class="ms-2">
-                            @if (isSeguimiento) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
-                    </div>
-                </div>
-                <div class="row mt-2 mb-3">
-                    <kendo-grid [data]="filesSEDSeguimiento" [kendoGridBinding]="filesSEDSeguimiento"
-                        [filterable]="true" [pageable]="true" [pageSize]="5" [sortable]="true"
-                        [columnMenu]="menuSettings" size="small" [resizable]="true">
-                        <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
-                        <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
-                            [width]="130"></kendo-grid-column>
-                        <kendo-grid-column field="creation_time" title="Creación" [width]="160">
-                        </kendo-grid-column>
-                        <kendo-grid-column field="modification_time" title="Modificación"
-                            [width]="160"></kendo-grid-column>
-                        <kendo-grid-command-column title="Acciones" [width]="210">
-                            <ng-template kendoGridCellTemplate let-dataItem>
-                                <button kendoButton (click)="downloadFilesSEDSEGUIMIENTO(dataItem.name)"
-                                    class="k-primary" [svgIcon]="downloadIcon">Descargar</button>
-                                <!-- @if(dataItem.extension === '.pdf' ){
-                                <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
-                                    PDF</button>
-                                } -->
-                            </ng-template>
+            <p-panel header="Reportes SED SEGUIMIENTO" [toggleable]="true" [collapsed]="true" class="mb-3">
 
-                        </kendo-grid-command-column>
-                    </kendo-grid>
+                <!-- Filtros / generación -->
+                <div class="flex align-items-center gap-1 mb-3 w-full">
+
+                    <p-select [options]="listaAnioSeguimiento" [(ngModel)]="seguimiento" [editable]="allowCustom"
+                        placeholder="Seleccionar" size="small">
+                    </p-select>
+
+                    <p-button label="Generar Seguimiento" icon="pi pi-file-excel" severity="info"
+                        [disabled]="isSeguimiento" (onClick)="Seguimiento()" size="small">
+                    </p-button>
+
+                    @if (isSeguimiento) {
+                    <p-progressSpinner class="ml-1" [style]="{ width: '25px', height: '25px' }" strokeWidth="4">
+                    </p-progressSpinner>
+                    }
+
                 </div>
-            </kendo-expansionpanel>
+                <!-- Tabla -->
+                <div class="mt-3">
+                    <p-table [value]="filesSEDSeguimiento" [paginator]="true" [rows]="5" stripedRows
+                        [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20, 50]"
+                        [sortMode]="'multiple'" [resizableColumns]="true" showGridlines
+                        [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" responsiveLayout="scroll"
+                        styleClass="p-datatable-sm" size="small">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pResizableColumn pSortableColumn="name" style="width: 230px">
+                                    Nombre de Archivo
+                                    <p-sortIcon field="name"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn pSortableColumn="size" style="width: 130px" class="text-center">
+                                    Tamaño
+                                    <p-sortIcon field="size"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn pSortableColumn="creation_time" style="width: 160px">
+                                    Creacion
+                                    <p-sortIcon field="creation_time"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn pSortableColumn="modification_time" style="width: 160px">
+                                    modificacion
+                                    <p-sortIcon field="modification_time"></p-sortIcon>
+                                </th>
+                                <th style="width: 210px">
+                                    Acciones
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-dataItem>
+                            <tr>
+                                <td>
+                                    {{ dataItem.name }}
+                                </td>
+                                <td class="text-center">
+                                    {{ dataItem.size }}
+                                </td>
+                                <td>
+                                    {{ dataItem.creation_time }}
+                                </td>
+                                <td>
+                                    {{ dataItem.modification_time }}
+                                </td>
+                                <td>
+                                    <p-button label="Descargar" icon="pi pi-download" severity="info" size="small"
+                                        (onClick)="downloadFilesSEDSEGUIMIENTO(dataItem.name)">
+                                    </p-button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    No hay archivos disponibles.
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </p-panel>
             <!-- SAP -->
+            <p-panel header="Reportes SAP" [toggleable]="true" [collapsed]="true" class="mb-3">
 
-            <kendo-expansionpanel title="Reportes SAP " subtitle="Descargar Reporte" [expanded]="true">
-                <div class="row">
-                    <div class="col-3">
-                        <kendo-combobox [data]="listItems3" [allowCustom]="allowCustom" [(ngModel)]="selectedValues3">
-                        </kendo-combobox>
-                    </div>
-                    <div class="col-2 d-flex align-items-center">
-                        <button kendoButton (click)="SAP()" fillMode="solid" size="medium" rounded="medium"
-                            themeColor="success" [svgIcon]="fileExcelIcon" [disabled]="isSAP ">Generar SAP </button>
-                        <span class="ms-2">
-                            @if (isSAP) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
+                <!-- Filtros / generación -->
+                <div class="flex align-items-center gap-1 mb-3 w-full">
 
-                        </span>
-                    </div>
+                    <p-select [options]="listaAnioSAP" [(ngModel)]="sap" [editable]="allowCustom"
+                        placeholder="Seleccionar" size="small">
+                    </p-select>
+
+                    <p-button label="Generar SAP" icon="pi pi-file-excel" severity="info" [disabled]="isSAP"
+                        (onClick)="SAP()" size="small">
+                    </p-button>
+
+                    @if (isSAP) {
+                    <p-progressSpinner class="ml-1" [style]="{ width: '25px', height: '25px' }" strokeWidth="4">
+                    </p-progressSpinner>
+                    }
+
                 </div>
-                <div class="row mt-2 mb-3">
-                    <kendo-grid [data]="filesSAP" [kendoGridBinding]="filesSAP" [filterable]="true" [pageable]="true"
-                        [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small" [resizable]="true">
-                        <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
-                        <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
-                            [width]="130"></kendo-grid-column>
-                        <kendo-grid-column field="creation_time" title="Creación" [width]="160">
-                        </kendo-grid-column>
-                        <kendo-grid-column field="modification_time" title="Modificación"
-                            [width]="160"></kendo-grid-column>
-                        <kendo-grid-command-column title="Acciones" [width]="210">
-                            <ng-template kendoGridCellTemplate let-dataItem>
-                                <button kendoButton (click)="downloadFilesSAP(dataItem.name)" class="k-primary"
-                                    [svgIcon]="downloadIcon">Descargar</button>
-                                <!-- @if(dataItem.extension === '.pdf' ){
-                                <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
-                                    PDF</button>
-                                } -->
-                            </ng-template>
 
-                        </kendo-grid-command-column>
-                    </kendo-grid>
+                <div class="mt-3">
+                    <p-table [value]="filesSAP" [paginator]="true" [rows]="5" stripedRows
+                        [tableStyle]="{ 'min-width': '50rem' }" [rowsPerPageOptions]="[5, 10, 20, 50]"
+                        [sortMode]="'multiple'" [resizableColumns]="true" showGridlines
+                        [tableStyle]="{ 'min-width': '50rem' }" [scrollable]="true" responsiveLayout="scroll"
+                        styleClass="p-datatable-sm" size="small">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pResizableColumn pSortableColumn="name" style="width: 230px">
+                                    Nombre de Archivo
+                                    <p-sortIcon field="name"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn pSortableColumn="size" style="width: 130px" class="text-center">
+                                    Tamaño
+                                    <p-sortIcon field="size"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn pSortableColumn="creation_time" style="width: 160px">
+                                    Creacion
+                                    <p-sortIcon field="creation_time"></p-sortIcon>
+                                </th>
+                                <th pResizableColumn pSortableColumn="modification_time" style="width: 160px">
+                                    modificacion
+                                    <p-sortIcon field="modification_time"></p-sortIcon>
+                                </th>
+                                <th style="width: 210px">
+                                    Acciones
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-dataItem>
+                            <tr>
+                                <td>
+                                    {{ dataItem.name }}
+                                </td>
+                                <td class="text-center">
+                                    {{ dataItem.size }}
+                                </td>
+                                <td>
+                                    {{ dataItem.creation_time }}
+                                </td>
+                                <td>
+                                    {{ dataItem.modification_time }}
+                                </td>
+                                <td>
+                                    <p-button label="Descargar" icon="pi pi-download" severity="info" size="small"
+                                        (onClick)="downloadFilesSAP(dataItem.name)">
+                                    </p-button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="4" class="text-center">
+                                    No hay archivos disponibles.
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
                 </div>
-            </kendo-expansionpanel>
-
+            </p-panel>
 
         </div>
-    </div>
 
+    </p-card>
 </div>
 }
 @if (selectedItem === 'Comparacion') {
@@ -405,10 +844,13 @@
                         Comparador de Archivos
                     </h1>
                     <p class="subtitle">Compara archivos de diferentes períodos de tiempo</p>
-                    <kendo-label class="k-display-block" [for]="textbox"
-                        text="Selecciona un identificador por el cual comparar"></kendo-label>
-                    <kendo-textbox #textbox [style.width.px]="500" [clearButton]="true"
-                        [(ngModel)]="customKeyColumn"></kendo-textbox>
+                    <label class="block" for="customKeyColumn">Selecciona un identificador por el cual comparar</label>
+                    <p-iconfield [style.width.px]="400">
+                        <input pInputText id="customKeyColumn" type="text" fluid [(ngModel)]="customKeyColumn" pSize="small" />
+                        @if (customKeyColumn) {
+                        <p-inputicon styleClass="pi pi-times cursor-pointer" (click)="customKeyColumn = ''" />
+                        }
+                    </p-iconfield>
                 </div>
             </header>
 
@@ -470,4 +912,5 @@
 
     </div>
 </div>
+
 }

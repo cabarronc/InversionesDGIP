@@ -164,6 +164,9 @@ importers:
       pocketbase:
         specifier: ^0.25.1
         version: 0.25.2
+      primeflex:
+        specifier: ^4.0.0
+        version: 4.0.0
       primeicons:
         specifier: ^8.0.0
         version: 8.0.0
@@ -4738,6 +4741,9 @@ packages:
   postcss@8.5.26:
     resolution: {integrity: sha512-u82N74LFzG8ca+dD8puPnplTXoGH4fTPpVGuIbt36G3qvNlkvfD0lEAZSxaly3KX8TS/L1A1gsCEmvKmBcVbkQ==}
     engines: {node: ^10 || ^12 || >=14}
+
+  primeflex@4.0.0:
+    resolution: {integrity: sha512-UOEZCRjR36+sm5bUpDhS1xbA068l9VC6y1aTNVqQPtXuKIdPTqAWHRUxj3mKAoPrQ9W373ooJJMgNVXfiaw04g==}
 
   primeicons@8.0.0:
     resolution: {integrity: sha512-eZGk+Mgb4fE+LkJi9LvllbnB4RVUF9kzmnLVnT3ZMY6stqKVh7TUJ0mFoMNIEgTnJSvhaGcJotDiSvtVvkHd7g==}
@@ -10817,6 +10823,8 @@ snapshots:
       nanoid: 3.3.18
       picocolors: 1.1.1
       source-map-js: 1.2.1
+
+  primeflex@4.0.0: {}
 
   primeicons@8.0.0: {}
 

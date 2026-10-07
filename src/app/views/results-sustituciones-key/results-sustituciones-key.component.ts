@@ -1,9 +1,10 @@
 import { Component, Input, } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TableModule } from 'primeng/table';
 
 @Component({
     selector: 'app-results-sustituciones-key',
-    imports: [CommonModule],
+    imports: [CommonModule,TableModule],
     templateUrl: './results-sustituciones-key.component.html',
     styleUrl: './results-sustituciones-key.component.scss'
 })

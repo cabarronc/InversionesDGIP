@@ -1,10 +1,12 @@
 import { Component,Input  } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FieldAnalysis, ChangeDetection } from '../../../services/comparacion-archivos.service';
+import { TagModule } from 'primeng/tag';
+import { MessageModule } from 'primeng/message';
 
 @Component({
     selector: 'app-results-detalle',
-    imports: [CommonModule],
+    imports: [CommonModule,TagModule,MessageModule],
     templateUrl: './results-detalle.component.html',
     styleUrl: './results-detalle.component.scss'
 })

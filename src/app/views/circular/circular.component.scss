@@ -1,0 +1,127 @@
+.drawer-header {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 2.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.drawer-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 2.2;
+  white-space: nowrap;
+}
+.drawer-title-main {
+  font-size: 1.1rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-align: center;
+        
+}
+/* Intenta primero aplicando padding (relleno interno) */
+:host ::ng-deep .mi-menu-personalizado .p-menuitem-link {
+  padding-top: 215px !important;
+  padding-bottom: 215px !important;
+}
+
+/* O forzando una altura fija si el padding no te convence */
+:host ::ng-deep .mi-menu-personalizado .p-menuitem-link {
+  height: 205px !important;
+}
+// .custom-toolbar {
+//   position: sticky  !important;
+//   top: 70px !important ;
+//   z-index: 1000;
+//   width: 100%;
+//   display: flex;
+//   align-items: center;
+
+
+//   padding: 0 28px 0;
+//   background: var(--p-content-background);
+//   color: var(--p-text-color);
+
+//   border-bottom: 1px solid var(--p-cyan-200);
+//    border-top:1px solid var(--p-cyan-200);
+// }
+.custom-toolbar {
+    position: sticky !important;
+    top: 70px !important;
+    z-index: 1000;
+    width: 100%;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 28px;
+
+    /* Liquid Glass */
+    background: color-mix(
+        in srgb,
+        var(--p-content-background) 70%,
+        transparent
+    );
+
+    backdrop-filter: blur(18px) saturate(180%);
+    -webkit-backdrop-filter: blur(18px) saturate(180%);
+
+    /* Bordes adaptables al tema */
+    border-top: 1px solid color-mix(
+        in srgb,
+        var(--p-text-color) 12%,
+        transparent
+    );
+
+    border-bottom: 1px solid color-mix(
+        in srgb,
+        var(--p-text-color) 12%,
+        transparent
+    );
+
+    /* Profundidad */
+    box-shadow:
+        0 8px 24px color-mix(
+            in srgb,
+            var(--p-text-color) 8%,
+            transparent
+        ),
+        inset 0 1px 0 color-mix(
+            in srgb,
+            var(--p-text-color) 10%,
+            transparent
+        );
+
+    color: var(--p-text-color);
+
+    overflow: hidden;
+}
+.custom-toolbar::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        120deg,
+        color-mix(
+            in srgb,
+            var(--p-text-color) 8%,
+            transparent
+        ),
+        transparent 45%,
+        color-mix(
+            in srgb,
+            var(--p-text-color) 3%,
+            transparent
+        )
+    );
+
+    pointer-events: none;
+}
+
+.custom-toolbar > * {
+    position: relative;
+    z-index: 1;
+}

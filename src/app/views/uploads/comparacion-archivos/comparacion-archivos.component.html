@@ -39,19 +39,18 @@
       </div>
       @if(file1 && file2){
       <div class="upload-actions">
-        <button class="btn btn-primary" [disabled]="isUploading" (click)="uploadFiles('normal')">
-          {{ isUploading ? 'Subiendo...' : '📤 Subir y Comparar' }}
-        </button>
-                <button class="btn btn-substitutions" [disabled]="isUploading" (click)="uploadFiles('substitutions')">
-          {{ isUploading ? 'Subiendo...' : '🔄 Análisis de Sustituciones' }}
-        </button>
-           <button class="btn btn-substitutions" [disabled]="isUploading" (click)="uploadFiles('substitutions_by_key')">
-          {{ isUploading ? 'Subiendo...' : '🔄 Análisis de Sustituciones Pro' }}
-        </button>
-        
-        <button class="btn btn-secondary" (click)="clearFiles()">
-          🗑️ Limpiar
-        </button>
+        <p-button styleClass="btn btn-primary" [disabled]="isUploading" (onClick)="uploadFiles('normal')"
+          [label]="isUploading ? 'Subiendo...' : '📤 Subir y Comparar'" />
+
+        <p-button styleClass="btn btn-substitutions" [disabled]="isUploading"
+          (onClick)="uploadFiles('substitutions')"
+          [label]="isUploading ? 'Subiendo...' : '🔄 Análisis de Sustituciones'" />
+
+        <p-button styleClass="btn btn-substitutions" [disabled]="isUploading"
+          (onClick)="uploadFiles('substitutions_by_key')"
+          [label]="isUploading ? 'Subiendo...' : '🔄 Análisis de Sustituciones Pro'" />
+
+        <p-button styleClass="btn btn-secondary" (onClick)="clearFiles()" label="🗑️ Limpiar" />
       </div>
 
       }
@@ -64,48 +63,45 @@
       <div class="existing-files">
         <div class="file-selector">
           <label>Archivo 1 (Anterior):</label>
-          <select [(ngModel)]="selectedFile1" (change)="onExistingFileSelected()">
-            <option value="">Seleccionar archivo...</option>
-            @for (file of existingFiles; track $index) {
-            <option [value]="file.id">
-              {{ getFileIcon(file.extension) }} {{ file.name }}
-              ({{ formatFileSize(file.size) }})
-            </option>
-            }
-          </select>
+          <p-select [options]="existingFiles" optionValue="id" optionLabel="name" [(ngModel)]="selectedFile1"
+            (onChange)="onExistingFileSelected()" placeholder="Seleccionar archivo..." [showClear]="true" fluid>
+            <ng-template #selectedItem let-file>
+              {{ getFileIcon(file.extension) }} {{ file.name }} ({{ formatFileSize(file.size) }})
+            </ng-template>
+            <ng-template #item let-file>
+              {{ getFileIcon(file.extension) }} {{ file.name }} ({{ formatFileSize(file.size) }})
+            </ng-template>
+          </p-select>
         </div>
 
         <div class="file-selector">
           <label>Archivo 2 (Posterior):</label>
-          <select [(ngModel)]="selectedFile2" (change)="onExistingFileSelected()">
-            <option value="">Seleccionar archivo...</option>
-            <option *ngFor="let file of existingFiles" [value]="file.id">
-              {{ getFileIcon(file.extension) }} {{ file.name }}
-              ({{ formatFileSize(file.size) }})
-            </option>
-          </select>
+          <p-select [options]="existingFiles" optionValue="id" optionLabel="name" [(ngModel)]="selectedFile2"
+            (onChange)="onExistingFileSelected()" placeholder="Seleccionar archivo..." [showClear]="true" fluid>
+            <ng-template #selectedItem let-file>
+              {{ getFileIcon(file.extension) }} {{ file.name }} ({{ formatFileSize(file.size) }})
+            </ng-template>
+            <ng-template #item let-file>
+              {{ getFileIcon(file.extension) }} {{ file.name }} ({{ formatFileSize(file.size) }})
+            </ng-template>
+          </p-select>
         </div>
         <div class="row">
           <div class="col-12 d-flex flex-column align-items-center mb-3">
-            <button class="btn btn-primary mb-3"
+            <p-button styleClass="btn btn-primary mb-3"
               [disabled]="!selectedFile1 || !selectedFile2 || selectedFile1 === selectedFile2"
-              (click)="compareExistingFiles('normal')">
-              🔍 Comparar Archivos Seleccionados
-            </button>
+              (onClick)="compareExistingFiles('normal')" label="🔍 Comparar Archivos Seleccionados" />
 
-            <button class="btn btn-detailed"
+            <p-button styleClass="btn btn-detailed"
               [disabled]="!selectedFile1 || !selectedFile2 || selectedFile1 === selectedFile2"
-              (click)="compareExistingFiles('detailed')">
-              🔬 Análisis Detallado
-            </button>
-            <button class="btn btn-substitutions"
+              (onClick)="compareExistingFiles('detailed')" label="🔬 Análisis Detallado" />
+
+            <p-button styleClass="btn btn-substitutions"
               [disabled]="!selectedFile1 || !selectedFile2 || selectedFile1 === selectedFile2"
-              (click)="compareExistingFiles('substitutions')">
-              🔄 Ver Sustituciones
-            </button>
-             <button class="btn btn-substitutions" [disabled]="isUploading"  (click)="compareExistingFiles('substitutions_by_key')">
-           🔄 Ver Sustituciones Por Clave
-        </button>
+              (onClick)="compareExistingFiles('substitutions')" label="🔄 Ver Sustituciones" />
+
+            <p-button styleClass="btn btn-substitutions" [disabled]="isUploading"
+              (onClick)="compareExistingFiles('substitutions_by_key')" label="🔄 Ver Sustituciones Por Clave" />
           </div>
         </div>
 
@@ -115,11 +111,14 @@
   </div>
 
   <!-- Mensajes de estado -->
-  <div class="status-messages" *ngIf="statusMessage">
-    <div class="alert" [ngClass]="statusType">
+   @if (statusMessage) {
+      <div class="status-messages">
+    <p-message [severity]="statusType">
       {{ statusMessage }}
-    </div>
+    </p-message>
   </div>
+   }
+
 </div>
 
 <!-- Input files ocultos -->

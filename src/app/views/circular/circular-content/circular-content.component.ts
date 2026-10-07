@@ -1,6 +1,8 @@
 import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { finalize } from 'rxjs/operators';
+ import { firstValueFrom } from 'rxjs';
+
 import { NavBarComponent } from "../../nav-bar/nav-bar.component";
 import { ApiService } from '../../../services/api.service';
 import { fileWordIcon, imageIcon, menuIcon, SVGIcon, copyIcon, fileExcelIcon, downloadIcon, aggregateFieldsIcon, chartDoughnutIcon } from '@progress/kendo-svg-icons';
@@ -36,11 +38,37 @@ import { ResultsSustitucionesComponent } from "../../results-sustituciones/resul
 import { ResultsSustitucionesKeyComponent } from "../../results-sustituciones-key/results-sustituciones-key.component";
 import { JsonPipe } from '@angular/common';
 
+
+
+import { InputTextModule } from 'primeng/inputtext';
+import { ButtonModule } from 'primeng/button';
+import { DatePickerModule } from 'primeng/datepicker';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DividerModule } from 'primeng/divider';
+import { CardModule } from 'primeng/card';
+import { TagModule } from 'primeng/tag';
+import { MessageModule } from 'primeng/message';
+import { PickListModule } from 'primeng/picklist';
+import { MessageService } from 'primeng/api';
+import { Table, TableModule, TableEditCompleteEvent } from 'primeng/table';
+import { SelectModule } from 'primeng/select';
+import { PanelModule } from 'primeng/panel';
+import { ToastModule } from 'primeng/toast';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+
 @Component({
   selector: 'app-circular-content',
   imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
-    KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
-    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent, ResultsSustitucionesKeyComponent],
+    KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,ToastModule,
+    WindowModule, FormsModule, KENDO_GRID, KENDO_DROPDOWNS, ComparacionArchivosComponent, ResultsComponent, ResultsSustitucionesComponent, ResultsSustitucionesKeyComponent,
+    InputTextModule,
+    ButtonModule,
+    DatePickerModule, TableModule,SelectModule,PanelModule,IconFieldModule,InputIconModule,
+    ProgressBarModule, TagModule, MessageModule,PickListModule,
+    ProgressSpinnerModule, DividerModule, CardModule
+  ],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './circular-content.component.html',
   styleUrl: './circular-content.component.scss'
@@ -65,6 +93,8 @@ export class CircularContentComponent implements OnInit {
     numero_circular: "",
     fecha: this.fecha
   };
+  public dependencias:any[] =[]
+  public dependenciasExcluir: string[] = [];
   public reverse = true
   public isDisabled = false;
   public isCoping = false;
@@ -100,41 +130,57 @@ export class CircularContentComponent implements OnInit {
   comparisonResult: any = null;
   isComparing = false;
   currentYear = new Date().getFullYear();
+  numeroCircularTouched = false;
 
-
-  constructor(private apiService: ApiService, private notificationService: NotificationService, private fileService: FileService, private sanitizer: DomSanitizer
-    , private comparacionArchivos: ComparacionArchivosService
+  constructor(private apiService: ApiService, private fileService: FileService, private sanitizer: DomSanitizer
+    , private comparacionArchivos: ComparacionArchivosService,private messageService: MessageService
   ) {
     this.form = new FormGroup({
-      numero_circular: new FormControl(this.data.numero_circular, [Validators.required]),
+      numero_circular: new FormControl(this.data.numero_circular, [Validators.required, Validators.pattern(/^\d{3}\/\d{4}$/)]),
       fecha: new FormControl(this.data.fecha, [Validators.required,]),
     });
     this.dashUrl = this.sanitizer.bypassSecurityTrustResourceUrl(environment.apiUrlDash);
   }
+  get numeroCircularValido(): boolean {
+    return /^\d{3}$/.test(this.nombre_archivo_circular ?? '');
+  }
   customKeyColumn: string = '';
   public allowCustom = true;
-  public selectedValues1: string = "2025";
-  public selectedValues2: string = "2025";
-  public selectedValues3: string = "2025";
-  public listItems: Array<string> = [
-    "2025",
-    "2024",
-    "2023",
-  ];
-  public listItems2: Array<string> = [
-    "2025",
-    "2024",
-    "2023",
-  ];
-  public listItems3: Array<string> = [
-    "2025",
-    "2024",
-    "2023",
-  ];
+  listaAniosProgramacion: string[] = [];
+  programacion: string = '';
+  listaAnioSeguimiento: string[] = [];
+  seguimiento: string = '';
+  listaAnioSAP: string[] = [];
+  sap: string = '';
+
+
   ngOnInit(): void {
     this.GetFilesSEDSeguimiento()
     this.GetFilesSEDProgramacion()
     this.GetFilesSAP()
+
+  const anioActual = new Date().getFullYear();
+
+  this.listaAniosProgramacion = Array.from(
+    { length: 5 },
+    (_, i) => String(anioActual - 3 + i)
+  );
+
+  this.programacion = String(anioActual);
+
+  this.listaAnioSeguimiento = Array.from(
+    { length: 5 },
+    (_, i) => String(anioActual - 3 + i)
+  );
+
+  this.seguimiento = String(anioActual);
+
+   this.listaAnioSAP = Array.from(
+    { length: 5 },
+    (_, i) => String(anioActual - 3 + i)
+  );
+
+  this.sap = String(anioActual);
   }
 
   GetFilesSEDProgramacion() {
@@ -212,128 +258,221 @@ export class CircularContentComponent implements OnInit {
       }
     );
   }
-  public GenerarCicular(): void {
-    if (this.form.invalid) {
-      console.log("Formulario inválido: llena todos los campos requeridos.");
-      this.notificationService.show({
-        content: "Formulario inválido: llena todos los campos requeridos.",
-        hideAfter: 1500,
-        animation: { type: "slide", duration: 900 },
-        type: { style: "error", icon: true },
-        position: { horizontal: "center", vertical: "top" },
-      });
-      return;  // Sale de la función si el formulario no es válido
-    }
 
-    this.isDisabled = true;
-    this.data.numero_circular = this.form.value.numero_circular;
-    this.data.fecha = this.form.value.fecha;
-    this.notificationService.show({
-      content: "Espere, tardara algunos minutos",
-      hideAfter: 1500,
-      animation: { type: "slide", duration: 900 },
-      type: { style: "info", icon: true },
-      position: { horizontal: "center", vertical: "top" },
+
+  
+  // public GenerarCicular(): void {
+  //   if (this.form.invalid) {
+  //     console.log("Formulario inválido: llena todos los campos requeridos.");
+  //     this.messageService.add({
+  //       severity: 'error',
+  //       summary: 'Error',
+  //       detail: 'Formulario inválido: llena todos los campos requeridos.',
+  //       life: 3500
+  //     });
+  //     return;  // Sale de la función si el formulario no es válido
+  //   }
+
+  //   this.isDisabled = true;
+  //   this.data.numero_circular = this.form.value.numero_circular;
+  //   this.data.fecha = this.form.value.fecha;
+  //   this.messageService.add({
+  //       severity: 'info',
+  //       summary: 'Info',
+  //       detail: 'Espere, tardara algunos minutos',
+  //       life: 3500
+  //     });
+    
+  //   //console.log("data",this.data)
+  //   let data = JSON.stringify(this.data);
+  //   console.log(data)
+  //   this.progress = 1;
+  //   // Inicia un intervalo para actualizar el progreso gradualmente
+  //   this.interval = setInterval(() => {
+  //     if (this.progress < 99) {
+  //       this.progress += 1; // Aumenta gradualmente el valor de la barra
+  //     }
+  //   }, 1500); // Se actualiza cada 100 ms (puedes ajustar el tiempo según sea necesario)
+  //   this.apiService.getData(data).pipe(
+  //     finalize(() => {
+  //       // Al finalizar la llamada, fija el progreso en 100
+  //       this.progress = 100;
+  //       this.isDisabled = false;
+  //       setTimeout(() => {
+  //         this.progress = 0;
+  //       }, 3000); // Cambia 2000 a 4000 si quieres 4 segundos
+  //     })
+  //   ).
+  //     subscribe(
+  //       (response) => {
+  //         console.log(response)
+  //         this.dependencias = response.dependencia
+  //         console.log(this.dependencias)
+  //         this.data2 = response.success;
+  //         this.isDisabled = false;
+  //         if (response != true) {
+  //               this.messageService.add({
+  //                 severity: 'warn',
+  //                 summary: 'Advertencia',
+  //                 detail: 'Se ha producido un error',
+  //                 life: 3500
+  //               });
+
+  //         }
+  //         else {
+  //             this.messageService.add({
+  //                 severity: 'success',
+  //                 summary: 'Exito!',
+  //                 detail: 'La Circular se Generro con Exito',
+  //                 life: 3500
+  //               });
+  //         }
+  //         console.log('Datos obtenidos:', this.data2.success);
+  //         clearInterval(this.interval);
+  //         this.progress = 0 // Detén el intervalo una vez que la llamada ha finalizado
+
+  //       },
+  //       (error) => {
+  //         this.isDisabled = false;
+  //         clearInterval(this.interval); // Detén el intervalo si hay error
+  //         this.messageService.add({
+  //                 severity: 'error',
+  //                 summary: 'Error',
+  //                 detail: 'Se ha producido un error en tiempo de ejecucion',
+  //                 life: 3500
+  //               });
+  //         console.error('Error al obtener datos:', error);
+  //       }
+  //     );
+  // }
+
+
+public async GenerarCicular(): Promise<void> {
+  if (this.form.invalid) {
+    console.log('Formulario inválido: llena todos los campos requeridos.');
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Formulario inválido: llena todos los campos requeridos.',
+      life: 3500
     });
-    //console.log("data",this.data)
-    let data = JSON.stringify(this.data);
-    console.log(data)
-    this.progress = 1;
-    // Inicia un intervalo para actualizar el progreso gradualmente
-    this.interval = setInterval(() => {
-      if (this.progress < 99) {
-        this.progress += 1; // Aumenta gradualmente el valor de la barra
-      }
-    }, 1500); // Se actualiza cada 100 ms (puedes ajustar el tiempo según sea necesario)
-    this.apiService.getData(data).pipe(
-      finalize(() => {
-        // Al finalizar la llamada, fija el progreso en 100
-        this.progress = 100;
-        this.isDisabled = false;
-        setTimeout(() => {
-          this.progress = 0;
-        }, 3000); // Cambia 2000 a 4000 si quieres 4 segundos
-      })
-    ).
-      subscribe(
-        (response) => {
-          this.data2 = response;
-          this.isDisabled = false;
-          if (response != true) {
-            this.notificationService.show({
-              content: this.data2.success,
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "warning", icon: true },
-              position: { horizontal: "center", vertical: "top" },
-            });
-          }
-          else {
-            this.notificationService.show({
-              content: "La Circular se Generro con Exito",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "center", vertical: "top" },
-            });
-          }
-          console.log('Datos obtenidos:', this.data2.success);
-          clearInterval(this.interval);
-          this.progress = 0 // Detén el intervalo una vez que la llamada ha finalizado
-
-        },
-        (error) => {
-          this.isDisabled = false;
-          clearInterval(this.interval); // Detén el intervalo si hay error
-          this.notificationService.show({
-            content: "Existe un error",
-            hideAfter: 1500,
-            animation: { type: "slide", duration: 900 },
-            type: { style: "error", icon: true },
-            position: { horizontal: "center", vertical: "top" },
-          });
-          console.error('Error al obtener datos:', error);
-        }
-      );
+    return; // Sale de la función si el formulario no es válido
   }
+
+  this.isDisabled = true;
+  this.data.numero_circular = this.form.value.numero_circular;
+  this.data.fecha = this.form.value.fecha;
+
+  // Toast de espera: sticky y con key propia, se quita cuando termina la llamada
+  this.messageService.add({
+    key: 'circular',
+    severity: 'info',
+    summary: 'Por favor espere',
+     detail: 'Generando Circular',
+    sticky: true,
+     icon: 'pi pi-spinner-dotted pi-spin',
+  });
+
+  const data = JSON.stringify(this.data);
+  console.log(data);
+
+  this.progress = 1;
+  // Inicia un intervalo para actualizar el progreso gradualmente
+  this.interval = setInterval(() => {
+    if (this.progress < 99) {
+      this.progress += 1;
+    }
+  }, 1500);
+
+  try {
+    const response = await firstValueFrom(this.apiService.getData(data));
+    console.log(response);
+    this.dependencias = response.dependencia;
+    console.log(this.dependencias);
+    this.data2 = response.success;
+
+    this.messageService.clear('circular');
+
+    if (response != true) {
+      this.messageService.add({
+        severity: 'warn',
+        summary: 'Advertencia',
+        detail: 'Se ha producido un error',
+        life: 5500
+      });
+    } else {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Exito!',
+        detail: 'La Circular se Genero con Exito',
+        life: 5500
+      });
+    }
+    console.log('Datos obtenidos:', this.data2.success);
+
+  } catch (error) {
+    this.messageService.clear('circular');
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Se ha producido un error en tiempo de ejecucion',
+      life: 5500
+    });
+    console.error('Error al obtener datos:', error);
+
+  } finally {
+    // Equivale al finalize() de antes: corre tanto en éxito como en error
+    clearInterval(this.interval);
+    this.progress = 100;
+    this.isDisabled = false;
+    setTimeout(() => {
+      this.progress = 0;
+    }, 5000);
+  }
+}
+
+
   public clearForm(): void {
     this.form.reset();
   }
 
   public CopiarCircular(): void {
     this.isCoping = true
-    this.notificationService.show({
-      content: "Espere. copiando",
-      hideAfter: 1500,
-      animation: { type: "slide", duration: 900 },
-      type: { style: "info", icon: true },
-      position: { horizontal: "center", vertical: "top" },
-    });
+    this.messageService.add({
+                  severity: 'info',
+                  summary: 'Info',
+                  detail: 'Espere. copiando',
+                  life: 3500
+                });
 
-    this.apiService.CircularCopy().subscribe(
+      const datos = {
+        excluir: this.dependenciasExcluir
+    };
+    console.log(datos)
+    this.apiService.CircularCopy(datos).subscribe(
       (response) => {
         this.copiado_respuesta = response;
         this.isCoping = false;
-        this.notificationService.show({
-          content: "Copiado Correcto",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "success", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
+        this.messageService.add({
+                  severity: 'success',
+                  summary: 'Exito',
+                  detail: 'Copiado Correcto',
+                  life: 3500
+                });
+
         console.log('Datos obtenidos:', this.copiado_respuesta);
 
       },
       (error) => {
         this.isCoping = false;
         clearInterval(this.interval); // Detén el intervalo si hay error
-        this.notificationService.show({
-          content: "Existe un error",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "error", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
+        
+        this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'Se ha producido un error en tiempo de ejecucion',
+                  life: 3500
+                });
         console.error('Error al obtener datos:', error);
       }
     );
@@ -341,197 +480,196 @@ export class CircularContentComponent implements OnInit {
 
   public CopiarCircularAcuses(): void {
     this.isCoping = true
-    this.notificationService.show({
-      content: "Espere. copiando",
-      hideAfter: 1500,
-      animation: { type: "slide", duration: 900 },
-      type: { style: "info", icon: true },
-      position: { horizontal: "center", vertical: "top" },
-    });
+    this.messageService.add({
+                  severity: 'info',
+                  summary: 'Info',
+                  detail: 'Espere. copiando',
+                  life: 3500
+                });
 
     this.apiService.CircularCopyEvidencia().subscribe(
       (response) => {
         this.copiado_respuesta_evidencia = response;
         this.isCoping = false;
-        this.notificationService.show({
-          content: "Copiado Correcto",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "success", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
+               this.messageService.add({
+                  severity: 'success',
+                  summary: 'Exito',
+                  detail: 'Copiado Correcto',
+                  life: 3500
+                });
         console.log('Datos obtenidos:', this.copiado_respuesta_evidencia);
 
       },
       (error) => {
         this.isCoping = false;
         clearInterval(this.interval); // Detén el intervalo si hay error
-        this.notificationService.show({
-          content: "Existe un error",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "error", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
+      this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: 'Se ha producido un error en tiempo de ejecucion',
+                  life: 3500
+                });
         console.error('Error al obtener datos:', error);
       }
     );
   }
-  public PuntosAtencion(): void {
-    this.isPuntos = true
-    this.notificationService.show({
-      content: "Espere, Generando...",
-      hideAfter: 1500,
-      animation: { type: "slide", duration: 900 },
-      type: { style: "info", icon: true },
-      position: { horizontal: "center", vertical: "top" },
-    });
-    this.progress_puntosAtencion = 1;
-    // Inicia un intervalo para actualizar el progreso gradualmente
-    this.interval = setInterval(() => {
-      if (this.progress_puntosAtencion < 99) {
-        this.progress_puntosAtencion += 1; // Aumenta gradualmente el valor de la barra
-      }
-    }, 1080); // Se actualiza cada 100 ms (puedes ajustar el tiempo según sea necesario)
-    this.apiService.PuntosAtencion().pipe(
-      finalize(() => {
-        // Al finalizar la llamada, fija el progreso en 100
-        this.progress_puntosAtencion = 100;
-        this.isDisabled = false;
-        setTimeout(() => {
-          this.progress_puntosAtencion = 0;
-        }, 6000); // Cambia 2000 a 4000 si quieres 4 segundos
-      })
-    ).subscribe(
-      (response) => {
-        this.puntosAtencion = response;
-        this.isPuntos = false;
-        if (response != true) {
-          this.notificationService.show({
-            content: this.puntosAtencion.respuesta,
-            hideAfter: 1500,
-            animation: { type: "slide", duration: 900 },
-            type: { style: "warning", icon: true },
-            position: { horizontal: "center", vertical: "top" },
-          });
-        }
-        else {
-          this.notificationService.show({
-            content: "Generacion Correcta!!",
-            hideAfter: 1500,
-            animation: { type: "slide", duration: 900 },
-            type: { style: "success", icon: true },
-            position: { horizontal: "center", vertical: "top" },
-          });
 
-        }
-        console.log('Datos obtenidos:', this.puntosAtencion);
-        clearInterval(this.interval);
-        this.progress_puntosAtencion = 0 // Detén el intervalo una vez que la llamada ha finalizado
-      },
-      (error) => {
-        this.isPuntos = false
-        this.progress_puntosAtencion = 0 // Detén el intervalo una vez que la llamada ha finalizado
-        clearInterval(this.interval); // Detén el intervalo si hay error
-        this.notificationService.show({
-          content: "Existe un error",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "error", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
-        console.error('Error al obtener datos:', error);
-      }
-    );
-  }
-  //------------------------------------------GRAFCIOS-----------------------------
-  public Graficos(): void {
-    this.isGraficos = true
-    this.notificationService.show({
-      content: "Espere, Generando...",
-      hideAfter: 1500,
-      animation: { type: "slide", duration: 900 },
-      type: { style: "info", icon: true },
-      position: { horizontal: "center", vertical: "top" },
+
+
+public async PuntosAtencion(): Promise<void> {
+  this.isPuntos = true;
+
+  // Toast de espera: sticky y con key propia, se quita cuando termina la llamada
+  this.messageService.add({
+    key: 'puntos',
+    severity: 'info',
+   summary: 'Por favor espere',
+    detail: 'Generando Puntos de Atencion',
+    sticky: true,
+     icon: 'pi pi-spinner-dotted pi-spin',
+  });
+
+  this.progress_puntosAtencion = 1;
+  // Inicia un intervalo para actualizar el progreso gradualmente
+  this.interval = setInterval(() => {
+    if (this.progress_puntosAtencion < 99) {
+      this.progress_puntosAtencion += 1;
+    }
+  }, 1080);
+
+  try {
+    this.puntosAtencion = await firstValueFrom(this.apiService.PuntosAtencion());
+    this.isPuntos = false; // antes del toast
+
+    this.messageService.clear('puntos');
+
+    if (this.puntosAtencion != true) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Hubo un Error',
+        life: 3500
+      });
+    } else {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Se ha Generado Puntos de Atencion, listo...',
+        life: 3500
+      });
+    }
+    console.log('Datos obtenidos:', this.puntosAtencion);
+
+  } catch (error) {
+    this.isPuntos = false; // antes del toast
+
+    this.messageService.clear('puntos');
+    this.messageService.add({
+      severity: 'error', // antes 'danger', que no es una severity válida
+      summary: 'Error',
+      detail: 'Hubo un Error',
+      life: 3500
     });
-    this.progress_graficos = 1;
-    // Inicia un intervalo para actualizar el progreso gradualmente
-    this.interval = setInterval(() => {
-      if (this.progress_graficos < 99) {
-        this.progress_graficos += 1; // Aumenta gradualmente el valor de la barra
-      }
-    }, 3900); // Se actualiza cada 100 ms (puedes ajustar el tiempo según sea necesario)
-    this.apiService.Graficos().pipe(
-      finalize(() => {
-        // Al finalizar la llamada, fija el progreso en 100
-        this.progress_graficos = 100;
-        this.isDisabled = false;
-        setTimeout(() => {
-          this.progress_graficos = 0;
-        }, 6000); // Cambia 2000 a 4000 si quieres 4 segundos
-      })
-    ).subscribe(
-      (response) => {
-        this.graficosrespuesta = response;
-        this.isGraficos = false;
-        this.notificationService.show({
-          content: "Generacion Correcta!!",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "success", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
-        console.log('Datos obtenidos:', this.graficosrespuesta);
-        clearInterval(this.interval);
-        this.progress_graficos = 0 // Detén el intervalo una vez que la llamada ha finalizado
-      },
-      (error) => {
-        this.isGraficos = false;
-        this.progress_graficos = 0 // Detén el intervalo una vez que la llamada ha finalizado
-        clearInterval(this.interval); // Detén el intervalo si hay error
-        this.notificationService.show({
-          content: "Existe un error",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "error", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
-        console.error('Error al obtener datos:', error);
-      }
-    );
+    console.error('Error al obtener datos:', error);
+
+  } finally {
+    // Equivale al finalize() de antes: corre tanto en éxito como en error
+    clearInterval(this.interval);
+    this.progress_puntosAtencion = 100;
+    this.isDisabled = false;
+    setTimeout(() => {
+      this.progress_puntosAtencion = 0;
+    }, 6000);
   }
+}
+  //------------------------------------------GRAFCIOS-----------------------------
+
+
+public async Graficos(): Promise<void> {
+  this.isGraficos = true;
+
+  // Toast de espera: sticky y con key propia, se quita cuando termina la llamada
+  this.messageService.add({
+    key: 'graficos',
+    severity: 'info',
+    summary: 'Por favor espere',
+    detail: 'Generando Graficos',
+    sticky: true,
+     icon: 'pi pi-spinner-dotted pi-spin',
+  });
+
+  this.progress_graficos = 1;
+  // Inicia un intervalo para actualizar el progreso gradualmente
+  this.interval = setInterval(() => {
+    if (this.progress_graficos < 99) {
+      this.progress_graficos += 1;
+    }
+  }, 3900);
+
+  try {
+    this.graficosrespuesta = await firstValueFrom(this.apiService.Graficos());
+    this.isGraficos = false; // antes del toast
+
+    this.messageService.clear('graficos');
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Éxito',
+      detail: 'Se ha Generado Graficos, listo...',
+      life: 3500
+    });
+    console.log('Datos obtenidos:', this.graficosrespuesta);
+
+  } catch (error) {
+    this.isGraficos = false; // antes del toast
+
+    this.messageService.clear('graficos');
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Hubo un Error',
+      life: 3500
+    });
+    console.error('Error al obtener datos:', error);
+
+  } finally {
+    // Equivale al finalize() de antes: corre tanto en éxito como en error
+    clearInterval(this.interval);
+    this.progress_graficos = 100;
+    this.isDisabled = false;
+    setTimeout(() => {
+      this.progress_graficos = 0;
+    }, 6000);
+  }
+}
   //#############################SEGUIMIENTO ACTIVIDADES #########################################
   public CumplimientoMetas(): void {
     this.isGenerarCumplimiento = true
-    this.notificationService.show({
-      content: "Esto Puede tomar unos minutos",
-      hideAfter: 1500,
-      animation: { type: "slide", duration: 900 },
-      type: { style: "info", icon: true },
-      position: { horizontal: "center", vertical: "top" },
-    });
+     this.messageService.add({
+        severity: 'info',
+        summary: 'Info',
+        detail: 'Espere, se esta enviando peticion',
+        life: 3500
+      });
     this.apiService.Cumplimiento().subscribe(
       (response) => {
         this.cumplimiento_respuesta = response;
         this.isGenerarCumplimiento = false;
-        this.notificationService.show({
-          content: "Generacion Correcta",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "success", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
+       this.messageService.add({
+                severity: 'success',
+                summary: 'Éxito',
+                detail: 'Se ha Generado actividades, listo...',
+                life: 3500
+              });
       },
       (error) => {
         this.isGenerarCumplimiento = false;
-        this.notificationService.show({
-          content: "Existe un error",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "error", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
-
+       this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Hubo un Error',
+                life: 3500
+              });
+               console.error('Error al obtener datos:', error);
       }
     )
   }
@@ -542,145 +680,163 @@ export class CircularContentComponent implements OnInit {
       (response) => {
         this.vencidas_respuesta = response;
         this.isGenerarVencidas = false;
-        this.notificationService.show({
-          content: "Generacion Correcta",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "success", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
+       this.messageService.add({
+                severity: 'success',
+                summary: 'Éxito',
+                detail: 'Se ha Generado Actividades Vencidas, listo...',
+                life: 3500
+              });
       },
       (error) => {
         this.isGenerarVencidas = false
-        this.notificationService.show({
-          content: "Existe un error",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "error", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
+       this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Hubo un Error',
+                life: 3500
+              });
 
       }
     )
 
   }
   //-----------------Exceles
-  //Programacion
-  public Programacion(): void {
-    this.isProgramacion = true
-    this.notificationService.show({
-      content: "Espere, Generando.....",
-      hideAfter: 1500,
-      animation: { type: "slide", duration: 900 },
-      type: { style: "info", icon: true },
-      position: { horizontal: "center", vertical: "top" },
-    });
-    console.log("ejercicio", this.selectedValues1)
-    this.apiService.ExcelSEDProgramacion(this.selectedValues1).subscribe(
-      (response) => {
-        this.isProgramacion = false;
-        this.notificationService.show({
-          content: "Se Genero su Reporte SED Programacion",
-          hideAfter: 2500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "success", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
-        console.log('Datos obtenidos:', response);
-        this.GetFilesSEDProgramacion()
+  //----------------Programacion
+public async Programacion(): Promise<void> {
+  this.isProgramacion = true;
 
-      },
-      (error) => {
-        this.isProgramacion = false;
-        clearInterval(this.interval); // Detén el intervalo si hay error
-        this.notificationService.show({
-          content: "Existe un error",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "error", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
-        console.error('Error al obtener datos:', error);
-      }
-    );
+  // Toast de espera: sticky y con key propia, se quita cuando termina la llamada
+  this.messageService.add({
+    key: 'programacion',
+    severity: 'info',
+    summary: 'Por favor espere',
+    detail: `Generando SED Programacion ${this.programacion}` ,
+    sticky: true,
+     icon: 'pi pi-spinner-dotted pi-spin',
+  });
+
+  console.log('ejercicio', this.programacion);
+
+  try {
+    const response = await firstValueFrom(this.apiService.ExcelSEDProgramacion(this.programacion));
+    this.isProgramacion = false; // antes del toast
+
+    this.messageService.clear('programacion');
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Éxito',
+      detail: `Se ha generado... SED Programacion ${this.programacion}`,
+      life: 5500,
+    });
+    console.log('Datos obtenidos:', response);
+    this.GetFilesSEDProgramacion();
+
+  } catch (error) {
+    this.isProgramacion = false; // antes del toast
+    clearInterval(this.interval); // Detén el intervalo si hay error
+
+    this.messageService.clear('programacion');
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Hubo un error',
+      life: 5500
+    });
+    console.error('Error al obtener datos:', error);
   }
+}
   //Seguimiento
-  public Seguimiento(): void {
-    this.isSeguimiento = true
-    this.notificationService.show({
-      content: "Espere, Generando....",
-      hideAfter: 1500,
-      animation: { type: "slide", duration: 900 },
-      type: { style: "info", icon: true },
-      position: { horizontal: "center", vertical: "top" },
-    });
-    console.log("ejercicio", this.selectedValues2)
-    this.apiService.ExcelSEDSeguimiento(this.selectedValues2).subscribe(
-      (response) => {
-        this.isSeguimiento = false;
-        this.notificationService.show({
-          content: "Se Genero su Reporte SED Seguimiento",
-          hideAfter: 2500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "success", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
-        console.log('Datos obtenidos:', response);
-        this.GetFilesSEDSeguimiento()
 
-      },
-      (error) => {
-        this.isSeguimiento = false;
-        clearInterval(this.interval); // Detén el intervalo si hay error
-        this.notificationService.show({
-          content: "Existe un error",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "error", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
-        console.error('Error al obtener datos:', error);
-      }
-    );
-  }
-  public SAP(): void {
-    this.isSAP = true
-    this.notificationService.show({
-      content: "Espere, Generando....",
-      hideAfter: 1500,
-      animation: { type: "slide", duration: 900 },
-      type: { style: "info", icon: true },
-      position: { horizontal: "center", vertical: "top" },
-    });
-    console.log("ejercicio", this.selectedValues3)
-    this.apiService.ExcelSAP(this.selectedValues3).subscribe(
-      (response) => {
-        this.isSAP = false;
-        this.notificationService.show({
-          content: "Se Genero su Reporte SAP",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "success", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
-        console.log('Datos obtenidos:', response);
-        this.GetFilesSAP()
 
-      },
-      (error) => {
-        this.isSAP = false;
-        clearInterval(this.interval); // Detén el intervalo si hay error
-        this.notificationService.show({
-          content: "Existe un error",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "error", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
-        console.error('Error al obtener datos:', error);
-      }
-    );
+public async Seguimiento(): Promise<void> {
+  this.isSeguimiento = true;
+
+  // Toast de espera: sticky y con key propia, se quita cuando termina la llamada
+  this.messageService.add({
+    key: 'seguimiento',
+    severity: 'info',
+    summary: 'Por favor espere',
+    detail: `Generando SED Seguimiento ${this.seguimiento}` ,
+    sticky: true,
+     icon: 'pi pi-spinner-dotted pi-spin',
+  });
+
+  console.log('ejercicio', this.seguimiento);
+
+  try {
+    const response = await firstValueFrom(this.apiService.ExcelSEDSeguimiento(this.seguimiento));
+    this.isSeguimiento = false; // antes del toast
+
+    this.messageService.clear('seguimiento');
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Éxito',
+      detail: `Se ha Generado, Seguimiento ${this.seguimiento}`,
+      life: 5500
+    });
+    console.log('Datos obtenidos:', response);
+    this.GetFilesSEDSeguimiento();
+
+  } catch (error) {
+    this.isSeguimiento = false; // antes del toast
+    clearInterval(this.interval); // Detén el intervalo si hay error
+
+    this.messageService.clear('seguimiento');
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Hubo un error',
+      life: 5500
+    });
+    console.error('Error al obtener datos:', error);
   }
+}
+
+public async SAP(): Promise<void> {
+  this.isSAP = true;
+
+  // Toast de espera: sticky y con key propia, se quita cuando termina la llamada
+  this.messageService.add({
+    key: 'sap',
+    severity: 'info',
+    summary: 'Por favor espere',
+    detail: `Generando SAP ${this.sap}` ,
+    sticky: true, 
+    icon: 'pi pi-spinner-dotted pi-spin',
+  });
+
+  console.log('ejercicio', this.sap);
+
+  try {
+    // El Observable se convierte en Promise
+    const response = await firstValueFrom(this.apiService.ExcelSAP(this.sap));
+ this.isSAP = false;
+
+    this.messageService.clear('sap');
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Éxito',
+      detail: 'Se ha Generado, listo...',
+      life: 5500
+    });
+    console.log('Datos obtenidos:', response);
+    this.GetFilesSAP();
+   
+  } catch (error) {
+    this.isSAP = false;
+    clearInterval(this.interval); // Detén el intervalo si hay error
+    this.isSAP = false;
+    this.messageService.clear('sap');
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Hubo un error',
+      life: 5500
+    });
+    console.error('Error al obtener datos:', error);
+
+  }
+}
 
 
   public Integracion(): void {
@@ -691,24 +847,22 @@ export class CircularContentComponent implements OnInit {
       (response) => {
         this.integracion_respuesta = response;
         this.isIntegracion = false;
-        this.notificationService.show({
-          content: "Integracion Correcta",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "success", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
+         this.messageService.add({
+                severity: 'success',
+                summary: 'Éxito',
+                detail: 'Se ha Generado, listo...',
+                life: 3500
+              });
         console.log('Datos obtenidos:', this.integracion_respuesta);
       },
       (error) => {
         this.isIntegracion = false;
-        this.notificationService.show({
-          content: "Existe un error",
-          hideAfter: 1500,
-          animation: { type: "slide", duration: 900 },
-          type: { style: "error", icon: true },
-          position: { horizontal: "center", vertical: "top" },
-        });
+        this.messageService.add({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Hubo un error',
+                life: 3500
+              });
         console.error('Error al obtener datos:', error);
       }
     );
