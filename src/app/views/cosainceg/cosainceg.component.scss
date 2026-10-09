@@ -16,12 +16,7 @@
            box-sizing: border-box;
 
       }
-      .button1{
-        flex :1 0 240px;
-        justify-content: center;
-        align-items: center;
-        margin-left: 1rem;
-      }
+
         .button2{
         flex :1 0 220px;
         justify-content: center;
@@ -68,10 +63,8 @@
 
         }
 .titulo {
-        margin-top: 0;
-        margin-bottom: 5px;
         font-size: 1em;
-       color: #1f1f20;
+       color: var(--p-background-color);
         font-weight: bold;
       }        
 
@@ -103,38 +96,31 @@
 }
 /* Título con efecto máquina de escribir */
 .title2 {
-   display: inline-block;
+  display: inline-block;
   font-size: 1.75rem;
   font-weight: bold;
   overflow: hidden;
-  border-right: .15em solid #fff;
   white-space: nowrap;
   margin: 0 auto;
-  margin-bottom: 5px;
-  padding-bottom: 1.5rem;
   letter-spacing: .15em;
-  animation:
-    typing 6.0s steps(40, end),
-    blink-caret .75s step-end infinite;
+
+  animation: typing 6s steps(40, end);
 }
 
 .title2 span {
   color: #a81b1b;
 }
-/* Animación máquina de escribir */
+
 @keyframes typing {
-  from { width: 0 }
-  to { width: 100% }
+  from { width: 0; }
+  to { width: 100%; }
 }
 
-@keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: rgb(223, 223, 212); }
-}
 .row {
-  text-align: center; /* centra horizontalmente el inline-block */
+ display: flex;
+  align-items: center; /* centrado vertical */
+  text-align: left;
 }
-
 ::ng-deep .k-window-titlebar {
   background-color: #4a90e2 !important; /* Tu color personalizado */
   color: white !important;
@@ -207,4 +193,159 @@
 
 .switch-off .k-switch-thumb {
   background-color: rgb(255, 255, 255) !important;
+}
+
+/* =========================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================= */
+
+.cuenta-page {
+    width: 100%;
+    min-height: 100%;
+
+
+    box-sizing: border-box;
+}
+/* =========================================================
+   CARD
+   ========================================================= */
+
+.cuenta-card {
+    width: 100%;
+    max-width: 1100px;
+
+    margin:15px auto;
+}
+.cuenta-card-reportes {
+
+    width: 100%;
+    max-width: 950px;
+
+    margin: 15px auto;
+}
+
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.cuenta-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+}
+
+.header-content {
+    display: flex;
+
+    align-items: center;
+
+    gap: 1rem;
+
+    min-width: 0;
+}
+
+
+.header-icon {
+    width: 3.25rem;
+    height: 3.25rem;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: var(--p-border-radius);
+    
+    background: var(--p-blue-400);
+    color: var(--p-primary-contrast-color);
+}
+/* =========================================================
+   FORMULARIO
+   ========================================================= */
+.section-header {
+    display: flex;
+
+    align-items: center;
+
+    gap: 0.75rem;
+
+    margin-bottom: 1.5rem;
+}
+
+
+.section-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: var(--p-border-radius);
+
+    background: var(--p-surface);
+
+    color: var(--p-primary-color);
+}
+
+
+.section-icon i {
+    font-size: 1rem;
+}
+   .section-header h3 {
+    margin: 0;
+
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+
+.section-header p {
+    margin: 0.2rem 0 0;
+
+    font-size: 0.8rem;
+
+    color: var(--p-text-muted-color);
+}
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 1.5rem;
+}
+
+
+.botones-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+.boton-item {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.button-grid {
+  width: 100%;
+}
+
+.titulo {
+  margin: 0 0 0.75rem;
+  font-weight: 600;
 }

@@ -182,7 +182,7 @@ GenerarDescargasInversionHojaTrabajo(fecha: any, filename: string): Observable<H
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     const encodedFilename = encodeURIComponent(filename);
-    return this.http.post(`${this.apiUrl}/GetAvanceFinanciero/${filename}`, body, {
+    return this.http.post(`${this.apiUrl}/GetAvanceFinanciero/${encodedFilename}`, body, {
       headers,
       responseType: 'blob',
       observe: 'response'

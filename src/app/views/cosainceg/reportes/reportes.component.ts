@@ -1,46 +1,71 @@
 import { Component, ViewEncapsulation } from '@angular/core';
-import { KENDO_BUTTONS } from "@progress/kendo-angular-buttons";
-import {fileWordIcon,menuIcon, chartBarClusteredIcon, SVGIcon,
-  dollarIcon, chevronDoubleDownIcon,fileExcelIcon,graphIcon,alignJustifyIcon, aggregateFieldsIcon,fileWrenchIcon, fileFooterIcon} from '@progress/kendo-svg-icons';
-import { KENDO_INDICATORS } from "@progress/kendo-angular-indicators";
-import { DrawerPosition, KENDO_LAYOUT } from "@progress/kendo-angular-layout";
-import { DrawerItem, DrawerSelectEvent } from "@progress/kendo-angular-layout";
 import { CosaincegComponent } from "../cosainceg.component";
 import { PermissionGuard } from '../../../guards/permission.guard';
+import { ButtonModule } from 'primeng/button';
+import { MenuModule } from 'primeng/menu';
+import { MenuItem } from 'primeng/api';
+import { DrawerModule } from 'primeng/drawer';
 
 @Component({
     selector: 'app-reportes',
-    imports: [KENDO_BUTTONS, KENDO_INDICATORS, KENDO_LAYOUT, CosaincegComponent],
+    imports: [ CosaincegComponent, ButtonModule, MenuModule, DrawerModule],
+
     templateUrl: './reportes.component.html',
     styleUrl: './reportes.component.scss'
 })
 export class ReportesComponent {
-   data:any;
-    public isDisabled = false;
-    public selected = "Cicular";
-    public wordIcon: SVGIcon = fileWordIcon;
-    public menuSvg: SVGIcon = menuIcon;
-    public dollarIcon: SVGIcon = dollarIcon
-    public fileFooterIcon: SVGIcon = fileFooterIcon
-    public position: DrawerPosition = "start";
-    public chevronDoubleDownIcon: SVGIcon = chevronDoubleDownIcon
-    public items: Array<DrawerItem> = [
-      { text: "Cosainceg", svgIcon: fileWordIcon, selected: true },
-      { separator: true },
-      { text: "Deuda", svgIcon: chevronDoubleDownIcon},
-      { separator: true },
-      { text: "Inversion", svgIcon: dollarIcon},
-      { separator: true },
-      { text: "PPI", svgIcon: fileFooterIcon},
-      { separator: true },
-      { text: "AvanceFinanciero", svgIcon: dollarIcon},
-      { separator: true },
-    ];
+
+     drawerVisible = true;
+    public selected = "Cosainceg";
+
+
+  items: MenuItem[] = [
+
+    {
+      label: 'Cosainceg',
+      icon: 'pi pi-book',
+      command: () => {
+        this.selected = 'Cosainceg';
+      }
+    },
+    { separator: true },
+    {
+      label: 'Deuda',
+      icon: 'pi pi-dollar',
+      command: () => {
+        this.selected = 'Deuda';
+      }
+    },
+    { separator: true },
+
+        {
+          label: 'Inversion',
+          icon: 'pi pi-gauge',
+          command: () => {
+            this.selected = 'Inversion';
+          }
+        },
+         { separator: true },
+        {
+          label: 'PPI',
+          icon: 'pi pi-file-check',
+          command: () => {
+            this.selected = 'PPI';
+          }
+        },
+        { separator: true },
+        {
+          label: 'AvanceFinanciero',
+          icon: 'pi pi-percentage',
+          command: () => {
+            this.selected = 'AvanceFinanciero';
+          }
+        },
+
+  ]
     constructor() {    
     }
-    public onSelect(ev: DrawerSelectEvent): void {
-      this.selected = ev.item.text;
-    }
+  
 
 }
 // export class ReportesComponent {

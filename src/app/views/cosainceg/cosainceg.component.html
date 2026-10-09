@@ -1,158 +1,236 @@
 @if (selectedItem === 'Cosainceg' && canViewCosainceg) {
-<div class="container-fluid mt-4">
-    <div class="row">
+<div class="cuenta-page">
+    <p-card styleClass="cuenta-card">
+        <!-- ========================================= -->
+        <!-- HEADER                                    -->
+        <!-- ========================================= -->
+        <div class="cuenta-header">
 
-        <h1 class="title2">Reporte<span> COSAINCEG</span></h1>
+            <div class="header-content">
 
-    </div>
-    <div class="page">
-        <div class="content">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-3">
-                        <p class="titulo mt-3 mb-2 ms-3">1. Actualizar Catalogos </p>
-                        <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="ActualizacionRubro"
-                            [svgIcon]="fileExcelIcon" title="Actualizacion de Rubros" [disabled]="isDisabled"
-                            themeColor="primary" class="button1">Actualizacion Rubros</kendo-splitbutton>
-                        <span class="ps-2">
-                            @if (isDisabledActualizacionRubros) {
-                            <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
-                    </div>
-                    <div class="col-md-3">
-                        <p class="titulo mt-3 mb-2 ms-3">2. Descargar Catalogos </p>
-                        <button kendoButton class="button2" (click)="DescargaCatalogoRubros()" themeColor="primary"
-                            [svgIcon]="downloadIcon">Catalogo Rubros</button>
-                        <span class="ps-2">
-                            @if (isDisabledCatalogoR) {
-                            <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
-                    </div>
-                    <div class="col-md-3 mb-3 ms-3">
-                        <my-uploads></my-uploads>
-                    </div>
+                <div class="header-icon">
+                    <i class="pi pi-file-edit"></i>
+                </div>
+                <div>
+                    <h2 class="title2">Reporte<span> COSAINCEG</span></h2>
+
+                    <p>
+                        Reporte trimestral de COSAINCEG, el cual contiene información de los proyectos de inversión, su
+                        avance financiero y metas.
+                    </p>
                 </div>
 
             </div>
+            <p-tag value="COSAINCEG" icon="pi pi-file" severity="info">
+            </p-tag>
         </div>
+        <!-- ========================================= -->
+        <!-- DATOS                      -------------- -->
+        <!-- ========================================= -->
+        <div class="section-header">
+            <div class="section-icon">
+                <i class="pi pi-info-circle"></i>
+            </div>
+            <div>
+                <h3>Cargar Catalogo de Rubros</h3>
+                <p>
+                    Sigue los pasos para actualizar y descargar el catalogo de rubros, así como generar los reportes de
+                    COSAINCEG.
+                </p>
+            </div>
+        </div>
+        <!-- ========================================= -->
+        <!-- BOTONES                      -------------- -->
+        <!-- ========================================= -->
+        <div class="botones-grid">
+
+            <div class="boton-item">
+                <p class="titulo">1. Actualizar Catálogos</p>
+
+                <p-splitbutton styleClass="button-grid" label="Actualizar Rubros" icon="pi pi-file-excel"
+                    title="Actualización de Rubros" [model]="ActualizacionRubro" (onClick)="DescargarExcel()"
+                    [disabled]="isDisabled"   size="small" />
+
+                @if (isDisabledActualizacionRubros) {
+                <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                }
+            </div>
+
+            <div class="boton-item">
+                <p class="titulo">2. Descargar Catálogos</p>
+
+                <p-button styleClass="button-grid" label="Catálogo Rubros" icon="pi pi-download"
+                    (onClick)="DescargaCatalogoRubros()"  size="small"/>
+
+                @if (isDisabledCatalogoR) {
+                <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                }
+            </div>
+
+            <div class="boton-item">
+                <p>3. Subir Catalogo Rubros</p>
+                <p-fileupload mode="basic" name="files" chooseLabel="Seleccionar archivo" chooseLabel="Seleccionar archivo" [url]="uploadSaveUrl"
+                    [auto]="true"  pSize="small"/>
+            </div>
+
+
+        </div>
+
+    </p-card>
+
+    <div class="container-fluid mt-4">
 
         <div class="page">
             <div class="content">
-                <div class="col-12 mt-3">
+                <div class="col-md-12">
                     <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="data"
-                                [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
-                                [disabled]="isDisabled">
-                                Generar Reporte COSAINCEG
-                            </kendo-splitbutton>
+                        <div class="col-md-3">
+                            <p class="titulo mt-3 mb-2 ms-3">1. Actualizar Catalogos </p>
+                            <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="ActualizacionRubro"
+                                [svgIcon]="fileExcelIcon" title="Actualizacion de Rubros" [disabled]="isDisabled"
+                                themeColor="primary" class="button1">Actualizacion Rubros</kendo-splitbutton>
                             <span class="ps-2">
-                                @if (isDisabledG) {
-                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                @if (isDisabledActualizacionRubros) {
+                                <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
                                 </kendo-loader>
                                 }
                             </span>
                         </div>
-                        <div class="col-md-4 mb-3">
-                            <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelRecurso"
-                                [svgIcon]="fileZipIcon" rounded="medium" class="button1" themeColor="primary"
-                                [disabled]="isDisabled">
-                                Generar Reporte COSAINCEG Recurso
-                            </kendo-splitbutton>
-
+                        <div class="col-md-3">
+                            <p class="titulo mt-3 mb-2 ms-3">2. Descargar Catalogos </p>
+                            <button kendoButton class="button2" (click)="DescargaCatalogoRubros()" themeColor="primary"
+                                [svgIcon]="downloadIcon">Catalogo Rubros</button>
                             <span class="ps-2">
-                                @if (isDisabledExcelRecurso) {
-                                <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                @if (isDisabledCatalogoR) {
+                                <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
                                 </kendo-loader>
                                 }
                             </span>
                         </div>
-                        <div class="col-md-4 mb-3">
-
+                        <div class="col-md-3 mb-3 ms-3">
+                            <my-uploads></my-uploads>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelG"
-                                [svgIcon]="fileExcelIcon" title="Informacion Global de P's,G's,Q's"
-                                [disabled]="isDisabled" themeColor="success" class="button1">Global
-                                (PGQ)</kendo-splitbutton>
-                            <span class="ps-2">
-                                @if (isDisabledExcelG) {
-                                <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                                </kendo-loader>
-                                }
-                            </span>
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelDep"
-                                [svgIcon]="fileExcelIcon" title="Agrupacion por Dependencias" [disabled]="isDisabled"
-                                themeColor="success" class="button1">Dependencias (PGQ)</kendo-splitbutton>
-                            <span class="ps-2">
-                                @if (isDisabledExcelD) {
-                                <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                                </kendo-loader>
-                                }
-                            </span>
-                        </div>
 
-                        <div class="col-md-4 mb-3">
-                            <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelRub"
-                                [svgIcon]="fileExcelIcon" title="Agrupacion por Rubro" [disabled]="isDisabled"
-                                themeColor="success" class="button1">Rubros (PGQ)</kendo-splitbutton>
-                            <span class="ps-2">
-                                @if (isDisabledExcelR) {
-                                <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                                </kendo-loader>
-                                }
-                            </span>
+                </div>
+            </div>
+
+            <div class="page">
+                <div class="content">
+                    <div class="col-12 mt-3">
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="data"
+                                    [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
+                                    [disabled]="isDisabled">
+                                    Generar Reporte COSAINCEG
+                                </kendo-splitbutton>
+                                <span class="ps-2">
+                                    @if (isDisabledG) {
+                                    <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                    </kendo-loader>
+                                    }
+                                </span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium"
+                                    [data]="dataExcelRecurso" [svgIcon]="fileZipIcon" rounded="medium" class="button1"
+                                    themeColor="primary" [disabled]="isDisabled">
+                                    Generar Reporte COSAINCEG Recurso
+                                </kendo-splitbutton>
+
+                                <span class="ps-2">
+                                    @if (isDisabledExcelRecurso) {
+                                    <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
+                                    </kendo-loader>
+                                    }
+                                </span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelG"
+                                    [svgIcon]="fileExcelIcon" title="Informacion Global de P's,G's,Q's"
+                                    [disabled]="isDisabled" themeColor="success" class="button1">Global
+                                    (PGQ)</kendo-splitbutton>
+                                <span class="ps-2">
+                                    @if (isDisabledExcelG) {
+                                    <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
+                                    </kendo-loader>
+                                    }
+                                </span>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelDep"
+                                    [svgIcon]="fileExcelIcon" title="Agrupacion por Dependencias"
+                                    [disabled]="isDisabled" themeColor="success" class="button1">Dependencias
+                                    (PGQ)</kendo-splitbutton>
+                                <span class="ps-2">
+                                    @if (isDisabledExcelD) {
+                                    <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
+                                    </kendo-loader>
+                                    }
+                                </span>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelRub"
+                                    [svgIcon]="fileExcelIcon" title="Agrupacion por Rubro" [disabled]="isDisabled"
+                                    themeColor="success" class="button1">Rubros (PGQ)</kendo-splitbutton>
+                                <span class="ps-2">
+                                    @if (isDisabledExcelR) {
+                                    <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
+                                    </kendo-loader>
+                                    }
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
+
+            <div class="mt-4 mb-2"></div>
+            <kendo-expansionpanel title="Reportes" subtitle="Ver y descargar reportes" [expanded]="true">
+                <div class="row mt-2 mb-3">
+                    <kendo-grid [data]="FilesCosainceg" [kendoGridBinding]="FilesCosainceg" [filterable]="true"
+                        [pageable]="true" [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
+                        [resizable]="true">
+                        <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
+                        <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
+                            [width]="130"></kendo-grid-column>
+                        <kendo-grid-column field="creation_time" title="Creación" [width]="160">
+                        </kendo-grid-column>
+                        <kendo-grid-column field="modification_time" title="Modificación"
+                            [width]="160"></kendo-grid-column>
+                        <kendo-grid-command-column title="Acciones" [width]="210">
+                            <ng-template kendoGridCellTemplate let-dataItem>
+                                <button kendoButton (click)="downloadFile(dataItem.name)"
+                                    class="btn-editar">Descargar</button>
+                                @if(dataItem.extension === '.pdf' ){
+                                <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
+                                    PDF</button>
+                                }
+                            </ng-template>
+
+                        </kendo-grid-command-column>
+                    </kendo-grid>
+                </div>
+            </kendo-expansionpanel>
+            <p></p>
+            @if(selectedPdf){
+            <kendo-window [title]="'REPORTE: ' + nombre_archivo" (close)="closePdfModal()" [minWidth]="350"
+                [width]="750" [height]="500">
+                <kendo-pdfviewer [data]="selectedPdf" style="height: 900px;"></kendo-pdfviewer>
+            </kendo-window>
+            }
+
         </div>
-
-
-
-
-        <div class="mt-4 mb-2"></div>
-        <kendo-expansionpanel title="Reportes" subtitle="Ver y descargar reportes" [expanded]="true">
-            <div class="row mt-2 mb-3">
-                <kendo-grid [data]="FilesCosainceg" [kendoGridBinding]="FilesCosainceg" [filterable]="true"
-                    [pageable]="true" [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
-                    [resizable]="true">
-                    <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
-                    <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
-                        [width]="130"></kendo-grid-column>
-                    <kendo-grid-column field="creation_time" title="Creación" [width]="160">
-                    </kendo-grid-column>
-                    <kendo-grid-column field="modification_time" title="Modificación" [width]="160"></kendo-grid-column>
-                    <kendo-grid-command-column title="Acciones" [width]="210">
-                        <ng-template kendoGridCellTemplate let-dataItem>
-                            <button kendoButton (click)="downloadFile(dataItem.name)"
-                                class="btn-editar">Descargar</button>
-                            @if(dataItem.extension === '.pdf' ){
-                            <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
-                                PDF</button>
-                            }
-                        </ng-template>
-
-                    </kendo-grid-command-column>
-                </kendo-grid>
-            </div>
-        </kendo-expansionpanel>
-        <p></p>
-        @if(selectedPdf){
-        <kendo-window [title]="'REPORTE: ' + nombre_archivo" (close)="closePdfModal()" [minWidth]="350" [width]="750"
-            [height]="500">
-            <kendo-pdfviewer [data]="selectedPdf" style="height: 900px;"></kendo-pdfviewer>
-        </kendo-window>
-        }
-
     </div>
 </div>
 }
@@ -513,7 +591,7 @@
                         <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataAvanceFinanciero"
                             [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
                             [disabled]="EjecutandoAvance">
-                            Generar Reporte PPI
+                            Generar Avance Financiero
                         </kendo-splitbutton>
                         <span class="ps-2">
                             @if (isAvance) {

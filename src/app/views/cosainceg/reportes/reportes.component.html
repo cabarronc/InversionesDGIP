@@ -1,5 +1,47 @@
 <!-- <app-nav-bar></app-nav-bar> -->
-<div class="custom-toolbar">
+ <div class="custom-toolbar">
+
+  <p-button icon="pi pi-bars" [text]="true" severity="info" (onClick)="drawerVisible = !drawerVisible" />
+
+  <span class="drawer-title-main">
+   Reportes de la Cuenta Pública
+  </span>
+
+</div>
+<div class="flex justify-center">
+<p-drawer [(visible)]="drawerVisible" position="left" [modal]="true" [style]="{ width: '350px' }" [closable]="false" >
+    <div class="drawer-header">
+      <span class="drawer-title">
+      Reportes de la Cuenta Pública
+      </span>
+      
+      <p-button
+        icon="pi pi-times"
+        [text]="true"
+        [rounded]="true"
+        severity="danger"
+        ariaLabel="Cerrar"
+        (onClick)="drawerVisible = false"
+      />
+    </div>
+
+  <p-menu [model]="items"class="flex justify-center" styleClass="w-full md:w-60 mi-menu-personalizado" >
+      <ng-template #start>
+                <span class="inline-flex items-center gap-4 px-4.5 py-4.5">
+                    Reportes
+                </span>
+                </ng-template>
+  </p-menu>
+
+</p-drawer>
+</div>
+<div class="content">
+
+  <app-cosainceg [selectedItem]="selected">
+  </app-cosainceg>
+
+</div>
+<!-- <div class="custom-toolbar">
     <button
       kendoButton
       [svgIcon]="menuSvg"
@@ -24,4 +66,4 @@
     <kendo-drawer-content>
       <app-cosainceg [selectedItem]="selected"></app-cosainceg>
     </kendo-drawer-content>
-  </kendo-drawer-container>
+  </kendo-drawer-container> -->
