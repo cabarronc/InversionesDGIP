@@ -1,4 +1,3 @@
-
 @if (selectedItem === 'Circular') {
 <div id="Circular">
     <form [formGroup]="form">
@@ -482,6 +481,7 @@
 }
 @if (selectedItem === 'Integracion') {
 <div id="Integracion" class="row">
+
     <!-- Integracion -->
     <p-card styleClass="circular-card">
         <!-- ========================================= -->
@@ -759,6 +759,16 @@
                     <p-button label="Generar SAP" icon="pi pi-file-excel" severity="info" [disabled]="isSAP"
                         (onClick)="SAP()" size="small">
                     </p-button>
+                    <div class="flex align-items-center gap-2 ml-2 text-sm text-color-secondary">
+                        <i class="pi pi-calendar text-primary"></i>
+
+                        <span class="font-medium">Última actualización SAP:</span>
+
+                        <span class="font-semibold text-color">
+                            {{ fecha_sap || 'Sin registro' }}
+                        </span>
+                    </div>
+
 
                     @if (isSAP) {
                     <p-progressSpinner class="ml-1" [style]="{ width: '25px', height: '25px' }" strokeWidth="4">
@@ -846,7 +856,8 @@
                     <p class="subtitle">Compara archivos de diferentes períodos de tiempo</p>
                     <label class="block" for="customKeyColumn">Selecciona un identificador por el cual comparar</label>
                     <p-iconfield [style.width.px]="400">
-                        <input pInputText id="customKeyColumn" type="text" fluid [(ngModel)]="customKeyColumn" pSize="small" />
+                        <input pInputText id="customKeyColumn" type="text" fluid [(ngModel)]="customKeyColumn"
+                            pSize="small" />
                         @if (customKeyColumn) {
                         <p-inputicon styleClass="pi pi-times cursor-pointer" (click)="customKeyColumn = ''" />
                         }

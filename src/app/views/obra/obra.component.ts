@@ -240,6 +240,12 @@ export class ObraComponent {
     return `${prefijo}_${crypto.randomUUID()}`;
   }
 
+  // === Filtros SED en cascada ===
+  // Nivel 1 (el más alto): filtra por el campo booleano "obra" (solo existe en SED)
+  filtroObraSED = signal<boolean | null>(null);
+  // Nivel 2: filtra por clave_recodificada (depende del nivel 1)
+  filtroClaveRecodificadaSED = signal<string | null>(null);
+  // Nivel 3 en adelante (los que ya tenías, se mantienen cruzados entre sí)
   // Filtro por meta para el bloque SED
   filtroMetaSED = signal<string | null>(null);
   //  Filtro por municipio para el bloque SED
@@ -278,7 +284,7 @@ export class ObraComponent {
       }
     });
 
-    
+
 
   }
   data_geg: any;
@@ -307,6 +313,8 @@ export class ObraComponent {
     const filtroActualVal = this.filtroActual();
     const filtroSiglasVal = this.filtroSiglas();
     const filtroOrigenVal = this.filtroOrigen();
+    const filtroObraVal = this.filtroObraSED();           // <- agregado (nivel 1)
+    const filtroClaveVal = this.filtroClaveRecodificadaSED(); // <- agregado (nivel 2)
     const filtroMetaVal = this.filtroMetaSED();
     const filtroMunicipioVal = this.filtroMunicipioSED();
 
@@ -315,6 +323,12 @@ export class ObraComponent {
       if (!pasaSiglas) return false;
       const pasaMeta = filtroMetaVal === null || obra.meta_estandarizada === filtroMetaVal;  // <- agregado
       if (!pasaMeta) return false;
+      const pasaObra = filtroObraVal === null ||
+        obra.DatosSED.some(s => s.obra === filtroObraVal);
+      if (!pasaObra) return false;
+      const pasaClave = filtroClaveVal === null ||
+        obra.DatosSED.some(s => s.clave_recodificada === filtroClaveVal);
+      if (!pasaClave) return false;
       const pasaMunicipio = filtroMunicipioVal === null ||
         obra.DatosSED.some(s => s.municipio_nombre === filtroMunicipioVal);
       if (!pasaMunicipio) return false;
@@ -337,13 +351,28 @@ export class ObraComponent {
     this.obraFiltrada().filter(o => o["SGEG_OPD"] === "ENTIDAD")
   );
 
+  // === Opciones de los filtros SED, en cascada ===
+
+  // Nivel 1 (el más alto): opciones de "obra". No depende de ningún otro filtro SED.
+  obraSEDOpciones = computed(() => {
+    this.dataVersion();
+    const valores = new Set(
+      this.ObrasExtendida.flatMap(o => o.DatosSED.map(s => s.obra))
+    );
+    const opciones: { label: string; value: boolean | null }[] = [
+      { label: 'Todas', value: null }
+    ];
+    if (valores.has(true)) opciones.push({ label: 'Obra', value: true });
+    if (valores.has(false)) opciones.push({ label: 'No Obra', value: false });
+    return opciones;
+  });
+
+  // Nivel 2: opciones de siglas. Depende solo del nivel 1 (filtroObraSED).
   siglasOpciones = computed(() => {
-    const filtroMetaVal = this.filtroMetaSED();
-    const filtroMunicipioVal = this.filtroMunicipioSED();
+    const filtroObraVal = this.filtroObraSED();
 
     const registros = this.registrosSEDConMeta().filter(r =>
-      (filtroMetaVal === null || r.meta === filtroMetaVal) &&
-      (filtroMunicipioVal === null || r.municipio === filtroMunicipioVal)
+      filtroObraVal === null || r.obra === filtroObraVal
     );
 
     const siglas = new Set(registros.map(r => r.siglas).filter(Boolean));
@@ -355,16 +384,37 @@ export class ObraComponent {
     ];
   });
 
+  // Nivel 3: opciones de clave_recodificada. Depende de los niveles 1 y 2 (obra, siglas).
+  claveRecodificadaSEDOpciones = computed(() => {
+    const filtroObraVal = this.filtroObraSED();
+    const filtroSiglasVal = this.filtroSiglas();
+
+    const registros = this.registrosSEDConMeta().filter(r =>
+      (filtroObraVal === null || r.obra === filtroObraVal) &&
+      (filtroSiglasVal === null || r.siglas === filtroSiglasVal)
+    );
+
+    const claves = new Set(registros.map(r => r.claveRecodificada).filter(Boolean));
+
+    return [
+      { label: 'Todas las Claves', value: null },
+      ...Array.from(claves).sort().map(c => ({ label: c, value: c }))
+    ];
+  });
+
   private unsubEdiciones?: () => void;
   private unsubEliminados?: () => void;
 
+  // Nivel 4: opciones de meta. Depende de los niveles 1, 2 y 3 (obra, siglas, clave).
   metaSEDOpciones = computed(() => {
+    const filtroObraVal = this.filtroObraSED();
     const filtroSiglasVal = this.filtroSiglas();
-    const filtroMunicipioVal = this.filtroMunicipioSED();
+    const filtroClaveVal = this.filtroClaveRecodificadaSED();
 
     const registros = this.registrosSEDConMeta().filter(r =>
+      (filtroObraVal === null || r.obra === filtroObraVal) &&
       (filtroSiglasVal === null || r.siglas === filtroSiglasVal) &&
-      (filtroMunicipioVal === null || r.municipio === filtroMunicipioVal)
+      (filtroClaveVal === null || r.claveRecodificada === filtroClaveVal)
     );
 
     const metasValidas = new Set(registros.map(r => r.meta));
@@ -389,6 +439,8 @@ export class ObraComponent {
 
   datosSEDFiltrados = computed(() => {
     this.dataVersion(); // se recalcula cuando edites/agregues/elimines
+    const filtroObra = this.filtroObraSED();              // <- agregado
+    const filtroClave = this.filtroClaveRecodificadaSED(); // <- agregado
     const filtroMeta = this.filtroMetaSED();
     const filtroMunicipio = this.filtroMunicipioSED();
     const filtroActualVal = this.filtroActual();
@@ -396,6 +448,8 @@ export class ObraComponent {
     return this.ObrasExtendida
       .filter(o => filtroMeta === null || o.meta_estandarizada === filtroMeta)
       .flatMap(o => o.DatosSED)
+      .filter(s => filtroObra === null || s.obra === filtroObra)
+      .filter(s => filtroClave === null || s.clave_recodificada === filtroClave)
       .filter(s => filtroMunicipio === null || s.municipio_nombre === filtroMunicipio)
       .filter(s => filtroActualVal === null || s.es_anio_actual === filtroActualVal).
       filter(s => filtroSiglasVal === null || s.siglas === filtroSiglasVal);
@@ -421,7 +475,7 @@ export class ObraComponent {
 
     return filas.map(f => ({
       ...f,
-      anchoBarra: maximo > 0 ? (f.monto / maximo) * 100 : 0,           // <- para el ancho visual
+      anchoBarra: totalGeneral > 0 ? (f.monto / totalGeneral) * 100 : 0,           // <- para el ancho visual
       porcentajeDelTotal: totalGeneral > 0 ? (f.monto / totalGeneral) * 100 : 0  // <- para el tooltip
     }));
   });
@@ -435,12 +489,17 @@ export class ObraComponent {
     tabla.filterGlobal(valor, 'contains');
   }
   //filtro global par avarios obtejos visuales
+  // Nivel 5 (el último): opciones de municipio. Depende de los 4 niveles anteriores.
   municipioSEDOpciones = computed(() => {
+    const filtroObraVal = this.filtroObraSED();
     const filtroSiglasVal = this.filtroSiglas();
+    const filtroClaveVal = this.filtroClaveRecodificadaSED();
     const filtroMetaVal = this.filtroMetaSED();
 
     const registros = this.registrosSEDConMeta().filter(r =>
+      (filtroObraVal === null || r.obra === filtroObraVal) &&
       (filtroSiglasVal === null || r.siglas === filtroSiglasVal) &&
+      (filtroClaveVal === null || r.claveRecodificada === filtroClaveVal) &&
       (filtroMetaVal === null || r.meta === filtroMetaVal)
     );
 
@@ -457,11 +516,15 @@ export class ObraComponent {
 
   // Filtro de Municipio tabla jerarquica
   sedFiltradoPorMunicipio(obra: ObraExtendida): DatosSED[] {
+    const filtroObra = this.filtroObraSED();                 // <- agregado
+    const filtroClave = this.filtroClaveRecodificadaSED();    // <- agregado
     const filtroMunicipio = this.filtroMunicipioSED();
     const filtroActualVal = this.filtroActual();
     const filtroSiglasVal = this.filtroSiglas();
 
     return obra.DatosSED.filter(s =>
+      (filtroObra === null || s.obra === filtroObra) &&
+      (filtroClave === null || s.clave_recodificada === filtroClave) &&
       (filtroMunicipio === null || s.municipio_nombre === filtroMunicipio) &&
       (filtroActualVal === null || s.es_anio_actual === filtroActualVal) &&
       (filtroSiglasVal === null || s.siglas === filtroSiglasVal)
@@ -474,10 +537,40 @@ export class ObraComponent {
       o.DatosSED.map(s => ({
         siglas: s.siglas,
         meta: o.meta_estandarizada,
-        municipio: s.municipio_nombre
+        municipio: s.municipio_nombre,
+        obra: s.obra,                         // <- agregado
+        claveRecodificada: s.clave_recodificada // <- agregado
       }))
     );
   });
+
+  // === Handlers para resetear los niveles inferiores de la cascada al cambiar un nivel superior ===
+  // Orden de la cascada: obra -> siglas -> clave_recodificada -> meta -> municipio
+  onFiltroObraSEDChange(valor: boolean | null) {
+    this.filtroObraSED.set(valor);
+    this.filtroSiglas.set(null);
+    this.filtroClaveRecodificadaSED.set(null);
+    this.filtroMetaSED.set(null);
+    this.filtroMunicipioSED.set(null);
+  }
+
+  onFiltroSiglasSEDChange(valor: string | null) {
+    this.filtroSiglas.set(valor);
+    this.filtroClaveRecodificadaSED.set(null);
+    this.filtroMetaSED.set(null);
+    this.filtroMunicipioSED.set(null);
+  }
+
+  onFiltroClaveRecodificadaSEDChange(valor: string | null) {
+    this.filtroClaveRecodificadaSED.set(valor);
+    this.filtroMetaSED.set(null);
+    this.filtroMunicipioSED.set(null);
+  }
+
+  onFiltroMetaSEDChange(valor: string | null) {
+    this.filtroMetaSED.set(valor);
+    this.filtroMunicipioSED.set(null);
+  }
 
   async ngOnInit(): Promise<void> {
     this.GetObra()
@@ -519,9 +612,9 @@ export class ObraComponent {
           this.pocketBaseService.cargarEliminados(),
           this.pocketBaseService.cargarNuevos()
         ]);
-        ediciones.forEach(e => this.aplicarEdicion(e));
-        eliminados.forEach(e => this.aplicarEliminacion(e));
-        nuevos.forEach(n => this.aplicarNuevo(n));
+            nuevos.forEach(n => this.aplicarNuevo(n));
+            ediciones.forEach(e => this.aplicarEdicion(e));
+            eliminados.forEach(e => this.aplicarEliminacion(e));
 
         this.ObrasOriginal = structuredClone(this.ObrasExtendida);
         console.log('Obra Original:', this.ObrasOriginal);

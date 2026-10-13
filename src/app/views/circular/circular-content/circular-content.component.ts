@@ -86,6 +86,7 @@ export class CircularContentComponent implements OnInit {
   vencidas_respuesta: any
   puntosAtencion: any
   graficosrespuesta: any;
+  fecha_sap:string = '';
 
   programacionrespuesta: any;
   fecha: Date = new Date()
@@ -206,7 +207,8 @@ export class CircularContentComponent implements OnInit {
   GetFilesSAP() {
     this.fileService.getFilesReportesSAP().subscribe(
       (data) => {
-        this.filesSAP = data;
+        this.filesSAP = data.files;
+        this.fecha_sap = data.fecha;
       },
       (error) => {
         console.error('Error fetching files', error);

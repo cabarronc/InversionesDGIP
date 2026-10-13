@@ -461,3 +461,38 @@
 .dashboard-date strong {
     font-weight: 600;
 }
+
+/* Indicador de actualización */
+.dashboard-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 13px;
+    border-radius: 8px;
+
+    background: var(--surface-ground);
+    border: 1px solid var(--surface-border);
+
+    font-size: 0.8rem;
+    color: var(--text-color-secondary);
+
+    white-space: nowrap;
+}
+
+.dashboard-date i {
+    color: var(--primary-color);
+    font-size: 0.95rem;
+}
+
+.dashboard-date strong {
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+/* Ajuste para celulares */
+@media (max-width: 576px) {
+    .dashboard-date {
+        width: 100%;
+        justify-content: center;
+    }
+}
