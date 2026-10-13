@@ -134,6 +134,7 @@ export class ObraComponent {
   dt = viewChild<Table>('dt');
   public Obra: Obra[] = [];
   public ObrasExtendida: ObraExtendida[] = [];
+  filtrosMinimizados = signal(false);
   public ObrasEntidad: Obra[] = [];
   public ObrasGEG: Obra[] = [];
   fechaActual: string = '';
