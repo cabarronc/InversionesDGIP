@@ -37,7 +37,7 @@ import { catchError, concat, firstValueFrom, forkJoin, of } from 'rxjs';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
 import { CardModule } from 'primeng/card';
 import { TagModule } from 'primeng/tag';
 import { MessageModule } from 'primeng/message';
@@ -135,7 +135,7 @@ public uploadRemoveUrl = "removeUrl"; // should represent an actual API endpoint
   EjecutandoPPI: boolean = false;
   EjecutandoAvance: boolean = false;
   cascaron: boolean = false;
-
+  
   public close(): void {
     this.opened = false;
   }
@@ -3073,17 +3073,17 @@ public onUploadCatalogoError(event: FileUploadErrorEvent): void {
   }
 
   public dataAvanceFinanciero = [
-    { text: '02 Febrero',   svgIcon: fileExcelIcon, click: (): Promise<void> => this.generarAvanceFinanciero(2,  'Feb') },
-    { text: '03 Marzo',     svgIcon: fileExcelIcon, click: (): Promise<void> => this.generarAvanceFinanciero(3,  'Mar') },
-    { text: '04 Abril',     svgIcon: fileExcelIcon, click: (): Promise<void> => this.generarAvanceFinanciero(4,  'Abr') },
-    { text: '05 Mayo',      svgIcon: fileExcelIcon, click: (): Promise<void> => this.generarAvanceFinanciero(5,  'May') },
-    { text: '06 Junio',     svgIcon: fileExcelIcon, click: (): Promise<void> => this.generarAvanceFinanciero(6,  'Jun') },
-    { text: '07 Julio',     svgIcon: fileExcelIcon, click: (): Promise<void> => this.generarAvanceFinanciero(7,  'Jul') },
-    { text: '08 Agosto',    svgIcon: fileExcelIcon, click: (): Promise<void> => this.generarAvanceFinanciero(8,  'Ago') },
-    { text: '09 Septiembre', svgIcon: fileExcelIcon, click: (): Promise<void> => this.generarAvanceFinanciero(9, 'Sep') },
-    { text: '10 Octubre',   svgIcon: fileExcelIcon, click: (): Promise<void> => this.generarAvanceFinanciero(10, 'Oct') },
-    { text: '11 Noviembre', svgIcon: fileExcelIcon, click: (): Promise<void> => this.generarAvanceFinanciero(11, 'Nov') },
-    { text: '12 Diciembre', svgIcon: fileExcelIcon, click: (): Promise<void> => this.generarAvanceFinanciero(12, 'Dic') },
+    { label: '02 Febrero',   icon : "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(2,  'Feb') },
+    { label: '03 Marzo',     icon : "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(3,  'Mar') },
+    { label: '04 Abril',     icon : "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(4,  'Abr') },
+    { label: '05 Mayo',      icon : "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(5,  'May') },
+    { label: '06 Junio',     icon : "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(6,  'Jun') },
+    { label: '07 Julio',     icon : "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(7,  'Jul') },
+    { label: '08 Agosto',    icon : "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(8,  'Ago') },
+    { label: '09 Septiembre', icon : "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(9, 'Sep') },
+    { label: '10 Octubre',   icon : "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(10, 'Oct') },
+    { label: '11 Noviembre', icon : "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(11, 'Nov') },
+    { label: '12 Diciembre', icon : "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(12, 'Dic') },
   ];
   
 

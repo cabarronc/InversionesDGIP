@@ -47,9 +47,9 @@
             <div class="boton-item">
                 <p class="titulo">1. Actualizar Catálogos</p>
 
-                <p-splitbutton styleClass="button-grid" label="Actualizar Rubros" icon="pi pi-file-excel"
+                <p-splitbutton class="btn-rubros" label="Actualizar Rubros" icon="pi pi-file-excel" severity="info"
                     title="Actualización de Rubros" [model]="ActualizacionRubro" (onClick)="DescargarExcel()"
-                    [disabled]="isDisabled"   size="small" />
+                    [disabled]="isDisabled" size="small" />
 
                 @if (isDisabledActualizacionRubros) {
                 <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
@@ -59,8 +59,8 @@
             <div class="boton-item">
                 <p class="titulo">2. Descargar Catálogos</p>
 
-                <p-button styleClass="button-grid" label="Catálogo Rubros" icon="pi pi-download"
-                    (onClick)="DescargaCatalogoRubros()"  size="small"/>
+                <p-button  label="Catálogo Rubros" icon="pi pi-download" severity="info"
+                    (onClick)="DescargaCatalogoRubros()" size="small" />
 
                 @if (isDisabledCatalogoR) {
                 <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
@@ -68,9 +68,9 @@
             </div>
 
             <div class="boton-item">
-                <p>3. Subir Catalogo Rubros</p>
-                <p-fileupload mode="basic" name="files" chooseLabel="Seleccionar archivo" chooseLabel="Seleccionar archivo" [url]="uploadSaveUrl"
-                    [auto]="true"  pSize="small"/>
+                <p class="titulo">3. Subir Catalogo Rubros</p>
+                <p-fileupload  mode="basic" name="files" chooseLabel="Seleccionar archivo" 
+                    chooseLabel="Seleccionar archivo" [url]="uploadSaveUrl" [auto]="true" pSize="small" />
             </div>
 
 
@@ -235,11 +235,102 @@
 </div>
 }
 @if (selectedItem === 'Deuda' && canViewDeuda) {
-<div class="container-fluid mt-4">
-    <div class="row">
-        <h1 class="title2">Reporte<span> DEUDA</span>📉</h1>
+<p-card styleClass="cuenta-card">
+    <!-- ========================================= -->
+    <!-- HEADER                                    -->
+    <!-- ========================================= -->
+    <div class="cuenta-header">
+
+        <div class="header-content">
+
+            <div class="header-icon">
+                <i class="pi pi-file-edit"></i>
+            </div>
+            <div>
+                <h2 class="title2">Reporte<span> DEUDA</span></h2>
+
+                <p>
+                    Reporte trimestral de DEUDA, el cual contiene información de la deuda publica
+                </p>
+            </div>
+
+        </div>
+        <p-tag value="DEUDA" icon="pi pi-file" severity="info">
+        </p-tag>
+    </div>
+    <!-- ========================================= -->
+    <!-- DATOS                      -------------- -->
+    <!-- ========================================= -->
+    <div class="section-header">
+        <div class="section-icon">
+            <i class="pi pi-info-circle"></i>
+        </div>
+        <div>
+            <h3>Generar Reportes de Deuda</h3>
+            <p>
+                Genera los diferentes productos de la deuda publica y descargalos.
+            </p>
+        </div>
+    </div>
+    <!-- ========================================= -->
+    <!-- BOTONES                      -------------- -->
+    <!-- ========================================= -->
+    <div class="botones-grid">
+
+        <div class="boton-item">
+            <p class="titulo">1. Generar Reporte Deuda</p>
+
+            <p-splitbutton styleClass="button-grid" label="Selecciona el trimestre" icon="pi pi-file-pdf"
+                title="Reporte PDF de Deuda" [model]="dataDeuda" (onClick)="DescargarExcel()"
+                [disabled]="isDisabled_deuda" size="small" severity="info" />
+
+            @if (isDisabledG_deuda) {
+            <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+            }
+        </div>
+
+        <div class="boton-item">
+            <p class="titulo">2. Reporte Deuda Recurso</p>
+
+            <p-splitbutton styleClass="button-grid" label="Selecciona el trimestre" icon="pi pi-file-excel"
+                (onClick)="DescargaCatalogoRubros()" size="small" title="Reporte excel del recurso en datos abiertos"
+                [model]="dataExcelRecursoDeuda" [disabled]="isDisabled_deuda" />
+
+            @if (isDisabledExcelRecursoDeuda) {
+            <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+            }
+        </div>
+        <div class="boton-item">
+            <p class="titulo">3. Global Q</p>
+
+            <p-splitbutton styleClass="button-grid" label=" Generar Global Q" icon="pi pi-download"
+                (onClick)="DescargaCatalogoRubros()" size="small" title="Reporte excel Deuda"
+                [model]="dataExcelRecursoDeuda" [disabled]="isDisabled_deuda" />
+
+            @if (isDisabledExcelRecursoDeuda) {
+            <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+            }
+        </div>
+        <div class="boton-item">
+            <p class="titulo">4. Dependencia Q</p>
+
+            <p-splitbutton styleClass="button-grid" label=" Generar Dependencia Q" icon="pi pi-download"
+                (onClick)="DescargaCatalogoRubros()" size="small" title="Reporte excel Deuda"
+                [model]="dataExcelRecursoDeuda" [disabled]="isDisabled_deuda" />
+
+            @if (isDisabledExcelRecursoDeuda) {
+            <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+            }
+        </div>
+
+
+
 
     </div>
+
+</p-card>
+<div class="container-fluid mt-4">
+
     <div class="page">
         <div class="content">
             <div class="col-12 mt-3">
@@ -539,7 +630,7 @@
 
                     </div>
                 </div>
-                @if (!hasProps2(info2)){
+                @if (hasProps2(info2)){
                 <div class="card shadow-sm">
                     <div class="card-header excel-title">
                         <h5 class="mb-0">
@@ -578,74 +669,51 @@
 
 }
 @if (selectedItem === 'AvanceFinanciero' && canViewAvance) {
-<div class="container-fluid mt-4">
-    <div class="row">
-        <h1 class="title2">Reporte<span> Avance Financiero por Mes</span>📝</h1>
+<p-card styleClass="cuenta-card">
+    <!-- ========================================= -->
+    <!-- HEADER                                    -->
+    <!-- ========================================= -->
+    <div class="cuenta-header">
 
-    </div>
-    <div class="page">
-        <div class="content">
-            <div class="col-12 mt-3">
-                <div class="row">
-                    <div class="col-md-3 mb-3">
-                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataAvanceFinanciero"
-                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
-                            [disabled]="EjecutandoAvance">
-                            Generar Avance Financiero
-                        </kendo-splitbutton>
-                        <span class="ps-2">
-                            @if (isAvance) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
+        <div class="header-content">
 
-                    </div>
-                </div>
-                @if (mostrarPreview) {
-                <div class="preview-container">
-                    <iframe [src]="pdfUrl" width="100%" height="800px" style="border: none;">
-                    </iframe>
-                </div>
-
-                }
-
-                <!-- @if (!hasProps2(info2)){
-                <div class="card shadow-sm">
-                    <div class="card-header excel-title">
-                        <h5 class="mb-0">
-                            <i class="bi bi-file-earmark-excel-fill me-2"></i>
-                            Fondos no encontrados en SGEG
-                        </h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <kendo-grid [data]="info2" [kendoGridBinding]="info2" [filterable]="true" [pageable]="true"
-                            [pageSize]="25" [sortable]="true" [columnMenu]="menuSettings" size="small"
-                            [resizable]="true">
-                            <ng-template kendoGridToolbarTemplate>
-                                <button type="button" themeColor="success"
-                                kendoGridExcelCommand [svgIcon]="fileExcelIcon">
-                                    Export to Excel
-                                </button>
-                            </ng-template>
-                            <kendo-grid-column field="fondo" title="Fondo" [width]="180"></kendo-grid-column>
-                            <kendo-grid-column field="denominacion" title="Nombre del Fondo"
-                                [width]="180"></kendo-grid-column>
-                            <kendo-grid-column field="entidad_x" title="Numero de Entidades"
-                                [width]="100"></kendo-grid-column>
-                            <kendo-grid-column field="EntidadNoGEG" title="Entidad No en GEG"
-                                [width]="100"></kendo-grid-column>
-                            <kendo-grid-column field="entidad_y" title="Nombre Entidad"
-                                [width]="350"></kendo-grid-column>
-                            <kendo-grid-excel fileName="FondosInexistentes.xlsx"></kendo-grid-excel>
-                        </kendo-grid>
-                    </div>
-                </div>
-                } -->
+            <div class="header-icon-avance">
+                <i class="pi pi-chart-line"></i>
             </div>
+            <div>
+                <h2 class="title2">Reporte<span> Avance Financiero por mes</span></h2>
+
+                <p>
+                    Reporte mensual de la situacion presupuestal de los programas y proyectos de inversión, el cual
+                    contiene información de la ejecución presupuestal
+                </p>
+            </div>
+
         </div>
+        <p-tag value="Avance" icon="pi pi-file" severity="success">
+        </p-tag>
     </div>
-</div>
+    <!-- ========================================= -->
+    <!-- BOTONES                      -------------- -->
+    <!-- ========================================= -->
+    <div class="botones-grid">
+
+        <p-splitbutton styleClass="button-grid" label="Selecciona el mes" icon="pi pi-file-word"
+            title="Genera archivo zip con pptx y excel" [model]="dataAvanceFinanciero" (onClick)="DescargarExcel()"
+            [disabled]="EjecutandoAvance" size="small" appendTo="body" />
+        @if (isAvance) {
+        <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+        }
+
+    </div>
+    @if (mostrarPreview) {
+    <div class="preview-container mt-4">
+        <iframe [src]="pdfUrl" width="100%" height="800px" style="border: none;">
+        </iframe>
+    </div>
+
+    }
+</p-card>
 
 }
 

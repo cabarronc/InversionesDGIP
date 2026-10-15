@@ -266,6 +266,22 @@
     background: var(--p-blue-400);
     color: var(--p-primary-contrast-color);
 }
+.header-icon-avance {
+    width: 3.25rem;
+    height: 3.25rem;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: var(--p-border-radius);
+    
+    background: var(--p-green-400);
+    color: var(--p-text-color);
+}
 /* =========================================================
    FORMULARIO
    ========================================================= */
@@ -329,23 +345,33 @@
 
 .botones-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
   width: 100%;
 }
-
+.botones-avance {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
 .boton-item {
   min-width: 0;
   display: flex;
   flex-direction: column;
-  align-items: stretch;
+  align-items: center;
 }
 
 .button-grid {
   width: 100%;
+  color: var(--p-text-color);
+
 }
 
 .titulo {
   margin: 0 0 0.75rem;
   font-weight: 600;
+}
+.btn-rubros {
+    --p-splitbutton-button-color: var(--p-text-color);
 }
