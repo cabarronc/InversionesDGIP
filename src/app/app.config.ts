@@ -19,11 +19,12 @@ import { AuthGuard} from './guards/auth.guard';
 import { PermissionGuard} from './guards/permission.guard';
 import {  RoleGuard } from './guards/role.guard';
 import { AvatarService } from './services/avatar.service';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    ConfirmationService,
     MessageService,
      {
       provide: HTTP_INTERCEPTORS,

@@ -38,12 +38,18 @@
               "src/assets",
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "output": "/"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/ngx-extended-pdf-viewer/assets/",
+                "output": "/assets/"
               }
             ],
             "styles": [
-           "node_modules/@progress/kendo-theme-bootstrap/dist/all.css",
-            "node_modules/primeflex/primeflex.css",
+              "node_modules/@progress/kendo-theme-bootstrap/dist/all.css",
+              "node_modules/primeflex/primeflex.css",
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css"
@@ -54,7 +60,9 @@
           },
           "configurations": {
             "production": {
-              "localize": ["es"],
+              "localize": [
+                "es"
+              ],
               "budgets": [
                 {
                   "type": "initial",

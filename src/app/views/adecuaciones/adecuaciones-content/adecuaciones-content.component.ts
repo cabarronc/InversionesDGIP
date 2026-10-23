@@ -29,7 +29,6 @@ import { ApiService } from '../../../services/api.service';
 import { NumberFormatService } from '../../../helpers/number-format.service';
 import { AdecuacionesService } from '../../../services/adecuaciones.service';
 import { FileService } from '../../../services/file.service';
-import { KENDO_PDFVIEWER } from "@progress/kendo-angular-pdfviewer";
 import { KENDO_GRID, ExcelModule, GridDataResult, DataStateChangeEvent } from "@progress/kendo-angular-grid";
 import * as moment from 'moment-timezone';
 import { ColumnMenuSettings } from "@progress/kendo-angular-grid";
@@ -46,7 +45,7 @@ import { Observable } from 'rxjs';
     selector: 'app-adecuaciones-content',
     imports: [KENDO_BUTTONS, KENDO_INDICATORS, ButtonsModule, DateInputsModule, IntlModule, LabelModule, FormFieldModule, IconsModule,
         KENDO_FLOATINGLABEL, KENDO_LABEL, KENDO_INPUTS, ReactiveFormsModule, KENDO_DATEINPUTS, KENDO_NOTIFICATION, LayoutModule, KENDO_PROGRESSBARS,
-        WindowModule, FormsModule, DropDownsModule, KENDO_TOOLTIPS, KENDO_PDFVIEWER, WindowModule, KENDO_GRID, ExcelModule, NgClass],
+        WindowModule, FormsModule, DropDownsModule, KENDO_TOOLTIPS, WindowModule, KENDO_GRID, ExcelModule, NgClass],
     templateUrl: './adecuaciones-content.component.html',
     styleUrl: './adecuaciones-content.component.scss'
 })

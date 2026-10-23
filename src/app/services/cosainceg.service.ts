@@ -3,7 +3,15 @@ import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
-
+export interface BackupItem {
+  filename: string;
+  size_kb: number;
+  fecha: string;
+}
+export interface CatalogoRubrosResponse {
+    datos: any[];
+    fecha_actualizacion: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -25,22 +33,24 @@ export class CosaincegService {
     return this.http.post<any>(`${this.apiUrl}/GetReporteDeuda`, body, { headers });
   }
     // 📌 Método para enviar el JSON al backend
-  GenerarDescargasCosainceg(fecha: any,filename: string): Observable<Blob> {
+  GenerarDescargasCosainceg(fecha: any,filename: string): Observable<HttpResponse<Blob>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     return this.http.post(`${this.apiUrl}/GetDescargasCosaincegGeneral/${filename}`, body, {
       headers,
-      responseType: 'blob'
-    }) as Observable<Blob>;
+      responseType: 'blob',
+      observe: 'response',
+    }) as Observable<HttpResponse<Blob>>;
   }
 
-    GenerarDescargasCosaincegDep(fecha: any,filename: string): Observable<Blob> {
+    GenerarDescargasCosaincegDep(fecha: any,filename: string): Observable<HttpResponse<Blob>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     return this.http.post(`${this.apiUrl}/GetDescargasCosaincegDependencia/${filename}`, body, {
       headers,
-      responseType: 'blob'
-    }) as Observable<Blob>;
+      responseType: 'blob',
+      observe:'response'
+    }) as Observable<HttpResponse<Blob>>;
   }
 
       GenerarDescargasDeudaDep(fecha: any,filename: string): Observable<Blob> {
@@ -53,22 +63,24 @@ export class CosaincegService {
   }
 
 
-      GenerarDescargasCosaincegRub(fecha: any,filename: string): Observable<Blob> {
+      GenerarDescargasCosaincegRub(fecha: any,filename: string): Observable<HttpResponse<Blob>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     return this.http.post(`${this.apiUrl}/GetDescargasCosaincegRubro/${filename}`, body, {
       headers,
-      responseType: 'blob'
-    }) as Observable<Blob>;
+      responseType: 'blob',
+      observe: 'response'
+    }) as Observable<HttpResponse<Blob>>;
   }
 
-      GenerarDescargasCosaincegRecurso(fecha: any,filename: string): Observable<Blob> {
+      GenerarDescargasCosaincegRecurso(fecha: any,filename: string): Observable<HttpResponse<Blob>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     return this.http.post(`${this.apiUrl}/GetDescargasCosaincegRecurso/${filename}`, body, {
       headers,
-      responseType: 'blob'
-    }) as Observable<Blob>;
+      responseType: 'blob',
+      observe: 'response'
+    }) as Observable<HttpResponse<Blob>>;
   }
 
   GenerarDescargasDeudaRecurso(fecha: any,filename: string): Observable<Blob> {
@@ -85,7 +97,8 @@ export class CosaincegService {
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     return this.http.post(`${this.apiUrl}/GetDescargasDeudaGeneral/${filename}`, body, {
       headers,
-      responseType: 'blob'
+      responseType: 'blob',
+      
     }) as Observable<Blob>;
   }
 
@@ -199,6 +212,19 @@ GenerarDescargasInversionHojaTrabajo(fecha: any, filename: string): Observable<H
       observe: 'response'
     }) as Observable<HttpResponse<Blob>>;
   }
+  public listarBackups(): Observable<{ backups: BackupItem[] }> {
+    return this.http.get<{ backups: BackupItem[] }>(`${this.apiUrl}/backups`);
+  }
 
+  public restaurarBackup(filename: string): Observable<{ status: string; mensaje: string }> {
+    return this.http.post<{ status: string; mensaje: string }>(
+      `${this.apiUrl}/restore/${encodeURIComponent(filename)}`,
+      {}
+    );
+  }
+
+  public GetCatalogoRubrosJson(): Observable<CatalogoRubrosResponse> {
+  return this.http.get<CatalogoRubrosResponse>(`${this.apiUrl}/GetCatalogoRubrosJson`);
+}
 
 }

@@ -323,25 +323,23 @@
                     </div>
                     @if (!isGraficos)
                     {
-                    <p-tag value="Pendiente..." icon="pi pi-clock" severity="danger"></p-tag>
+                    <p-tag value="Sin iniciar" icon="pi pi-clock" severity="danger"></p-tag>
                     }
                     @else {
-                    @if (!graficosrespuesta) {
-                    <p-tag value="Genrando..." icon="pi pi-spinner-dotted pi-spin" severity="info"></p-tag>
+                        @if (isDisabled) {
+                        <p-tag value="Generando al " icon="pi pi-spinner-dotted pi-spin" severity="info"></p-tag>
+                        }
+                        @else {
 
-                    }
-                    @else {
-
-                    <p-tag value="Completado" icon="pi pi-clock" severity="success"></p-tag>
-
-                    }
+                        <p-tag value="Completado al 100%" icon="pi pi-clock" severity="success"></p-tag>
+                        }
 
                     }
                     <strong>
                         {{ progress_graficos }}%
                     </strong>
                 </div>
-                <p-progressbar [value]="progress_graficos" [mode]="graficosrespuesta ? 'determinate' : 'indeterminate'"
+                <p-progressbar [value]="progress_graficos" [mode]="isDisabled ? 'determinate' : 'indeterminate'"
                     [showValue]="false">
                 </p-progressbar>
             </div>
@@ -362,7 +360,7 @@
             <div class="actions">
                 <!-- Generar Graficos -->
                 <p-button label="Generar Graficos" icon="pi pi-spinner-dotted spin" severity="info" size="small"
-                    [disabled]="graficosrespuesta || isDisabled" [loading]="isDisabled" (onClick)="Graficos()">
+                    [disabled]=" isDisabled" [loading]="isDisabled" (onClick)="Graficos()">
                 </p-button>
             </div>
             <!-- ========================================= -->
@@ -376,12 +374,17 @@
                         Selecciona el boton para ejecutar
                     </span>
                 </div>
-                @if (graficosrespuesta) {
-                <p-tag value="Formulario listo" icon="pi pi-check" severity="success">
+                @if (!isGraficos) {
+                <p-tag value="Ejecucion Pendiente" icon="pi pi-clock" severity="danger">
                 </p-tag>
                 } @else {
-                <p-tag value="Ejecución pendiente" icon="pi pi-exclamation-triangle" severity="warn">
-                </p-tag>
+                    @if (isDisabled) {
+                        <p-tag value="Generando..." icon="pi pi-spinner-dotted pi-spin" severity="info"></p-tag>
+                        }
+                    @else {
+
+                        <p-tag value="Completado" icon="pi pi-clock" severity="success"></p-tag>
+                        }
                 }
             </div>
         </p-card>

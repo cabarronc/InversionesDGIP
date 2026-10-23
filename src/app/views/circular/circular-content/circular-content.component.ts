@@ -589,7 +589,7 @@ public async PuntosAtencion(): Promise<void> {
 
 public async Graficos(): Promise<void> {
   this.isGraficos = true;
-
+  this.isDisabled = true
   // Toast de espera: sticky y con key propia, se quita cuando termina la llamada
   this.messageService.add({
     key: 'graficos',
@@ -611,6 +611,7 @@ public async Graficos(): Promise<void> {
   try {
     this.graficosrespuesta = await firstValueFrom(this.apiService.Graficos());
     this.isGraficos = false; // antes del toast
+    this.isDisabled = false
 
     this.messageService.clear('graficos');
     this.messageService.add({
@@ -622,7 +623,7 @@ public async Graficos(): Promise<void> {
     console.log('Datos obtenidos:', this.graficosrespuesta);
 
   } catch (error) {
-    this.isGraficos = false; // antes del toast
+   
 
     this.messageService.clear('graficos');
     this.messageService.add({
@@ -637,6 +638,7 @@ public async Graficos(): Promise<void> {
     // Equivale al finalize() de antes: corre tanto en éxito como en error
     clearInterval(this.interval);
     this.progress_graficos = 100;
+     this.isGraficos = false; // antes del toast
     this.isDisabled = false;
     setTimeout(() => {
       this.progress_graficos = 0;

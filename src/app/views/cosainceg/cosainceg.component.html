@@ -2,236 +2,459 @@
 <div class="cuenta-page">
     <p-card styleClass="cuenta-card">
         <!-- ========================================= -->
-        <!-- HEADER                                    -->
+        <!------------- CATALOGO RUBROS                 -->
         <!-- ========================================= -->
-        <div class="cuenta-header">
+        <p-card styleClass="cuenta-card">
+            <!-- ========================================= -->
+            <!-- HEADER                                    -->
+            <!-- ========================================= -->
+            <div class="cuenta-header">
 
-            <div class="header-content">
+                <div class="header-content">
 
-                <div class="header-icon">
-                    <i class="pi pi-file-edit"></i>
+                    <div class="header-icon">
+                        <i class="pi pi-file-edit"></i>
+                    </div>
+                    <div>
+                        <h2 class="title2">Reporte<span> COSAINCEG</span></h2>
+
+                        <p>
+                            Reporte trimestral de COSAINCEG, el cual contiene información de los proyectos
+                            de
+                            inversión, su
+                            avance financiero y metas.
+                        </p>
+                    </div>
+
+                </div>
+                <p-tag value="COSAINCEG" icon="pi pi-file" severity="info">
+                </p-tag>
+            </div>
+            <!-- ========================================= -->
+            <!-- DATOS          -------------- -->
+            <!-- ========================================= -->
+            <div class="section-header">
+                <div class="section-icon">
+                    <i class="pi pi-info-circle"></i>
                 </div>
                 <div>
-                    <h2 class="title2">Reporte<span> COSAINCEG</span></h2>
-
+                    <h3>Cargar Catalogo de Rubros</h3>
                     <p>
-                        Reporte trimestral de COSAINCEG, el cual contiene información de los proyectos de inversión, su
-                        avance financiero y metas.
+                        Sigue los pasos para actualizar y descargar el catalogo de rubros, así como generar
+                        los
+                        reportes de
+                        COSAINCEG.
                     </p>
                 </div>
-
             </div>
-            <p-tag value="COSAINCEG" icon="pi pi-file" severity="info">
-            </p-tag>
-        </div>
-        <!-- ========================================= -->
-        <!-- DATOS                      -------------- -->
-        <!-- ========================================= -->
-        <div class="section-header">
-            <div class="section-icon">
-                <i class="pi pi-info-circle"></i>
-            </div>
-            <div>
-                <h3>Cargar Catalogo de Rubros</h3>
-                <p>
-                    Sigue los pasos para actualizar y descargar el catalogo de rubros, así como generar los reportes de
-                    COSAINCEG.
-                </p>
-            </div>
-        </div>
-        <!-- ========================================= -->
-        <!-- BOTONES                      -------------- -->
-        <!-- ========================================= -->
-        <div class="botones-grid">
+            <!-- ========================================= -->
+            <!-- BOTONES                      -------------- -->
+            <!-- ========================================= -->
+            <div class="botones-grid mb-3">
 
-            <div class="boton-item">
-                <p class="titulo">1. Actualizar Catálogos</p>
+                <div class="boton-item">
+                    <p class="titulo">1. Actualizar Catálogos</p>
+                    <div class="boton-con-spinner">
+                        <p-splitbutton class="btn-rubros" label="Actualizar Rubros" icon="pi pi-file-excel"
+                            severity="info" title="Actualización de Rubros" [model]="ActualizacionRubro"
+                            (onClick)="DescargarExcel()" [disabled]="isDisabled" size="small" />
 
-                <p-splitbutton class="btn-rubros" label="Actualizar Rubros" icon="pi pi-file-excel" severity="info"
-                    title="Actualización de Rubros" [model]="ActualizacionRubro" (onClick)="DescargarExcel()"
-                    [disabled]="isDisabled" size="small" />
-
-                @if (isDisabledActualizacionRubros) {
-                <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
-                }
-            </div>
-
-            <div class="boton-item">
-                <p class="titulo">2. Descargar Catálogos</p>
-
-                <p-button  label="Catálogo Rubros" icon="pi pi-download" severity="info"
-                    (onClick)="DescargaCatalogoRubros()" size="small" />
-
-                @if (isDisabledCatalogoR) {
-                <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
-                }
-            </div>
-
-            <div class="boton-item">
-                <p class="titulo">3. Subir Catalogo Rubros</p>
-                <p-fileupload  mode="basic" name="files" chooseLabel="Seleccionar archivo" 
-                    chooseLabel="Seleccionar archivo" [url]="uploadSaveUrl" [auto]="true" pSize="small" />
-            </div>
-
-
-        </div>
-
-    </p-card>
-
-    <div class="container-fluid mt-4">
-
-        <div class="page">
-            <div class="content">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <p class="titulo mt-3 mb-2 ms-3">1. Actualizar Catalogos </p>
-                            <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="ActualizacionRubro"
-                                [svgIcon]="fileExcelIcon" title="Actualizacion de Rubros" [disabled]="isDisabled"
-                                themeColor="primary" class="button1">Actualizacion Rubros</kendo-splitbutton>
-                            <span class="ps-2">
-                                @if (isDisabledActualizacionRubros) {
-                                <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                                </kendo-loader>
-                                }
-                            </span>
-                        </div>
-                        <div class="col-md-3">
-                            <p class="titulo mt-3 mb-2 ms-3">2. Descargar Catalogos </p>
-                            <button kendoButton class="button2" (click)="DescargaCatalogoRubros()" themeColor="primary"
-                                [svgIcon]="downloadIcon">Catalogo Rubros</button>
-                            <span class="ps-2">
-                                @if (isDisabledCatalogoR) {
-                                <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                                </kendo-loader>
-                                }
-                            </span>
-                        </div>
-                        <div class="col-md-3 mb-3 ms-3">
-                            <my-uploads></my-uploads>
-                        </div>
+                        @if (isDisabledActualizacionRubros) {
+                        <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                        }
                     </div>
-
                 </div>
-            </div>
+                <div class="boton-item">
+                    <p class="titulo">2. Ver catalogo</p>
+                    <p-button label="Ver Catálogo" icon="pi pi-eye" size="small" severity="info"
+                        (onClick)="abrirCatalogoRubros()" />
+                </div>
+                <div class="boton-item">
+                    <p class="titulo">2.1 Descargar Catálogos</p>
 
-            <div class="page">
-                <div class="content">
-                    <div class="col-12 mt-3">
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="data"
-                                    [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
-                                    [disabled]="isDisabled">
-                                    Generar Reporte COSAINCEG
-                                </kendo-splitbutton>
-                                <span class="ps-2">
+                    <p-button label="Catálogo Rubros" icon="pi pi-download" severity="info"
+                        (onClick)="DescargaCatalogoRubros()" size="small" />
+
+                    @if (isDisabledCatalogoR) {
+                    <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                    }
+                </div>
+                <div class="boton-item">
+                    <p class="titulo">3. Subir Catalogo Rubros</p>
+                    <p-fileupload #fileUpload mode="advanced" name="files" chooseLabel="Seleccionar archivo"
+                        [url]="uploadSaveUrl" [auto]="true" size="small" (onUpload)="onUploadSuccess($event)"
+                        (onError)="onUploadError($event)">
+
+                        <ng-template #content let-files let-uploadedFiles="uploadedFiles"
+                            let-removeFileCallback="removeFileCallback"
+                            let-removeUploadedFileCallback="removeUploadedFileCallback">
+
+                            <!-- Archivos en proceso / pendientes -->
+                            @for (file of files; track file.name; let i = $index) {
+                            <div class="file-item">
+                                <i class="pi pi-file-excel" style="font-size: 2rem"></i>
+                                <span>{{ file.name }}</span>
+                                <i class="pi pi-times-circle" style="cursor: pointer; margin-left: 0.5rem"
+                                    (click)="removeFileCallback($event, i)"></i>
+                            </div>
+                            }
+
+                            <!-- Archivos ya subidos -->
+                            @for (file of uploadedFiles; track file.name; let i = $index) {
+                            <div class="file-item">
+                                <i class="pi pi-file-excel" style="font-size: 2rem"></i>
+                                <span>{{ file.name }}</span>
+                                <i class="pi pi-times-circle" style="cursor: pointer; margin-left: 0.5rem"
+                                    (click)="removeUploadedFileCallback(i)"></i>
+                            </div>
+                            }
+                        </ng-template>
+
+                    </p-fileupload>
+                </div>
+
+            </div>
+            <!-- ========================================= -->
+            <!-- Dialogos                   -------------- -->
+            <!-- ========================================= -->
+            <p-confirmdialog [style]="{ width: '450px' }" />
+
+            <p-dialog header="Catálogo de Rubros" [(visible)]="mostrarCatalogoDialog" [modal]="false" [draggable]="true"
+                [resizable]="true" [maximizable]="true" [style]="{ width: '70vw', height: '60vh' }"
+                [contentStyle]="{ height: 'calc(100% - 3rem)', overflow: 'auto' }" styleClass="catalogo-window-dialog">
+                <div class="fecha-actualizacion">
+                    <i class="pi pi-calendar"></i>
+                    Última actualización:
+                    <strong>{{ fecha_actualizacion }}</strong>
+                </div>
+                <p-table #dt [value]="catalogoData" [loading]="cargandoCatalogo" [paginator]="true" [rows]="15"
+                    styleClass="p-datatable-sm" size="small" responsiveLayout="scroll">
+                    <ng-template #header>
+                        <tr>
+                            <th>Clave</th>
+                            <th>Rubro
+                                <p-column-filter field="rubro" matchMode="equals" [showMenu]="false">
+                                    <ng-template #filter let-value let-filter="filterCallback">
+                                        <p-select [ngModel]="value" [options]="statusOptions"
+                                            (onChange)="filtrarRubro($event.value, filter)" optionLabel="label"
+                                            optionValue="value" placeholder="Todos" optionLabel="label"
+                                            optionValue="value" size="small" style="min-width: 14rem;height: 2rem;"
+                                            appendTo="body" [showClear]="true">
+                                        </p-select>
+                                    </ng-template>
+                                </p-column-filter>
+
+                            </th>
+                            <th>Nombre</th>
+                            <th>Ejercicio</th>
+                            <th>
+                                DoE
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template #body let-row>
+                        <tr>
+                            <td>{{ row.clave_recodificada }}</td>
+                            <td>{{ row.rubro }}</td>
+                            <td>{{ row.nombre }}</td>
+                            <td>{{ row.ejercicio }}</td>
+                            <td>{{ row.DoE }}</td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template #emptymessage>
+                        <tr>
+                            <td colspan="5" class="text-center">
+                                Sin datos para mostrar
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-dialog>
+            <!-- ========================================= -->
+            <!-- BACKUP                  -------------- -->
+            <!-- ========================================= -->
+            <p-panel header="Respaldos" [toggleable]="true" [(collapsed)]="panelBackup">
+                <ng-template pTemplate="icons">
+                    <span class="p-panel-subtitle">Ver Respaldos</span>
+                </ng-template>
+                <p-table [value]="backups" [loading]="isLoading" [paginator]="true" [rows]="10"
+                    styleClass="p-datatable-sm" size="small" responsiveLayout="scroll">
+                    <ng-template #header>
+                        <tr>
+                            <th>Archivo</th>
+                            <th>Fecha</th>
+                            <th>Tamaño (KB)</th>
+                            <th>Acción</th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template #body let-backup>
+                        <tr>
+                            <td>{{ backup.filename }}</td>
+                            <td>{{ backup.fecha }}</td>
+                            <td>{{ backup.size_kb }}</td>
+                            <td>
+                                <p-button icon="pi pi-undo" label="Restaurar" severity="warn" size="small"
+                                    [loading]="isRestoring" (onClick)="confirmarRestauracion(backup)" />
+                            </td>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template #emptymessage>
+                        <tr>
+                            <td colspan="4" class="text-center">No hay backups disponibles</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </p-panel>
+        </p-card>
+        <!-- ========================================= -->
+        <!------------- GENERADOR REPORTE COSAINCEG                 -->
+        <!-- ========================================= -->
+        <p-tabs value="tab_consainceg" [selectOnFocus]="true">
+            <p-tablist   
+                       >
+                <p-tab value="tab_consainceg" >REPORTES COSAINCEG</p-tab>
+                <p-tab value="tab_datos_abiertos" >REPORTES DATOS ABIERTOS</p-tab>
+            </p-tablist>
+
+            <!-- ========================================= -->
+            <!------------- GENERADOR GLOBAL                     -->
+            <!-- ========================================= -->
+            <p-tabpanels>
+                <!-- ========================================= -->
+                <!------------- TAB GENERADOR                      -->
+                <!-- ========================================= -->
+                <p-tabpanel value="tab_consainceg">
+                    <p-card styleClass="cuenta-card">
+                        <!-- ========================================= -->
+                        <!-- DATOS                      -------------- -->
+                        <!-- ========================================= -->
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <i class="pi pi-cog spin"></i>
+                            </div>
+                            <div>
+                                <h3>Generar Productos relacionados con COSAINCEG</h3>
+                                <p>
+                                    Eige que producto deseas generar, así como descargar los reportes de
+                                    COSAINCEG.
+                                </p>
+                            </div>
+                        </div>
+                        <!-- ========================================= -->
+                        <!-- BOTONES                      -------------- -->
+                        <!-- ========================================= -->
+                        <div class="botones-grid-reporte mb-3">
+
+                            <div class="boton-item">
+                                <p class="titulo">1. Generar Reporte PDF</p>
+
+                                <div class="boton-con-spinner">
+                                    <p-splitbutton class="btn-rubros" label="Selecciona un trimestre"
+                                        icon="pi pi-file-excel" severity="secondary"
+                                        title="Selecciona el trimestre que deseas generar" [model]="data"
+                                        (onClick)="DescargarExcel()" [disabled]="isDisabled" size="small" />
+
                                     @if (isDisabledG) {
-                                    <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                                    </kendo-loader>
+                                    <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
                                     }
-                                </span>
+                                </div>
                             </div>
-                            <div class="col-md-4 mb-3">
-                                <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium"
-                                    [data]="dataExcelRecurso" [svgIcon]="fileZipIcon" rounded="medium" class="button1"
-                                    themeColor="primary" [disabled]="isDisabled">
-                                    Generar Reporte COSAINCEG Recurso
-                                </kendo-splitbutton>
+                            <div class="boton-item">
+                                <p class="titulo">2. Generar Reporte COSAINCEG Recurso</p>
+                                <div class="boton-con-spinner">
+                                    <p-splitbutton class="btn-rubros" label="Selecciona un trimestre"
+                                        icon="pi pi-file-excel" severity="secondary"
+                                        title="Selecciona el trimestre que deseas generar" [model]="dataExcelRecurso"
+                                        (onClick)="DescargarExcel()" [disabled]="isDisabled" size="small" />
 
-                                <span class="ps-2">
                                     @if (isDisabledExcelRecurso) {
-                                    <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                                    </kendo-loader>
+                                    <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
                                     }
-                                </span>
-                            </div>
-                            <div class="col-md-4 mb-3">
-
+                                </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-md-4 mb-3">
-                                <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelG"
-                                    [svgIcon]="fileExcelIcon" title="Informacion Global de P's,G's,Q's"
-                                    [disabled]="isDisabled" themeColor="success" class="button1">Global
-                                    (PGQ)</kendo-splitbutton>
-                                <span class="ps-2">
-                                    @if (isDisabledExcelG) {
-                                    <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                                    </kendo-loader>
-                                    }
-                                </span>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelDep"
-                                    [svgIcon]="fileExcelIcon" title="Agrupacion por Dependencias"
-                                    [disabled]="isDisabled" themeColor="success" class="button1">Dependencias
-                                    (PGQ)</kendo-splitbutton>
-                                <span class="ps-2">
-                                    @if (isDisabledExcelD) {
-                                    <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                                    </kendo-loader>
-                                    }
-                                </span>
-                            </div>
-
-                            <div class="col-md-4 mb-3">
-                                <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelRub"
-                                    [svgIcon]="fileExcelIcon" title="Agrupacion por Rubro" [disabled]="isDisabled"
-                                    themeColor="success" class="button1">Rubros (PGQ)</kendo-splitbutton>
-                                <span class="ps-2">
-                                    @if (isDisabledExcelR) {
-                                    <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                                    </kendo-loader>
-                                    }
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-
-            <div class="mt-4 mb-2"></div>
-            <kendo-expansionpanel title="Reportes" subtitle="Ver y descargar reportes" [expanded]="true">
-                <div class="row mt-2 mb-3">
-                    <kendo-grid [data]="FilesCosainceg" [kendoGridBinding]="FilesCosainceg" [filterable]="true"
-                        [pageable]="true" [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
-                        [resizable]="true">
-                        <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
-                        <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
-                            [width]="130"></kendo-grid-column>
-                        <kendo-grid-column field="creation_time" title="Creación" [width]="160">
-                        </kendo-grid-column>
-                        <kendo-grid-column field="modification_time" title="Modificación"
-                            [width]="160"></kendo-grid-column>
-                        <kendo-grid-command-column title="Acciones" [width]="210">
-                            <ng-template kendoGridCellTemplate let-dataItem>
-                                <button kendoButton (click)="downloadFile(dataItem.name)"
-                                    class="btn-editar">Descargar</button>
-                                @if(dataItem.extension === '.pdf' ){
-                                <button kendoButton (click)="openPdfModal(dataItem.base64, dataItem.name)">Ver
-                                    PDF</button>
-                                }
+                        <p-panel header="Reportes" [toggleable]="true" [(collapsed)]="panelCollapsed">
+                            <ng-template pTemplate="icons">
+                                <span class="p-panel-subtitle">Ver y descargar reportes</span>
                             </ng-template>
 
-                        </kendo-grid-command-column>
-                    </kendo-grid>
-                </div>
-            </kendo-expansionpanel>
-            <p></p>
-            @if(selectedPdf){
-            <kendo-window [title]="'REPORTE: ' + nombre_archivo" (close)="closePdfModal()" [minWidth]="350"
-                [width]="750" [height]="500">
-                <kendo-pdfviewer [data]="selectedPdf" style="height: 900px;"></kendo-pdfviewer>
-            </kendo-window>
-            }
+                            <div class="row mt-2 mb-3">
+                                <p-table [value]="FilesCosainceg" [paginator]="true" [rows]="5" [sortMode]="'single'"
+                                    [globalFilterFields]="['name', 'size', 'creation_time', 'modification_time']"
+                                    [resizableColumns]="true" [scrollable]="true" styleClass="p-datatable-sm" #dt
+                                    stripedRows [tableStyle]="{ 'min-width': '50rem' }">
+                                    <ng-template pTemplate="caption">
+                                        <div class="flex justify-content-end">
+                                            <p-iconField iconPosition="left">
+                                                <p-inputIcon styleClass="pi pi-search" />
+                                                <input pInputText type="text" placeholder="Buscar..."
+                                                    (input)="dt.filterGlobal($any($event.target).value, 'contains')" />
+                                            </p-iconField>
+                                        </div>
+                                    </ng-template>
 
-        </div>
-    </div>
+                                    <ng-template pTemplate="header">
+                                        <tr>
+                                            <th pSortableColumn="name" pResizableColumn style="width: 230px">
+                                                Nombre de Archivo
+                                                <p-sortIcon field="name" />
+                                            </th>
+                                            <th pSortableColumn="size" pResizableColumn class="text-center"
+                                                style="width: 130px">
+                                                Tamaño
+                                                <p-sortIcon field="size" />
+                                            </th>
+                                            <th pSortableColumn="creation_time" pResizableColumn style="width: 160px">
+                                                Creación
+                                                <p-sortIcon field="creation_time" />
+                                            </th>
+                                            <th pSortableColumn="modification_time" pResizableColumn
+                                                style="width: 160px">
+                                                Modificación
+                                                <p-sortIcon field="modification_time" />
+                                            </th>
+                                            <th style="width: 210px">Acciones</th>
+                                        </tr>
+                                    </ng-template>
+
+                                    <ng-template pTemplate="body" let-dataItem>
+                                        <tr>
+                                            <td>{{ dataItem.name }}</td>
+                                            <td class="text-center">{{ dataItem.size }}</td>
+                                            <td>{{ dataItem.creation_time }}</td>
+                                            <td>{{ dataItem.modification_time }}</td>
+                                            <td>
+                                                <div class="boton-con-boton">
+                                                    <button pButton type="button" label="Descargar" size="small"
+                                                        severity="secondary"
+                                                        (click)="downloadFile(dataItem.name)"></button>
+                                                    @if (dataItem.extension === '.pdf') {
+                                                    <button pButton type="button" size="small" label="Ver PDF"
+                                                        severity="info"
+                                                        (click)="openPdfModal(dataItem.base64, dataItem.name)"></button>
+                                                    }
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </ng-template>
+
+                                    <ng-template pTemplate="emptymessage">
+                                        <tr>
+                                            <td colspan="5" class="text-center">No hay archivos disponibles</td>
+                                        </tr>
+                                    </ng-template>
+                                </p-table>
+                            </div>
+                        </p-panel>
+
+                        <p></p>
+
+                        @if (selectedPdf) {
+                        <p-dialog #pdfDialog [(visible)]="pdfModalVisible" [modal]="true" [draggable]="true"
+                            [resizable]="true" [maximizable]="false" [closable]="false"
+                            [style]="{ width: '900px', height: '700px' }"
+                            [contentStyle]="{ height: 'calc(100% - 50px)', padding: '0', overflow: 'auto' }"
+                            [baseZIndex]="1000" styleClass="pdf-dialog" (onHide)="closePdfModal()">
+                            <ng-template pTemplate="header">
+                                <div class="pdf-dialog-custom-header">
+                                    <span class="pdf-dialog-title">REPORTE: {{ nombre_archivo }}</span>
+                                    <div class="pdf-dialog-actions">
+                                        <button pButton type="button"
+                                            [icon]="isMaximized ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"
+                                            class="p-button-text p-button-rounded" (click)="toggleMaximize()"></button>
+                                        <button pButton type="button" icon="pi pi-times"
+                                            class="p-button-text p-button-rounded" (click)="closePdfModal()"></button>
+                                    </div>
+                                </div>
+                            </ng-template>
+
+                            <div class="pdf-viewer-container">
+                                <ngx-extended-pdf-viewer [base64Src]="selectedPdf" [height]="'100%'"
+                                    [showToolbar]="true" [showSidebarButton]="true" [showFindButton]="true"
+                                    [showPrintButton]="true" [showDownloadButton]="true"
+                                    [showZoomButtons]="true"></ngx-extended-pdf-viewer>
+                            </div>
+                        </p-dialog>
+                        }
+                    </p-card>
+                </p-tabpanel>
+                <!-- ========================================= -->
+                <!------------- TAB DATOS ABIERTOS                        -->
+                <!-- ========================================= -->
+                <p-tabpanel value="tab_datos_abiertos">
+                    <p-card styleClass="cuenta-card">
+                        <!-- ========================================= -->
+                        <!-- DATOS                      -------------- -->
+                        <!-- ========================================= -->
+                        <div class="section-header">
+                            <div class="section-icon">
+                                <i class="pi pi-cog spin"></i>
+                            </div>
+                            <div>
+                                <h3>Generar DATOS ABIERTOS relacionados con COSAINCEG</h3>
+                                <p>
+                                    Eige que producto que deseas generar, la informacion al trimestre seleccionado en
+                                    difrenetes agrupaciones(nivel Proyecto,Dependencias y Rubros)
+                                </p>
+                            </div>
+                        </div>
+                        <!-- ========================================= -->
+                        <!-- BOTONES                      -------------- -->
+                        <!-- ========================================= -->
+                        <div class="botones-grid-datos-abiertos">
+
+                            <div class="boton-item">
+                                <p class="titulo">1. Generar Reporte por Proyecto/Proceso</p>
+
+                                <div class="boton-con-spinner">
+                                    <p-splitbutton class="btn-rubros" label="Selecciona un trimestre"
+                                        icon="pi pi-file-excel" severity="secondary"
+                                        title="Informacion Global de P's,G's,Q's" [model]="dataExcelG"
+                                        (onClick)="DescargarExcel()" [disabled]="isDisabled" size="small" />
+
+                                    @if (isDisabledExcelG) {
+                                    <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                                    }
+                                </div>
+                            </div>
+                            <div class="boton-item">
+                                <p class="titulo">2. Generar Reporte por Dependencia</p>
+                                <div class="boton-con-spinner">
+                                    <p-splitbutton class="btn-rubros" label="Selecciona un trimestre"
+                                        icon="pi pi-file-excel" severity="secondary" title="Agrupacion por Dependencias"
+                                        [model]="dataExcelDep" (onClick)="DescargarExcel()" [disabled]="isDisabled"
+                                        size="small" />
+
+                                    @if (isDisabledExcelD) {
+                                    <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                                    }
+                                </div>
+                            </div>
+                            <div class="boton-item">
+                                <p class="titulo">3. Generar Reporte por Rubros</p>
+                                <div class="boton-con-spinner">
+                                    <p-splitbutton class="btn-rubros" label="Selecciona un trimestre"
+                                        icon="pi pi-file-excel" severity="secondary" title="Agrupacion por Rubros"
+                                        [model]="dataExcelRub" (onClick)="DescargarExcel()" [disabled]="isDisabled"
+                                        size="small" />
+
+                                    @if (isDisabledExcelR) {
+                                    <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                    </p-card>
+                </p-tabpanel>
+            </p-tabpanels>
+
+        </p-tabs>
+    </p-card>
 </div>
 }
 @if (selectedItem === 'Deuda' && canViewDeuda) {
@@ -380,7 +603,8 @@
                     <div class="col-md-3 mb-3">
                         <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelDepDeuda"
                             [svgIcon]="fileExcelIcon" title="Agrupacion por Dependencias" [disabled]="isDisabled_deuda"
-                            themeColor="success" class="button1">Dependencias (Q)</kendo-splitbutton>
+                            themeColor="success" class="button1">Dependencias
+                            (Q)</kendo-splitbutton>
                         <span class="ps-2">
                             @if (isDisabledExcelG_deuda_dep) {
                             <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
@@ -398,7 +622,8 @@
                     <kendo-window class="my-custom-window" (close)="close()" title=" 🥇🥈🥉 Top 3 Proyectos"
                         [(width)]="windowWidth">
 
-                        <p style="margin-top: 0.5rem; text-align: center; font-size: 1.2rem;"> 🗹 Elige el Trimestre que
+                        <p style="margin-top: 0.5rem; text-align: center; font-size: 1.2rem;"> 🗹 Elige el Trimestre
+                            que
                             deseas consultar:</p>
 
                         <div class="row mb-2 mt-1">
@@ -502,7 +727,7 @@
                 @if(selectedPdf_2){
                 <kendo-window [title]="'📊 REPORTE: ' + nombre_archivo_2" (close)="closePdfModal_2()" [minWidth]="350"
                     [width]="750" [height]="500">
-                    <kendo-pdfviewer [data]="selectedPdf_2" style="height: 900px;"></kendo-pdfviewer>
+                    <!-- <kendo-pdfviewer [data]="selectedPdf_2" style="height: 900px;"></kendo-pdfviewer> -->
                 </kendo-window>
                 }
             </div>
@@ -718,7 +943,8 @@
 }
 
 @if ((!canViewCosainceg && selectedItem === 'Cosainceg') ||
-(!canViewDeuda && selectedItem === 'Deuda') || (!canViewInversion && selectedItem === 'Inversion') || (!canViewPPI &&
+(!canViewDeuda && selectedItem === 'Deuda') || (!canViewInversion && selectedItem === 'Inversion') || (!canViewPPI
+&&
 selectedItem === 'PPI') || (!canViewAvance &&
 selectedItem === 'AvanceFinanciero')) {
 <div>

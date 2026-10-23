@@ -316,7 +316,7 @@
 
 
 .section-icon i {
-    font-size: 1rem;
+    font-size: 1.3rem;
 }
    .section-header h3 {
     margin: 0;
@@ -345,6 +345,19 @@
 
 .botones-grid {
   display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+
+.botones-grid-reporte {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  width: 100%;
+}
+.botones-grid-datos-abiertos {
+  display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1rem;
   width: 100%;
@@ -361,6 +374,18 @@
   flex-direction: column;
   align-items: center;
 }
+.boton-con-spinner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+.boton-con-boton {
+    display: flex;
+    align-items:start;
+    justify-content: start;
+    gap: 10px;
+}
 
 .button-grid {
   width: 100%;
@@ -375,3 +400,108 @@
 .btn-rubros {
     --p-splitbutton-button-color: var(--p-text-color);
 }
+.file-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.spin {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.fecha-actualizacion {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.85rem;
+    color: var(--text-color-secondary);
+    margin-bottom: 10px;
+}
+.pdf-dialog-custom-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.pdf-dialog-title {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.pdf-dialog-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+// Cuando el elemento está en fullscreen nativo del navegador,
+// forzamos que ocupe todo correctamente (el navegador ya lo expande,
+// esto solo ajusta el layout interno)
+.p-dialog:fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    display: flex;
+    flex-direction: column;
+
+    .p-dialog-content {
+        flex: 1 1 auto;
+        height: auto !important;
+    }
+}
+
+
+
+p-tabs {
+  display: block;
+
+  --p-tabs-tab-active-background: #eef2fa;
+  --p-tabs-tab-active-color: #3478f6;
+  --p-tabs-tab-active-border-color: transparent;
+  --p-tabs-tab-border-color: #dbe3ef;
+  --p-tabs-tab-color: #64748b;
+  --p-tabs-tab-padding: 10px 14px;
+  --p-tabs-tab-border-radius: 8px;
+}
+
+/* Contenedor de pestañas */
+p-tabs .p-tablist {
+  border-bottom: 1px solid #dbe3ef;
+}
+
+/* Cada pestaña */
+p-tabs .p-tab {
+  border: none !important;
+  border-radius: 8px !important;
+  background: transparent !important;
+  color: #64748b !important;
+  padding: 10px 14px !important;
+  margin: 0 8px 10px 0 !important;
+  font-weight: 600;
+  transition: background-color 200ms, color 200ms;
+}
+
+/* Pestaña activa */
+p-tabs .p-tab[aria-selected="true"] {
+  background: #eef2fa !important;
+  color: #3478f6 !important;
+  border: none !important;
+}
+
+/* Ocultar la barra indicadora predeterminada */
+p-tabs .p-tablist-active-bar {
+  display: none !important;
+}
+
+
+
