@@ -1,0 +1,68 @@
+<div class="cuenta-page">
+    <p-card styleClass="cuenta-card">
+        <div class="cuenta-header">
+
+            <div class="header-content">
+
+                <div class="header-icon">
+                    <i class="pi pi-lightbulb"></i>
+                </div>
+                <div>
+                    <h2 class="title2">Lecciones<span> Aprendidas</span></h2>
+
+                    <p>
+                        Integracion de las lecciones aprendidas del seguimiento final
+                    </p>
+                </div>
+
+            </div>
+            <p-tag value="LECCIONES" icon="pi pi-file" severity="info">
+            </p-tag>
+        </div>
+        <div class="botones-grid mb-3">
+
+            <div class="boton-item">
+                <p class="titulo">1. Integrar Lecciones</p>
+                <div class="boton-con-spinner">
+                    <p-button label="Generar" icon="pi pi-download" severity="info"
+                        (onClick)="generarConsolidadoLecciones()" size="small" />
+
+
+                    @if (isDisabledIntegracionLecciones) {
+                    <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                    }
+                </div>
+            </div>
+        </div>
+
+        <p-table [value]="archivosLecciones" [paginator]="true" [rows]="10" [responsiveLayout]="'scroll'"
+            [showGridlines]="true">
+
+            <ng-template pTemplate="header">
+                <tr>
+                    <th>Nombre del archivo</th>
+                    <th style="width: 120px; text-align: center;">Descargar</th>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-archivo>
+                <tr>
+                    <td>{{ archivo.nombre }}</td>
+
+                    <td style="text-align: center;">
+                        <button pButton type="button" icon="pi pi-download" class="p-button-rounded p-button-success"
+                            (click)="descargarLeccion(archivo.nombre)">
+                        </button>
+                    </td>
+                </tr>
+            </ng-template>
+
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td colspan="2">No hay archivos disponibles.</td>
+                </tr>
+            </ng-template>
+
+        </p-table>
+    </p-card>
+</div>

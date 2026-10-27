@@ -20,6 +20,7 @@ import { ReportesComponent } from './views/cosainceg/reportes/reportes.component
 import { SimuladorComponent } from './views/simulador/simulador.component';
 import { ProcesamientoComponent } from './views/archivo/procesamiento/procesamiento.component';
 import { ObraComponent } from './views/obra/obra.component';
+import { LeccionesAprendidasComponent } from './views/lecciones-aprendidas/lecciones-aprendidas.component';
 
 
 export const routes: Routes = [
@@ -108,6 +109,12 @@ export const routes: Routes = [
         component: ObraComponent,
         canActivate: [PermissionGuard],
         data: { module: 'obra', action: 'manage' }
+      },
+         {
+        path: 'lecciones',
+        component: LeccionesAprendidasComponent,
+        canActivate: [PermissionGuard],
+        data: { module: 'lecciones', action: 'manage' }
       },
       // {
       //   path: 'roles',

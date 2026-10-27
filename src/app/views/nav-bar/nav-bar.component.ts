@@ -104,6 +104,11 @@ export class NavBarComponent implements OnInit {
           label: 'Obra',
           icon: 'pi pi-building-columns', 
           routerLink: '/obra'
+        },
+        {
+          label: 'Lecciones Aprendidas',
+          icon: 'pi pi-building-columns', 
+          routerLink: '/lecciones'
         }
       ]
     },
