@@ -139,7 +139,7 @@ public async generarConsolidadoLecciones(): Promise<void> {
       detail: 'Consolidado generado correctamente',
       life: 1500
     });
-
+    this.obtenerArchivosLecciones()
   } catch (error) {
 
     console.error('Error generando consolidado:', error);
