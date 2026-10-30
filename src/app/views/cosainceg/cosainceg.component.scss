@@ -462,46 +462,7 @@
 
 
 
-p-tabs {
-  display: block;
 
-  --p-tabs-tab-active-background: #eef2fa;
-  --p-tabs-tab-active-color: #3478f6;
-  --p-tabs-tab-active-border-color: transparent;
-  --p-tabs-tab-border-color: #dbe3ef;
-  --p-tabs-tab-color: #64748b;
-  --p-tabs-tab-padding: 10px 14px;
-  --p-tabs-tab-border-radius: 8px;
-}
-
-/* Contenedor de pestañas */
-p-tabs .p-tablist {
-  border-bottom: 1px solid #dbe3ef;
-}
-
-/* Cada pestaña */
-p-tabs .p-tab {
-  border: none !important;
-  border-radius: 8px !important;
-  background: transparent !important;
-  color: #64748b !important;
-  padding: 10px 14px !important;
-  margin: 0 8px 10px 0 !important;
-  font-weight: 600;
-  transition: background-color 200ms, color 200ms;
-}
-
-/* Pestaña activa */
-p-tabs .p-tab[aria-selected="true"] {
-  background: #eef2fa !important;
-  color: #3478f6 !important;
-  border: none !important;
-}
-
-/* Ocultar la barra indicadora predeterminada */
-p-tabs .p-tablist-active-bar {
-  display: none !important;
-}
 
 
 
