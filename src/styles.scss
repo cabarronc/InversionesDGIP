@@ -17,6 +17,29 @@ $kendo-font-size: 0.75rem,
 @import "primeicons/primeicons.css";
 @import '@primeui/chart-style/style.css';
 @import '@primeui/chart-style/themes/primeone.css'; /* or themes/default.css */
+/* PRUEBA DE ESTILOS TABLIST PRIME NG 20 */
+
+.custom-tabs .p-tablist {
+    background: #e2e8f0 !important;
+    border-radius: 12px !important;
+    padding: 8px !important;
+}
+
+.custom-tabs .p-tablist-active-bar {
+    background: #2563eb !important;
+    height: 5px !important;
+    border-radius: 10px !important;
+}
+
+.custom-tabs .p-tab {
+    padding: 12px 20px !important;
+}
+
+.custom-tabs .p-tab-active {
+    color: #2563eb !important;
+    font-weight: bold !important;
+}
+
 //clase global para inputText(PrimeNG) e icono de liminar  -->
 .subject-wrapper {
     position: relative;

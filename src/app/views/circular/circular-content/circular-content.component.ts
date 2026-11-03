@@ -480,40 +480,51 @@ public async GenerarCicular(): Promise<void> {
     );
   }
 
-  public CopiarCircularAcuses(): void {
+  public async CopiarCircularAcuses(): Promise<void> {
     this.isCoping = true
-    this.messageService.add({
-                  severity: 'info',
-                  summary: 'Info',
-                  detail: 'Espere. copiando',
-                  life: 3500
-                });
+    this.isDisabled = true;
+     this.messageService.add({
+    key: 'circular_acuses',
+    severity: 'info',
+    summary: 'Por favor espere',
+     detail: 'Copiando Acuse Circular...',
+    sticky: true,
+     icon: 'pi pi-spinner-dotted pi-spin',
+  });
 
-    this.apiService.CircularCopyEvidencia().subscribe(
-      (response) => {
-        this.copiado_respuesta_evidencia = response;
-        this.isCoping = false;
-               this.messageService.add({
-                  severity: 'success',
-                  summary: 'Exito',
-                  detail: 'Copiado Correcto',
-                  life: 3500
-                });
-        console.log('Datos obtenidos:', this.copiado_respuesta_evidencia);
-
-      },
-      (error) => {
-        this.isCoping = false;
-        clearInterval(this.interval); // Detén el intervalo si hay error
+  try {
+     const response = await firstValueFrom(this.apiService.CircularCopyEvidencia());
+    console.log(response);
+    this.copiado_respuesta_evidencia = response
+     this.messageService.clear('circular_acuses');
       this.messageService.add({
-                  severity: 'error',
-                  summary: 'Error',
-                  detail: 'Se ha producido un error en tiempo de ejecucion',
-                  life: 3500
-                });
-        console.error('Error al obtener datos:', error);
-      }
-    );
+         key: 'circular_acuses',
+        severity: 'success',
+        summary: 'exito',
+        detail: 'Copiado Correcto',
+        life: 5500
+      });
+    this.isCoping = false
+    this.isDisabled = false
+
+  }
+  catch(error){
+    this.messageService.clear('circular_acuses');
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Se ha producido un error en tiempo de ejecucion',
+      life: 5500
+    });
+    console.error('Error al obtener datos:', error);
+
+  }
+  finally{
+     this.isCoping = false
+    this.isDisabled = false
+
+  }
+
   }
 
 

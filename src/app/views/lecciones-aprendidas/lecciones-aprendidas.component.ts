@@ -26,11 +26,12 @@ import { FormsModule } from '@angular/forms';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
 import { IconFieldModule } from 'primeng/iconfield';
+import { TabsModule } from 'primeng/tabs';
 
 @Component({
   selector: 'app-lecciones-aprendidas',
   imports: [CardModule, TagModule, MessageModule, ButtonModule, ProgressSpinnerModule, TableModule, ChartModule,
-    SkeletonModule, MultiSelectModule, FormsModule, TooltipModule, DialogModule, DividerModule, IconFieldModule],
+    SkeletonModule, MultiSelectModule, FormsModule, TooltipModule, DialogModule, DividerModule, IconFieldModule,TabsModule],
   templateUrl: './lecciones-aprendidas.component.html',
   styleUrl: './lecciones-aprendidas.component.scss',
 })
