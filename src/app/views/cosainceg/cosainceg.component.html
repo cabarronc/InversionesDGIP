@@ -120,15 +120,16 @@
             <p-confirmdialog [style]="{ width: '450px' }" />
 
             <p-dialog header="Catálogo de Rubros" [(visible)]="mostrarCatalogoDialog" [modal]="false" [draggable]="true"
-                [resizable]="true" [maximizable]="true" [style]="{ width: '70vw', height: '60vh' }"
-                [contentStyle]="{ height: 'calc(100% - 3rem)', overflow: 'auto' }" styleClass="catalogo-window-dialog">
-                <div class="fecha-actualizacion">
+                [resizable]="true" [maximizable]="true"  appendTo="body"
+                            [autoZIndex]="true" [baseZIndex]="20000" [style]="{ width: '70vw', height: '60vh' }"
+                [contentStyle]="{ height: 'calc(100% - 3rem)', overflow: 'auto' }" styleClass="catalogo-window-dialog" styleClass="dialog-top-proyectos">
+                <div class="fecha-actualizacion mt-2">
                     <i class="pi pi-calendar"></i>
                     Última actualización:
                     <strong>{{ fecha_actualizacion }}</strong>
                 </div>
                 <p-table #dt [value]="catalogoData" [loading]="cargandoCatalogo" [paginator]="true" [rows]="15"
-                    styleClass="p-datatable-sm" size="small" responsiveLayout="scroll">
+                    styleClass="p-datatable-sm" size="small" responsiveLayout="scroll"  stripedRows [tableStyle]="{ 'min-width': '50rem' }">
                     <ng-template #header>
                         <tr>
                             <th>Clave</th>
@@ -180,7 +181,7 @@
                     <span class="p-panel-subtitle">Ver Respaldos</span>
                 </ng-template>
                 <p-table [value]="backups" [loading]="isLoading" [paginator]="true" [rows]="10"
-                    styleClass="p-datatable-sm" size="small" responsiveLayout="scroll">
+                    styleClass="p-datatable-sm" size="small" responsiveLayout="scroll" showGridlines [tableStyle]="{ 'min-width': '50rem' }" stripedRows [tableStyle]="{ 'min-width': '50rem' }">
                     <ng-template #header>
                         <tr>
                             <th>Archivo</th>
@@ -214,10 +215,9 @@
         <!------------- GENERADOR REPORTE COSAINCEG                 -->
         <!-- ========================================= -->
         <p-tabs value="tab_consainceg" [selectOnFocus]="true">
-            <p-tablist   
-                       >
-                <p-tab value="tab_consainceg" >REPORTES COSAINCEG</p-tab>
-                <p-tab value="tab_datos_abiertos" >REPORTES DATOS ABIERTOS</p-tab>
+            <p-tablist>
+                <p-tab value="tab_consainceg">REPORTES COSAINCEG</p-tab>
+                <p-tab value="tab_datos_abiertos">REPORTES DATOS ABIERTOS</p-tab>
             </p-tablist>
 
             <!-- ========================================= -->
@@ -286,7 +286,7 @@
                                 <p-table [value]="FilesCosainceg" [paginator]="true" [rows]="5" [sortMode]="'single'"
                                     [globalFilterFields]="['name', 'size', 'creation_time', 'modification_time']"
                                     [resizableColumns]="true" [scrollable]="true" styleClass="p-datatable-sm" #dt
-                                    stripedRows [tableStyle]="{ 'min-width': '50rem' }">
+                                    stripedRows [tableStyle]="{ 'min-width': '50rem' }" showGridlines [tableStyle]="{ 'min-width': '50rem' }"  >
                                     <ng-template pTemplate="caption">
                                         <div class="flex justify-content-end">
                                             <p-iconField iconPosition="left">
@@ -355,20 +355,20 @@
 
                         @if (selectedPdf) {
                         <p-dialog #pdfDialog [(visible)]="pdfModalVisible" [modal]="true" [draggable]="true"
-                            [resizable]="true" [maximizable]="false" [closable]="false"
-                            [style]="{ width: '900px', height: '700px' }"
-                            [contentStyle]="{ height: 'calc(100% - 50px)', padding: '0', overflow: 'auto' }"
-                            [baseZIndex]="1000" styleClass="pdf-dialog" (onHide)="closePdfModal()">
+                            [resizable]="true" [maximizable]="true" [closable]="true" appendTo="body"
+                            [autoZIndex]="true" [baseZIndex]="20000" [style]="{
+                            width: 'min(900px, 95vw)',
+                            height: 'min(700px, 90dvh)'
+                            }" [contentStyle]="{
+                            flex: '1 1 0',
+                            minHeight: '0',
+                            padding: '0',
+                            overflow: 'hidden'
+                            }" styleClass="pdf-dialog" styleClass="dialog-top-proyectos" (onHide)="closePdfModal()">
                             <ng-template pTemplate="header">
                                 <div class="pdf-dialog-custom-header">
                                     <span class="pdf-dialog-title">REPORTE: {{ nombre_archivo }}</span>
-                                    <div class="pdf-dialog-actions">
-                                        <button pButton type="button"
-                                            [icon]="isMaximized ? 'pi pi-window-minimize' : 'pi pi-window-maximize'"
-                                            class="p-button-text p-button-rounded" (click)="toggleMaximize()"></button>
-                                        <button pButton type="button" icon="pi pi-times"
-                                            class="p-button-text p-button-rounded" (click)="closePdfModal()"></button>
-                                    </div>
+
                                 </div>
                             </ng-template>
 
@@ -496,7 +496,7 @@
         </div>
     </div>
     <!-- ========================================= -->
-    <!-- BOTONES                      -------------- -->
+    <!-- BOTONES                   -------------- -->
     <!-- ========================================= -->
     <div class="botones-grid">
 
@@ -516,8 +516,8 @@
             <p class="titulo">2. Reporte Deuda Recurso</p>
 
             <p-splitbutton styleClass="button-grid" label="Selecciona el trimestre" icon="pi pi-file-excel"
-                (onClick)="DescargaCatalogoRubros()" size="small" title="Reporte excel del recurso en datos abiertos"
-                [model]="dataExcelRecursoDeuda" [disabled]="isDisabled_deuda" />
+                (onClick)="DescargarExcel()" size="small" title="Reporte excel del recurso en datos abiertos"
+                [model]="dataExcelRecursoDeuda" [disabled]="isDisabled_deuda" severity="info" />
 
             @if (isDisabledExcelRecursoDeuda) {
             <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
@@ -527,10 +527,10 @@
             <p class="titulo">3. Global Q</p>
 
             <p-splitbutton styleClass="button-grid" label=" Generar Global Q" icon="pi pi-download"
-                (onClick)="DescargaCatalogoRubros()" size="small" title="Reporte excel Deuda"
-                [model]="dataExcelRecursoDeuda" [disabled]="isDisabled_deuda" />
+                (onClick)="DescargarExcel()" size="small" title="Reporte excel Deuda" [model]="dataExcelDeudaG"
+                [disabled]="isDisabled_deuda" />
 
-            @if (isDisabledExcelRecursoDeuda) {
+            @if (isDisabledExcelG_deuda) {
             <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
             }
         </div>
@@ -538,10 +538,10 @@
             <p class="titulo">4. Dependencia Q</p>
 
             <p-splitbutton styleClass="button-grid" label=" Generar Dependencia Q" icon="pi pi-download"
-                (onClick)="DescargaCatalogoRubros()" size="small" title="Reporte excel Deuda"
-                [model]="dataExcelRecursoDeuda" [disabled]="isDisabled_deuda" />
+                (onClick)="DescargarExcel()" size="small" title="Reporte excel Deuda" [model]="dataExcelDepDeuda"
+                [disabled]="isDisabled_deuda" />
 
-            @if (isDisabledExcelRecursoDeuda) {
+            @if (isDisabledExcelG_deuda_dep) {
             <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
             }
         </div>
@@ -550,190 +550,156 @@
 
 
     </div>
+    <!-- ========================================= -->
+    <!-- Tabla                   -------------- -->
+    <!-- ========================================= -->
+    <div class="container-fluid mt-4">
+        <!-- Plantilla compartida por Top, Metas y Archivos -->
+        <ng-template #tablaConsulta let-filas let-columnas="columnas" let-archivos="archivos">
+            <p-table [value]="filas ?? []" [columns]="columnas" [paginator]="true" [rows]="5" [resizableColumns]="true"
+                columnResizeMode="expand" size="small" showGridlines [tableStyle]="{ 'min-width': '50rem' }" stripedRows [tableStyle]="{ 'min-width': '50rem' }">
+                <ng-template #header let-cols>
+                    <tr>
+                        @for (col of cols; track col.field) {
+                        <th pResizableColumn [pSortableColumn]="col.field" [style.width.px]="col.width">
+                            {{ col.title }}
+                            <p-sortIcon [field]="col.field" />
+                            <p-columnFilter [field]="col.field" [type]="col.filterType ?? 'text'" display="menu" />
+                        </th>
+                        }
 
-</p-card>
-<div class="container-fluid mt-4">
+                        @if (archivos) {
+                        <th style="width: 210px">Acciones</th>
+                        }
+                    </tr>
+                </ng-template>
 
-    <div class="page">
-        <div class="content">
-            <div class="col-12 mt-3">
-                <div class="row">
-                    <div class="col-md-3 mb-3">
-                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataDeuda"
-                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
-                            [disabled]="isDisabled_deuda">
-                            Generar Reporte Deuda
-                        </kendo-splitbutton>
-                        <span class="ps-2">
-                            @if (isDisabledG_deuda) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
+                <ng-template #body let-fila let-cols="columns">
+                    <tr>
+                        @for (col of cols; track col.field) {
+                        <td [style.text-align]="col.center ? 'center' : null">
+                            {{ fila[col.field] }}
+                        </td>
+                        }
+
+                        @if (archivos) {
+                        <td>
+                            <div class="acciones-archivo">
+                                <p-button label="Descargar" icon="pi pi-download" size="small"
+                                    [severity]="fila.extension === '.pdf' ? 'danger' : 'info'"
+                                    (onClick)="downloadFile_Deuda(fila.name)" />
+
+                                @if (fila.extension === '.pdf') {
+                                <p-button label="🔎 Ver PDF" size="small" severity="secondary"
+                                    (onClick)="openPdfModal_2(fila.base64, fila.name)" />
+                                }
+
+
+                            </div>
+                        </td>
+                        }
+                    </tr>
+                </ng-template>
+
+                <ng-template #emptymessage>
+                    <tr>
+                        <td [attr.colspan]="columnas.length + (archivos ? 1 : 0)">
+                            No hay registros para mostrar.
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </ng-template>
+
+        @if (!opened) {
+        <p-button size="small" label="🎯 Consultar Metas" (onClick)="open()" />
+        }
+
+        @if (opened) {
+        <p-dialog header="🥇🥈🥉 Top 3 Proyectos" [visible]="opened" (visibleChange)="!$event && close()"
+            appendTo="body" [autoZIndex]="true" [baseZIndex]="20000" [modal]="true" [maximizable]="true"
+            [closable]="true" [closeOnEscape]="true" [draggable]="true" [resizable]="true" [style]="{
+            width: 'min(900px, 95vw)',
+            height: 'min(700px, 90dvh)'
+            }" [contentStyle]="{
+            flex: '1 1 0',
+            minHeight: '0',
+            padding: '0',
+            overflow: 'hidden'
+            }"styleClass="dialog-top-proyectos">
+
+            <section class="consulta-metas" aria-labelledby="titulo-consulta-metas">
+                <header class="consulta-metas__encabezado">
+                    <h2 id="titulo-consulta-metas">Consulta de Proyectos por Trimestre</h2>
+                    <p>Elige el trimestre que deseas consultar.</p>
+                     
+                </header>
+
+                <div class="consulta-metas__controles">
+                    <div class="consulta-metas__selector">
+                        <p-splitbutton label="Trimestre" [model]="dataExcelDeudaMetas"  size="small" [disabled]="isMetas"
+                            (onClick)="DescargarExcel()" appendTo="body" />
+                  
+
+                        @if (isMetasD) {
+                        <p-progress-spinner ariaLabel="Cargando metas"
+                            [style]="{ width: '1.5rem', height: '1.5rem' }" />
+                        }
+                                   <div class="fecha-actualizacion">
+                    <i class="pi pi-calendar"></i>
+                    Trimestre actual:
+                    <strong>{{ corte }}</strong>
+                </div>
                     </div>
-                    <div class="col-md-3 mb-3">
 
-
-                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelRecursoDeuda"
-                            [svgIcon]="fileZipIcon" rounded="medium" class="button1" themeColor="primary"
-                            [disabled]="isDisabled_deuda">
-                            Generar Reporte Deuda Recurso
-                        </kendo-splitbutton>
-
-                        <span class="ps-2">
-                            @if (isDisabledExcelRecursoDeuda) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
-
+                    <div class="consulta-metas__detalle">
+                        <label for="detalleMetas">Ver detalle por metas</label>
+                        <p-toggleswitch inputId="detalleMetas" [(ngModel)]="checked" />
                     </div>
-                    <div class="col-md-3 mb-3">
-                        <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelDeudaG"
-                            [svgIcon]="fileExcelIcon" title="Informacion Global por Q's" [disabled]="isDisabled_deuda"
-                            themeColor="success" class="button1">Global
-                            (Q)</kendo-splitbutton>
-                        <span class="ps-2">
-                            @if (isDisabledExcelG_deuda) {
-                            <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()" [data]="dataExcelDepDeuda"
-                            [svgIcon]="fileExcelIcon" title="Agrupacion por Dependencias" [disabled]="isDisabled_deuda"
-                            themeColor="success" class="button1">Dependencias
-                            (Q)</kendo-splitbutton>
-                        <span class="ps-2">
-                            @if (isDisabledExcelG_deuda_dep) {
-                            <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
-                    </div>
-
                 </div>
 
-                <kendo-expansionpanel title="📝 Reportes Deuda" subtitle="Ver y descargar reportes" [expanded]="true">
-                    @if (!opened) {
-                    <button kendoButton (click)="open()" class="k-custom">🎯 Consultar Metas</button>
-                    } @if (opened) {
-                    <kendo-window class="my-custom-window" (close)="close()" title=" 🥇🥈🥉 Top 3 Proyectos"
-                        [(width)]="windowWidth">
-
-                        <p style="margin-top: 0.5rem; text-align: center; font-size: 1.2rem;"> 🗹 Elige el Trimestre
-                            que
-                            deseas consultar:</p>
-
-                        <div class="row mb-2 mt-1">
-                            <div class="col-auto">
-                                <kendo-splitbutton kendoButton (buttonClick)="DescargarExcel()"
-                                    [data]="dataExcelDeudaMetas" [svgIcon]="fileExcelIcon"
-                                    title="Eleccion del trimestre" [disabled]="isMetas"
-                                    class="button1">Trimestre</kendo-splitbutton>
-                                <span class="ps-2">
-                                    @if (isMetasD) {
-                                    <kendo-loader type="infinite-spinner" themeColor="success" size="medium">
-                                    </kendo-loader>
-                                    }
-                                </span>
-
-                            </div>
-                            <div class="col-auto">
-                                <div kendoTooltip style="text-align: center;">
-                                    <kendo-switch title="Activa para ver el detalle por metas" name="switch"
-                                        [ngClass]="{ 'switch-on': checked, 'switch-off': !checked }"
-                                        class="custom-switch" [(ngModel)]="checked"></kendo-switch>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-
-                        @if (!checked){
-                        <kendo-grid [data]="Top" [kendoGridBinding]="Top" [filterable]="true" [pageable]="true"
-                            [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
-                            [resizable]="true">
-
-                            <kendo-grid-column field="nombre" title="Nombre del Proyecto"
-                                [width]="290"></kendo-grid-column>
-                            <kendo-grid-column field="ejercicio" title="Ejercicio" [class]="{ 'text-center': true }"
-                                [width]="100"></kendo-grid-column>
-                            <kendo-grid-column field="modificado_formateado" title="Monto" [width]="160">
-                            </kendo-grid-column>
-                            <kendo-grid-column field="ranking" title="Posicion" [width]="100"></kendo-grid-column>
-                            <kendo-grid-excel fileName="metas.xlsx"></kendo-grid-excel>
-                        </kendo-grid>
-                        }
-                        @else{
-                        <kendo-grid [data]="Metas" [kendoGridBinding]="Metas" [filterable]="true" [pageable]="true"
-                            [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
-                            [resizable]="true">
-                            <kendo-grid-column field="clave_recodificada" title="Clave"
-                                [width]="50"></kendo-grid-column>
-                            <kendo-grid-column field="nombre" title="Nombre del Proyecto"
-                                [width]="300"></kendo-grid-column>
-                            <kendo-grid-column field="meta_estandarizada" title="Meta" [class]="{ 'text-center': true }"
-                                [width]="100"></kendo-grid-column>
-                            <kendo-grid-column field="descripmeta" title="Descripcion Meta" [width]="260">
-                            </kendo-grid-column>
-                            <kendo-grid-column field="Modificado" title="modificado" [width]="80"></kendo-grid-column>
-                            <kendo-grid-column field="ejercicio" title="Ejercicio" [width]="80"></kendo-grid-column>
-                            <kendo-grid-excel fileName="metas.xlsx"></kendo-grid-excel>
-                        </kendo-grid>
-                        }
-                    </kendo-window>
+                <div class="consulta-metas__tabla">
+                    @if (checked) {
+                    <ng-container [ngTemplateOutlet]="tablaConsulta" [ngTemplateOutletContext]="{
+          $implicit: Metas, columnas: columnasMetas, archivos: false
+        }" />
+                    } @else {
+                    <ng-container [ngTemplateOutlet]="tablaConsulta" [ngTemplateOutletContext]="{
+          $implicit: Top, columnas: columnasTop, archivos: false
+        }" />
                     }
-                    <div class="row mt-2 mb-3">
-                        <kendo-grid [data]="FilesDeuda" [kendoGridBinding]="FilesDeuda" [filterable]="true"
-                            [pageable]="true" [pageSize]="5" [sortable]="true" [columnMenu]="menuSettings" size="small"
-                            [resizable]="true">
+                </div>
+            </section>
+        </p-dialog>
+        }
 
-                            <kendo-grid-column field="name" title="Nombre de Archivo" [width]="230"></kendo-grid-column>
-                            <kendo-grid-column field="size" title="Tamaño" [class]="{ 'text-center': true }"
-                                [width]="130"></kendo-grid-column>
-                            <kendo-grid-column field="creation_time" title="Creación" [width]="160">
-                            </kendo-grid-column>
-                            <kendo-grid-column field="modification_time" title="Modificación"
-                                [width]="160"></kendo-grid-column>
-                            <kendo-grid-command-column title="Acciones" [width]="210">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    @if(dataItem.extension === '.pdf' ){
-                                    <button kendoButton [svgIcon]="filePdfIcon"
-                                        (click)="downloadFile_Deuda(dataItem.name)" class="k-descarga">↓
-                                        Descargar</button>
-
-                                    }
-                                    @else {
-                                    <button kendoButton [svgIcon]="fileWordIcon"
-                                        (click)="downloadFile_Deuda(dataItem.name)" class="k-descarga-word">↓
-                                        Descargar</button>
-
-                                    }
-                                    @if(dataItem.extension === '.pdf' ){
-                                    <button kendoButton class="k-descarga"
-                                        (click)="openPdfModal_2(dataItem.base64, dataItem.name)">🔎 Ver
-                                        PDF</button>
-                                    }
-                                </ng-template>
-
-                            </kendo-grid-command-column>
-
-                        </kendo-grid>
-                    </div>
-                </kendo-expansionpanel>
-                @if(selectedPdf_2){
-                <kendo-window [title]="'📊 REPORTE: ' + nombre_archivo_2" (close)="closePdfModal_2()" [minWidth]="350"
-                    [width]="750" [height]="500">
-                    <!-- <kendo-pdfviewer [data]="selectedPdf_2" style="height: 900px;"></kendo-pdfviewer> -->
-                </kendo-window>
-                }
-            </div>
+        <div class="row mt-2 mb-3">
+            <ng-container [ngTemplateOutlet]="tablaConsulta" [ngTemplateOutletContext]="{
+                                $implicit: FilesDeuda, columnas: columnasArchivos, archivos: true
+                                }" />
         </div>
+
+        @if (selectedPdf_2) {
+        <p-dialog [header]="'📊 REPORTE: ' + nombre_archivo_2" [visible]="true"
+            (visibleChange)="!$event && closePdfModal_2()" appendTo="body" [autoZIndex]="true" [baseZIndex]="20000"
+            [modal]="true" [maximizable]="true" [closable]="true" [closeOnEscape]="true" [draggable]="true"
+            [resizable]="true" [style]="{
+            width: 'min(900px, 95vw)',
+            height: 'min(700px, 90dvh)'
+            }" [contentStyle]="{
+            flex: '1 1 0',
+            minHeight: '0',
+            padding: '0',
+            overflow: 'hidden'
+            }" styleClass="dialog-top-proyectos">
+            <ngx-extended-pdf-viewer [base64Src]="selectedPdf_2" [height]="'100%'" [showToolbar]="true"
+                [showPresentationModeButton]="false" />
+        </p-dialog>
+        }
     </div>
-</div>
+
+</p-card>
+
 }
 @if (selectedItem === 'Inversion' && canViewInversion) {
 <div class="container-fluid mt-4">

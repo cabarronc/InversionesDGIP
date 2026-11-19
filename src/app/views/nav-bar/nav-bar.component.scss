@@ -763,56 +763,56 @@ li:hover {
     background-color: var(--bg-secondary);
 }
 /* Luces navideñas */
-// .luces-css {
-//     position: fixed;
-//     top: 72px; /* <-- AJUSTA según altura de tu navbar */
-//     left: 0;
-//     width: 100%;
-//     height: 50px;
-//     padding: 0;
-//     margin: 0;
-//     display: flex;
-//     justify-content: space-around;
-//     list-style: none;
-//     z-index: 9999; /* debajo del navbar pero encima del contenido */
-//     background: transparent;
-// }
+.luces-css {
+    position: fixed;
+    top: 72px; /* <-- AJUSTA según altura de tu navbar */
+    left: 0;
+    width: 100%;
+    height: 50px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    z-index: 9999; /* debajo del navbar pero encima del contenido */
+    background: transparent;
+}
 
-// .luces-css li {
-//   background-color: currentColor;
-//     width: 10px;
-//     height: 20px;
-//     border-radius: 50%;
-//     position: relative;
-//     animation: parpadeo 1.5s infinite ease-in-out;
-//     box-shadow: 0 0 12px currentColor;
-// }
+.luces-css li {
+  background-color: currentColor;
+    width: 10px;
+    height: 20px;
+    border-radius: 50%;
+    position: relative;
+    animation: parpadeo 1.5s infinite ease-in-out;
+    box-shadow: 0 0 12px currentColor;
+}
 
-// /* Colores repetidos */
-// .luces-css li:nth-child(5n+1) { color: red; }
-// .luces-css li:nth-child(5n+2) { color: green; }
-// .luces-css li:nth-child(5n+3) { color: blue; }
-// .luces-css li:nth-child(5n+4) { color: yellow; }
-// .luces-css li:nth-child(5n+5) { color: purple; }
+/* Colores repetidos */
+.luces-css li:nth-child(5n+1) { color: red; }
+.luces-css li:nth-child(5n+2) { color: green; }
+.luces-css li:nth-child(5n+3) { color: blue; }
+.luces-css li:nth-child(5n+4) { color: yellow; }
+.luces-css li:nth-child(5n+5) { color: purple; }
 
-// /* Cable arriba de cada foco */
-// .luces-css li::before {
-//     content: '';
-//     position: absolute;
-//     top: -10px;
-//     left: 50%;
-//     width: 22px;
-//     height: 2px;
-//     background: #2c3e50;
-//     transform: translateX(-50%);
-//     border-radius: 2px;
-// }
+/* Cable arriba de cada foco */
+.luces-css li::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    width: 22px;
+    height: 2px;
+    background: #2c3e50;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
 
-// /* Parpadeo */
-// @keyframes parpadeo {
-//     0%, 100% { opacity: 0.5s; transform: scale(1); }
-//     50% { opacity: 0.4; transform: scale(0.9); }
-// }
+/* Parpadeo */
+@keyframes parpadeo {
+    0%, 100% { opacity: 0.5s; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.9); }
+}
 .luces-nav {
   position: fixed;
   top: 60px;
@@ -832,7 +832,7 @@ li:hover {
   width: 100%;
   height: 20px;
   /* menor alto del contenedor */
-  background: #1c3b1c;
+  background: #244124;
 
   /* Path ajustado para cable delgado */
   mask-image: url("data:image/svg+xml;utf8,\
@@ -871,7 +871,7 @@ li:hover {
   /* más delgado */
   height: 18px;
   transform: translateX(-50%);
-  background: #1c3b1c;
+  background: #244124;
   border-radius: 1px;
 }
 
@@ -895,7 +895,10 @@ li:hover {
 .morado {
   background: #cc66ff;
 }
-
+.pos0 {
+  left: 1.5%;
+  animation-delay: 0.1s;
+}
 /* posiciones exactas debajo del valle */
 .pos1 {
   left: 8.5%;

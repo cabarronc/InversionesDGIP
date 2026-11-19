@@ -15,6 +15,8 @@ import { FormsModule } from '@angular/forms';
 import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { TabsModule } from 'primeng/tabs';
 
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+
 
 import {
   clipboardIcon,
@@ -57,7 +59,13 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 
-
+interface ColumnaConsulta {
+  field: string;
+  title: string;
+  width: number;
+  center?: boolean;
+  filterType?: 'text' | 'numeric' | 'date';
+}
 @Component({
   selector: 'app-cosainceg',
   imports: [KENDO_LAYOUT, CommonModule, KENDO_BUTTONS, KENDO_GRID, WindowModule, KENDO_ICONS, KENDO_INDICATORS, KENDO_DIALOGS, CardModule, TagModule, MessageModule,
@@ -66,14 +74,39 @@ import { InputTextModule } from 'primeng/inputtext';
     PanelModule,
     IconFieldModule,
     InputIconModule,
-    InputTextModule, NgxExtendedPdfViewerModule, TabsModule],
+    InputTextModule, NgxExtendedPdfViewerModule, TabsModule, ToggleSwitchModule],
   templateUrl: './cosainceg.component.html',
   styleUrl: './cosainceg.component.scss',
   encapsulation: ViewEncapsulation.None
 })
 
 export class CosaincegComponent implements OnInit {
+
+  readonly columnasTop: ColumnaConsulta[] = [
+    { field: 'nombre', title: 'Nombre del Proyecto', width: 290 },
+    { field: 'ejercicio', title: 'Ejercicio', width: 100, center: true },
+    { field: 'modificado_formateado', title: 'Monto', width: 160 },
+    { field: 'ranking', title: 'Posición', width: 100, filterType: 'numeric' },
+  ];
+
+  readonly columnasMetas: ColumnaConsulta[] = [
+    { field: 'clave_recodificada', title: 'Clave', width: 50 },
+    { field: 'nombre', title: 'Nombre del Proyecto', width: 300 },
+    { field: 'meta_estandarizada', title: 'Meta', width: 100, center: true },
+    { field: 'descripmeta', title: 'Descripción Meta', width: 260 },
+    { field: 'Modificado', title: 'Modificado', width: 80 },
+    { field: 'ejercicio', title: 'Ejercicio', width: 80 },
+  ];
+
+  readonly columnasArchivos: ColumnaConsulta[] = [
+    { field: 'name', title: 'Nombre de Archivo', width: 230 },
+    { field: 'size', title: 'Tamaño', width: 130, center: true },
+    { field: 'creation_time', title: 'Creación', width: 160 },
+    { field: 'modification_time', title: 'Modificación', width: 160 },
+  ];
+
   @Input() selectedItem: string | undefined;
+  public corte = 'Sin trimestre seleccionado';
   public isDisabled = false;
   public isDisabledG = false;
   public isDisabled_deuda = false;
@@ -136,6 +169,7 @@ export class CosaincegComponent implements OnInit {
   canViewAvance = false
 
   public opened = false;
+  public opened2 = false;
   isInversionGeneral: boolean = false;
   isInversionGeneralD: boolean = false;
   isPPI: boolean = false;
@@ -160,10 +194,20 @@ export class CosaincegComponent implements OnInit {
     this.opened = true;
   }
 
+
+  public close2(): void {
+    this.opened2 = false;
+  }
+
+  public open2(): void {
+    this.opened2 = true;
+  }
+
   backups: BackupItem[] = [];
   isLoading = false;
   isRestoring = false;
   public mostrarCatalogoDialog = false;
+  public mostrarMetasDeudaDialog = false;
   public catalogoData: any[] = [];
   public cargandoCatalogo = false;
   statusOptions: any[] = [];
@@ -171,6 +215,7 @@ export class CosaincegComponent implements OnInit {
   fecha_actualizacion: string = ''
   panelCollapsed = false;
   panelBackup = true
+  panelDeuda = true
   // Variable para controlar visibilidad del modal (boolean)
   pdfModalVisible = false;
   public windowThemeColor: WindowThemeColor = "primary";
@@ -524,10 +569,10 @@ export class CosaincegComponent implements OnInit {
   ///=====================  Datos Abiertos Cosainceg ======================
   //=======================================================================
   public dataExcelG = [
-    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertos(4,'Cosainceg01Global') },
-    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertos(7,'Cosainceg02Global') },
-    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertos(10,'Cosainceg03Global') },
-    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertos(2,'Cosainceg04Global') },
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertos(4, 'Cosainceg01Global') },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertos(7, 'Cosainceg02Global') },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertos(10, 'Cosainceg03Global') },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertos(2, 'Cosainceg04Global') },
   ]
   private async generarCosaincegDatosAbiertos(trimestre: number, filename: string): Promise<void> {
     const today = new Date();
@@ -598,10 +643,10 @@ export class CosaincegComponent implements OnInit {
 
   }
   public dataExcelDep = [
-    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosDep(4,'Cosainceg01Dependencias') },
-    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosDep(7,'Cosainceg02Dependencias') },
-    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosDep(10,'Cosainceg03Dependencias') },
-    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosDep(2,'Cosainceg04Dependencias') },
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosDep(4, 'Cosainceg01Dependencias') },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosDep(7, 'Cosainceg02Dependencias') },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosDep(10, 'Cosainceg03Dependencias') },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosDep(2, 'Cosainceg04Dependencias') },
   ]
   private async generarCosaincegDatosAbiertosDep(trimestre: number, filename: string): Promise<void> {
     const today = new Date();
@@ -672,10 +717,10 @@ export class CosaincegComponent implements OnInit {
 
   }
   public dataExcelRub = [
-    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosRub(4,'Cosainceg01Rubros') },
-    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosRub(7,'Cosainceg02Rubros') },
-    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosRub(10,'Cosainceg03Rubros') },
-    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosRub(2,'Cosainceg04Rubros') },
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosRub(4, 'Cosainceg01Rubros') },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosRub(7, 'Cosainceg02Rubros') },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosRub(10, 'Cosainceg03Rubros') },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarCosaincegDatosAbiertosRub(2, 'Cosainceg04Rubros') },
   ]
   private async generarCosaincegDatosAbiertosRub(trimestre: number, filename: string): Promise<void> {
     const today = new Date();
@@ -749,914 +794,350 @@ export class CosaincegComponent implements OnInit {
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   //+++++++++++++++++++++++++++++++++++++++++++++  Reporte Deuda +++++++++++++++++++++++++++++++++++
   //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
   public dataDeuda = [
-    {
-      text: 'Primer Trimestre',
-      svgIcon: fileWordIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const primerTrimestre = `${anio}-04-10`;
-        console.log("Primer Trimestre: ", primerTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledG_deuda = true;
-        this.cosaincegService.GenerarDeuda(primerTrimestre).subscribe(
-          (data) => {
-            this.cosainceg = data;
-            this.GetFilesDeuda()
-            console.log("primer trimestre", this.cosainceg)
-            this.notificationService.show({
-              content: "Reporte Generado Correctamente!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.isDisabled_deuda = false;
-            this.isDisabledG_deuda = false;
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Segundo Trimestre',
-      svgIcon: fileWordIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const segundoTrimestre = `${anio}-07-10`;
-        console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledG_deuda = true;
-        this.cosaincegService.GenerarDeuda(segundoTrimestre).subscribe(
-          (data) => {
-            this.cosainceg = data;
-            this.cosainceg = data;
-            this.GetFilesDeuda()
-            this.notificationService.show({
-              content: "Reporte Generado Correctamente!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.isDisabled_deuda = false;
-            this.isDisabledG_deuda = false;
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-    {
-      text: 'Tercer Trimestre',
-      svgIcon: fileWordIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const tercerTrimestre = `${anio}-10-10`;
-        console.log("Tercer Trimestre: ", tercerTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledG_deuda = true;
-        this.cosaincegService.GenerarDeuda(tercerTrimestre).subscribe(
-          (data) => {
-            this.cosainceg = data;
-            this.GetFilesDeuda()
-            this.notificationService.show({
-              content: "Reporte Generado Correctamente!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.isDisabled_deuda = false;
-            this.isDisabledG_deuda = false;
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Cuarto Trimestre',
-      svgIcon: fileWordIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear() - 1);
-        const anio_menosuno = lastYearDate.getFullYear().toString();
-        const cuarttoTrimestre = `${anio_menosuno}-02-10`;
-        console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledG_deuda = true;
-        this.cosaincegService.GenerarDeuda(cuarttoTrimestre).subscribe(
-          (data) => {
-            this.cosainceg = data;
-            this.GetFilesDeuda()
-            this.notificationService.show({
-              content: "Reporte Generado Correctamente!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.log(this.cosainceg)
-            this.isDisabled_deuda = false;
-            this.isDisabledG_deuda = false;
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-  ];
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaGneral(4) },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaGneral(7) },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaGneral(10) },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaGneral(2) },
+
+  ]
+  private async generarDeudaGneral(trimestre: number): Promise<void> {
+    const today = new Date();
+    let anio = today.getFullYear()
+    if (trimestre == 2) {
+      anio--;
+    }
+    const trimestreFormateado = trimestre.toString().padStart(2, '0');
+    const trimestre_seleccionado = `${anio}-${trimestreFormateado}-10`;
+    this.isDisabled_deuda = true;
+    this.isDisabledG_deuda = true;
+    this.messageService.add({
+      key: 'DeudaGeneral',
+      severity: 'info',
+      summary: 'Info',
+      detail: 'Espere, generando Deuda General...',
+      sticky: true,
+      icon: 'pi pi-spinner-dotted pi-spin',
+    });
+    try {
+      const resp = await firstValueFrom(this.cosaincegService.GenerarDeuda(trimestre_seleccionado))
+      console.log("resp", resp);
+      this.messageService.clear('DeudaGeneral');
+      this.messageService.add({
+        key: 'DeudaGeneral',
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Generado correctamente',
+        life: 1500
+      });
+      this.isDisabled_deuda = false;
+      this.isDisabledG_deuda = false;
 
 
-
-
-
-
-  
-  /////////////////////////////////////// 
-  
-
+    }
+    catch (error) {
+      console.error('Error generando reporte:', error);
+      this.messageService.clear('DeudaGeneral');
+      this.messageService.add({
+        key: 'DeudaGeneral',
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Existe un Error en la Generacion del Reporte!',
+        life: 1500
+      });
+    }
+    finally {
+      this.isDisabled_deuda = false;
+      this.isDisabledG_deuda = false;
+    }
+  }
   ////////////////////////////////////////////////////////////////
   ////////////////////// Recurso Deuda //////////////////////////
   public dataExcelRecursoDeuda = [
-    {
-      text: 'Primer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const primerTrimestre = `${anio}-04-10`;
-        const filename = `Rel Obras Financiamiento Deuda01`
-        console.log("Primer Trimestre: ", primerTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelRecursoDeuda = true
-        this.cosaincegService.GenerarDescargasDeudaRecurso(primerTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            const downloadFilename = filename.endsWith('.zip') ? filename : `${filename}.zip`;
-            link.href = url;
-            link.download = downloadFilename;
-            document.body.appendChild(link);
-            link.click();
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaRecurso(4, 'Rel Obras Financiamiento Deuda01') },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaRecurso(7, 'Rel Obras Financiamiento Deuda02') },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaRecurso(10, 'Rel Obras Financiamiento Deuda03') },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaRecurso(2, 'Rel Obras Financiamiento Deuda04') },
+  ]
 
-            // Limpieza
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
+  private async generarDeudaRecurso(trimestre: number, filename: string): Promise<void> {
+    const today = new Date();
+    let anio = today.getFullYear()
+    if (trimestre == 2) {
+      anio--;
+    }
+    const trimestreFormateado = trimestre.toString().padStart(2, '0');
+    const trimestre_seleccionado = `${anio}-${trimestreFormateado}-10`;
+    const filename_seleccionado = filename
+    console.log('Fecha seleccionada:', trimestre_seleccionado);
+    console.log('Archivo seleccionada:', filename_seleccionado);
+    this.isDisabled_deuda = true;
+    this.isDisabledExcelRecursoDeuda = true
+    this.messageService.add({
+      key: 'DeudaRecurso',
+      severity: 'info',
+      summary: 'Info',
+      detail: 'Espere, generando Recurso Deuda...',
+      sticky: true,
+      icon: 'pi pi-spinner-dotted pi-spin',
+    });
+    try {
+      const resp = await firstValueFrom(this.cosaincegService.GenerarDescargasDeudaRecurso(trimestre_seleccionado, filename_seleccionado))
+      console.log("resp", resp);
+      const blob = resp.body!;
+      // Descargar Excel
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename_seleccionado.endsWith('zip') ? filename_seleccionado : `${filename_seleccionado}.zip`;
+      document.body.appendChild(link);
+      link.click();
+      this.messageService.clear('DeudaRecurso');
+      this.messageService.add({
+        key: 'DeudaRecurso',
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Generado correctamente',
+        life: 1500
+      });
+      this.isDisabled_deuda = false;
+      this.isDisabledExcelRecursoDeuda = false;
 
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.isDisabled_deuda = true;
-            this.isDisabledExcelRecursoDeuda = false
 
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Segundo Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const segundoTrimestre = `${anio}-07-10`;
-        const filename = `Rel Obras Financiamiento Deuda02`
-        console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelRecursoDeuda = true
-        this.cosaincegService.GenerarDescargasDeudaRecurso(segundoTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            this.isDisabled_deuda = false;
-            this.isDisabledExcelRecursoDeuda = false
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-    {
-      text: 'Tercer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const tercerTrimestre = `${anio}-10-10`;
-        console.log("Tercer Trimestre: ", tercerTrimestre)
-        const filename = `Rel Obras Financiamiento Deuda03`
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelRecursoDeuda = true
-        this.cosaincegService.GenerarDescargasDeudaRecurso(tercerTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            this.isDisabled_deuda = false;
-            this.isDisabledExcelRecursoDeuda = false
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Cuarto Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        const Year = new Date(today);
-        Year.setFullYear(today.getFullYear());
-        lastYearDate.setFullYear(today.getFullYear() - 1);
-        const anio = Year.getFullYear().toString();
-        const anio_menosuno = lastYearDate.getFullYear().toString();
-        const cuarttoTrimestre = `${anio}-02-10`;
-        const filename = `Rel Obras Financiamiento Deuda04`
-        console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelRecursoDeuda = true
-        this.cosaincegService.GenerarDescargasDeudaRecurso(cuarttoTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            this.isDisabled_deuda = false;
-            this.isDisabledExcelRecursoDeuda = false
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-  ];
+    }
+    catch (error) {
+      console.error('Error generando reporte:', error);
+      this.messageService.clear('DeudaRecurso');
+      this.messageService.add({
+        key: 'DeudaRecurso',
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Existe un Error en la Generacion del Reporte!',
+        life: 1500
+      });
+    }
+    finally {
+      this.isDisabled_deuda = false;
+      this.isDisabledExcelRecursoDeuda = false;
+    }
+  }
 
   ///// EXCEL DEUDA GLOBAL///////////////////////////////////////////////////////////////////////////////////////////////////
   public dataExcelDeudaG = [
-    {
-      text: 'Primer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const primerTrimestre = `${anio}-04-10`;
-        const filename = `Deuda01Global_${anio}.xlsx`
-        console.log("Primer Trimestre: ", primerTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelG_deuda = true
-        this.cosaincegService.GenerarDescargasDeuda(primerTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.isDisabled_deuda = false;
-            this.isDisabledExcelG_deuda = false
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaGlobal(4, 'Deuda01Global') },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaGlobal(7, 'Deuda02Global') },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaGlobal(10, 'Deuda03Global') },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaGlobal(2, 'Deuda04Global') },
+  ]
+  private async generarDeudaGlobal(trimestre: number, filename: string): Promise<void> {
+    const today = new Date();
+    let anio = today.getFullYear()
+    if (trimestre == 2) {
+      anio--;
+    }
+    const trimestreFormateado = trimestre.toString().padStart(2, '0');
+    const trimestre_seleccionado = `${anio}-${trimestreFormateado}-10`;
+    const filename_seleccionado = `${filename}_${anio}.xlsx`
+    console.log('Fecha seleccionada:', trimestre_seleccionado);
+    console.log('Archivo seleccionada:', filename_seleccionado);
+    this.isDisabled_deuda = true;
+    this.isDisabledExcelG_deuda = true
+    this.messageService.add({
+      key: 'DeudaGlobal',
+      severity: 'info',
+      summary: 'Info',
+      detail: 'Espere, generando Deuda Global...',
+      sticky: true,
+      icon: 'pi pi-spinner-dotted pi-spin',
+    });
+    try {
+      const resp = await firstValueFrom(this.cosaincegService.GenerarDescargasDeuda(trimestre_seleccionado, filename_seleccionado))
+      console.log("resp", resp);
+      const blob = resp.body!;
+      // Descargar Excel
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename_seleccionado;
+      document.body.appendChild(link);
+      link.click();
+      this.messageService.clear('DeudaGlobal');
+      this.messageService.add({
+        key: 'DeudaGlobal',
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Generado correctamente',
+        life: 1500
+      });
+      this.isDisabled_deuda = false;
+      this.isDisabledExcelG_deuda = false;
+    }
+    catch (error) {
+      console.error('Error generando reporte:', error);
+      this.messageService.clear('DeudaGlobal');
+      this.messageService.add({
+        key: 'DeudaGlobal',
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Existe un Error en la Generacion del Reporte!',
+        life: 1500
+      });
+    }
+    finally {
+      this.isDisabled_deuda = false;
+      this.isDisabledExcelG_deuda = false;
+    }
 
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Segundo Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const segundoTrimestre = `${anio}-07-10`;
-        const filename = `Deuda02Global_${anio}.xlsx`
-        console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelG_deuda = true
-        this.cosaincegService.GenerarDescargasDeuda(segundoTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            this.isDisabled_deuda = false;
-            this.isDisabledExcelG_deuda = false
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-    {
-      text: 'Tercer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const tercerTrimestre = `${anio}-10-10`;
-        console.log("Tercer Trimestre: ", tercerTrimestre)
-        const filename = `Deuda03Global_${anio}.xlsx`
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelG_deuda = true
-        this.cosaincegService.GenerarDescargasDeuda(tercerTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            this.isDisabled_deuda = false;
-            this.isDisabledExcelG_deuda = false
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Cuarto Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        const Year = new Date(today);
-        Year.setFullYear(today.getFullYear());
-        lastYearDate.setFullYear(today.getFullYear() - 1);
-        const anio = Year.getFullYear().toString();
-        const anio_menosuno = lastYearDate.getFullYear().toString();
-        const cuarttoTrimestre = `${anio}-02-10`;
-        const filename = `Deuda04Global_${anio}.xlsx`
-        console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelG_deuda = true
-        this.cosaincegService.GenerarDescargasDeuda(cuarttoTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            this.isDisabled_deuda = false;
-            this.isDisabledExcelG_deuda = false
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-  ];
+  }
+
   ///////////////////////////  excel dependencias deuda  //////////////////////////
-  public dataExcelDepDeuda = [
-    {
-      text: 'Primer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const primerTrimestre = `${anio}-04-10`;
-        const filename = `Deuda01Dependencias_${anio}.xlsx`
-        console.log("Primer Trimestre: ", primerTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelG_deuda_dep = true
-        this.cosaincegService.GenerarDescargasDeudaDep(primerTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.isDisabled_deuda = false;
-            this.isDisabledExcelG_deuda_dep = false
+  dataExcelDepDeuda = [
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaDependencias(4, 'Deuda01Dependencias') },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaDependencias(7, 'Deuda02Dependencias') },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaDependencias(10, 'Deuda03Dependencias') },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaDependencias(2, 'Deuda04Dependencias') },
 
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Segundo Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const segundoTrimestre = `${anio}-07-10`;
-        const filename = `Deuda02Dependencias_${anio}.xlsx`
-        console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelG_deuda_dep = true
-        this.cosaincegService.GenerarDescargasDeudaDep(segundoTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            this.isDisabled_deuda = false;
-            this.isDisabledExcelG_deuda_dep = false
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-    {
-      text: 'Tercer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const tercerTrimestre = `${anio}-10-10`;
-        console.log("Tercer Trimestre: ", tercerTrimestre)
-        const filename = `Deuda03Dependencias_${anio}.xlsx`
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelG_deuda_dep = true
-        this.cosaincegService.GenerarDescargasDeudaDep(tercerTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            this.isDisabled_deuda = false;
-            this.isDisabledExcelG_deuda_dep = false
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Cuarto Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        const Year = new Date(today);
-        Year.setFullYear(today.getFullYear());
-        lastYearDate.setFullYear(today.getFullYear() - 1);
-        const anio = Year.getFullYear().toString();
-        const anio_menosuno = lastYearDate.getFullYear().toString();
-        const cuarttoTrimestre = `${anio}-02-10`;
-        const filename = `Deuda04Dependencias_${anio}.xlsx`
-        console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.isDisabled_deuda = true;
-        this.isDisabledExcelG_deuda_dep = true
-        this.cosaincegService.GenerarDescargasDeudaDep(cuarttoTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            this.isDisabled_deuda = false;
-            this.isDisabledExcelG_deuda_dep = false
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-  ];
+  ]
 
-
-  public onUploadCatalogo(event: FileUploadEvent): void {
-    console.log('Archivo subido:', event);
+  private async generarDeudaDependencias(trimestre: number, filename: string): Promise<void> {
+    const today = new Date();
+    let anio = today.getFullYear()
+    if (trimestre == 2) {
+      anio--;
+    }
+    const trimestreFormateado = trimestre.toString().padStart(2, '0');
+    const trimestre_seleccionado = `${anio}-${trimestreFormateado}-10`;
+    const filename_seleccionado = `${filename}_${anio}.xlsx`
+    console.log('Fecha seleccionada:', trimestre_seleccionado);
+    console.log('Archivo seleccionada:', filename_seleccionado);
+    this.isDisabled_deuda = true;
+    this.isDisabledExcelG_deuda_dep = true
     this.messageService.add({
-      severity: 'success',
-      summary: 'Éxito',
-      detail: 'Catálogo de Rubros subido correctamente',
-      life: 3500
+      key: 'DeudaDependencias',
+      severity: 'info',
+      summary: 'Información',
+      detail: 'Generando reporte...',
+      life: 1500
     });
+    try {
+      const resp = await firstValueFrom(this.cosaincegService.GenerarDescargasDeudaDep(trimestre_seleccionado, filename_seleccionado))
+      console.log("resp", resp);
+      const blob = resp.body!;
+      // Descargar Excel
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename_seleccionado;
+      document.body.appendChild(link);
+      link.click();
+      this.messageService.clear('DeudaDependencias');
+      this.messageService.add({
+        key: 'DeudaDependencias',
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Generado correctamente',
+        life: 1500
+      });
+    }
+    catch (error) {
+      console.error('Error generando reporte:', error);
+      this.messageService.clear('DeudaDependencias');
+      this.messageService.add({
+        key: 'DeudaDependencias',
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Existe un Error en la Generacion del Reporte!',
+        life: 1500
+      });
+    }
+    finally {
+      this.isDisabled_deuda = false;
+      this.isDisabledExcelG_deuda_dep = false;
+    }
   }
 
-  public onUploadCatalogoError(event: FileUploadErrorEvent): void {
-    console.error('Error al subir el catálogo:', event);
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: 'Hubo un error al subir el catálogo',
-      life: 3500
-    });
-  }
   //////////////////////////////////////////////////////////////
   ///// EXCEL DEUDA METAS///////////////////////////////////////////////////////////////////////////////////////////////////
-  public dataExcelDeudaMetas = [
-    {
-      text: 'Primer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const primerTrimestre = `${anio}-04-10`;
-        const filename = `DeudaMetas01_${anio}.xlsx`
-        console.log("Primer Trimestre: ", primerTrimestre)
-        this.isMetas = true;
-        this.isMetasD = true
-        this.cosaincegService.GenerarDescargasDeudaMetas(primerTrimestre, filename).subscribe(
-          (resp => {
-            const byteCharacters = atob(resp.file);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-              byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-            const blob = new Blob([byteArray]);
 
-            // Descargar el archivo
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = filename;
-            link.click();
-            this.Top = resp.json
-            this.Metas = resp.metas
-            // JSON adicional
-            console.log(resp.metas);
+  dataExcelDeudaMetas = [
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaMetas(4, 'DeudaMetas01') },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaMetas(7, 'DeudaMetas02') },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaMetas(10, 'DeudaMetas03') },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaMetas(2, 'DeudaMetas04') },
 
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.isMetas = false;
-            this.isMetasD = false
+  ]
+  private async generarDeudaMetas(trimestre: number, filename: string): Promise<void> {
+    const today = new Date();
+    let anio = today.getFullYear()
+    if (trimestre == 2) {
+      anio--;
+    }
+    const trimestreFormateado = trimestre.toString().padStart(2, '0');
+    const trimestre_seleccionado = `${anio}-${trimestreFormateado}-10`;
+    const filename_seleccionado = `${filename}_${anio}.xlsx`
+    console.log('Fecha seleccionada:', trimestre_seleccionado);
+    console.log('Archivo seleccionada:', filename_seleccionado);
+    this.isMetas = true;
+    this.isMetasD = true
+    this.messageService.add({
+      key: 'DeudaMetas',
+      severity: 'info',
+      summary: 'Información',
+      detail: 'Generando reporte...',
+      life: 1500
+    });
+    try {
+      const resp = await firstValueFrom(this.cosaincegService.GenerarDescargasDeudaMetas(trimestre_seleccionado, filename_seleccionado))
+      console.log("resp", resp);
+      this.Top = resp.json
+      this.Metas = resp.metas
+      this.corte = resp.corte
+      // Identifica cómo llega el archivo sin imprimirlo completo.
+      console.log('Campos de la respuesta:', Object.keys(resp));
+      console.log('Tipo de file:', typeof resp.file);
+      console.log('Muestra de file:', typeof resp.file === 'string'
+        ? resp.file.slice(0, 80)
+        : resp.file);
+      const byteCharacters = atob(resp.file);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray]);
+      // Descargar el archivo
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(blob);
+      link.download = filename_seleccionado;
+      link.click();
 
-          }),
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Segundo Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const segundoTrimestre = `${anio}-07-10`;
-        const filename = `DeudaMetas02_${anio}.xlsx`
-        console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.isMetas = true;
-        this.isMetasD = true
-        this.cosaincegService.GenerarDescargasDeudaMetas(segundoTrimestre, filename).subscribe(
-          (resp => {
-            const byteCharacters = atob(resp.file);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-              byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-            const blob = new Blob([byteArray]);
+      // JSON adicional
+      console.log(resp.metas);
+      console.log(resp.json);
+      this.messageService.clear('DeudaMetas');
+      this.messageService.add({
+        key: 'DeudaMetas',
+        severity: 'success',
+        summary: 'Éxito',
+        detail: 'Generado correctamente',
+        life: 1500
+      });
+    } catch (error) {
+      this.messageService.clear('DeudaMetas');
+      this.messageService.add({
+        key: 'DeudaMetas',
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Error al generar el reporte',
+        life: 1500
+      });
+    }
+    finally {
+      this.isMetas = false;
+      this.isMetasD = false
+    }
 
-            // Descargar el archivo
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = filename;
-            link.click();
-            this.Top = resp.json
-            this.Metas = resp.metas
-            // JSON adicional
-            console.log(resp.json);
-
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.isMetas = false;
-            this.isMetasD = false
-          }),
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-    {
-      text: 'Tercer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const tercerTrimestre = `${anio}-10-10`;
-        console.log("Tercer Trimestre: ", tercerTrimestre)
-        const filename = `DeudaMetas03_${anio}.xlsx`
-        this.isMetas = true;
-        this.isMetasD = true
-        this.cosaincegService.GenerarDescargasDeudaMetas(tercerTrimestre, filename).subscribe(
-          (resp => {
-            const byteCharacters = atob(resp.file);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-              byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-            const blob = new Blob([byteArray]);
-
-            // Descargar el archivo
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = filename;
-            link.click();
-            this.Top = resp.json
-            this.Metas = resp.metas
-            // JSON adicional
-            console.log(resp.json);
-
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.isMetas = false;
-            this.isMetasD = false
-          }),
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Cuarto Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        const Year = new Date(today);
-        Year.setFullYear(today.getFullYear());
-        lastYearDate.setFullYear(today.getFullYear() - 1);
-        const anio = Year.getFullYear().toString();
-        const anio_menosuno = lastYearDate.getFullYear().toString();
-        const cuarttoTrimestre = `${anio}-02-10`;
-        const filename = `DeudaMetas04_${anio}.xlsx`
-        console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.isMetas = true;
-        this.isMetasD = true
-        this.cosaincegService.GenerarDescargasDeudaMetas(cuarttoTrimestre, filename).subscribe(
-          (resp => {
-            const byteCharacters = atob(resp.file);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-              byteNumbers[i] = byteCharacters.charCodeAt(i);
-            }
-            const byteArray = new Uint8Array(byteNumbers);
-            const blob = new Blob([byteArray]);
-
-            // Descargar el archivo
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = filename;
-            link.click();
-            this.Top = resp.json
-            this.Metas = resp.metas
-            // JSON adicional
-            console.log(resp.json);
-
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.isMetas = false;
-            this.isMetasD = false
-          }),
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-  ];
+  }
 
   hasProps(obj: any): boolean {
     return obj && Object.keys(obj).length > 0;
@@ -2789,23 +2270,10 @@ export class CosaincegComponent implements OnInit {
     this.nombre_archivo = '';
     this.isMaximized = false;
   }
-  toggleMaximize() {
-    const dialogEl = this.pdfDialogRef?.nativeElement?.querySelector('.p-dialog') as HTMLElement;
-    if (!dialogEl) return;
 
-    if (!document.fullscreenElement) {
-      dialogEl.requestFullscreen().catch(err => console.error('Error al entrar a pantalla completa:', err));
-    } else {
-      document.exitFullscreen();
-    }
-  }
 
-  // Detecta cuando el usuario sale de pantalla completa (incluyendo con la tecla Esc)
-  // para mantener sincronizado el ícono del botón.
-  @HostListener('document:fullscreenchange')
-  onFullscreenChange() {
-    this.isMaximized = !!document.fullscreenElement;
-  }
+
+
 
   openPdfModal_2(pdfBase64: string, name: string) {
     this.selectedPdf_2 = pdfBase64;
@@ -2816,13 +2284,14 @@ export class CosaincegComponent implements OnInit {
     this.selectedPdf_2 = null;
   }
   DescargarExcel() {
-    this.notificationService.show({
-      content: "Debe Seleccionar un Trimestre 🔻",
-      hideAfter: 2500,
-      animation: { type: "fade", duration: 1500 },
-      type: { style: "warning", icon: true },
-      position: { horizontal: "center", vertical: "top" },
+    this.messageService.add({
+      key: 'DescargarExcelGenerico',
+      severity: 'warn',
+      summary: 'Información',
+      detail: 'Debe Seleccionar un Trimestre 🔻',
+      life: 1500
     });
+
 
   }
   GetFiles() {
@@ -2959,6 +2428,26 @@ export class CosaincegComponent implements OnInit {
     this.router.navigate(['/principal']);
   }
 
+
+  public onUploadCatalogo(event: FileUploadEvent): void {
+    console.log('Archivo subido:', event);
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Éxito',
+      detail: 'Catálogo de Rubros subido correctamente',
+      life: 3500
+    });
+  }
+
+  public onUploadCatalogoError(event: FileUploadErrorEvent): void {
+    console.error('Error al subir el catálogo:', event);
+    this.messageService.add({
+      severity: 'error',
+      summary: 'Error',
+      detail: 'Hubo un error al subir el catálogo',
+      life: 3500
+    });
+  }
 
 
 }

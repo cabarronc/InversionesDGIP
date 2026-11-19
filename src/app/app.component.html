@@ -8,16 +8,35 @@
 <p-toast position="top-center" key="circular" />
 <p-toast position="top-center" key="circular_acuses" />
 <p-toast position="top-center" key="avanceFeb" />
+<!-- Cosainceg -->
 <p-toast position="top-center" key="act_rubro" />
 <p-toast position="top-center" key="cosainceg" />
 <p-toast position="top-center" key="cosaincegR" />
 <p-toast position="top-center" key="cosaincegdatosQ" />
 <p-toast position="top-center" key="cosaincegdatosDep" />
 <p-toast position="top-center" key="cosaincegdatosRub" />
+<p-toast position="top-center" key="DeudaGeneral" />
+<!-- Deuda -->
+<p-toast position="top-center" key="DeudaGeneral" />
+<p-toast position="top-center" key="DeudaRecurso" />
+<p-toast position="top-center" key="DeudaGlobal" />
+<p-toast position="top-center" key="DeudaDependencias" />
+<p-toast position="top-center" key="DescargarExcelGenerico" />
+<p-toast position="top-center" key="DeudaMetas" />
+<!-- Lecciones -->
 <p-toast position="top-center" key="lecciones" />
 
 
+
 <router-outlet></router-outlet>
-<div class="snow"></div>
+<div class="snow" aria-hidden="true">
+    @for (grupo of [0, 1, 2]; track grupo) {
+        @for (copo of [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
+                       12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+              track copo) {
+            <span class="copo" [style.--i]="grupo * 24 + copo">❄︎</span>
+        }
+    }
+</div>
 <app-fab-global></app-fab-global>
 <div kendoDialogContainer></div>

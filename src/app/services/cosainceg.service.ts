@@ -53,13 +53,14 @@ export class CosaincegService {
     }) as Observable<HttpResponse<Blob>>;
   }
 
-      GenerarDescargasDeudaDep(fecha: any,filename: string): Observable<Blob> {
+      GenerarDescargasDeudaDep(fecha: any,filename: string): Observable<HttpResponse<Blob>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     return this.http.post(`${this.apiUrl}/GetDescargasDeudaDependencia/${filename}`, body, {
       headers,
-      responseType: 'blob'
-    }) as Observable<Blob>;
+      responseType: 'blob',
+      observe: 'response',
+    }) as Observable<HttpResponse<Blob>>;
   }
 
 
@@ -83,23 +84,24 @@ export class CosaincegService {
     }) as Observable<HttpResponse<Blob>>;
   }
 
-  GenerarDescargasDeudaRecurso(fecha: any,filename: string): Observable<Blob> {
+  GenerarDescargasDeudaRecurso(fecha: any,filename: string): Observable<HttpResponse<Blob>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     return this.http.post(`${this.apiUrl}/GetDescargasDeudaRecurso/${filename}`, body, {
       headers,
-      responseType: 'blob'
-    }) as Observable<Blob>;
+      responseType: 'blob',
+      observe: 'response'
+    }) as Observable<HttpResponse<Blob>>;
   }
 
-    GenerarDescargasDeuda(fecha: any,filename: string): Observable<Blob> {
+    GenerarDescargasDeuda(fecha: any,filename: string): Observable<HttpResponse<Blob>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     return this.http.post(`${this.apiUrl}/GetDescargasDeudaGeneral/${filename}`, body, {
       headers,
       responseType: 'blob',
-      
-    }) as Observable<Blob>;
+      observe: 'response'
+    }) as Observable<HttpResponse<Blob>>;
   }
 
   //    GenerarDescargasDeudaMetas(fecha: any,filename: string): Observable<Blob> {

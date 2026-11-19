@@ -459,10 +459,116 @@
         height: auto !important;
     }
 }
+.titulo-trimestre {
+  margin: 0.5rem 0 1rem;
+  text-align: center;
+  font-size: 1.2rem;
+}
 
+.controles-metas,
+.acciones-archivo {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
 
+.controles-metas {
+  margin-bottom: 0.75rem;
+}
 
+.consulta-metas {
+  --metas-borde: var(--p-content-border-color, #dce3ea);
+  --metas-fondo: var(--p-content-background, #fff);
+  --metas-texto: var(--p-text-color, #1e293b);
+  --metas-secundario: var(--p-text-muted-color, #526174);
 
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding: 1.25rem;
+  border: 1px solid var(--metas-borde);
+  gap: 1.25rem;
+  color: var(--metas-texto);
+}
 
+.consulta-metas__encabezado h2 {
+  margin: 0;
+  font-size: clamp(1.25rem, 2vw, 1.65rem);
+  font-weight: 650;
+  line-height: 1.25;
+}
+
+.consulta-metas__encabezado p {
+  margin: 0.35rem 0 0;
+  color: var(--metas-secundario);
+  line-height: 1.5;
+}
+
+.consulta-metas__controles {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--metas-borde);
+  border-radius: 0.875rem;
+  background: var(--metas-fondo);
+}
+
+.consulta-metas__selector,
+.consulta-metas__detalle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.consulta-metas__detalle label {
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.consulta-metas__tabla {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+@media (max-width: 40rem) {
+  .consulta-metas__controles {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+  }
+
+  .consulta-metas__detalle {
+    justify-content: space-between;
+    padding-top: 0.875rem;
+    border-top: 1px solid var(--metas-borde);
+  }
+}
+
+.dialog-top-proyectos .p-dialog-header {
+  background: #17365d;
+  color: #fff;
+  border-radius: inherit;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.dialog-top-proyectos .p-dialog-header .p-dialog-title,
+.dialog-top-proyectos .p-dialog-header button {
+  color: #fff;
+}
+
+.dialog-top-proyectos .p-dialog-header button:hover {
+  background: rgb(255 255 255 / 16%);
+  color: #fff;
+}
+
+.dialog-top-proyectos .p-dialog-header button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
 
 

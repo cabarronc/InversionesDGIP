@@ -1,0 +1,54 @@
+.snow {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 5000;
+    container-type: size;
+}
+
+.copo {
+    position: absolute;
+    top: -1.5rem;
+    line-height: 1;
+    color: #ecf8ff;
+    font-family: "Segoe UI Symbol", sans-serif;
+
+    /* Distribuye los copos a distintos anchos de la pantalla */
+    left: mod(calc(var(--i) * 37% + 3%), 100%);
+
+    /* Copos pequeños: de 12 a 14 px */
+    font-size: calc(12px + mod(var(--i), 3) * 1px);
+    opacity: 0.58;
+
+    --duracion: calc(9s + mod(var(--i) * 7, 11) * 1s);
+    --balanceo: calc(3s + mod(var(--i) * 3, 5) * 1s);
+    --deriva: calc(10px + mod(var(--i) * 13, 29) * 1px);
+    --desfase: calc(-1s * var(--i) * 2.37);
+
+    animation:
+        nieve-caida var(--duracion) linear var(--desfase) infinite,
+        nieve-balanceo var(--balanceo) ease-in-out var(--desfase) infinite alternate;
+}
+
+/* Uno de cada cuatro es un poco más grande: de 14 a 17 px */
+.copo:nth-child(4n + 1) {
+    font-size: calc(14px + mod(var(--i), 5) * 0.75px);
+    opacity: 0.82;
+}
+
+@keyframes nieve-caida {
+    from { translate: 0 0; }
+    to   { translate: 0 calc(100cqh + 3rem); }
+}
+
+@keyframes nieve-balanceo {
+    from { transform: translateX(calc(-1 * var(--deriva))) rotate(-18deg); }
+    to   { transform: translateX(var(--deriva)) rotate(22deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .copo {
+        animation-play-state: paused;
+    }
+}
