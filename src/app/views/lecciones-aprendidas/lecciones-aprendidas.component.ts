@@ -25,13 +25,15 @@ import { signal, computed, effect } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { TooltipModule } from 'primeng/tooltip';
+import { SelectModule } from 'primeng/select';
 import { IconFieldModule } from 'primeng/iconfield';
 import { TabsModule } from 'primeng/tabs';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-lecciones-aprendidas',
-  imports: [CardModule, TagModule, MessageModule, ButtonModule, ProgressSpinnerModule, TableModule, ChartModule,
-    SkeletonModule, MultiSelectModule, FormsModule, TooltipModule, DialogModule, DividerModule, IconFieldModule,TabsModule],
+  imports: [CardModule, TagModule, MessageModule, ButtonModule, ProgressSpinnerModule, TableModule, ChartModule,SelectModule,
+    SkeletonModule, MultiSelectModule, FormsModule, TooltipModule, DialogModule, DividerModule, IconFieldModule,TabsModule, InputTextModule],
   templateUrl: './lecciones-aprendidas.component.html',
   styleUrl: './lecciones-aprendidas.component.scss',
 })
@@ -88,6 +90,14 @@ export class LeccionesAprendidasComponent implements OnInit {
 //Fecha de actualizacion
 fechaArchivo = signal<string | null>(null);
 
+
+readonly opcionesResultadoLeccion = [
+  { label: 'Todos', value: 'todos' },
+  { label: 'Sí', value: '2' },
+  { label: 'Parcialmente', value: '1' },
+  { label: 'No', value: '0' },
+  { label: 'Sin evaluar', value: 'sin_evaluar' },
+];
   ngOnInit(): void {
       this.obtenerArchivosLecciones();
 

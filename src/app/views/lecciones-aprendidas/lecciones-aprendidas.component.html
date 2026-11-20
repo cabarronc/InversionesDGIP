@@ -1,6 +1,6 @@
 <!-- DIÁLOGO DE DETALLE -->
 <p-dialog header="Detalle de la lección aprendida" [visible]="detalleVisible()"
-    (visibleChange)="detalleVisible.set($event)" [modal]="true" [draggable]="false" [resizable]="false"
+    (visibleChange)="detalleVisible.set($event)" [modal]="true" [draggable]="true" [resizable]="false"
     [maximizable]="true" [keepInViewport]="true" [style]="{ width: '75vw', height: '80vh' }"
     [breakpoints]="{ '960px': '95vw', '640px': '100vw' }" [contentStyle]="{ overflow: 'auto' }" [baseZIndex]="10000"
     (onHide)="closePdfModal()">
@@ -266,64 +266,64 @@
                                 </div>
                                 <hr class="mt-0 mb-1">
                                 @if (!filtrosMinimizados()) {
-                                <div class="card-body p-3 p-md-4">
-                                    <div
-                                        class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-2 titulo-contenido">
-                                        <!-- Dependencia -->
-                                        <div class="col-12 col-sm-6 col-lg-3">
-                                            <label class="form-label fw-semibold small text-color">
-                                                <i class="pi pi-tag me-1"></i>
-                                                Dependencias
+                                <div class="card-body p-1 p-md-2">
+                                    <div class="filtros-fila titulo-contenido mb-2">
+                                        <div>
+                                            <label for="filtro-dependencia"
+                                                class="form-label fw-semibold small text-color">
+                                                <i class="pi pi-tag me-1"></i> Dependencias
                                             </label>
-                                            <p-multiSelect [options]="opcionesDependencia()" [ngModel]="filtroDep()"
+                                            <p-multiSelect inputId="filtro-dependencia" class="w-100"
+                                                [options]="opcionesDependencia()" [ngModel]="filtroDep()"
                                                 (ngModelChange)="cambiarDependencia($event)" optionLabel="label"
-                                                optionValue="value" placeholder="Seleccionar dependencia"
-                                                [showClear]="true" display="chip">
-                                            </p-multiSelect>
+                                                optionValue="value" placeholder="Seleccionar dependencia" size="small"
+                                                [showClear]="true" display="chip" appendTo="body" />
                                         </div>
-                                        <!-- Proyecto Q -->
-                                        <div class="col-12 col-sm-6 col-lg-3">
-                                            <label class="form-label fw-semibold small text-color">
-                                                <i class="pi pi-key me-1"></i>
-                                                Clave Proyecto
+
+                                        <div>
+                                            <label for="filtro-proyecto"
+                                                class="form-label fw-semibold small text-color">
+                                                <i class="pi pi-key me-1"></i> Clave Proyecto
                                             </label>
-                                            <p-multiSelect [options]="opcionesProyecto()" [ngModel]="filtroQ()"
+                                            <p-multiSelect inputId="filtro-proyecto" class="w-100"
+                                                [options]="opcionesProyecto()" [ngModel]="filtroQ()"
                                                 (ngModelChange)="cambiarProyecto($event)" optionLabel="label"
-                                                optionValue="value" placeholder="Seleccionar proyecto"
-                                                [showClear]="true" display="chip" [disabled]="filtroDep().length === 0">
-                                            </p-multiSelect>
+                                                optionValue="value" placeholder="Seleccionar proyecto" size="small"
+                                                [showClear]="true" display="chip" [disabled]="filtroDep().length === 0"
+                                                appendTo="body" />
                                         </div>
-                                        <!-- Categoría -->
-                                        <div class="col-12 col-sm-6 col-lg-3">
-                                            <label class="form-label fw-semibold small text-color">
-                                                <i class="pi pi-bullseye me-1"></i>
-                                                Categoria
+
+                                        <div>
+                                            <label for="filtro-categoria"
+                                                class="form-label fw-semibold small text-color">
+                                                <i class="pi pi-bullseye me-1"></i> Categoría
                                             </label>
-                                            <p-multiSelect [options]="opcionesCategoria()" [ngModel]="filtroCategoria()"
+                                            <p-multiSelect inputId="filtro-categoria" class="w-100"
+                                                [options]="opcionesCategoria()" [ngModel]="filtroCategoria()"
                                                 (ngModelChange)="cambiarCategoria($event)" optionLabel="label"
-                                                optionValue="value" placeholder="Seleccionar categoría"
-                                                [showClear]="true" display="chip" [disabled]="filtroQ().length === 0">
-                                            </p-multiSelect>
+                                                optionValue="value" placeholder="Seleccionar categoría" size="small"
+                                                [showClear]="true" display="chip" [disabled]="filtroQ().length === 0"
+                                                appendTo="body" />
                                         </div>
-                                        <!-- Concepto -->
-                                        <div class="col-12 col-sm-6 col-lg-3">
-                                            <label class="form-label fw-semibold small text-color">
-                                                <i class="pi pi-map-marker me-1"></i>
-                                                Conceptos
+
+                                        <div>
+                                            <label for="filtro-concepto"
+                                                class="form-label fw-semibold small text-color">
+                                                <i class="pi pi-map-marker me-1"></i> Conceptos
                                             </label>
-                                            <p-multiSelect [options]="opcionesConcepto()" [ngModel]="filtroConcepto()"
+                                            <p-multiSelect inputId="filtro-concepto" class="w-100"
+                                                [options]="opcionesConcepto()" [ngModel]="filtroConcepto()"
                                                 (ngModelChange)="cambiarConcepto($event)" optionLabel="label"
-                                                optionValue="value" placeholder="Seleccionar concepto"
+                                                optionValue="value" placeholder="Seleccionar concepto" size="small"
                                                 [showClear]="true" display="chip"
-                                                [disabled]="filtroCategoria().length === 0">
-                                            </p-multiSelect>
+                                                [disabled]="filtroCategoria().length === 0" appendTo="body" />
                                         </div>
-                                        <!-- limpiar Filtros -->
+
                                         <button pButton type="button" label="Limpiar filtros" icon="pi pi-filter-slash"
-                                            class="p-button-outlined" (click)="limpiarFiltros()">
-                                        </button>
+                                            class="p-button-outlined" size="small" (click)="limpiarFiltros()"></button>
                                     </div>
                                 </div>
+
 
                                 }
                             </div>
@@ -500,6 +500,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- CUMPLIMIENTO POR CONCEPTO detalle-->
                     <div class="liquid-card p-card shadow-sm border-0 rounded-3 mt-3">
                         <div class="card-body p-3 p-md-4">
                             <div class="col-12">
@@ -553,160 +554,165 @@
                     </div>
 
                     <!-- EXPLORADOR DE LECCIONES APRENDIDAS -->
-                    <div class="card mt-4">
+                    <div class="liquid-card p-card shadow-sm border-0 rounded-3 mt-3">
+                        <div class="card-body p-3 p-md-4">
+                            <div class="col-12">
+                                <p-card header="Explorador de lecciones aprendidas">
 
-                        <div
-                            class="flex justify-content-between align-items-center flex-wrap gap-2 mb-3 mx-3 mx-md-5 my-3">
+                                    <small class="text-color-secondary">
+                                        Consulta las experiencias, acciones y conocimientos obtenidos
+                                        durante la ejecución de los proyectos.
+                                    </small>
 
-                            <div>
-                                <h4 class="mb-1">Explorador de lecciones aprendidas</h4>
+                                    <div
+                                        class="flex justify-content-between align-items-center flex-wrap gap-2 mb-3 mx-3 mx-md-5 my-3">
 
-                                <small class="text-color-secondary">
-                                    Consulta las experiencias, acciones y conocimientos obtenidos
-                                    durante la ejecución de los proyectos.
-                                </small>
-                            </div>
-
-                            <div class="text-color-secondary">
-                                Registros encontrados:
-                                <strong>{{ leccionesExplorador().length }}</strong>
-                            </div>
-
-                        </div>
-
-                        <!-- BÚSQUEDA Y FILTRO POR RESULTADO -->
-
-                        <div class="mx-3 mx-md-5 my-3">
-
-                            <div class="row align-items-end g-3">
-
-                                <!-- Buscar lecciones -->
-                                <div class="col-12 col-md-6">
-                                    <label class="block mb-2">Buscar lecciones</label>
-
-                                    <p-iconfield iconPosition="left" class="w-100">
-                                        <input pInputText type="text" pSize="small" class="form-control w-100"
-                                            placeholder="Buscar proyecto, situación, acción o lección..."
-                                            [ngModel]="busquedaLecciones()"
-                                            (ngModelChange)="busquedaLecciones.set($event)" />
-                                    </p-iconfield>
-                                </div>
-
-                                <!-- Resultado de evaluación -->
-                                <div class="col-12 col-md-4">
-                                    <label class="block mb-2">Resultado de evaluación</label>
-
-                                    <select class="form-select w-100" [ngModel]="filtroResultadoLeccion()"
-                                        (ngModelChange)="filtroResultadoLeccion.set($event)">
-
-                                        <option value="todos">Todos</option>
-                                        <option value="2">Sí</option>
-                                        <option value="1">Parcialmente</option>
-                                        <option value="0">No</option>
-                                        <option value="sin_evaluar">Sin evaluar</option>
-
-                                    </select>
-                                </div>
-
-                                <!-- Botón limpiar -->
-                                <div class="col-12 col-md-2">
-                                    <button pButton type="button" label="Limpiar" icon="pi pi-filter-slash"
-                                        class="p-button-outlined w-100" (click)="limpiarBusquedaLecciones()">
-                                    </button>
-                                </div>
-
-                            </div>
-                        </div>
+                                        <div>
 
 
 
+                                        </div>
 
-                        <!-- TABLA DE EXPERIENCIAS -->
-                        <p-table [value]="leccionesExplorador()" [paginator]="true" [rows]="10"
-                            [rowsPerPageOptions]="[10, 20, 50]" [showCurrentPageReport]="true"
-                            currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
-                            responsiveLayout="scroll" [globalFilterFields]="[
+                                        <div class="text-color-secondary">
+                                            Registros encontrados:
+                                            <strong>{{ leccionesExplorador().length }}</strong>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- BÚSQUEDA Y FILTRO POR RESULTADO -->
+
+                                    <div class="mx-3 mx-md-5 my-3">
+
+                                        <div class="row align-items-end g-3">
+
+                                            <!-- Buscar lecciones -->
+                                            <div class="col-12 col-md-6">
+                                                <label class="block mb-2">Buscar lecciones</label>
+
+
+                                                <input pInputText type="text" pSize="small" class="w-100"
+                                                    placeholder="Buscar proyecto, situación, acción o lección..."
+                                                    [ngModel]="busquedaLecciones()"
+                                                    (ngModelChange)="busquedaLecciones.set($event)" />
+
+                                            </div>
+
+                                            <!-- Resultado de evaluación -->
+                                            <div class="col-12 col-md-4">
+                                                <label class="block mb-2">Resultado de evaluación</label>
+                                                <p-select size="small" class="w-100"
+                                                    ariaLabel="Filtrar por resultado de la lección"
+                                                    [options]="opcionesResultadoLeccion" optionLabel="label"
+                                                    optionValue="value" [ngModel]="filtroResultadoLeccion()"
+                                                    (ngModelChange)="filtroResultadoLeccion.set($event)" />
+                                            </div>
+
+                                            <!-- Botón limpiar -->
+                                            <div class="col-12 col-md-2">
+                                                <button pButton type="button" label="Limpiar" size="small"
+                                                    icon="pi pi-filter-slash" class="p-button-outlined w-100"
+                                                    (click)="limpiarBusquedaLecciones()">
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <!-- TABLA DE EXPERIENCIAS -->
+                                    <p-table [value]="leccionesExplorador()" [paginator]="true" [rows]="10"
+                                        [rowsPerPageOptions]="[10, 20, 50]" [showCurrentPageReport]="true"
+                                        currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} registros"
+                                        responsiveLayout="scroll" [globalFilterFields]="[
                                 'Q',
                                 'Dep',
                                 'Categoría',
                                 'Concepto a valorar'
                                 ]" [tableStyle]="{'min-width': '65rem'}"
-                            styleClass="p-datatable-sm p-datatable-striped">
+                                        styleClass="p-datatable-sm p-datatable-striped">
 
-                            <ng-template pTemplate="header">
-                                <tr>
-                                    <th>Proyecto</th>
-                                    <th>Dependencia</th>
-                                    <th>Categoría</th>
-                                    <th>Concepto</th>
-                                    <th>Resultado</th>
-                                    <th class="text-center">Experiencia</th>
-                                </tr>
-                            </ng-template>
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th>Proyecto</th>
+                                                <th>Dependencia</th>
+                                                <th>Categoría</th>
+                                                <th>Concepto</th>
+                                                <th>Resultado</th>
+                                                <th class="text-center">Experiencia</th>
+                                            </tr>
+                                        </ng-template>
 
-                            <ng-template pTemplate="body" let-item>
-                                <tr>
+                                        <ng-template pTemplate="body" let-item>
+                                            <tr>
 
-                                    <td>
-                                        <strong>{{ item.Q }}</strong>
-                                    </td>
+                                                <td>
+                                                    <strong>{{ item.Q }}</strong>
+                                                </td>
 
-                                    <td>{{ item.Dep }}</td>
+                                                <td>{{ item.Dep }}</td>
 
-                                    <td>{{ item['Categoría'] }}</td>
+                                                <td>{{ item['Categoría'] }}</td>
 
-                                    <td>{{ item['Concepto a valorar'] }}</td>
+                                                <td>{{ item['Concepto a valorar'] }}</td>
 
-                                    <td>
-                                        @if (item.Valor_Logro === 2) {
-                                        <span class="text-green-600 font-semibold">
-                                            Sí
-                                        </span>
+                                                <td>
+                                                    @if (item.Valor_Logro === 2) {
+                                                    <span class="text-green-600 font-semibold">
+                                                        Sí
+                                                    </span>
 
-                                        }
-                                        @else if (item.Valor_Logro === 1) {
-                                        <span class="text-yellow-600 font-semibold">
-                                            Parcialmente
-                                        </span>
+                                                    }
+                                                    @else if (item.Valor_Logro === 1) {
+                                                    <span class="text-yellow-600 font-semibold">
+                                                        Parcialmente
+                                                    </span>
 
-                                        }
-                                        @else if (item.Valor_Logro === 0) {
+                                                    }
+                                                    @else if (item.Valor_Logro === 0) {
 
-                                        <span class="text-red-600 font-semibold">
-                                            No
-                                        </span>
+                                                    <span class="text-red-600 font-semibold">
+                                                        No
+                                                    </span>
 
-                                        }
-                                        @else if (item.Valor_Logro === null || item.Valor_Logro === undefined) {
-                                        <span class="text-color-secondary">
-                                            Sin evaluar
-                                        </span>
+                                                    }
+                                                    @else if (item.Valor_Logro === null || item.Valor_Logro ===
+                                                    undefined) {
+                                                    <span class="text-color-secondary">
+                                                        Sin evaluar
+                                                    </span>
 
-                                        }
+                                                    }
 
 
-                                    </td>
+                                                </td>
 
-                                    <td class="text-center">
+                                                <td class="text-center">
 
-                                        <button pButton type="button" icon="pi pi-eye" label="Ver detalle"
-                                            class="p-button-text p-button-sm" (click)="abrirDetalleLeccion(item)">
-                                        </button>
+                                                    <button pButton type="button" icon="pi pi-eye" label="Ver detalle"
+                                                        class="p-button-text p-button-sm"
+                                                        (click)="abrirDetalleLeccion(item)">
+                                                    </button>
 
-                                    </td>
+                                                </td>
 
-                                </tr>
-                            </ng-template>
+                                            </tr>
+                                        </ng-template>
 
-                            <ng-template pTemplate="emptymessage">
-                                <tr>
-                                    <td colspan="6" class="text-center p-4">
-                                        No se encontraron lecciones con los filtros seleccionados.
-                                    </td>
-                                </tr>
-                            </ng-template>
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td colspan="6" class="text-center p-4">
+                                                    No se encontraron lecciones con los filtros seleccionados.
+                                                </td>
+                                            </tr>
+                                        </ng-template>
 
-                        </p-table>
+                                    </p-table>
+                                </p-card>
+                            </div>
+                        </div>
 
 
 
