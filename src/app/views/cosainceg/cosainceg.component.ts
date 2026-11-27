@@ -59,12 +59,20 @@ import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 
+
 interface ColumnaConsulta {
   field: string;
   title: string;
   width: number;
   center?: boolean;
   filterType?: 'text' | 'numeric' | 'date';
+}
+interface FilaFondo {
+  fondo: string | number | null;
+  denominacion: string | null;
+  entidad_x: string | number | null;
+  EntidadNoGEG: string | number | null;
+  entidad_y: string | null;
 }
 @Component({
   selector: 'app-cosainceg',
@@ -104,6 +112,29 @@ export class CosaincegComponent implements OnInit {
     { field: 'creation_time', title: 'Creación', width: 160 },
     { field: 'modification_time', title: 'Modificación', width: 160 },
   ];
+  readonly columnasFondos = [
+  { field: 'fondo',        title: 'Fondo',               width: 180 },
+  { field: 'denominacion', title: 'Nombre del Fondo',    width: 180 },
+  { field: 'entidad_x',    title: 'Número de Entidades', width: 100 },
+  { field: 'EntidadNoGEG', title: 'Entidad No en GEG',   width: 100 },
+  { field: 'entidad_y',    title: 'Nombre Entidad',      width: 350 },
+] as const;
+
+async exportarFondosExcel(filas:  FilaFondo[]): Promise<void> {
+  const XLSX = await import('xlsx');
+
+  const encabezados = this.columnasFondos.map(col => col.title);
+  const datos = filas.map(fila =>
+    this.columnasFondos.map(col => fila[col.field] ?? '')
+  );
+
+  const hoja = XLSX.utils.aoa_to_sheet([encabezados, ...datos]);
+  hoja['!cols'] = this.columnasFondos.map(col => ({ wpx: col.width }));
+
+  const libro = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(libro, hoja, 'Fondos');
+  XLSX.writeFile(libro, 'FondosInexistentes.xlsx');
+}
 
   @Input() selectedItem: string | undefined;
   public corte = 'Sin trimestre seleccionado';
@@ -1016,6 +1047,7 @@ export class CosaincegComponent implements OnInit {
       key: 'DeudaDependencias',
       severity: 'info',
       summary: 'Información',
+      icon: 'pi pi-spinner pi-spin',
       detail: 'Generando reporte...',
       life: 1500
     });
@@ -1035,6 +1067,7 @@ export class CosaincegComponent implements OnInit {
         key: 'DeudaDependencias',
         severity: 'success',
         summary: 'Éxito',
+        icon: 'pi pi-check',
         detail: 'Generado correctamente',
         life: 1500
       });
@@ -1046,6 +1079,7 @@ export class CosaincegComponent implements OnInit {
         key: 'DeudaDependencias',
         severity: 'error',
         summary: 'Error',
+        icon: 'pi pi-times',
         detail: 'Existe un Error en la Generacion del Reporte!',
         life: 1500
       });
@@ -1058,7 +1092,6 @@ export class CosaincegComponent implements OnInit {
 
   //////////////////////////////////////////////////////////////
   ///// EXCEL DEUDA METAS///////////////////////////////////////////////////////////////////////////////////////////////////
-
   dataExcelDeudaMetas = [
     { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaMetas(4, 'DeudaMetas01') },
     { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarDeudaMetas(7, 'DeudaMetas02') },
@@ -1138,6 +1171,347 @@ export class CosaincegComponent implements OnInit {
     }
 
   }
+  //##################################################################################################################################
+  //############################################ MODULO DE INVERESIÓN PUBLICA ########################################################
+  //##################################################################################################################################
+
+  /////////////////// INVERSIÓN PUBLICA CASCARON//////////////////////////////////////////////////////////////////////////////////////////
+  dataCascaron = [
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionCascaron(4) },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionCascaron(7) },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionCascaron(10) },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionCascaron(2) },
+  ]
+  private async generarInversionCascaron(trimestre: number): Promise<void> {
+    const today = new Date();
+    let anio = today.getFullYear()
+    if (trimestre == 2) {
+      anio--;
+    }
+    const trimestreFormateado = trimestre.toString().padStart(2, '0');
+    const trimestre_seleccionado = `${anio}-${trimestreFormateado}-10`;
+    console.log('Fecha seleccionada:', trimestre_seleccionado);
+    this.EjecutandoInversion = true;
+    this.cascaron = true 
+    this.messageService.add({
+      key: 'InversionCascaron',
+      severity: 'info',
+      summary: 'Información',
+      icon: 'pi pi-spinner-dotted pi-spin',
+      detail: 'Generando reporte...',
+      sticky: true
+    });
+    try {
+      const resp = await firstValueFrom(this.cosaincegService.GetCascaron(trimestre_seleccionado))
+      console.log("resp", resp);
+      this.messageService.clear('InversionCascaron');
+      this.messageService.add({
+        key: 'InversionCascaron',
+        severity: 'success',
+        summary: 'Éxito',
+        icon: 'pi pi-check',
+        detail: 'Generado correctamente',
+        life: 1500
+      });
+    } catch (error) {
+      this.messageService.clear('InversionCascaron');
+      this.messageService.add({
+        key: 'InversionCascaron',
+        severity: 'error',
+        summary: 'Error',
+        icon: 'pi pi-times',
+        detail: 'Error al generar el reporte',
+        life: 1500
+      });
+    }
+    finally {
+      this.EjecutandoInversion = false;
+      this.cascaron = false
+    }
+  }
+
+  ///// ////////////// HOJA DE TRABAJO /////////////////////////////////////////
+  dataExcelInversionHojaTrabajo = [
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionHojaTrabajo(4, 'inversion_1t') },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionHojaTrabajo(7, 'inversion_2t') },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionHojaTrabajo(10, 'inversion_3t') },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionHojaTrabajo(2, 'inversion_4t') },
+  ]
+  private async generarInversionHojaTrabajo(trimestre: number, filename: string): Promise<void> {
+    const today = new Date();
+    let anio = today.getFullYear()
+    if (trimestre == 2) {
+      anio--;
+    }
+    const trimestreFormateado = trimestre.toString().padStart(2, '0');
+    const trimestre_seleccionado = `${anio}-${trimestreFormateado}-10`;
+    const filename_seleccionado = `${filename}_${anio}_(HT).xlsx`
+    console.log('Fecha seleccionada:', trimestre_seleccionado);
+    this.messageService.add({
+      key: 'InversionHojaTrabajo',
+      severity: 'info',
+      summary: 'Información',
+      icon: 'pi pi-spinner-dotted pi-spin',
+      detail: 'Generando reporte...',
+      sticky: true
+    });
+    this.EjecutandoInversion = true;
+    this.isInversionGeneralD = true
+
+    try {
+      const resp = await firstValueFrom(this.cosaincegService.GenerarDescargasInversionHojaTrabajo(trimestre_seleccionado, filename_seleccionado))
+      console.log("resp", resp);
+      const blob = resp.body!;
+      // Descargar Excel
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename_seleccionado;
+      document.body.appendChild(link);
+      link.click();
+      // Limpieza
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      // 2. JSON enviado en headers
+      const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+      const x = JSON.parse(xHeader!);
+      this.info = x
+      console.log("Objeto recibido:", x);
+      this.messageService.clear('InversionHojaTrabajo');
+      this.messageService.add({
+        key: 'InversionHojaTrabajo',
+        severity: 'success',
+        summary: 'Éxito',
+        icon: 'pi pi-check',
+        detail: 'Generado correctamente',
+      });
+    } catch (error) {
+      this.messageService.clear('InversionHojaTrabajo');
+      this.messageService.add({
+        key: 'InversionHojaTrabajo',
+        severity: 'error',
+        summary: 'Error',
+        icon: 'pi pi-times',
+        detail: 'Error al generar el reporte',
+      });
+    }
+    finally {
+      this.EjecutandoInversion = false;
+      this.isInversionGeneralD = false
+    }
+  }
+
+  //////////////////// INVERSION ENTREGABLES//////////////////////////
+  dataExcelInversionentregables = [
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionProductos(4, 'Inversion_entregable_01') },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionProductos(7, 'Inversion_entregable_02') },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionProductos(10, 'Inversion_entregable_03') },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionProductos(2, 'Inversion_entregable_04') },
+  ]
+  private async generarInversionProductos(trimestre: number, filename: string): Promise<void> {
+    const today = new Date();
+    let anio = today.getFullYear()
+    if (trimestre == 2) {
+      anio--;
+    }
+    const trimestreFormateado = trimestre.toString().padStart(2, '0');
+    const trimestre_seleccionado = `${anio}-${trimestreFormateado}-10`;
+    const filename_seleccionado = `${filename}_${anio}.xlsx`
+    console.log('Fecha seleccionada:', trimestre_seleccionado);
+    this.EjecutandoInversion = true;
+    this.generandoReporteD = true
+    this.messageService.add({
+      key: 'InversionProductos',
+      severity: 'info',
+      summary: 'Info',
+      icon: 'pi pi-spinner-dotted pi-spin',
+      detail: 'Generando reporte...',
+      sticky: true
+    });
+    try {
+      const resp = await firstValueFrom(this.cosaincegService.GenerarDescargasInversionEntregables(trimestre_seleccionado, filename_seleccionado))
+      console.log("resp", resp);
+      const blob = resp.body!;
+      // Descargar Excel
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename_seleccionado;
+      document.body.appendChild(link);
+      link.click();
+      // Limpieza
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      this.messageService.clear('InversionProductos');
+      this.messageService.add({
+        key: 'InversionProductos',
+        severity: 'success',
+        summary: 'Éxito',
+        icon: 'pi pi-check',
+        detail: 'Generado correctamente',
+        life: 1500
+      });
+      this.EjecutandoInversion = false;
+      this.generandoReporteD = false
+    } catch (error) {
+      this.messageService.clear('InversionProductos');
+      this.messageService.add({
+        key: 'InversionProductos',
+        severity: 'error',
+        summary: 'Error',
+        icon: 'pi pi-times',
+        detail: 'Error al generar el reporte',
+        life: 1500
+      });
+
+    }
+    finally {
+      this.EjecutandoInversion = false;
+      this.generandoReporteD = false
+    }
+  }
+
+  ///////////////////// COPIA DE ENTREGABLES ////////////////////////////
+  dataExcelInversionesCopias = [
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionCopias(4) },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionCopias(7) },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionCopias(10) },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionCopias(2) },
+  ]
+  private async generarInversionCopias(trimestre: number): Promise<void> {
+    const today = new Date();
+    let anio = today.getFullYear()
+    if (trimestre == 2) {
+      anio--;
+    }
+    const trimestreFormateado = trimestre.toString().padStart(2, '0');
+    const trimestre_seleccionado = `${anio}-${trimestreFormateado}-10`;
+    console.log('Fecha seleccionada:', trimestre_seleccionado);
+    this.EjecutandoInversion = true;
+    this.isCoping = true
+    this.messageService.add({
+      key: 'InversionCopias',
+      severity: 'info',
+      summary: 'Info',
+      icon: 'pi pi-spinner-dotted pi-spin',
+      detail: 'Generando reporte...',
+      sticky: true
+    });
+    try {
+      const resp = await firstValueFrom(this.cosaincegService.InversionCopy(trimestre_seleccionado))
+      console.log("resp", resp);
+     
+      this.messageService.clear('InversionCopias');
+      this.messageService.add({
+        key: 'InversionCopias',
+        severity: 'success',
+        summary: 'Éxito',
+        icon: 'pi pi-check',
+        detail: 'Generado correctamente',
+        life: 1500
+      });
+      this.EjecutandoInversion = false;
+      this.isCoping = false
+    } catch (error) {
+      this.messageService.clear('InversionCopias');
+      this.messageService.add({
+        key: 'InversionCopias',
+        severity: 'error',
+        summary: 'Error',
+        icon: 'pi pi-times',
+        detail: 'Error al generar el reporte',
+        life: 1500
+      });
+    }
+    finally {
+      this.EjecutandoInversion = false;
+      this.isCoping = false
+    }
+  }
+  dataExcelPPI = [
+    { label: 'Primer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionPPI(4,'PPI_1T') },
+    { label: 'Segundo Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionPPI(7,'PPI_2T') },
+    { label: 'Tercer Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionPPI(10,'PPI_3T') },
+    { label: 'Cuarto Trimestre', icon: "pi pi-file-excel", command: (): Promise<void> => this.generarInversionPPI(2,'PPI_1T') },
+  ]
+  private async generarInversionPPI(trimestre: number, filename:string): Promise<void> {
+    const today = new Date();
+    let anio = today.getFullYear()
+    if (trimestre == 2) {
+      anio--;
+    }
+    const trimestreFormateado = trimestre.toString().padStart(2, '0');
+    const trimestre_seleccionado = `${anio}-${trimestreFormateado}-10`;
+     const filename_seleccionado = `${filename}_${anio}.xlsx`
+    console.log('Fecha seleccionada:', trimestre_seleccionado);
+    this.EjecutandoPPI = true;
+    this.isPPI = true
+    this.messageService.add({
+      key: 'InversionPPI',
+      severity: 'info',
+      summary: 'Info',
+      icon: 'pi pi-spinner-dotted pi-spin',
+      detail: 'Generando reporte...',
+      sticky: true
+    });
+    try {
+      const resp = await firstValueFrom(this.cosaincegService.GenerarPPI(trimestre_seleccionado,filename_seleccionado))
+      console.log("resp", resp);
+      const blob = resp.body!;
+      // Descargar Excel
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = filename_seleccionado;
+      document.body.appendChild(link);
+      link.click();
+      // Limpieza
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      // 2. JSON enviado en headers
+      const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
+      const x = JSON.parse(xHeader!);
+      this.info2 = x
+      console.log("Objeto recibido:", x);
+      this.messageService.clear('InversionPPI');
+      this.messageService.add({
+        key: 'InversionPPI',
+        severity: 'success',
+        summary: 'Éxito',
+        icon: 'pi pi-check',
+        detail: 'Generado correctamente',
+        life: 1500
+      });
+      this.EjecutandoPPI = false;
+      this.isPPI = false
+    }
+    catch(error){
+      console.log(error)
+        this.messageService.clear('InversionPPI');
+      this.messageService.add({
+        key: 'InversionPPI',
+        severity: 'error',
+        summary: 'Error',
+        icon: 'pi pi-times',
+        detail: 'Error al generar el reporte',
+        life: 1500
+      });
+
+
+    }
+    finally{
+      this.EjecutandoPPI = false;
+      this.isPPI = false
+
+    }
+  }
+    
+
+  
+ 
+  ///// Hoja de trabajo///////////////////////////////////////////////////////////////////////////////////////////////////
+ 
 
   hasProps(obj: any): boolean {
     return obj && Object.keys(obj).length > 0;
@@ -1145,947 +1519,21 @@ export class CosaincegComponent implements OnInit {
   hasProps2(obj: any): boolean {
     return obj && Object.keys(obj).length > 0;
   }
-  //////////////////////////////////////////////////////////////
-  ///// Hoja de trabajo///////////////////////////////////////////////////////////////////////////////////////////////////
-  public dataExcelInversionHojaTrabajo = [
-    {
-      text: 'Primer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const primerTrimestre = `${anio}-04-10`;
-        const filename = `inversion_1t_${anio}_(HT).xlsx`
-        console.log("Primer Trimestre: ", primerTrimestre)
-        this.EjecutandoInversion = true;
-        this.isInversionGeneralD = true
-        this.cosaincegService.GenerarDescargasInversionHojaTrabajo(primerTrimestre, filename).subscribe(
-          (resp => {
-            // 1. Archivo (BLOB)
-            const blob = resp.body!;
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-            URL.revokeObjectURL(url);
-
-            // 2. JSON enviado en headers
-            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
-            const x = JSON.parse(xHeader!);
-            this.info = x
-            console.log("Objeto recibido:", x);
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.isInversionGeneralD = false
-
-          }),
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Segundo Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const segundoTrimestre = `${anio}-07-10`;
-        const filename = `inversion_2t_${anio}_(HT).xlsx`
-        console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.EjecutandoInversion = true;
-        this.isInversionGeneralD = true
-        this.cosaincegService.GenerarDescargasInversionHojaTrabajo(segundoTrimestre, filename).subscribe(
-          (resp => {
-            // 1. Archivo (BLOB)
-            const blob = resp.body!;
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-            URL.revokeObjectURL(url);
-
-            // 2. JSON enviado en headers
-            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
-            const x = JSON.parse(xHeader!);
-            this.info = x
-            console.log("Objeto recibido:", x);
-
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.isInversionGeneralD = false
-
-          }),
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-    {
-      text: 'Tercer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const tercerTrimestre = `${anio}-10-10`;
-        console.log("Tercer Trimestre: ", tercerTrimestre)
-        const filename = `inversion_3t_${anio}_(HT).xlsx`
-        this.EjecutandoInversion = true;
-        this.isInversionGeneralD = true
-        this.cosaincegService.GenerarDescargasInversionHojaTrabajo(tercerTrimestre, filename).subscribe(
-          (resp => {
-            // 1. Archivo (BLOB)
-            const blob = resp.body!;
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-            URL.revokeObjectURL(url);
-
-            // 2. JSON enviado en headers
-            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
-            const x = JSON.parse(xHeader!);
-            this.info = x
-            console.log("Objeto recibido:", x);
-
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.isInversionGeneralD = false
-          }),
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Cuarto Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        const Year = new Date(today);
-        Year.setFullYear(today.getFullYear());
-        lastYearDate.setFullYear(today.getFullYear() - 1);
-        const anio = Year.getFullYear().toString();
-        const anio_menosuno = lastYearDate.getFullYear().toString();
-        const cuarttoTrimestre = `${anio}-02-10`;
-        const filename = `inversion_4t_${anio}_(HT).xlsx`
-        console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.EjecutandoInversion = true;
-        this.isInversionGeneralD = true
-        this.cosaincegService.GenerarDescargasInversionHojaTrabajo(cuarttoTrimestre, filename).subscribe(
-          (resp => {
-            // 1. Archivo (BLOB)
-            const blob = resp.body!;
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-            URL.revokeObjectURL(url);
-
-            // 2. JSON enviado en headers
-            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
-            const x = JSON.parse(xHeader!);
-            console.log("Objeto recibido:", x);
-            this.info = x
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.isInversionGeneralD = true
-          }),
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-  ];
-
-  ////////////////////// Inversion Productos //////////////////////////
-  public dataExcelInversionentregables = [
-    {
-      text: 'Primer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const primerTrimestre = `${anio}-04-10`;
-        const filename = `Inversion_entregable_01_${anio}`
-        console.log("Primer Trimestre: ", primerTrimestre)
-        this.EjecutandoInversion = true;
-        this.generandoReporteD = true
-        this.cosaincegService.GenerarDescargasInversionEntregables(primerTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            const downloadFilename = filename.endsWith('.zip') ? filename : `${filename}.zip`;
-            link.href = url;
-            link.download = downloadFilename;
-            document.body.appendChild(link);
-            link.click();
-
-            // Limpieza
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.generandoReporteD = false
-
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Segundo Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const segundoTrimestre = `${anio}-07-10`;
-        const filename = `Inversion_entregable_02_${anio}`
-        console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.EjecutandoInversion = true;
-        this.generandoReporteD = true
-        this.cosaincegService.GenerarDescargasInversionEntregables(segundoTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            // Limpieza
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-
-            this.EjecutandoInversion = false;
-            this.generandoReporteD = false
-
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-    {
-      text: 'Tercer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const tercerTrimestre = `${anio}-10-10`;
-        console.log("Tercer Trimestre: ", tercerTrimestre)
-        const filename = `Inversion_entregable_03_${anio}`
-        this.EjecutandoInversion = true;
-        this.generandoReporteD = true
-        this.cosaincegService.GenerarDescargasInversionEntregables(tercerTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            // Limpieza
-            // document.body.removeChild(link);
-            // window.URL.revokeObjectURL(url);
-
-            this.EjecutandoInversion = false;
-            this.generandoReporteD = false
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Cuarto Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        const Year = new Date(today);
-        Year.setFullYear(today.getFullYear());
-        lastYearDate.setFullYear(today.getFullYear() - 1);
-        const anio = Year.getFullYear().toString();
-        const anio_menosuno = lastYearDate.getFullYear().toString();
-        const cuarttoTrimestre = `${anio}-02-10`;
-        const filename = `Inversion_entregable_04_${anio}`
-        console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.EjecutandoInversion = true;
-        this.generandoReporteD = true
-        this.cosaincegService.GenerarDescargasInversionEntregables(cuarttoTrimestre, filename).subscribe(
-          (blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = filename;
-            link.click();
-            // Limpieza
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(url);
-
-            this.EjecutandoInversion = false;
-            this.generandoReporteD = false
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-  ];
-  ///Copias
-  public dataExcelInversionesCopias = [
-    {
-      text: 'Primer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const primerTrimestre = `${anio}-04-10`;
-        console.log("Primer Trimestre: ", primerTrimestre)
-        this.EjecutandoInversion = true;
-        this.isCoping = true
-        this.cosaincegService.InversionCopy(primerTrimestre).subscribe(
-          (resp) => {
-            console.log(resp)
-
-            this.notificationService.show({
-              content: "Excel Copiado Correctamente, espere......!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.isCoping = false
-
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Segundo Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const segundoTrimestre = `${anio}-07-10`;
-        console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.EjecutandoInversion = true;
-        this.isCoping = true
-        this.cosaincegService.InversionCopy(segundoTrimestre).subscribe(
-          (resp) => {
-            console.log(resp)
-            this.notificationService.show({
-              content: "Excel Copiado Correctamente, espere......!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.isCoping = false
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-    {
-      text: 'Tercer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const tercerTrimestre = `${anio}-10-10`;
-        console.log("Tercer Trimestre: ", tercerTrimestre)
-        this.EjecutandoInversion = true;
-        this.isCoping = true
-        this.cosaincegService.InversionCopy(tercerTrimestre).subscribe(
-          (resp) => {
-            console.log(resp)
-            this.notificationService.show({
-              content: "Excel Copiado Correctamente, espere......!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.isCoping = false
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Cuarto Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        const Year = new Date(today);
-        Year.setFullYear(today.getFullYear());
-        lastYearDate.setFullYear(today.getFullYear() - 1);
-        const anio = Year.getFullYear().toString();
-        const anio_menosuno = lastYearDate.getFullYear().toString();
-        const cuarttoTrimestre = `${anio}-02-10`;
-        console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.EjecutandoInversion = true;
-        this.isCoping = true
-        this.cosaincegService.InversionCopy(cuarttoTrimestre).subscribe(
-          (resp) => {
-            console.log(resp)
-            this.notificationService.show({
-              content: "Se Genero la estructura para el trimestre.....!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.isCoping = false
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-  ];
-  ///Crear Cascaron
-  public dataCascaron = [
-    {
-      text: 'Primer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const primerTrimestre = `${anio}-04-10`;
-        console.log("Primer Trimestre: ", primerTrimestre)
-        this.EjecutandoInversion = true;
-        this.cascaron = true
-        this.cosaincegService.GetCascaron(primerTrimestre).subscribe(
-          (resp) => {
-            console.log(resp)
-
-            this.notificationService.show({
-              content: "Se Genero la estructura para el trimestre.....!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.cascaron = false
-
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un error en la generacion!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Segundo Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const segundoTrimestre = `${anio}-07-10`;
-        console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.EjecutandoInversion = true;
-        this.cascaron = true
-        this.cosaincegService.GetCascaron(segundoTrimestre).subscribe(
-          (resp) => {
-            console.log(resp)
-            this.notificationService.show({
-              content: "Se Genero la estructura para el trimestre.....!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.cascaron = false
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un error en la generacion!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-    {
-      text: 'Tercer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const tercerTrimestre = `${anio}-10-10`;
-        console.log("Tercer Trimestre: ", tercerTrimestre)
-        this.EjecutandoInversion = true;
-        this.cascaron = true
-        this.cosaincegService.GetCascaron(tercerTrimestre).subscribe(
-          (resp) => {
-            console.log(resp)
-            this.notificationService.show({
-              content: "Se Genero la estructura para el trimestre.....!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.cascaron = false
-          },
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un error en la generacion!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Cuarto Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        const Year = new Date(today);
-        Year.setFullYear(today.getFullYear());
-        lastYearDate.setFullYear(today.getFullYear() - 1);
-        const anio = Year.getFullYear().toString();
-        const anio_menosuno = lastYearDate.getFullYear().toString();
-        const cuarttoTrimestre = `${anio}-02-10`;
-        console.log("cuartoTrimestre: ", cuarttoTrimestre)
-        this.EjecutandoInversion = true;
-        this.cascaron = true
-        this.cosaincegService.GetCascaron(cuarttoTrimestre).subscribe(
-          (resp) => {
-            console.log(resp)
-            this.notificationService.show({
-              content: "Excel Copiado Correctamente, espere......!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoInversion = false;
-            this.cascaron = false
-          },
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un error en la generacion!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-  ];
-
-  ///// Hoja de trabajo///////////////////////////////////////////////////////////////////////////////////////////////////
-  public dataExcelPPI = [
-    {
-      text: 'Primer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const primerTrimestre = `${anio}-04-10`;
-        const filename = `PPI_1T_${anio}.xlsx`
-        console.log("Primer Trimestre: ", primerTrimestre)
-        this.EjecutandoPPI = true;
-        this.isPPI = true
-        this.cosaincegService.GenerarPPI(primerTrimestre, filename).subscribe(
-          (resp => {
-            // 1. Archivo (BLOB)
-            const blob = resp.body!;
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-            URL.revokeObjectURL(url);
-
-            // 2. JSON enviado en headers
-            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
-            const x = JSON.parse(xHeader!);
-            this.info2 = x
-            console.log("Objeto recibido:", x);
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoPPI = false;
-            this.isPPI = false
-
-          }),
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Segundo Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const segundoTrimestre = `${anio}-07-10`;
-        const filename = `PPI_2T_${anio}.xlsx`
-        console.log("Segundo Trimestre: ", segundoTrimestre)
-        this.EjecutandoPPI = true;
-        this.isPPI = true
-        this.cosaincegService.GenerarPPI(segundoTrimestre, filename).subscribe(
-          (resp => {
-            // 1. Archivo (BLOB)
-            const blob = resp.body!;
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-            URL.revokeObjectURL(url);
-
-            // 2. JSON enviado en headers
-            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
-            const x = JSON.parse(xHeader!);
-            this.info2 = x
-            console.log("Objeto recibido:", x);
-
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoPPI = false;
-            this.isPPI = false
-
-          }),
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-    {
-      text: 'Tercer Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        lastYearDate.setFullYear(today.getFullYear());
-        const anio = lastYearDate.getFullYear().toString();
-        const tercerTrimestre = `${anio}-10-10`;
-        console.log("Tercer Trimestre: ", tercerTrimestre)
-        const filename = `PPI_3T_${anio}.xlsx`
-        this.EjecutandoPPI = true;
-        this.isPPI = true
-        this.cosaincegService.GenerarPPI(tercerTrimestre, filename).subscribe(
-          (resp => {
-            // 1. Archivo (BLOB)
-            const blob = resp.body!;
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-            URL.revokeObjectURL(url);
-
-            // 2. JSON enviado en headers
-            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
-            const x = JSON.parse(xHeader!);
-            this.info2 = x
-            console.log("Objeto recibido:", x);
-
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoPPI = false;
-            this.isPPI = false
-          }),
-          (error) => {
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            console.error('Error fetching files', error);
-          }
-        );
-      },
-    },
-    {
-      text: 'Cuarto Trimestre',
-      svgIcon: fileExcelIcon,
-      click: (): void => {
-        const today = new Date();
-        const lastYearDate = new Date(today);
-        const Year = new Date(today);
-        Year.setFullYear(today.getFullYear());
-        lastYearDate.setFullYear(today.getFullYear() - 1);
-        const anio = Year.getFullYear().toString();
-        const anio_menosuno = lastYearDate.getFullYear().toString();
-        const cuartoTrimestre = `${anio}-02-10`;
-        const filename = `PPI_4T_${anio}.xlsx`
-        console.log("cuartoTrimestre: ", cuartoTrimestre)
-        this.EjecutandoPPI = true;
-        this.isPPI = true
-        this.cosaincegService.GenerarPPI(cuartoTrimestre, filename).subscribe(
-          (resp => {
-            // 1. Archivo (BLOB)
-            const blob = resp.body!;
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.click();
-            URL.revokeObjectURL(url);
-
-            // 2. JSON enviado en headers
-            const xHeader = resp.headers.get('X-Data');  // 👈 el nombre del header
-            const x = JSON.parse(xHeader!);
-            console.log("Objeto recibido:", x);
-            this.info = x
-            this.notificationService.show({
-              content: "Excel Generado Correctamente, espero que se descargue!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "success", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-            this.EjecutandoPPI = false;
-            this.isPPI = false
-          }),
-          (error) => {
-            console.error('Error fetching files', error);
-            this.notificationService.show({
-              content: "Existe un Error en la Generacion del Reporte!",
-              hideAfter: 1500,
-              animation: { type: "slide", duration: 900 },
-              type: { style: "error", icon: true },
-              position: { horizontal: "left", vertical: "top" },
-            });
-          }
-        );
-      },
-    },
-
-  ];
   //////// Avanbce Financiero
   /////excel///////////////////////////////////////////////////////////////////////////////////////////////////
-
+  public dataAvanceFinanciero = [
+    { label: '02 Febrero', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(2, 'Feb') },
+    { label: '03 Marzo', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(3, 'Mar') },
+    { label: '04 Abril', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(4, 'Abr') },
+    { label: '05 Mayo', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(5, 'May') },
+    { label: '06 Junio', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(6, 'Jun') },
+    { label: '07 Julio', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(7, 'Jul') },
+    { label: '08 Agosto', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(8, 'Ago') },
+    { label: '09 Septiembre', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(9, 'Sep') },
+    { label: '10 Octubre', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(10, 'Oct') },
+    { label: '11 Noviembre', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(11, 'Nov') },
+    { label: '12 Diciembre', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(12, 'Dic') },
+  ];
   // Un solo método para todos los meses (misma lógica que Febrero)
   private async generarAvanceFinanciero(mes: number, abrev: string): Promise<void> {
     const today = new Date();
@@ -2194,19 +1642,7 @@ export class CosaincegComponent implements OnInit {
     }
   }
 
-  public dataAvanceFinanciero = [
-    { label: '02 Febrero', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(2, 'Feb') },
-    { label: '03 Marzo', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(3, 'Mar') },
-    { label: '04 Abril', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(4, 'Abr') },
-    { label: '05 Mayo', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(5, 'May') },
-    { label: '06 Junio', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(6, 'Jun') },
-    { label: '07 Julio', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(7, 'Jul') },
-    { label: '08 Agosto', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(8, 'Ago') },
-    { label: '09 Septiembre', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(9, 'Sep') },
-    { label: '10 Octubre', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(10, 'Oct') },
-    { label: '11 Noviembre', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(11, 'Nov') },
-    { label: '12 Diciembre', icon: "pi pi-file-word", command: (): Promise<void> => this.generarAvanceFinanciero(12, 'Dic') },
-  ];
+
   onUploadSuccess(event: any) {
     this.cargarBackups();
     // event.originalEvent, event.files están disponibles

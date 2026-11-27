@@ -120,16 +120,18 @@
             <p-confirmdialog [style]="{ width: '450px' }" />
 
             <p-dialog header="Catálogo de Rubros" [(visible)]="mostrarCatalogoDialog" [modal]="false" [draggable]="true"
-                [resizable]="true" [maximizable]="true"  appendTo="body"
-                            [autoZIndex]="true" [baseZIndex]="20000" [style]="{ width: '70vw', height: '60vh' }"
-                [contentStyle]="{ height: 'calc(100% - 3rem)', overflow: 'auto' }" styleClass="catalogo-window-dialog" styleClass="dialog-top-proyectos">
+                [resizable]="true" [maximizable]="true" appendTo="body" [autoZIndex]="true" [baseZIndex]="20000"
+                [style]="{ width: '70vw', height: '60vh' }"
+                [contentStyle]="{ height: 'calc(100% - 3rem)', overflow: 'auto' }" styleClass="catalogo-window-dialog"
+                styleClass="dialog-top-proyectos">
                 <div class="fecha-actualizacion mt-2">
                     <i class="pi pi-calendar"></i>
                     Última actualización:
                     <strong>{{ fecha_actualizacion }}</strong>
                 </div>
                 <p-table #dt [value]="catalogoData" [loading]="cargandoCatalogo" [paginator]="true" [rows]="15"
-                    styleClass="p-datatable-sm" size="small" responsiveLayout="scroll"  stripedRows [tableStyle]="{ 'min-width': '50rem' }">
+                    styleClass="p-datatable-sm" size="small" responsiveLayout="scroll" stripedRows
+                    [tableStyle]="{ 'min-width': '50rem' }">
                     <ng-template #header>
                         <tr>
                             <th>Clave</th>
@@ -181,7 +183,8 @@
                     <span class="p-panel-subtitle">Ver Respaldos</span>
                 </ng-template>
                 <p-table [value]="backups" [loading]="isLoading" [paginator]="true" [rows]="10"
-                    styleClass="p-datatable-sm" size="small" responsiveLayout="scroll" showGridlines [tableStyle]="{ 'min-width': '50rem' }" stripedRows [tableStyle]="{ 'min-width': '50rem' }">
+                    styleClass="p-datatable-sm" size="small" responsiveLayout="scroll" showGridlines
+                    [tableStyle]="{ 'min-width': '50rem' }" stripedRows [tableStyle]="{ 'min-width': '50rem' }">
                     <ng-template #header>
                         <tr>
                             <th>Archivo</th>
@@ -286,7 +289,8 @@
                                 <p-table [value]="FilesCosainceg" [paginator]="true" [rows]="5" [sortMode]="'single'"
                                     [globalFilterFields]="['name', 'size', 'creation_time', 'modification_time']"
                                     [resizableColumns]="true" [scrollable]="true" styleClass="p-datatable-sm" #dt
-                                    stripedRows [tableStyle]="{ 'min-width': '50rem' }" showGridlines [tableStyle]="{ 'min-width': '50rem' }"  >
+                                    stripedRows [tableStyle]="{ 'min-width': '50rem' }" showGridlines
+                                    [tableStyle]="{ 'min-width': '50rem' }">
                                     <ng-template pTemplate="caption">
                                         <div class="flex justify-content-end">
                                             <p-iconField iconPosition="left">
@@ -557,7 +561,8 @@
         <!-- Plantilla compartida por Top, Metas y Archivos -->
         <ng-template #tablaConsulta let-filas let-columnas="columnas" let-archivos="archivos">
             <p-table [value]="filas ?? []" [columns]="columnas" [paginator]="true" [rows]="5" [resizableColumns]="true"
-                columnResizeMode="expand" size="small" showGridlines [tableStyle]="{ 'min-width': '50rem' }" stripedRows [tableStyle]="{ 'min-width': '50rem' }">
+                columnResizeMode="expand" size="small" showGridlines [tableStyle]="{ 'min-width': '50rem' }" stripedRows
+                [tableStyle]="{ 'min-width': '50rem' }">
                 <ng-template #header let-cols>
                     <tr>
                         @for (col of cols; track col.field) {
@@ -626,30 +631,30 @@
             minHeight: '0',
             padding: '0',
             overflow: 'hidden'
-            }"styleClass="dialog-top-proyectos">
+            }" styleClass="dialog-top-proyectos">
 
             <section class="consulta-metas" aria-labelledby="titulo-consulta-metas">
                 <header class="consulta-metas__encabezado">
                     <h2 id="titulo-consulta-metas">Consulta de Proyectos por Trimestre</h2>
                     <p>Elige el trimestre que deseas consultar.</p>
-                     
+
                 </header>
 
                 <div class="consulta-metas__controles">
                     <div class="consulta-metas__selector">
-                        <p-splitbutton label="Trimestre" [model]="dataExcelDeudaMetas"  size="small" [disabled]="isMetas"
+                        <p-splitbutton label="Trimestre" [model]="dataExcelDeudaMetas" size="small" [disabled]="isMetas"
                             (onClick)="DescargarExcel()" appendTo="body" />
-                  
+
 
                         @if (isMetasD) {
                         <p-progress-spinner ariaLabel="Cargando metas"
                             [style]="{ width: '1.5rem', height: '1.5rem' }" />
                         }
-                                   <div class="fecha-actualizacion">
-                    <i class="pi pi-calendar"></i>
-                    Trimestre actual:
-                    <strong>{{ corte }}</strong>
-                </div>
+                        <div class="fecha-actualizacion">
+                            <i class="pi pi-calendar"></i>
+                            Trimestre actual:
+                            <strong>{{ corte }}</strong>
+                        </div>
                     </div>
 
                     <div class="consulta-metas__detalle">
@@ -702,11 +707,153 @@
 
 }
 @if (selectedItem === 'Inversion' && canViewInversion) {
-<div class="container-fluid mt-4">
-    <div class="row">
-        <h1 class="title2">Reporte<span> INVERSIÓN</span>📋</h1>
+<p-card styleClass="cuenta-card">
+    <!-- ========================================= -->
+    <!-- HEADER                                    -->
+    <!-- ========================================= -->
+    <div class="cuenta-header">
+
+        <div class="header-content">
+
+            <div class="header-icon">
+                <i class="pi pi-file-edit"></i>
+            </div>
+            <div>
+                <h2 class="title2">Reporte<span> INVERSIÓN</span></h2>
+
+                <p>
+                    Reporte trimestral de INVERSIÓN, el cual contiene información de la inversión publica
+                </p>
+            </div>
+
+        </div>
+        <p-tag value="INVERSIÓN" icon="pi pi-file" severity="info">
+        </p-tag>
+    </div>
+    <!-- ========================================= -->
+    <!-- BOTONES                      -------------- -->
+    <!-- ========================================= -->
+    <div class="botones-grid mb-3">
+
+        <div class="boton-item">
+            <p class="titulo">1. Generar Carpetas</p>
+            <div class="boton-con-spinner">
+                <p-splitbutton class="btn-rubros" label="Selecciona el Trimestre" icon="pi pi-file-excel"
+                    severity="secondary" title="configracion inicial" [model]="dataCascaron"
+                    (onClick)="DescargarExcel()" [disabled]="EjecutandoInversion" size="small" />
+
+                @if (cascaron) {
+                <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                }
+
+            </div>
+        </div>
+        <div class="boton-item">
+            <p class="titulo">2. Hoja de Trabajo</p>
+
+            <div class="boton-con-spinner">
+                <p-splitbutton class="btn-rubros" label="Selecciona el Trimestre" icon="pi pi-eye" severity="contrast"
+                    title="Hoja de trabajo de los datos de inversión, si hay registros sin municipio se veran en una tabla"
+                    [model]="dataExcelInversionHojaTrabajo" (onClick)="DescargarExcel()" size="small"
+                    [disabled]="EjecutandoInversion" />
+
+                @if (isInversionGeneralD) {
+                <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                }
+            </div>
+
+        </div>
+        <div class="boton-item">
+            <p class="titulo">3. Reporte Inversi&oacute;n</p>
+            <div class="boton-con-spinner">
+                <p-splitbutton class="btn-rubros" label="Selecciona el Trimestre" icon="pi pi-file" severity="contrast"
+                    [model]="dataExcelInversionentregables" (onClick)="DescargarExcel()"
+                    [disabled]="EjecutandoInversion" size="small" title="Generar Reporte Inversion (Entregables)" />
+                @if (generandoReporteD) {
+                <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                }
+            </div>
+
+        </div>
+        <div class="boton-item">
+            <p class="titulo">4. Enviar Reporte</p>
+            <div class="boton-con-spinner">
+                <p-splitbutton class="btn-rubros" label="Selecciona el Trimestre" icon="pi pi-copy" severity="info"
+                    (onClick)="DescargarExcel()" size="small" [model]="dataExcelInversionesCopias"
+                    [disabled]="EjecutandoInversion" />
+
+                @if (isCoping) {
+                <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
+                }
+            </div>
+        </div>
 
     </div>
+    @if (hasProps(info)){
+    <!-- ========================================= -->
+    <!-- DATOS          -------------- -->
+    <!-- ========================================= -->
+    <div class="section-header">
+        <div class="section-icon">
+            <i class="pi pi-info-circle"></i>
+        </div>
+        <div>
+            <h3>Registros sin Municipio</h3>
+            <p>
+                Se muestran los registros que no tienen municipio asignado, por lo que se genero un espacio al final del
+                reporte de inversión, para que se pueda asignar el municipio.
+            </p>
+        </div>
+    </div>
+    @let columnas = [
+    { field: 'descripcion_eje', title: 'Eje', width: 180 },
+    { field: 'id_programa_presupuestario', title: 'Programa presupuestario', width: 180 },
+    { field: 'siglas_dependencia', title: 'Dependencia', width: 100 },
+    { field: 'id_centro_gestor', title: 'Unidad Responsable', width: 200 },
+    { field: 'id_proceso_proyecto', title: 'Clave Q', width: 100 },
+    { field: 'descripcion_proceso_proyecto', title: 'Nombre', width: 350 },
+    { field: 'Monto', title: 'Monto', width: 100 }
+    ];
+
+    <p-table [value]="info" [paginator]="true" [rows]="5" size="small" [resizableColumns]="true"
+        columnResizeMode="expand" [tableStyle]="{ 'min-width': '1210px' }">
+        <ng-template #header>
+            <tr>
+                @for (col of columnas; track col.field) {
+                <th pResizableColumn [pSortableColumn]="col.field" [style.width.px]="col.width">
+                    {{ col.title }}
+                    <p-sortIcon [field]="col.field" />
+                    <p-columnFilter [field]="col.field" [type]="col.field === 'Monto' ? 'numeric' : 'text'"
+                        display="menu" />
+                </th>
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template #body let-fila>
+            <tr>
+                @for (col of columnas; track col.field) {
+                <td [class.text-center]="col.field === 'Monto'">
+                    {{ fila[col.field] }}
+                </td>
+                }
+            </tr>
+        </ng-template>
+
+        <ng-template #emptymessage>
+            <tr>
+                <td [attr.colspan]="columnas.length" class="text-center">
+                    No se encontraron registros.
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+    }
+
+
+</p-card>
+<!-- <div class="container-fluid mt-4">
+
     <div class="page">
         <div class="content">
             <div class="col-12 mt-3">
@@ -774,89 +921,108 @@
 
 
                 </div>
-                @if (hasProps(info)){
-                <kendo-grid [data]="info" [kendoGridBinding]="info" [filterable]="true" [pageable]="true" [pageSize]="5"
-                    [sortable]="true" [columnMenu]="menuSettings" size="small" [resizable]="true">
-                    <kendo-grid-column field="descripcion_eje" title="Eje" [width]="180"></kendo-grid-column>
-                    <kendo-grid-column field="id_programa_presupuestario" title="Programa presupuestario"
-                        [width]="180"></kendo-grid-column>
-                    <kendo-grid-column field="siglas_dependencia" title="Dependencia" [width]="100"></kendo-grid-column>
-                    <kendo-grid-column field="id_centro_gestor" title="Unidad Responsable" [width]="200">
-                    </kendo-grid-column>
-                    <kendo-grid-column field="id_proceso_proyecto" title="Clave Q" [width]="100"></kendo-grid-column>
-                    <kendo-grid-column field="descripcion_proceso_proyecto" title="Nombre"
-                        [width]="350"></kendo-grid-column>
-                    <kendo-grid-column field="Monto" title="Monto" [class]="{ 'text-center': true }"
-                        [width]="100"></kendo-grid-column>
 
-                </kendo-grid>
-                }
             </div>
         </div>
     </div>
-</div>
+</div> -->
 }
 @if (selectedItem === 'PPI' && canViewPPI) {
-<div class="container-fluid mt-4">
-    <div class="row">
-        <h1 class="title2">Reporte<span> Programas y Proyectos Inversión</span>📝</h1>
+<p-card styleClass="cuenta-card">
+    <!-- ========================================= -->
+    <!-- HEADER                                    -->
+    <!-- ========================================= -->
+    <div class="cuenta-header">
 
+        <div class="header-content">
+
+            <div class="header-icon">
+                <i class="pi pi-file-edit"></i>
+            </div>
+            <div>
+                <h2 class="title2">Reporte<span> Programas y Proyectos de Inversión</span></h2>
+
+                <p>
+                    Reporte trimestral de programas y proyectos de inversión, el cual contiene información sobre el
+                    estado y avance de estos proyectos.
+
+                </p>
+            </div>
+
+        </div>
+        <p-tag value="PROGRAMAS Y PROYECTOS" icon="pi pi-file" severity="info">
+        </p-tag>
     </div>
-    <div class="page">
-        <div class="content">
-            <div class="col-12 mt-3">
-                <div class="row">
-                    <div class="col-md-3 mb-3">
-                        <kendo-splitbutton (buttonClick)="DescargarExcel()" size="medium" [data]="dataExcelPPI"
-                            [svgIcon]="fileReportIcon" class="button1" rounded="medium" themeColor="primary"
-                            [disabled]="EjecutandoPPI">
-                            Generar Reporte PPI
-                        </kendo-splitbutton>
-                        <span class="ps-2">
-                            @if (isPPI) {
-                            <kendo-loader type="infinite-spinner" themeColor="info" size="medium">
-                            </kendo-loader>
-                            }
-                        </span>
+    <div class="botones-grid mb-3">
 
-                    </div>
-                </div>
-                @if (hasProps2(info2)){
-                <div class="card shadow-sm">
-                    <div class="card-header excel-title">
-                        <h5 class="mb-0">
-                            <i class="bi bi-file-earmark-excel-fill me-2"></i>
-                            Fondos no encontrados en SGEG
-                        </h5>
-                    </div>
-                    <div class="card-body p-0">
-                        <kendo-grid [data]="info2" [kendoGridBinding]="info2" [filterable]="true" [pageable]="true"
-                            [pageSize]="25" [sortable]="true" [columnMenu]="menuSettings" size="small"
-                            [resizable]="true">
-                            <ng-template kendoGridToolbarTemplate>
-                                <button type="button" themeColor="success" kendoGridExcelCommand
-                                    [svgIcon]="fileExcelIcon">
-                                    Export to Excel
-                                </button>
-                            </ng-template>
-                            <kendo-grid-column field="fondo" title="Fondo" [width]="180"></kendo-grid-column>
-                            <kendo-grid-column field="denominacion" title="Nombre del Fondo"
-                                [width]="180"></kendo-grid-column>
-                            <kendo-grid-column field="entidad_x" title="Numero de Entidades"
-                                [width]="100"></kendo-grid-column>
-                            <kendo-grid-column field="EntidadNoGEG" title="Entidad No en GEG"
-                                [width]="100"></kendo-grid-column>
-                            <kendo-grid-column field="entidad_y" title="Nombre Entidad"
-                                [width]="350"></kendo-grid-column>
-                            <kendo-grid-excel fileName="FondosInexistentes.xlsx"></kendo-grid-excel>
-                        </kendo-grid>
-                    </div>
-                </div>
+        <div class="boton-item">
+            <p class="titulo">1. Generar Carpetas</p>
+            <div class="boton-con-spinner">
+                <p-splitbutton class="btn-rubros" label="Selecciona el Trimestre" icon="pi pi-file-excel"
+                    severity="secondary" title="configracion inicial" [model]="dataExcelPPI"
+                    (onClick)="DescargarExcel()" [disabled]="EjecutandoPPI" size="small" />
+
+                @if (isPPI) {
+                <p-progressspinner strokeWidth="4" [style]="{ width: '30px', height: '30px' }" />
                 }
+
             </div>
         </div>
     </div>
-</div>
+    
+        @if (hasProps2(info2)){
+        <div class="card shadow-sm">
+            <div class="card-header excel-title">
+                <h5 class="mb-0">
+                    <i class="bi bi-file-earmark-excel-fill me-2"></i>
+                    Fondos no encontrados en SGEG
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                <p-table #tablaFondos [value]="info2" [paginator]="true" [rows]="25" [resizableColumns]="true"
+                    columnResizeMode="expand" size="small" [tableStyle]="{ 'min-width': '910px' }">
+                    <ng-template #caption>
+                        <p-button label="Exportar a Excel" icon="pi pi-file-excel" severity="success" size="small"
+                            (onClick)="exportarFondosExcel(tablaFondos.filteredValue ?? info2)" />
+                    </ng-template>
+
+                    <ng-template #header>
+                        <tr>
+                            @for (col of columnasFondos; track col.field) {
+                            <th pResizableColumn [pSortableColumn]="col.field" [style.width.px]="col.width">
+                                {{ col.title }}
+                                <p-sortIcon [field]="col.field" />
+                                <p-columnFilter [field]="col.field"
+                                    [type]="col.field === 'entidad_x' ? 'numeric' : 'text'" display="menu" />
+                            </th>
+                            }
+                        </tr>
+                    </ng-template>
+
+                    <ng-template #body let-fila>
+                        <tr>
+                            @for (col of columnasFondos; track col.field) {
+                            <td>{{ fila[col.field] }}</td>
+                            }
+                        </tr>
+                    </ng-template>
+
+                    <ng-template #emptymessage>
+                        <tr>
+                            <td [attr.colspan]="columnasFondos.length" class="text-center">
+                                No se encontraron fondos.
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+
+            </div>
+        </div>
+        }
+  
+
+
+</p-card>
 
 }
 @if (selectedItem === 'AvanceFinanciero' && canViewAvance) {

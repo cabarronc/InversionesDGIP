@@ -143,13 +143,14 @@ GenerarDescargasInversionHojaTrabajo(fecha: any, filename: string): Observable<H
 }
 
 //Entregables
-  GenerarDescargasInversionEntregables(fecha: any,filename: string): Observable<Blob> {
+  GenerarDescargasInversionEntregables(fecha: any,filename: string): Observable<HttpResponse<Blob>> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = { fecha }; // crea objeto JSON con clave "fecha"
     return this.http.post(`${this.apiUrl}/InversionesGeneralEntregables/${filename}`, body, {
       headers,
-      responseType: 'blob'
-    }) as Observable<Blob>;
+      responseType: 'blob',
+      observe: 'response'
+    }) as Observable<HttpResponse<Blob>>;
   }
     InversionCopy(fecha: any): Observable<any> {
        const body = { fecha }

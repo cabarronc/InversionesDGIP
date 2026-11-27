@@ -392,25 +392,18 @@ public async GenerarCicular(): Promise<void> {
     this.dependencias = response.dependencia;
     console.log(this.dependencias);
     this.data2 = response.success;
-
+    console.log('Datos obtenidos:', this.data2);
     this.messageService.clear('circular');
 
-    if (response != true) {
-      this.messageService.add({
-        severity: 'warn',
-        summary: 'Advertencia',
-        detail: 'Se ha producido un error',
-        life: 5500
-      });
-    } else {
+    
       this.messageService.add({
         severity: 'success',
         summary: 'Exito!',
         detail: 'La Circular se Genero con Exito',
         life: 5500
       });
-    }
-    console.log('Datos obtenidos:', this.data2.success);
+    
+    
 
   } catch (error) {
     this.messageService.clear('circular');
@@ -531,8 +524,6 @@ public async GenerarCicular(): Promise<void> {
 
 public async PuntosAtencion(): Promise<void> {
   this.isPuntos = true;
-
-  // Toast de espera: sticky y con key propia, se quita cuando termina la llamada
   this.messageService.add({
     key: 'puntos',
     severity: 'info',
@@ -556,21 +547,13 @@ public async PuntosAtencion(): Promise<void> {
 
     this.messageService.clear('puntos');
 
-    if (this.puntosAtencion != true) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Hubo un Error',
-        life: 3500
-      });
-    } else {
       this.messageService.add({
         severity: 'success',
         summary: 'Éxito',
         detail: 'Se ha Generado Puntos de Atencion, listo...',
         life: 3500
       });
-    }
+    
     console.log('Datos obtenidos:', this.puntosAtencion);
 
   } catch (error) {

@@ -29,11 +29,12 @@ import { SelectModule } from 'primeng/select';
 import { IconFieldModule } from 'primeng/iconfield';
 import { TabsModule } from 'primeng/tabs';
 import { InputTextModule } from 'primeng/inputtext';
+import { AilaComponent } from './aila/aila.component';
 
 @Component({
   selector: 'app-lecciones-aprendidas',
-  imports: [CardModule, TagModule, MessageModule, ButtonModule, ProgressSpinnerModule, TableModule, ChartModule,SelectModule,
-    SkeletonModule, MultiSelectModule, FormsModule, TooltipModule, DialogModule, DividerModule, IconFieldModule,TabsModule, InputTextModule],
+  imports: [CardModule, TagModule, MessageModule, ButtonModule, ProgressSpinnerModule, TableModule, ChartModule, SelectModule,
+    SkeletonModule, MultiSelectModule, FormsModule, TooltipModule, DialogModule, DividerModule, IconFieldModule, TabsModule, InputTextModule, AilaComponent],
   templateUrl: './lecciones-aprendidas.component.html',
   styleUrl: './lecciones-aprendidas.component.scss',
 })

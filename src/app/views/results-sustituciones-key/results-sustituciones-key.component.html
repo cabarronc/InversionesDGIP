@@ -8,9 +8,9 @@
     <h4 class="removed">❌ Filas eliminadas</h4>
     <p-table [value]="rowChanges.removed" size="small" [stripedRows]="true">
       <ng-template #header>
-        <tr>
+        <tr style="color: var(--p-text-color);">
           @for (key of objectKeys(rowChanges.removed[0]); track key) {
-          <th>{{ key }}</th>
+          <th>{{ key }} </th>
           }
         </tr>
       </ng-template>
@@ -57,7 +57,7 @@
 
     @for (key of objectKeys(rowChanges.modified); track key) {
     <div class="modified-block">
-      <strong style="color: white;">Clave: {{ key }}</strong>
+      <strong  style="color: var(--p-text-color);">Clave: {{ key }}</strong>
       <p-table [value]="objectKeys(rowChanges.modified[key])" size="small" [showGridlines]="true"
         styleClass="mt-2">
         <ng-template #header>
