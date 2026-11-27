@@ -1,302 +1,446 @@
+<p-dialog header="Limitaciones de los datos" [(visible)]="mostrarLimitaciones" [modal]="true" [maximizable]="true"
+    [draggable]="false" [resizable]="false" [blockScroll]="true" appendTo="body" styleClass="aila-dialogo-limitaciones"
+    [style]="{ width: '65rem', maxWidth: '95vw' }" [breakpoints]="{ '960px': '94vw', '640px': '96vw' }">
+    <div class="aila-limitaciones-lista">
+        @for (item of limitaciones; track $index) {
+        <article class="aila-limitacion-item">
+            <h4>Limitación {{ $index + 1 }}</h4>
+            <p>{{ item }}</p>
+        </article>
+        }
+    </div>
+
+    <ng-template #footer>
+        <p-button label="Cerrar" severity="secondary" (onClick)="mostrarLimitaciones = false" />
+    </ng-template>
+</p-dialog>
 <section class="aila-shell">
-  <header class="page-heading">
-    <div>
-      <p class="eyebrow">AILA · Lecciones aprendidas</p>
-      <h1>Explorar experiencias</h1>
-      <p class="muted">Consulta indicadores, compara un concepto o revisa las experiencias de un proyecto.</p>
+    <header class="page-heading">
+        <div>
+            <p class="eyebrow">AILA · Lecciones aprendidas</p>
+            <h1>Explorar experiencias</h1>
+            <p class="muted">Consulta indicadores, compara un concepto o revisa las experiencias de un proyecto.</p>
+        </div>
+        <span class="heading-mark" aria-hidden="true">A</span>
+    </header>
+
+    <div class="mb-4">
+        <div class="row g-3 mb-3">
+            <div class="col-12 col-md-4">
+                <label for="aila-tipo" class="block mb-2">¿Qué quieres analizar?</label>
+                <p-select size="small" class="w-100" inputId="aila-tipo" ariaLabel="Seleccionar tipo de análisis"
+                    [options]="opciones" optionLabel="label" optionValue="value" [ngModel]="tipo"
+                    (ngModelChange)="tipo = $event" appendTo="body" />
+            </div>
+        </div>
+
+        <div class="mb-3" aria-live="polite">
+            @if (catalogosService.actualizadoEn(); as fecha) {
+            <div class="mb-2"><small>Catálogo actualizado: {{ fecha | date:'dd/MM/yyyy HH:mm' }}</small></div>
+            }
+            @if (catalogosService.actualizando()) {
+            <div class="mb-2"><p-message severity="info">
+                    @if (catalogosService.actualizadoEn()) {
+                    Actualizando catálogo. Puedes utilizar las opciones guardadas.
+                    } @else {
+                    Cargando las opciones del catálogo.
+                    }
+                </p-message></div>
+            }
+            @if (catalogosService.error()) {
+            <div class="mb-2"><p-message severity="warn">{{ catalogosService.error() }}</p-message></div>
+            }
+            @if (catalogosService.avisoPersistencia()) {
+            <div class="mb-2"><p-message severity="warn">{{ catalogosService.avisoPersistencia() }}</p-message></div>
+            }
+            <p-button label="Actualizar catálogo" type="button" size="small" severity="secondary" [outlined]="true"
+                [loading]="catalogosService.actualizando()" [disabled]="catalogosService.actualizando()"
+                (onClick)="generarConsolidadoLecciones()" />
+        </div>
+
+        @if (tipo === 'proyecto') {
+        <div class="row g-3 mb-3">
+            <div class="col-12 col-md-4">
+                <label for="aila-proyecto" class="block mb-2">Proyecto Q</label>
+                <p-select size="small" class="w-100" inputId="aila-proyecto" ariaLabel="Seleccionar proyecto Q"
+                    [options]="opcionesCatalogo(catalogos().proyectos)" optionLabel="label" optionValue="value"
+                    [ngModel]="proyecto" (ngModelChange)="proyecto = $event ?? ''" [filter]="true" [showClear]="true"
+                    placeholder="Selecciona un proyecto" appendTo="body" />
+            </div>
+        </div>
+        }
+
+        @if (tipo === 'cualitativo') {
+        <div class="row g-3 mb-3">
+            <div class="col-12 col-md-4">
+                <label for="aila-categoria" class="block mb-2">Categoría</label>
+                <p-select size="small" class="w-100" inputId="aila-categoria" ariaLabel="Seleccionar categoría"
+                    [options]="opcionesCatalogo(catalogos().categorias)" optionLabel="label" optionValue="value"
+                    [ngModel]="categoria" (ngModelChange)="categoria = $event ?? ''; concepto = ''" [filter]="true"
+                    [showClear]="true" placeholder="Selecciona una categoría" appendTo="body" />
+            </div>
+            <div class="col-12 col-md-8">
+                <label for="aila-concepto" class="block mb-2">Concepto a valorar</label>
+                <p-select size="small" class="w-100" inputId="aila-concepto" ariaLabel="Seleccionar concepto a valorar"
+                    [options]="opcionesCatalogo(conceptosDeCategoria)" optionLabel="label" optionValue="value"
+                    [ngModel]="concepto" (ngModelChange)="concepto = $event ?? ''" [filter]="true" [showClear]="true"
+                    placeholder="Selecciona un concepto" appendTo="body" />
+            </div>
+        </div>
+        }
+
+        @if (tipo === 'analitico') {
+        <div class="mb-2"><small>Los filtros son opcionales. Sin selección se analiza todo el conjunto.</small></div>
+        <div class="row g-3 mb-3">
+            <div class="col-12 col-md-4">
+                <label for="aila-f-proyectos" class="block mb-2">Proyecto Q</label>
+                <p-select size="small" class="w-100" inputId="aila-f-proyectos" ariaLabel="Filtrar por proyecto q"
+                    [options]="opcionesCatalogo(catalogos().proyectos)" optionLabel="label" optionValue="value"
+                    [ngModel]="filtrosSeleccionados.proyectos.at(0) ?? null"
+                    (ngModelChange)="filtrosSeleccionados.proyectos = $event ? [$event] : []" [filter]="true"
+                    [showClear]="true" placeholder="Todos los proyectos" appendTo="body" />
+            </div>
+            <div class="col-12 col-md-4">
+                <label for="aila-f-dependencias" class="block mb-2">Dependencia</label>
+                <p-select size="small" class="w-100" inputId="aila-f-dependencias" ariaLabel="Filtrar por dependencia"
+                    [options]="opcionesCatalogo(catalogos().dependencias)" optionLabel="label" optionValue="value"
+                    [ngModel]="filtrosSeleccionados.dependencias.at(0) ?? null"
+                    (ngModelChange)="filtrosSeleccionados.dependencias = $event ? [$event] : []" [filter]="true"
+                    [showClear]="true" placeholder="Todas las dependencias" appendTo="body" />
+            </div>
+            <div class="col-12 col-md-4">
+                <label for="aila-f-categorias" class="block mb-2">Categoría</label>
+                <p-select size="small" class="w-100" inputId="aila-f-categorias" ariaLabel="Filtrar por categoría"
+                    [options]="opcionesCatalogo(catalogos().categorias)" optionLabel="label" optionValue="value"
+                    [ngModel]="filtrosSeleccionados.categorias.at(0) ?? null"
+                    (ngModelChange)="filtrosSeleccionados.categorias = $event ? [$event] : []" [filter]="true"
+                    [showClear]="true" placeholder="Todas las categorías" appendTo="body" />
+            </div>
+            <div class="col-12">
+                <label for="aila-f-conceptos" class="block mb-2">Concepto a valorar</label>
+                <p-select size="small" class="w-100" inputId="aila-f-conceptos"
+                    ariaLabel="Filtrar por concepto a valorar" [options]="opcionesCatalogo(catalogos().conceptos)"
+                    optionLabel="label" optionValue="value" [ngModel]="filtrosSeleccionados.conceptos.at(0) ?? null"
+                    (ngModelChange)="filtrosSeleccionados.conceptos = $event ? [$event] : []" [filter]="true"
+                    [showClear]="true" placeholder="Todos los conceptos" appendTo="body" />
+            </div>
+        </div>
+        }
+
+        <div class="d-flex justify-content-end mt-3">
+            <p-button label="Analizar experiencias" type="button" size="small" [loading]="cargando()"
+                [disabled]="cargando()" (onClick)="ejecutar()" />
+        </div>
     </div>
-    <span class="heading-mark" aria-hidden="true">A</span>
-  </header>
 
-  <div class="mb-4">
-    <div class="row g-3 mb-3">
-      <div class="col-12 col-md-4">
-        <label for="aila-tipo" class="block mb-2">¿Qué quieres analizar?</label>
-        <p-select size="small" class="w-100" inputId="aila-tipo"
-          ariaLabel="Seleccionar tipo de análisis"
-          [options]="opciones" optionLabel="label" optionValue="value"
-          [ngModel]="tipo" (ngModelChange)="tipo = $event" appendTo="body" />
-      </div>
-    </div>
-
-    <div class="mb-3" aria-live="polite">
-      @if (catalogosService.actualizadoEn(); as fecha) {
-        <div class="mb-2"><small>Catálogo actualizado: {{ fecha | date:'dd/MM/yyyy HH:mm' }}</small></div>
-      }
-      @if (catalogosService.actualizando()) {
-        <div class="mb-2"><p-message severity="info">
-          @if (catalogosService.actualizadoEn()) {
-            Actualizando catálogo. Puedes utilizar las opciones guardadas.
-          } @else {
-            Cargando las opciones del catálogo.
-          }
-        </p-message></div>
-      }
-      @if (catalogosService.error()) {
-        <div class="mb-2"><p-message severity="warn">{{ catalogosService.error() }}</p-message></div>
-      }
-      @if (catalogosService.avisoPersistencia()) {
-        <div class="mb-2"><p-message severity="warn">{{ catalogosService.avisoPersistencia() }}</p-message></div>
-      }
-      <p-button label="Actualizar catálogo" type="button" size="small" severity="secondary"
-        [outlined]="true" [loading]="catalogosService.actualizando()"
-        [disabled]="catalogosService.actualizando()" (onClick)="generarConsolidadoLecciones()" />
-    </div>
-
-    @if (tipo === 'proyecto') {
-      <div class="row g-3 mb-3">
-        <div class="col-12 col-md-4">
-          <label for="aila-proyecto" class="block mb-2">Proyecto Q</label>
-          <p-select size="small" class="w-100" inputId="aila-proyecto"
-            ariaLabel="Seleccionar proyecto Q"
-            [options]="opcionesCatalogo(catalogos().proyectos)" optionLabel="label" optionValue="value"
-            [ngModel]="proyecto" (ngModelChange)="proyecto = $event ?? ''"
-            [filter]="true" [showClear]="true" placeholder="Selecciona un proyecto" appendTo="body" />
-        </div>
-      </div>
-    }
-
-    @if (tipo === 'cualitativo') {
-      <div class="row g-3 mb-3">
-        <div class="col-12 col-md-4">
-          <label for="aila-categoria" class="block mb-2">Categoría</label>
-          <p-select size="small" class="w-100" inputId="aila-categoria"
-            ariaLabel="Seleccionar categoría"
-            [options]="opcionesCatalogo(catalogos().categorias)" optionLabel="label" optionValue="value"
-            [ngModel]="categoria" (ngModelChange)="categoria = $event ?? ''; concepto = ''"
-            [filter]="true" [showClear]="true" placeholder="Selecciona una categoría" appendTo="body" />
-        </div>
-        <div class="col-12 col-md-8">
-          <label for="aila-concepto" class="block mb-2">Concepto a valorar</label>
-          <p-select size="small" class="w-100" inputId="aila-concepto"
-            ariaLabel="Seleccionar concepto a valorar"
-            [options]="opcionesCatalogo(conceptosDeCategoria)" optionLabel="label" optionValue="value"
-            [ngModel]="concepto" (ngModelChange)="concepto = $event ?? ''"
-            [filter]="true" [showClear]="true" placeholder="Selecciona un concepto" appendTo="body" />
-        </div>
-      </div>
-    }
-
-    @if (tipo === 'analitico') {
-      <div class="mb-2"><small>Los filtros son opcionales. Sin selección se analiza todo el conjunto.</small></div>
-      <div class="row g-3 mb-3">
-        <div class="col-12 col-md-4">
-          <label for="aila-f-proyectos" class="block mb-2">Proyecto Q</label>
-          <p-select size="small" class="w-100" inputId="aila-f-proyectos"
-            ariaLabel="Filtrar por proyecto q"
-            [options]="opcionesCatalogo(catalogos().proyectos)" optionLabel="label" optionValue="value"
-            [ngModel]="filtrosSeleccionados.proyectos.at(0) ?? null"
-            (ngModelChange)="filtrosSeleccionados.proyectos = $event ? [$event] : []"
-            [filter]="true" [showClear]="true" placeholder="Todos los proyectos" appendTo="body" />
-        </div>
-        <div class="col-12 col-md-4">
-          <label for="aila-f-dependencias" class="block mb-2">Dependencia</label>
-          <p-select size="small" class="w-100" inputId="aila-f-dependencias"
-            ariaLabel="Filtrar por dependencia"
-            [options]="opcionesCatalogo(catalogos().dependencias)" optionLabel="label" optionValue="value"
-            [ngModel]="filtrosSeleccionados.dependencias.at(0) ?? null"
-            (ngModelChange)="filtrosSeleccionados.dependencias = $event ? [$event] : []"
-            [filter]="true" [showClear]="true" placeholder="Todas las dependencias" appendTo="body" />
-        </div>
-        <div class="col-12 col-md-4">
-          <label for="aila-f-categorias" class="block mb-2">Categoría</label>
-          <p-select size="small" class="w-100" inputId="aila-f-categorias"
-            ariaLabel="Filtrar por categoría"
-            [options]="opcionesCatalogo(catalogos().categorias)" optionLabel="label" optionValue="value"
-            [ngModel]="filtrosSeleccionados.categorias.at(0) ?? null"
-            (ngModelChange)="filtrosSeleccionados.categorias = $event ? [$event] : []"
-            [filter]="true" [showClear]="true" placeholder="Todas las categorías" appendTo="body" />
-        </div>
-        <div class="col-12">
-          <label for="aila-f-conceptos" class="block mb-2">Concepto a valorar</label>
-          <p-select size="small" class="w-100" inputId="aila-f-conceptos"
-            ariaLabel="Filtrar por concepto a valorar"
-            [options]="opcionesCatalogo(catalogos().conceptos)" optionLabel="label" optionValue="value"
-            [ngModel]="filtrosSeleccionados.conceptos.at(0) ?? null"
-            (ngModelChange)="filtrosSeleccionados.conceptos = $event ? [$event] : []"
-            [filter]="true" [showClear]="true" placeholder="Todos los conceptos" appendTo="body" />
-        </div>
-      </div>
-    }
-
-    <div class="d-flex justify-content-end mt-3">
-      <p-button label="Analizar experiencias" type="button" size="small"
-        [loading]="cargando()" [disabled]="cargando()" (onClick)="ejecutar()" />
-    </div>
-  </div>
-
-  @if (cargando()) {
+    @if (cargando()) {
     <section class="surface loading-panel" aria-live="polite" aria-busy="true">
-      <div class="section-heading"><h2>Procesando el análisis</h2><strong>{{ tiempoEspera }}</strong></div>
-      <p-progressbar mode="indeterminate" [style]="{ height: '6px' }" ariaLabel="Análisis en proceso" />
-      <p class="muted">Esperando la respuesta del servidor. Mantén esta vista abierta; el tiempo mostrado es de espera, no un porcentaje de avance.</p>
-    </section>
-  }
-  @if (error()) {
-    <div class="message-space" role="alert"><p-message severity="error">{{ error() }}</p-message></div>
-  }
-  @if (!cargando() && !respuesta() && !error()) {
-    <div class="empty-state"><h2>Elige el alcance de tu análisis</h2><p>Los resultados aparecerán aquí después de enviar la solicitud.</p></div>
-  }
-  @if (respuesta(); as response) {
-    <section class="results" aria-label="Resultados del análisis">
-      <header class="result-heading">
-        <div><p class="eyebrow">Resultado de la solicitud</p><h2>{{ tituloResultado }}</h2></div>
-        <div class="result-actions">
-          <p-tag [value]="etiqueta(estadoResultado)" [severity]="severity(estadoResultado)" />
-          @if (resultado) { <p-button label="Descargar JSON" severity="secondary" [outlined]="true" (onClick)="descargar()" /> }
+        <div class="section-heading">
+            <h2>Procesando el análisis</h2><strong>{{ tiempoEspera }}</strong>
         </div>
-      </header>
-      @if (response.estado === 'sin_datos' || response.estado === 'sin_comparaciones') {
-        <p-message severity="info">{{ response.mensaje || 'No hay resultados comparables para esta selección.' }}</p-message>
-      }
-      @if (resultado; as data) {
+        <p-progressbar mode="indeterminate" [style]="{ height: '6px' }" ariaLabel="Análisis en proceso" />
+        <p class="muted">Esperando la respuesta del servidor. Mantén esta vista abierta; el tiempo mostrado es de
+            espera, no un porcentaje de avance.</p>
+    </section>
+    }
+    @if (error()) {
+    <div class="message-space" role="alert"><p-message severity="error">{{ error() }}</p-message></div>
+    }
+    @if (!cargando() && !respuesta() && !error()) {
+    <div class="empty-state">
+        <h2>Elige el alcance de tu análisis</h2>
+        <p>Los resultados aparecerán aquí después de enviar la solicitud.</p>
+    </div>
+    }
+    @if (respuesta(); as response) {
+    <section class="results" aria-label="Resultados del análisis">
+        <header class="result-heading">
+            <div>
+                <p class="eyebrow">Resultado de la solicitud</p>
+                <h2>{{ tituloResultado }}</h2>
+            </div>
+            <div class="result-actions">
+                <p-tag [value]="etiqueta(estadoResultado)" [severity]="severity(estadoResultado)" />
+                @if (resultado) { <p-button label="Descargar JSON" severity="secondary" [outlined]="true"
+                    (onClick)="descargar()" /> }
+            </div>
+        </header>
+        @if (response.estado === 'sin_datos' || response.estado === 'sin_comparaciones') {
+        <p-message severity="info">{{ response.mensaje || 'No hay resultados comparables para esta selección.'
+            }}</p-message>
+        }
+        @if (resultado; as data) {
         @if (tipoResultado !== 'analitico') {
-          <div class="message-space"><p-message severity="warn">
-            Borrador para revisión. Que el análisis termine no certifica la fidelidad de la síntesis; las referencias no garantizan que todas las ideas estén representadas.
-          </p-message></div>
-          @if (data.estado_contenido === 'sin_texto_informativo') {
-            <div class="message-space"><p-message severity="info">El proyecto tiene registros, pero no texto informativo suficiente para generar una síntesis.</p-message></div>
-          }
+        <div class="message-space"><p-message severity="warn">
+                Borrador para revisión. Que el análisis termine no certifica la fidelidad de la síntesis; las
+                referencias no garantizan que todas las ideas estén representadas.
+            </p-message></div>
+        @if (data.estado_contenido === 'sin_texto_informativo') {
+        <div class="message-space"><p-message severity="info">El proyecto tiene registros, pero no texto informativo
+                suficiente para generar una síntesis.</p-message></div>
+        }
         }
         <div class="metrics-grid">
-          @for (tarjeta of tarjetas; track tarjeta.titulo) {
+            @for (tarjeta of tarjetas; track tarjeta.titulo) {
             <article class="metric"><span>{{ tarjeta.titulo }}</span><strong>{{ tarjeta.valor }}</strong></article>
-          }
+            }
         </div>
         @if (auditoria; as a) {
-          <div class="audit-strip" aria-label="Información de ejecución">
+        <div class="audit-strip" aria-label="Información de ejecución">
             <span>Tiempo del motor: <strong>{{ a.tiempo }}</strong></span>
             <span>Consultas al modelo: <strong>{{ a.consultas }}</strong></span>
             <span>Respuestas de caché: <strong>{{ a.cache }}</strong></span>
-          </div>
+        </div>
         }
         @if (avisos.length) {
-          <section class="surface warnings">
+        <section class="surface warnings">
             <h3>Advertencias e incidencias · {{ avisos.length }}</h3>
             <ul>@for (aviso of avisos; track $index) { <li>{{ aviso }}</li> }</ul>
-          </section>
+        </section>
         }
 
         @if (tipoResultado === 'analitico') {
-          <div class="two-columns">
-            <section class="surface"><h3>Valoraciones registradas</h3>
-              <p-table [value]="filasLogro" [tableStyle]="{ 'min-width': '16rem' }">
-                <ng-template #header><tr><th>Resultado</th><th class="numeric">Experiencias</th></tr></ng-template>
-                <ng-template #body let-row><tr><td>{{ row.resultado }}</td><td class="numeric">{{ row.total }}</td></tr></ng-template>
-                <ng-template #emptymessage><tr><td colspan="2">No se recibieron valoraciones.</td></tr></ng-template>
-              </p-table>
-              <p class="muted">Valores del concepto; no equivalen al éxito integral del proyecto.</p>
+        <div class="two-columns">
+            <section class="surface">
+                <h3>Valoraciones registradas</h3>
+                <p-table [value]="filasLogro" [tableStyle]="{ 'min-width': '16rem' }">
+                    <ng-template #header>
+                        <tr>
+                            <th>Resultado</th>
+                            <th class="numeric">Experiencias</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template #body let-row>
+                        <tr>
+                            <td>{{ row.resultado }}</td>
+                            <td class="numeric">{{ row.total }}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template #emptymessage>
+                        <tr>
+                            <td colspan="2">No se recibieron valoraciones.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <p class="muted">Valores del concepto; no equivalen al éxito integral del proyecto.</p>
             </section>
-            <section class="surface"><h3>Experiencias por categoría</h3>
-              <p-table [value]="filasCategorias" [tableStyle]="{ 'min-width': '16rem' }">
-                <ng-template #header><tr><th>Categoría</th><th class="numeric">Experiencias</th></tr></ng-template>
-                <ng-template #body let-row><tr><td>{{ row.categoria }}</td><td class="numeric">{{ row.total }}</td></tr></ng-template>
-                <ng-template #emptymessage><tr><td colspan="2">Sin categorías disponibles.</td></tr></ng-template>
-              </p-table>
+            <section class="surface">
+                <h3>Experiencias por categoría</h3>
+                <p-table [value]="filasCategorias" [tableStyle]="{ 'min-width': '16rem' }">
+                    <ng-template #header>
+                        <tr>
+                            <th>Categoría</th>
+                            <th class="numeric">Experiencias</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template #body let-row>
+                        <tr>
+                            <td>{{ row.categoria }}</td>
+                            <td class="numeric">{{ row.total }}</td>
+                        </tr>
+                    </ng-template>
+                    <ng-template #emptymessage>
+                        <tr>
+                            <td colspan="2">Sin categorías disponibles.</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </section>
-          </div>
-          <section class="surface"><h3>Disponibilidad de información</h3>
-            <p class="muted">Mide campos con texto. Un texto como «No aplica» puede contar como presente; esto no mide su calidad.</p>
+        </div>
+        <section class="surface">
+            <h3>Disponibilidad de información</h3>
+            <p class="muted">Mide campos con texto. Un texto como «No aplica» puede contar como presente; esto no mide
+                su calidad.</p>
             <p-table [value]="filasCalidad" [scrollable]="true" [tableStyle]="{ 'min-width': '36rem' }">
-              <ng-template #header><tr><th>Campo</th><th>Con texto</th><th>Vacíos</th><th>Completitud</th></tr></ng-template>
-              <ng-template #body let-row><tr><td>{{ row.campo }}</td><td>{{ row.completos }}</td><td>{{ row.vacios }}</td>
-                <td>{{ row.porcentaje === null ? 'No informada' : (row.porcentaje | number:'1.0-2') + ' %' }}</td></tr></ng-template>
-              <ng-template #emptymessage><tr><td colspan="4">No se recibió información de completitud.</td></tr></ng-template>
+                <ng-template #header>
+                    <tr>
+                        <th>Campo</th>
+                        <th>Con texto</th>
+                        <th>Vacíos</th>
+                        <th>Completitud</th>
+                    </tr>
+                </ng-template>
+                <ng-template #body let-row>
+                    <tr>
+                        <td>{{ row.campo }}</td>
+                        <td>{{ row.completos }}</td>
+                        <td>{{ row.vacios }}</td>
+                        <td>{{ row.porcentaje === null ? 'No informada' : (row.porcentaje | number:'1.0-2') + ' %' }}
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template #emptymessage>
+                    <tr>
+                        <td colspan="4">No se recibió información de completitud.</td>
+                    </tr>
+                </ng-template>
             </p-table>
-          </section>
+        </section>
         }
 
         @if (tipoResultado !== 'analitico' && textoResumen) {
-          <section class="surface"><p class="eyebrow">Síntesis</p><h3>Lectura general</h3><p class="prose">{{ textoResumen }}</p></section>
+        <section class="surface">
+            <p class="eyebrow">Síntesis</p>
+            <h3>Lectura general</h3>
+            <p class="prose">{{ textoResumen }}</p>
+        </section>
         }
         @if (tipoResultado === 'cualitativo') {
-          <div class="field-grid">
+        <div class="field-grid">
             @for (campo of camposResultado; track campo.clave) {
-              <article class="surface"><h3>{{ campo.titulo }}</h3><p class="prose">{{ campo.texto }}</p></article>
+            <article class="surface">
+                <h3>{{ campo.titulo }}</h3>
+                <p class="prose">{{ campo.texto }}</p>
+            </article>
             }
-          </div>
-          <section class="cases-section"><h3>Proyectos representativos</h3>
+        </div>
+        <section class="cases-section">
+            <h3>Proyectos representativos</h3>
             <p class="muted">Selección textual del motor. No constituye un ranking de mejores y peores proyectos.</p>
             <div class="two-columns">
-              @for (grupo of gruposCasos; track grupo.titulo) {
-                <section class="case-group surface"><h4>{{ grupo.titulo }}</h4>
-                  @for (caso of grupo.casos; track $index) {
+                @for (grupo of gruposCasos; track grupo.titulo) {
+                <section class="case-group surface">
+                    <h4>{{ grupo.titulo }}</h4>
+                    @for (caso of grupo.casos; track $index) {
                     <article class="case-card">
-                      <div class="section-heading"><strong>{{ caso.proyecto_q || 'Proyecto sin referencia' }}</strong><span class="reference">{{ caso.id }}</span></div>
-                      <small>Valoración registrada: {{ caso.valoracion_normalizada || 'Sin resultado' }}</small>
-                      <p class="prose">{{ caso.motivo }}</p>
-                      @if (caso.evidencia?.cita) { <blockquote>{{ caso.evidencia?.cita }}<footer>{{ caso.evidencia?.campo }}</footer></blockquote> }
-                      @if (caso.causas_o_factores) { <h5>Factores reportados</h5><p class="prose">{{ caso.causas_o_factores }}</p> }
-                      @for (factor of caso.factores_reportados || []; track $index) { <blockquote>{{ factor.cita }}<footer>{{ factor.campo }}</footer></blockquote> }
-                      @if (caso.acciones_registradas) { <h5>Acciones registradas</h5><p class="prose">{{ caso.acciones_registradas }}</p> }
-                      @if (caso.contraste_con_valoracion) { <p class="case-note">{{ caso.contraste_con_valoracion }}</p> }
-                      @if (caso.presente_en_ambos_grupos) { <p class="case-note">Este proyecto aparece en ambos grupos por aspectos diferentes.</p> }
-                      @if (caso.fuente_fragmentada) { <p class="case-note">La selección se realizó sobre un fragmento de la fuente.</p> }
+                        <div class="section-heading"><strong>{{ caso.proyecto_q || 'Proyecto sin referencia'
+                                }}</strong><span class="reference">{{ caso.id }}</span></div>
+                        <small>Valoración registrada: {{ caso.valoracion_normalizada || 'Sin resultado' }}</small>
+                        <p class="prose">{{ caso.motivo }}</p>
+                        @if (caso.evidencia?.cita) { <blockquote>{{ caso.evidencia?.cita }}<footer>{{
+                                caso.evidencia?.campo }}</footer>
+                        </blockquote> }
+                        @if (caso.causas_o_factores) { <h5>Factores reportados</h5>
+                        <p class="prose">{{ caso.causas_o_factores }}</p> }
+                        @for (factor of caso.factores_reportados || []; track $index) { <blockquote>{{ factor.cita }}
+                            <footer>{{ factor.campo }}</footer>
+                        </blockquote> }
+                        @if (caso.acciones_registradas) { <h5>Acciones registradas</h5>
+                        <p class="prose">{{ caso.acciones_registradas }}</p> }
+                        @if (caso.contraste_con_valoracion) { <p class="case-note">{{ caso.contraste_con_valoracion }}
+                        </p> }
+                        @if (caso.presente_en_ambos_grupos) { <p class="case-note">Este proyecto aparece en ambos grupos
+                            por aspectos diferentes.</p> }
+                        @if (caso.fuente_fragmentada) { <p class="case-note">La selección se realizó sobre un fragmento
+                            de la fuente.</p> }
                     </article>
-                  } @empty { <p class="muted">No se devolvieron casos con respaldo verificable para este grupo. Esto no demuestra que no existan.</p> }
+                    } @empty { <p class="muted">No se devolvieron casos con respaldo verificable para este grupo. Esto
+                        no demuestra que no existan.</p> }
                 </section>
-              }
+                }
             </div>
-          </section>
-          @if (limitaciones.length) { <section class="surface"><h3>Limitaciones de los datos</h3><ul>@for (item of limitaciones; track $index) { <li>{{ item }}</li> }</ul></section> }
-          <p-accordion [multiple]="true">
-            <p-accordion-panel value="coincidencias"><p-accordion-header>Coincidencias textuales · {{ coincidencias.length }}</p-accordion-header><p-accordion-content>
-              <p class="muted">La repetición de texto no demuestra eficacia ni independencia entre experiencias.</p>
-              <ul>@for (item of coincidencias; track $index) { <li>{{ item }}</li> } @empty { <li>No se reportaron coincidencias.</li> }</ul>
-            </p-accordion-content></p-accordion-panel>
-            <p-accordion-panel value="referencias"><p-accordion-header>Referencias de experiencias · {{ referencias.length }}</p-accordion-header><p-accordion-content>
-              <p-table [value]="referencias" [paginator]="referencias.length > 10" [rows]="10">
-                <ng-template #header><tr><th>Evidencia</th><th>Proyecto Q</th></tr></ng-template>
-                <ng-template #body let-row><tr><td>{{ row.id }}</td><td>{{ row.proyecto_q }}</td></tr></ng-template>
-                <ng-template #emptymessage><tr><td colspan="2">No se recibieron referencias.</td></tr></ng-template>
-              </p-table>
-            </p-accordion-content></p-accordion-panel>
-          </p-accordion>
+        </section>
+        @if (limitaciones.length) {
+        <section class="surface">
+            <h3>Limitaciones de los datos</h3>
+
+            <button type="button" class="aila-ver-limitaciones" aria-haspopup="dialog"
+                (click)="mostrarLimitaciones = true">
+                Ver limitaciones ({{ limitaciones.length }})
+            </button>
+        </section>
+        }
+        <p-accordion [multiple]="true">
+            <p-accordion-panel value="coincidencias"><p-accordion-header>Coincidencias textuales · {{
+                    coincidencias.length }}</p-accordion-header><p-accordion-content>
+                    <p class="muted">La repetición de texto no demuestra eficacia ni independencia entre experiencias.
+                    </p>
+                    <ul>@for (item of coincidencias; track $index) { <li>{{ item }}</li> } @empty { <li>No se reportaron
+                            coincidencias.</li> }</ul>
+                </p-accordion-content></p-accordion-panel>
+            <p-accordion-panel value="referencias"><p-accordion-header>Referencias de experiencias · {{
+                    referencias.length }}</p-accordion-header><p-accordion-content>
+                    <p-table [value]="referencias" [paginator]="referencias.length > 10" [rows]="10">
+                        <ng-template #header>
+                            <tr>
+                                <th>Evidencia</th>
+                                <th>Proyecto Q</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template #body let-row>
+                            <tr>
+                                <td>{{ row.id }}</td>
+                                <td>{{ row.proyecto_q }}</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template #emptymessage>
+                            <tr>
+                                <td colspan="2">No se recibieron referencias.</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-accordion-content></p-accordion-panel>
+        </p-accordion>
         }
 
         @if (tipoResultado === 'proyecto') {
-          <section><h3>Síntesis por categoría</h3>
-            <p class="muted">Abre una categoría para revisar situaciones, acciones y aprendizajes. Los originales se muestran por separado.</p>
+        <section>
+            <h3>Síntesis por categoría</h3>
+            <p class="muted">Abre una categoría para revisar situaciones, acciones y aprendizajes. Los originales se
+                muestran por separado.</p>
             <p-accordion [multiple]="true" [value]="['0']">
-              @for (cat of categoriasResultado; track $index; let i = $index) {
+                @for (cat of categoriasResultado; track $index; let i = $index) {
                 <p-accordion-panel [value]="'' + i">
-                  <p-accordion-header><span class="category-title">{{ cat.nombre }} <span class="muted">· {{ cat.originales.total_experiencias ?? '—' }} experiencias</span></span></p-accordion-header>
-                  <p-accordion-content>
-                    @if (cat.estado) { <p-tag [value]="etiqueta(cat.estado)" [severity]="severity(cat.estado)" /> }
-                    @if (cat.nota) { <p-message severity="info">{{ cat.nota }}</p-message> }
-                    @if (!cat.nota) {
-                      <div class="field-grid category-fields">@for (campo of cat.campos; track campo.clave) {
-                        <article><h4>{{ campo.titulo }}</h4><p class="prose">{{ campo.texto }}</p></article>
-                      }</div>
-                    }
-                    @if (cat.avisos.length) { <div class="warnings"><h4>Advertencias de esta categoría</h4><ul>@for (aviso of cat.avisos; track $index) { <li>{{ aviso }}</li> }</ul></div> }
-                    <details class="sources"><summary>Textos originales por concepto · {{ cat.originales.conceptos?.length ?? 0 }}</summary>
-                      <p class="muted">Respaldo literal de la fuente; estos textos no son una síntesis nueva.</p>
-                      @for (c of cat.originales.conceptos || []; track $index) {
-                        <details class="source-concept"><summary>{{ c.concepto_id }} · {{ c.concepto }}</summary>
-                          @for (ev of c.evidencias || []; track $index) {
-                            <article class="source-record">
-                              <div class="section-heading"><strong>{{ ev.id }}</strong><span>Valoración: {{ ev.resultado || 'Sin resultado' }}</span></div>
-                              <dl><dt>Situación presentada</dt><dd>{{ textoFuente(ev.situacion) }}</dd>
-                                <dt>Acciones realizadas</dt><dd>{{ textoFuente(ev.acciones) }}</dd>
-                                <dt>Lección aprendida</dt><dd>{{ textoFuente(ev.leccion) }}</dd></dl>
+                    <p-accordion-header><span class="category-title">{{ cat.nombre }} <span class="muted">· {{
+                                cat.originales.total_experiencias ?? '—' }}
+                                experiencias</span></span></p-accordion-header>
+                    <p-accordion-content>
+                        @if (cat.estado) { <p-tag [value]="etiqueta(cat.estado)" [severity]="severity(cat.estado)" /> }
+                        @if (cat.nota) { <p-message severity="info">{{ cat.nota }}</p-message> }
+                        @if (!cat.nota) {
+                        <div class="field-grid category-fields">@for (campo of cat.campos; track campo.clave) {
+                            <article>
+                                <h4>{{ campo.titulo }}</h4>
+                                <p class="prose">{{ campo.texto }}</p>
                             </article>
-                          } @empty { <p class="muted">No se recibieron originales para este concepto.</p> }
+                            }
+                        </div>
+                        }
+                        @if (cat.avisos.length) { <div class="warnings">
+                            <h4>Advertencias de esta categoría</h4>
+                            <ul>@for (aviso of cat.avisos; track $index) { <li>{{ aviso }}</li> }</ul>
+                        </div> }
+                        <details class="sources">
+                            <summary>Textos originales por concepto · {{ cat.originales.conceptos?.length ?? 0 }}
+                            </summary>
+                            <p class="muted">Respaldo literal de la fuente; estos textos no son una síntesis nueva.</p>
+                            @for (c of cat.originales.conceptos || []; track $index) {
+                            <details class="source-concept">
+                                <summary>{{ c.concepto_id }} · {{ c.concepto }}</summary>
+                                @for (ev of c.evidencias || []; track $index) {
+                                <article class="source-record">
+                                    <div class="section-heading"><strong>{{ ev.id }}</strong><span>Valoración: {{
+                                            ev.resultado || 'Sin resultado' }}</span></div>
+                                    <dl>
+                                        <dt>Situación presentada</dt>
+                                        <dd>{{ textoFuente(ev.situacion) }}</dd>
+                                        <dt>Acciones realizadas</dt>
+                                        <dd>{{ textoFuente(ev.acciones) }}</dd>
+                                        <dt>Lección aprendida</dt>
+                                        <dd>{{ textoFuente(ev.leccion) }}</dd>
+                                    </dl>
+                                </article>
+                                } @empty { <p class="muted">No se recibieron originales para este concepto.</p> }
+                            </details>
+                            }
                         </details>
-                      }
-                    </details>
-                  </p-accordion-content>
+                    </p-accordion-content>
                 </p-accordion-panel>
-              } @empty { <p-message severity="info">No se devolvieron categorías para mostrar.</p-message> }
+                } @empty { <p-message severity="info">No se devolvieron categorías para mostrar.</p-message> }
             </p-accordion>
-          </section>
-          @if (data.cobertura) { <details class="surface"><summary>Cobertura de conceptos</summary><p class="prose muted">{{ describir(data.cobertura) }}</p></details> }
+        </section>
+        @if (data.cobertura) { <details class="surface">
+            <summary>Cobertura de conceptos</summary>
+            <p class="prose muted">{{ describir(data.cobertura) }}</p>
+        </details> }
         }
         @if (tipoResultado !== 'analitico' && data.informe) {
-          <details class="surface"><summary>Informe completo del motor</summary><p class="prose full-report">{{ data.informe }}</p></details>
+        <details class="surface">
+            <summary>Informe completo del motor</summary>
+            <p class="prose full-report">{{ data.informe }}</p>
+        </details>
         }
-      }
+        }
     </section>
-  }
+    }
 </section>

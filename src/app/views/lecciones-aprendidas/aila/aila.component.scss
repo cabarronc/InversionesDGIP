@@ -339,3 +339,66 @@ dd { margin: 6px 0 0; font-size: .92rem; }
     .audit-strip { flex-direction: column; gap: 8px; }
   }
 }
+.aila-ver-limitaciones {
+  padding: 0.5rem 0;
+  border: 0;
+  background: transparent;
+  color: var(--p-primary-color, #087f5b);
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+}
+
+/* El diálogo se agrega al body; por eso este selector no lleva :host. */
+::ng-deep .aila-dialogo-limitaciones {
+  .p-dialog-title {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .p-dialog-content {
+    min-width: 0;
+    overflow-y: auto;
+  }
+
+  .aila-limitaciones-lista {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 1rem;
+    width: 100%;
+  }
+
+  .aila-limitacion-item {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 1.25rem;
+    border: 1px solid var(--p-content-border-color, #dde4ee);
+    border-radius: 10px;
+
+    h4 {
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+      color: var(--p-primary-color, #087f5b);
+    }
+
+    p {
+      margin: 0;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      line-height: 1.8;
+    }
+  }
+
+  &.p-dialog-maximized {
+    max-width: 100vw !important;
+  }
+}

@@ -18,7 +18,7 @@ import {
   AilaService, CampoTexto, CasoRepresentativo, CategoriaAILA,
   FiltrosAnaliticos, RespuestaAILA, ResultadoAILA, Sintesis, TipoAnalisis
 } from '../../../services/aila.service';
-
+import { DialogModule } from 'primeng/dialog';
 interface Tarjeta { titulo: string; valor: number | string; nota?: string; }
 interface CampoVista { clave: CampoTexto; titulo: string; texto: string; }
 interface CategoriaVista {
@@ -29,7 +29,7 @@ interface CasoGrupo { titulo: string; casos: CasoRepresentativo[]; }
 
 @Component({
   selector: 'app-aila',
-  imports: [CommonModule, FormsModule, AccordionModule, ButtonModule,
+  imports: [CommonModule, FormsModule, AccordionModule, ButtonModule,DialogModule,
     MessageModule, ProgressBarModule, SelectModule, TableModule, TagModule],
   templateUrl: './aila.component.html', styleUrl: './aila.component.scss'
 })
@@ -41,7 +41,7 @@ export class AilaComponent implements OnInit {
   readonly error = signal('');
   readonly respuesta = signal<RespuestaAILA | null>(null);
   private reloj?: Subscription;
-
+  mostrarLimitaciones = false;
   tipo: TipoAnalisis = 'analitico';
   proyecto = '';
   categoria = '';
