@@ -71,3 +71,271 @@ dd { margin: 6px 0 0; font-size: .92rem; }
 @media (prefers-reduced-motion: reduce) { :host { scroll-behavior: auto; } }
 
 /* Los filtros utilizan las clases de tu aplicación; no se altera PrimeNG. */
+
+/* Contención de ancho: el componente puede ser hijo de flex o grid. */
+:host {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.aila-shell {
+  width: 100%;
+  min-width: 0;
+  max-width: 1360px;
+  box-sizing: border-box;
+  margin-inline: auto;
+  padding: clamp(12px, 2vw, 28px);
+
+  /* Una columna explícita evita que grid adopte el ancho del texto más largo. */
+  .results {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    gap: 24px;
+  }
+
+  .results > *,
+  .surface,
+  .metrics-grid,
+  .field-grid,
+  .two-columns,
+  .case-group,
+  .case-card,
+  .source-concept,
+  .source-record,
+  .message-space {
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .results > * { width: 100%; }
+
+  .result-heading,
+  .page-heading,
+  .section-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 16px;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .result-heading > div:first-child,
+  .page-heading > div:first-child {
+    flex: 1 1 26rem;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .result-actions {
+    display: flex;
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    min-width: 0;
+    max-width: 100%;
+    gap: 10px;
+  }
+
+  h1, h2, h3, h4, h5, summary,
+  .category-title, .eyebrow, .metric span,
+  .audit-strip span, .section-heading > * {
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    text-overflow: clip;
+  }
+
+  .result-heading h2 {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: none;
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr));
+    gap: 16px;
+  }
+
+  .metric {
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .metric strong {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  /* Las columnas dependen del espacio real, incluso con un menú lateral. */
+  .two-columns {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 27rem), 1fr));
+    align-items: start;
+    gap: 22px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 21rem), 1fr));
+    align-items: start;
+    gap: 22px;
+  }
+
+  .two-columns > *, .field-grid > *, .metrics-grid > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .category-fields article + article {
+    border-inline-start: 0;
+    padding-inline-start: 0;
+  }
+
+  .prose, dd, blockquote, li, .full-report, .case-note {
+    min-width: 0;
+    max-width: 100%;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  .warnings {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    padding: 20px 24px;
+  }
+
+  /* Lista vertical de avisos: no heredar columnas ni disposición de menú. */
+  .warnings > ul {
+    display: block !important;
+    columns: 1 !important;
+    width: auto;
+    max-width: 100%;
+    margin: 0;
+    padding-inline-start: 22px;
+    list-style: disc outside;
+  }
+
+  .warnings > ul > li {
+    display: list-item !important;
+    float: none !important;
+    width: auto !important;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    margin: 0;
+    line-height: 1.7;
+  }
+
+  .warnings > ul > li + li {
+    margin-top: 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--aila-line);
+  }
+
+  .audit-strip { min-width: 0; max-width: 100%; }
+
+  p-message, p-table, p-accordion,
+  p-accordion-panel, p-accordion-content {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+/* Solo resultados internos de PrimeNG. No altera Select ni MultiSelect. */
+:host ::ng-deep .aila-shell {
+  .p-message,
+  .p-message-content {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .p-message-content { align-items: flex-start; }
+
+  .p-message-text {
+    flex: 1 1 0%;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+    white-space: normal !important;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    line-height: 1.6;
+  }
+
+  .p-message-icon, .p-message-close-button { flex-shrink: 0; }
+
+  .p-datatable {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  /* Se desplaza la tabla, nunca toda la página. No se ocultan columnas. */
+  .p-datatable-table-container {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .p-datatable th, .p-datatable td {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .p-paginator { flex-wrap: wrap; min-width: 0; max-width: 100%; }
+
+  .p-accordion, .p-accordionpanel,
+  .p-accordioncontent, .p-accordioncontent-content {
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .p-accordionheader {
+    width: 100%;
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: start;
+  }
+
+  .p-accordionheader .category-title { flex: 1 1 0%; min-width: 0; }
+  .p-accordionheader-toggle-icon { flex-shrink: 0; }
+  .p-tag { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
+}
+
+@media (max-width: 640px) {
+  .aila-shell {
+    .result-actions { justify-content: flex-start; width: 100%; }
+    .surface, .warnings { padding: 16px; }
+    .metric { padding: 16px; }
+    .audit-strip { flex-direction: column; gap: 8px; }
+  }
+}
