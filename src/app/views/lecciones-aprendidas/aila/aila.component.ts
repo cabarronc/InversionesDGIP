@@ -54,7 +54,7 @@ export class AilaComponent implements OnInit {
 
   ngOnInit(): void {
     // El catálogo guardado ya está disponible. No bloquear la vista esperando el JSON.
-    void this.generarConsolidadoLecciones();
+    // void this.generarConsolidadoLecciones();
   }
 
   public async generarConsolidadoLecciones(): Promise<void> {
